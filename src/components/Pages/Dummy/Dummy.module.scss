@@ -1,0 +1,48 @@
+.worksansThin,
+.poppinsThin {
+  font-weight: 100;
+  font-style: normal;
+}
+.worksansLight,
+.poppinsLight {
+  font-weight: 300;
+  font-style: normal;
+}
+.worksansRegular,
+.poppinsRegular {
+  font-weight: 400;
+  font-style: normal;
+}
+.worksansMedium,
+.poppinsMedium {
+  font-weight: 500;
+  font-style: normal;
+}
+.worksansSemibold,
+.poppinsSemibold {
+  font-weight: 600;
+  font-style: normal;
+}
+.worksansBold,
+.poppinsBold {
+  font-weight: 700;
+  font-style: normal;
+}
+.worksansBlack,
+.poppinsBlack {
+  font-weight: 900;
+  font-style: normal;
+}
+.worksansItalic,
+.poppinsItalic {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.list {
+  list-style: none;
+
+  li {
+    margin-bottom: 8px;
+  }
+}

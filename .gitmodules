@@ -1,0 +1,3 @@
+[submodule "src/sad-aml-shared"]
+	path = src/sad-aml-shared/
+	url = https://gitlab.com/grupo-mutual/microfrontends/admin-ml/sad-aml-shared.git
