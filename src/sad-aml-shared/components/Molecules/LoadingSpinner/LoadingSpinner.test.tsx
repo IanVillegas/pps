@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from './LoadingSpinner';
 
 afterEach(() => {
   jest.clearAllMocks();

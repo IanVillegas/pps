@@ -13,7 +13,6 @@
     "lint": "next lint",
     "lint-fix": "eslint . --fix",
     "lint-staged": "lint-staged",
-    "prepare": "husky",
     "check-updates": "npx npm-check-updates",
     "update": "npx npm-check-updates -u & npm install",
     "check-types": "tsc --noEmit",
@@ -62,10 +61,6 @@
     "uuidv4": "^6.2.13",
     "yup": "^1.6.1"
   },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged",
-    "pre-push": "npm run lint && npm run build"
-  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
@@ -92,7 +87,6 @@
     "eslint-config-next": "^15.4.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
-    "husky": "^9.1.7",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
@@ -100,7 +94,6 @@
     "mocha": "^11.7.1",
     "prettier": "^3.6.2",
     "sass": "^1.89.2",
-    "simple-git-hooks": "^2.13.0",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "5.8.3"
