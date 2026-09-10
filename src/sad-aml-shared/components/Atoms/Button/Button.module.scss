@@ -1,0 +1,355 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: variables.$font-family-work-sans;
+  background: variables.$green-400;
+  color: variables.$text-white;
+  border-radius: 10px;
+
+  &:focus {
+    background: variables.$gray-500;
+    color: variables.$white;
+  }
+
+  &:hover {
+    background: variables.$green-300;
+    border: 1.5px solid variables.$green-300;
+    color: variables.$text-white;
+  }
+
+  &__leftIcon {
+    margin-right: 9.6px;
+  }
+}
+
+.isGap {
+  display: flex;
+  gap: 17.33px;
+}
+
+.auto {
+  height: 36px;
+  padding-inline: 21.5px;
+}
+
+.x-small {
+  height: 36px;
+  padding-inline: 21.5px;
+  min-width: 70px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.small {
+  height: 36px;
+  padding-inline: 21.5px;
+  min-width: 168px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.longer {
+  height: 21px;
+  min-width: 305px;
+
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  padding: 19.5px 39px;
+}
+
+.large {
+  height: 60px;
+  min-width: 280px;
+
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.medium {
+  height: 48px;
+  min-width: 97px;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.mediumL {
+  height: 48px;
+  min-width: 260px;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.mediumCard {
+  height: 36px;
+  min-width: 168px;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.largeCard {
+  height: 48px;
+  min-width: 168px;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+
+  @include mixin.from(laptop) {
+    min-height: 36px;
+    min-width: 267px;
+  }
+}
+
+.doubleOption {
+  height: 36px;
+  min-width: 150px;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.block {
+  width: 100%;
+  min-width: auto;
+}
+
+.link {
+  border: none !important;
+  background: none !important;
+  background-color: none !important;
+  box-shadow: none !important;
+  text-decoration: underline;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: variables.$primary-400;
+  min-width: auto;
+
+  &:focus {
+    outline: 1px solid variables.$primary-400 !important;
+    border: none !important;
+    background: none !important;
+    background-color: none !important;
+    box-shadow: none !important;
+    text-decoration: underline;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black !important;
+  }
+
+  &:hover {
+    opacity: 0.4;
+    color: variables.$primary-400;
+  }
+}
+
+.green {
+  background-color: variables.$primary-400;
+  color: variables.$text-white;
+
+  &.ghost {
+    background: variables.$primary-400;
+    color: variables.$text-white;
+
+    &:hover {
+      color: variables.$primary-400;
+      background-color: variables.$text-white;
+    }
+
+    &:active {
+      background: transparent;
+      color: variables.$primary-400;
+      border: 0.5px solid variables.$primary-400;
+    }
+  }
+
+  &.isWhiteBackground {
+    &:hover {
+      color: variables.$primary-300 !important;
+    }
+  }
+
+  &.outlined {
+    color: variables.$primary-400;
+  }
+
+  &.border {
+    border: 1.5px solid variables.$primary-400;
+  }
+
+  &:hover {
+    border-color: variables.$primary-300;
+  }
+}
+
+.secondary {
+  background-color: variables.$white;
+  color: variables.$primary-400;
+
+  &.ghost {
+    background: variables.$primary-400;
+    color: variables.$text-white;
+
+    &:hover {
+      color: variables.$primary-400;
+      background-color: variables.$text-white;
+    }
+
+    &:active {
+      background: transparent;
+      color: variables.$primary-400;
+      border: 0.5px solid variables.$primary-400;
+    }
+  }
+
+  &.isWhiteBackground {
+    &:hover {
+      color: variables.$primary-300 !important;
+    }
+  }
+
+  &.outlined {
+    color: variables.$primary-400;
+  }
+
+  &.border {
+    border: 1.5px solid variables.$primary-400;
+  }
+
+  &:hover {
+    border-color: variables.$primary-500;
+    background: variables.$white;
+    color: variables.$primary-500;
+  }
+}
+
+.gray {
+  background-color: variables.$gray-300;
+
+  &.ghost {
+    background: transparent;
+    color: variables.$primary-400;
+  }
+
+  &.border {
+    border: 1px solid variables.$primary-400;
+  }
+}
+
+.dark {
+  background-color: variables.$gray-500;
+  color: variables.$text-white;
+
+  &.ghost {
+    background: transparent;
+    color: variables.$gray-200;
+  }
+
+  &.border {
+    border: 1px solid variables.$gray-300;
+  }
+
+  &:active {
+    background: variables.$gray-400;
+    box-shadow: 0px 8px 16px rgba(108, 117, 125, 0.09);
+  }
+
+  &:hover {
+    background: variables.$gray-400;
+  }
+}
+
+.outlined {
+  background-color: transparent;
+}
+
+.spinner {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  & i {
+    width: 20px;
+    font-size: 25px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.disabled {
+  color: variables.$gray-300;
+  background-color: variables.$gray-100;
+  box-shadow: none;
+  border: 1px solid transparent !important;
+  cursor: auto;
+
+  &.ghost {
+    border: 1px solid variables.$gray-200 !important;
+    color: variables.$gray-300 !important;
+    background: none;
+
+    &:hover {
+      background: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &:hover {
+    background-color: variables.$gray-100 !important;
+    box-shadow: none !important;
+  }
+}
+
+.disabledLink {
+  color: variables.$gray-300 !important;
+  background-color: none !important;
+  box-shadow: none;
+  border: 0px solid transparent !important;
+}
+
+.red {
+  background: variables.$secondary-300;
+  color: variables.$white;
+  box-shadow: 0px 16px 24px rgba(233, 85, 93, 0.35);
+
+  &:hover {
+    background: variables.$secondary-400;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.flex_end {
+  display: flex;
+  justify-content: flex-end;
+}

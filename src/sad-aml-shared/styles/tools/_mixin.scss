@@ -1,0 +1,62 @@
+@use 'sass:math';
+@use 'sass:map';
+
+@mixin config_text(
+  $fontFamily,
+  $fontStyle,
+  $fontWeight,
+  $fontSize,
+  $lineHeight,
+  $color
+) {
+  font-family: $fontFamily;
+  font-style: $fontStyle;
+  font-weight: $fontWeight;
+  font-size: $fontSize;
+  line-height: $lineHeight;
+  color: $color;
+}
+
+$breakpoints-upTo: (
+  'tablet': 1100px,
+  'laptop': 1400px,
+);
+
+$breakpoints-from: (
+  'tablet': 768px,
+  'laptop': 1101px,
+  'desktop': 1401px,
+);
+
+/* Mediaqueries */
+@mixin upTo($size) {
+  @media (max-width: map.get($breakpoints-upTo, $size)) {
+    @content;
+  }
+}
+
+@mixin from($size) {
+  @media (min-width: map.get($breakpoints-from, $size)) {
+    @content;
+  }
+}
+
+@mixin fromX($size) {
+  @media (min-width: $size) {
+    @content;
+  }
+}
+
+@mixin lessThanX($size) {
+  @media (max-width: $size) {
+    @content;
+  }
+}
+
+@function ToVW($pxValue: 16px, $width: 1366px) {
+  @return #{math.div($pxValue * 100, $width)}vw;
+}
+
+@function ToVH($pxValue: 16px, $height: 720px) {
+  @return #{math.div($pxValue * 100, $height)}vh;
+}

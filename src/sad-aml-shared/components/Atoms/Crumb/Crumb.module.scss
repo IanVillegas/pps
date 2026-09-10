@@ -1,0 +1,15 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.crumb {
+  font-family: variables.$font-family-poppins;
+  color: variables.$gray-400;
+  font-size: 12px;
+}
+
+.crumb_last {
+  font-family: variables.$font-family-poppins;
+  color: variables.$gray-500;
+  font-size: 12px;
+  font-weight: 700;
+}

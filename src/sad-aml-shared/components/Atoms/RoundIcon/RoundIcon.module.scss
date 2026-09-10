@@ -1,0 +1,94 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #f0dca8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include mixin.upTo(tablet) {
+    transform: scale(0.7);
+  }
+
+  &_yellow {
+    background: #f0dca8;
+  }
+
+  &_green {
+    background: #b3e5e1;
+  }
+
+  &_red {
+    background: #f2d9da;
+  }
+
+  &_gray {
+    background: variables.$gray-200;
+  }
+
+  &_transparent {
+    background: transparent;
+  }
+
+  &_blue {
+    background: #a0d1f0;
+  }
+
+  &_container {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: #f5cb5c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > i {
+      font-size: 0.8em;
+    }
+
+    &_plus {
+      & > i {
+        font-size: 1.1em;
+      }
+    }
+
+    &_yellow {
+      background: #f5cb5c;
+      color: #fff;
+    }
+
+    &_yellow_light {
+      background: #f5cb5c;
+      color: #fff;
+    }
+
+    &_green {
+      background: variables.$success;
+      color: #fff;
+    }
+
+    &_red {
+      background: #e5353e;
+      color: #fff;
+    }
+
+    &_gray {
+      background: variables.$gray-200;
+      color: #fff;
+    }
+
+    &_transparent {
+      background: transparent;
+    }
+
+    &_blue {
+      background: variables.$info;
+      color: #fff;
+    }
+  }
+}

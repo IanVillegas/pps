@@ -1,0 +1,84 @@
+$_pine_green: #00776d;
+$_persian_green: #12a195;
+$_persian_green__light: #b3e6e1;
+$_medium_turquoise: #47d1c6;
+$_powder_blue: #b3e5e1;
+$_iceberg: #deedec;
+
+$_heath: #521418;
+$_deep_carmine: #a3292f;
+$_deep_carmine_pink: #e5353e;
+$_dusty_pink: #e08589;
+$_pale_pink: #f2d9da;
+
+$_oak_brown: #7a611f;
+$_orange_gold: #d2a52d;
+$_light_mustard: #fdd058;
+$_saffron_mango: #f5cb5c;
+$_marzipan: #f0dca8;
+$_eggshell: #f5ecd6;
+
+$_ball_blue: #1aa7c1;
+$_jasper: #d23d3d;
+$_bright_sun: #ffcf4d;
+$_dark_mint: #25cf7e;
+$_dark_esmerald: #1a9359;
+$green-voucher: #11a295;
+
+$black: #1f1f1f;
+$black-dark: #000000;
+$white: #ffffff;
+$grey: #adb5bd;
+$blueDuck: #016d81;
+
+/* Primary colors */
+$primary-100: $_iceberg;
+$primary-200: $_powder_blue;
+$primary-300: $_medium_turquoise;
+$primary-400: $_persian_green;
+$primary-500: $_pine_green;
+$primary-600: $_persian_green__light;
+
+/* Secondary colors */
+$secondary-100: $_pale_pink;
+$secondary-200: $_dusty_pink;
+$secondary-300: $_deep_carmine_pink;
+$secondary-400: $_deep_carmine;
+$secondary-500: $_heath;
+
+/* Accent colors */
+$accent-100: $_eggshell;
+$accent-200: $_marzipan;
+$accent-300: $_saffron_mango;
+$accent-400: $_light_mustard;
+$accent-500: $_orange_gold;
+$accent-600: $_oak_brown;
+
+/* Grayscale */
+$gray-100: #f3f5f6;
+$gray-200: #ced4da;
+$gray-300: #adb5bd;
+$gray-400: #6c757d;
+$gray-500: #343a40;
+
+/* Alert colors */
+$info: $_ball_blue;
+$error: $_jasper;
+$warning: $_bright_sun;
+$success: $_dark_esmerald;
+
+/* Text color */
+$text_white: $white;
+$text_black: $black;
+
+/* Greenscale */
+$green-100: #deedec;
+$green-200: #b3e5e1;
+$green-300: #47d1c6;
+$green-400: #12a195;
+$green-500: #2fd0c2;
+
+/*Yellow*/
+$yellow-100: $_eggshell;
+$yellow-400: $_light_mustard;
+$yellow-600: $_oak_brown;

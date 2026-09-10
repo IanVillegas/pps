@@ -1,0 +1,61 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.title {
+  text-align: center;
+  @include mixin.config_text(
+    variables.$font-family-work-sans,
+    normal,
+    600,
+    24px,
+    normal,
+    variables.$gray-500
+  );
+}
+
+.titlePopins {
+  text-align: center;
+  @include mixin.config_text(
+    variables.$font-family-poppins,
+    normal,
+    600,
+    24px,
+    normal,
+    variables.$gray-500
+  );
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.bottomElement {
+  margin-top: 0.5rem;
+}
+
+.topElement {
+  margin-bottom: 0.5rem;
+}
+
+.middleRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftElement {
+  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.rightElement {
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+}

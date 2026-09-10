@@ -1,0 +1,22 @@
+@use '../../../../styles/settings/' as variables;
+
+@media print {
+  /* All your print styles go here */
+  .wrapper {
+    display: none !important;
+  }
+}
+
+.wrapper {
+  width: 100%;
+  margin: auto;
+  padding-inline: 45px;
+  background-color: variables.$gray-100;
+}
+
+.header {
+  display: flex;
+  margin-block: 35px;
+  align-items: flex-end;
+  justify-content: space-between;
+}

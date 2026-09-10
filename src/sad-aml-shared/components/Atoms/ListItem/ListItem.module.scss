@@ -1,0 +1,102 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.listItem {
+  display: flex;
+  align-items: center;
+  margin-top: 3px;
+
+  /*&__arrow {
+        font-size: 16px;
+        color: variables.$black;
+        display: flex;
+        align-items: center;
+        padding-left: clamp(30px, mixin.ToVW(37px), 37px);
+
+        @include mixin.upTo(tablet) {
+            display: none;
+        }
+    }*/
+}
+
+.link {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-block: 14px 14px;
+  padding-inline: clamp(30px, mixin.ToVW(37px), 37px);
+
+  @include mixin.config_text(
+    variables.$font-family-poppins,
+    normal,
+    500,
+    16px,
+    normal,
+    variables.$gray-400
+  );
+
+  transition: all 0.3;
+
+  &__icon {
+    font-size: 24px;
+    font-weight: normal;
+    margin-top: 3px;
+    color: variables.$gray-400;
+  }
+}
+
+.active {
+  z-index: variables.$z-1;
+  //min-width: 175px;
+  padding: 8px;
+  margin-left: 29px;
+  margin-right: 0px;
+  background: variables.$green-400;
+  color: variables.$white;
+  width: 234px;
+
+  & span {
+    color: variables.$white;
+  }
+
+  border-radius: 8px;
+
+  @include mixin.upTo(tablet) {
+    all: unset;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 22.5px;
+    padding-block: 17px;
+    padding-inline: clamp(30px, mixin.ToVW(37px), 37px);
+
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      600,
+      14px,
+      16px,
+      variables.$gray-400
+    );
+
+    transition: all 0.3;
+
+    .link__icon {
+      font-size: 21px;
+      color: variables.$gray-400;
+    }
+  }
+}
+
+// Unificar el modificador isCollapsed para .active y .link
+.link.isCollapsed,
+.active.isCollapsed {
+  margin-left: 85px;
+  //margin-right: 8px;
+  width: 30px;
+  padding-left: 13px;
+}

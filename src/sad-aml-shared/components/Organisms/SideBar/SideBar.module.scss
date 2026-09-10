@@ -1,0 +1,163 @@
+@use '../../../../styles/settings/' as variables;
+@use '../../../../styles/tools/mixin' as mixin;
+
+@media print {
+  /* All your print styles go here */
+  .sideBar,
+  .sideBarTablet {
+    display: none !important;
+  }
+}
+
+.toggleButton {
+  position: absolute;
+  margin-top: 11%;
+  left: 20px;
+  background-color: variables.$gray-100;
+  color: variables.$gray-400;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.sideBar {
+  background-color: variables.$gray-100;
+  width: 282px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition-duration: 0.2s;
+  //box-shadow: 0px 8px 16px rgba(108, 117, 125, 0.09);
+  display: none;
+
+  @include mixin.from(laptop) {
+    display: inherit;
+  }
+
+  &__logo {
+    margin-top: clamp(30px, mixin.ToVW(37px), 37px);
+    margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    top: 0;
+    z-index: variables.$z-1;
+  }
+
+  &__wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 5rem;
+    padding-top: 20px;
+    margin-right: 24px;
+
+    &__configuration {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &.collapsed {
+    width: 4.2%;
+    .sideBar__wrapper {
+      align-items: center;
+      height: 100%;
+      margin-top: 6rem;
+      //margin-right: -28px;
+    }
+  }
+}
+
+.sideBarTablet {
+  height: 100vh;
+
+  @include mixin.from(laptop) {
+    display: none;
+  }
+
+  & .header {
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    padding-block: 27px;
+    padding-inline: 37px;
+    background-color: variables.$gray-100;
+
+    &__closeIcon {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        all: unset;
+        color: variables.$gray-300;
+        font-size: 25px;
+      }
+    }
+
+    &__userSection {
+      display: flex;
+      gap: 10px;
+
+      &__userIcon {
+        width: 39.84px;
+        height: 36.05px;
+        border-radius: 8px;
+        background-color: variables.$primary-400;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: variables.$text_white;
+        font-size: 20px;
+      }
+
+      &__greets {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        & .greets {
+          @include mixin.config_text(
+            variables.$font-family-work-sans,
+            normal,
+            600,
+            16px,
+            19px,
+            variables.$gray-500
+          );
+        }
+
+        & .userName {
+          @include mixin.config_text(
+            variables.$font-family-poppins,
+            normal,
+            300,
+            13px,
+            20px,
+            variables.$gray-400
+          );
+        }
+      }
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    height: 85%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: variables.$gray-100;
+  }
+
+  &__separator {
+    width: 212px;
+    height: 3px;
+    background-color: variables.$gray-300;
+    border-radius: 10px;
+    margin-block: 10px;
+  }
+}

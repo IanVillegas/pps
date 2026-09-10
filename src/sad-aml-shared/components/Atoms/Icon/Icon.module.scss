@@ -1,0 +1,46 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.secondary {
+  color: variables.$secondary-200;
+}
+
+.gray-300 {
+  color: variables.$gray-300;
+}
+
+.gray-400 {
+  color: variables.$gray-400;
+}
+
+.gray-500 {
+  color: variables.$gray-500;
+}
+
+.primary {
+  color: variables.$primary-400;
+}
+
+.yellow-600 {
+  color: variables.$accent-600;
+}
+
+.secondary-200 {
+  color: variables.$secondary-200;
+}
+
+.warning {
+  color: variables.$warning;
+}
+
+.white {
+  color: variables.$white;
+}
+
+.yellow-200 {
+  color: variables.$accent-200;
+}
+
+.green-200 {
+  color: variables.$primary-200;
+}

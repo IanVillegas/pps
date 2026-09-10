@@ -1,0 +1,13 @@
+@use 'sass:map';
+@use '../settings' as variables;
+
+$elevations: (
+  1: 0px 2px 4px variables.$shadow,
+  2: 0px 4px 6px variables.$shadow,
+  3: 0px 8px 16px variables.$shadow,
+  4: 0px 16px 24px variables.$shadow,
+);
+
+@mixin elevation($level: 1) {
+  box-shadow: map.get($elevations, $level);
+}

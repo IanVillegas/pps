@@ -1,0 +1,84 @@
+@use '@/sad-aml-shared/styles/settings' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.inputText {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__label {
+    font-family: 'WorkSans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #343a40;
+    margin-bottom: 14px;
+  }
+
+  &__input {
+    all: unset;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    height: 48px;
+    width: 100%;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+
+    display: flex;
+    align-items: center;
+
+    color: #343a40;
+
+    padding-left: 16px;
+    padding-right: 16px;
+
+    &:focus {
+      border: 1px solid #343a40;
+    }
+
+    &:focus-visible {
+      border: 1px solid #343a40;
+    }
+
+    &::placeholder {
+      color: #adb5bd;
+    }
+  }
+
+  &__alerts {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+  }
+
+  &__captions {
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      11px,
+      18px,
+      variables.$black
+    );
+  }
+
+  &__errors {
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      11px,
+      18px,
+      variables.$error
+    );
+  }
+}

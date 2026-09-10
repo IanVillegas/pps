@@ -1,0 +1,17 @@
+export enum ColorEnum {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Green = 'green',
+  Gray = 'gray',
+  Disabled = 'disabled',
+  Dark = 'dark',
+  Red = 'red',
+  Warning = 'warning',
+  Link = 'link',
+  Danger = 'danger',
+  Secondary200 = 'secondary-200',
+  Gray300 = 'gray-300',
+  Gray400 = 'gray-400',
+  Gray500 = 'gray-500',
+  Yellow600 = 'yellow-600',
+}

@@ -1,0 +1,115 @@
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+@use '@/sad-aml-shared/styles/settings/' as variables;
+
+.container {
+  border-radius: 12px;
+  box-shadow: 0px 8px 16px 0px rgba(108, 117, 125, 0.09);
+  padding: 16px;
+  margin: 16px;
+}
+
+.primary {
+  background-color: variables.$primary-100;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  i {
+    color: variables.$primary-400;
+  }
+
+  &__date {
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      400,
+      14px,
+      normal,
+      variables.$primary-500
+    );
+  }
+
+  &__icon {
+    padding: 5px;
+    border-radius: 8px;
+    background-color: variables.$primary-200;
+  }
+
+  &__title {
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      600,
+      16px,
+      normal,
+      variables.$primary-500
+    );
+    padding: 8px 0;
+  }
+
+  &__description {
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      400,
+      14px,
+      normal,
+      variables.$primary-500
+    );
+  }
+}
+
+.warning {
+  background-color: variables.$accent-100;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  i {
+    color: variables.$accent-600;
+  }
+
+  &__date {
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      400,
+      14px,
+      normal,
+      variables.$accent-600
+    );
+  }
+
+  &__icon {
+    padding: 5px;
+    border-radius: 8px;
+    background-color: variables.$accent-200;
+  }
+
+  &__title {
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      600,
+      16px,
+      normal,
+      variables.$accent-600
+    );
+    padding: 8px 0;
+  }
+
+  &__description {
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      400,
+      14px,
+      normal,
+      variables.$accent-600
+    );
+  }
+}

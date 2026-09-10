@@ -1,0 +1,50 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.label {
+  @include mixin.config_text(
+    variables.$font-family-work-sans,
+    normal,
+    600,
+    14px,
+    16px,
+    variables.$gray-500
+  );
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.datePicker {
+  div {
+    border-radius: 8px;
+    border-color: red;
+    height: 48px;
+  }
+
+  input {
+    background-color: variables.$white;
+    // border: 1px solid variables.$gray-200;
+    border-radius: 8px;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 16px;
+    text-align: start;
+    font-family: variables.$font-family-poppins;
+    font-weight: 500;
+    font-size: 14px;
+    color: variables.$gray-400;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,62 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 266px;
+  background-color: variables.$white;
+  z-index: 10;
+  overflow-y: auto;
+
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  transform: translateX(100%);
+
+  &__content {
+    height: 100%;
+  }
+
+  &-blur {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #adb5bd80;
+    z-index: 9;
+    backdrop-filter: blur(10px);
+  }
+
+  &--show {
+    transform: translateX(-5px);
+    animation-name: slide-in;
+  }
+
+  &--hide {
+    animation-name: slide-out;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
