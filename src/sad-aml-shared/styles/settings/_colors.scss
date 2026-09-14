@@ -5,11 +5,21 @@ $_medium_turquoise: #47d1c6;
 $_powder_blue: #b3e5e1;
 $_iceberg: #deedec;
 
+// Agregado para DecPat (2026-09-14): par verde de la actualizacion de marca
+// 2026 de Figma. Convive con el heredado de arriba; no hay decision de cual
+// va en cada componente (tasks/preparacion-tecnica-visual.md, seccion 7).
+$_persian_green_2026: #00998a;
+$_medium_turquoise_2026: #45b9b2;
+
 $_heath: #521418;
 $_deep_carmine: #a3292f;
 $_deep_carmine_pink: #e5353e;
 $_dusty_pink: #e08589;
 $_pale_pink: #f2d9da;
+
+// Agregado para DecPat (2026-09-14): rojo de marca 2026 de Figma. Convive
+// con el heredado $_deep_carmine_pink; mismo caso que el verde de arriba.
+$_valencia_red_2026: #e62c3a;
 
 $_oak_brown: #7a611f;
 $_orange_gold: #d2a52d;
@@ -82,3 +92,9 @@ $green-500: #2fd0c2;
 $yellow-100: $_eggshell;
 $yellow-400: $_light_mustard;
 $yellow-600: $_oak_brown;
+
+/* Marca 2026 (Figma DecPat). Coexiste con el heredado de arriba (secondary-300
+   y green-300/400); no reemplazar esos valores, resolver por componente. */
+$red-2026: $_valencia_red_2026;
+$green-2026-400: $_persian_green_2026;
+$green-2026-300: $_medium_turquoise_2026;

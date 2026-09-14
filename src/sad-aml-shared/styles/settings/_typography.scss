@@ -32,6 +32,10 @@ $fs-subtitle-2: $_fs-16;
 $fs-body-1: $_fs-16;
 $fs-body-2: $_fs-13;
 $fs-body-3: $_fs-14;
+// Agregado para DecPat (2026-09-14): $_fs-12 ya existia arriba pero solo se
+// usaba en $fs-button-3; Figma DecPat pide un cuerpo de texto de 12px que no
+// tenia nombre publico.
+$fs-body-4: $_fs-12;
 
 $fs-button-1: $_fs-16;
 $fs-button-2: $_fs-14;

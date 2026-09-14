@@ -1,5 +1,7 @@
 // @use '../sad-aml-shared/styles/index.scss';
-@use './tokens';
+// _tokens.scss (radios) no se usa aqui: es variables SCSS puras, sin
+// :root ni CSS que emitir. Cada componente que necesite $radius-control o
+// $radius-cta debe hacer @use '@/styles/tokens' as tokens; el suyo.
 
 body {
   font-family: var(--font-poppins), sans-serif;
