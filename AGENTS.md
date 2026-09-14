@@ -80,11 +80,16 @@ feat(login): implementa pantalla base de inicio de sesion
 
 ## Estrategia de implementacion
 
-- Construir componentes propios y autosuficientes dentro de `src/components` siguiendo Atomic Design.
-- No depender de `src/sad-aml-shared` para nuevas implementaciones, porque en esta copia puede estar vacio o incompleto.
-- Usar Figma como fuente visual para medidas, colores, tipografias, estados e intencion de componentes.
+Actualizado 2026-09-14: esta seccion antes decia "no depender de sad-aml-shared para nuevas implementaciones". El usuario confirmo que esa no era la intencion: la mayoria de lo que necesita DecPat SI esta disponible en esta copia de `sad-aml-shared` (Button, InputText, InputSecret, Dropdown, Modal, Notification, Alert, Header, SideBar, DashboardLayout, entre otros — ver inventario en `tasks/preparacion-tecnica-visual.md` seccion 3), y usarlo evita duplicar codigo y horas que el cronograma no tiene de sobra.
+
+- Usar componentes de `src/sad-aml-shared` primero cuando expongan lo que la pantalla necesita. Importarlos directo o envolverlos (wrapper) en `src/components` cuando haga falta ajustar un detalle puntual (un color que falta, una asociacion ARIA, que el spinner deshabilite el boton). No copiar su implementacion interna para "hacerla propia" sin razon.
+- Crear un componente local nuevo en `src/components` solo cuando `sad-aml-shared` no tenga nada equivalente (ejemplos ya confirmados: tabla editable, selector/carga de adjuntos, stepper del wizard de 12 pasos) o cuando lo que expone no sea ajustable desde afuera sin modificar el propio shared.
+- No modificar `src/sad-aml-shared` para redisenarlo o cambiar su comportamiento. Se acepta una excepcion puntual: completar un valor que el propio componente ya declara pero nunca conecto a estilos (por ejemplo, un color del `ColorEnum` sin clase CSS). Esa excepcion se hizo una vez en `Button` (`ColorEnum.Cta`, 2026-09-14) y debe quedar registrada aqui:
+  - `Button/Color.enum.ts` y `Button/Button.module.scss`: se agrego `ColorEnum.Cta` y la clase `.cta` (usa `$accent-400`/`$accent-500`, ya existentes en `_colors.scss`) porque el enum tenia `Warning`, `Danger`, `Yellow600` sin ninguna clase que los pintara. Si se refresca esta copia de `sad-aml-shared` desde el repositorio real, revisar si ese cambio sigue haciendo falta o si el real ya lo resolvio distinto.
+  - No repetir este tipo de cambio para necesidades propias de DecPat que shared no declaro de alguna forma (eso si es un componente local nuevo, no una excepcion).
+- Usar Figma como fuente visual para medidas, colores, tipografias, estados e intencion de componentes; cuando shared no logre igualar a Figma en un detalle, documentar la diferencia en vez de forzarla.
 - Usar el Design System GM como referencia para tokens y componentes base cuando este disponible.
-- Si luego el repositorio real tiene componentes oficiales equivalentes, adaptar el codigo en el traspaso manual.
+- Si luego el repositorio real tiene una version distinta o mas completa de `sad-aml-shared`, revisar en el traspaso manual si el wrapper propio sigue siendo necesario o si se puede simplificar.
 
 ## Orden recomendado inicial
 
