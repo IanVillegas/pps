@@ -1,6 +1,11 @@
 // app/layout.tsx
 import { poppins, worksans } from '@/sad-aml-shared/assets/fonts/fonts';
 import '@/styles/globals.scss';
+// sad-aml-shared usa iconos remixicon (spinner de Button, mostrar/ocultar
+// contrasena de InputSecret, cerrar de Modal) pero no carga la fuente por su
+// cuenta; sin este import esos iconos no se ven. Cargado aqui una sola vez
+// para toda la app.
+import 'remixicon/fonts/remixicon.css';
 import type { ReactNode } from 'react';
 
 // Metadata en caso de necesitar posicionamiento SEO

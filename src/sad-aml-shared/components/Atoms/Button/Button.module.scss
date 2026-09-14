@@ -339,6 +339,23 @@
   }
 }
 
+// !Agregado para DecPat (2026-09-14): CTA amarillo de Figma. $accent-400 y
+// $accent-500 ya existian en la paleta (_colors.scss), solo les faltaba una
+// clase de boton que los usara.
+.cta {
+  background-color: variables.$accent-400;
+  color: variables.$gray-500;
+
+  &:hover {
+    background-color: variables.$accent-500;
+  }
+
+  &.disabled {
+    background-color: variables.$gray-100;
+    color: variables.$gray-300;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

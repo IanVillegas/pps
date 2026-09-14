@@ -1,0 +1,40 @@
+// Tokens de marca DecPat.
+//
+// Corregido 2026-09-14: esta hoja al inicio tambien reexponia valores que ya
+// existen identicos en GM (superficie, texto, bordes, alertas, tamanos de
+// titulo) como variables --decpat-*. Eso duplicaba informacion sin agregar
+// nada: un componente que necesite esos colores debe usar
+// sad-aml-shared/styles/settings directo (@use, igual que hace
+// Button.module.scss), no una copia con otro nombre. Aqui solo queda lo que
+// GM/sad-aml-shared *no tiene todavia*: la actualizacion de marca 2026 de
+// Figma DecPat (fuente: tasks/preparacion-tecnica-visual.md, seccion 7) y un
+// par de valores puramente visuales que GM no centraliza como token.
+@use '../sad-aml-shared/styles/settings/colors' as gm;
+
+:root {
+  // Rojo de marca: Figma DecPat pide el rojo 2026 (#E62C3A); GM todavia
+  // expone el heredado (#E5353E). Se dejan los dos, sin elegir uno como
+  // default, porque cual aplica por componente sigue sin resolverse. Cuando
+  // se decida, borrar el que no se use y dejar un solo --decpat-color-red.
+  --decpat-color-brand-red-2026: #e62c3a;
+  --decpat-color-brand-red-legacy: #{gm.$secondary-300};
+
+  // Mismo caso con el verde: GM trae el heredado (#12A195 / #47D1C6) y
+  // Figma tambien usa el par 2026 (#00998A / #45B9B2) sin indicar cual va en
+  // cada componente.
+  --decpat-color-green-2026-400: #00998a;
+  --decpat-color-green-2026-300: #45b9b2;
+  --decpat-color-green-legacy-400: #{gm.$green-400};
+  --decpat-color-green-legacy-300: #{gm.$green-300};
+
+  // Cuerpo de texto: Figma pide Poppins 12/14/16px. GM no tiene el escalon
+  // de 12px (su cuerpo mas chico es 13px), por eso este si es un token
+  // nuevo; 14px y 16px ya existen en GM (gm-type.$fs-body-3 / $fs-body-1) y
+  // se usan directo desde ahi, no se repiten aqui.
+  --decpat-font-size-body-sm: 0.75rem; // 12px, sin equivalente en GM
+
+  // Radios: GM no centraliza un token de border-radius (cada componente trae
+  // el suyo hardcodeado); valores tomados directo de Figma DecPat.
+  --decpat-radius-control: 8px;
+  --decpat-radius-cta: 10px;
+}
