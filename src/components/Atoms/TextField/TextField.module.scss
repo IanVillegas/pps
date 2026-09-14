@@ -1,0 +1,67 @@
+// Visualmente igual al InputText de sad-aml-shared (mismos tokens de color y
+// tipografia de GM); el markup cambia para asociar label/error de verdad.
+@use '@/sad-aml-shared/styles/settings/colors' as gm;
+@use '@/sad-aml-shared/styles/settings/typography' as gm-type;
+@use '@/styles/tokens' as tokens;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.label {
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 600;
+  font-size: #{gm-type.$fs-body-3}; // 14px, igual que shared
+  color: gm.$gray-500;
+  margin-bottom: 8px;
+}
+
+.required {
+  color: gm.$error;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding-inline: 16px;
+  background: gm.$white;
+  border: 1px solid gm.$gray-200;
+  border-radius: tokens.$radius-control;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: #{gm-type.$fs-body-4}; // 12px, igual que shared
+  color: gm.$gray-500;
+
+  &::placeholder {
+    color: gm.$gray-300;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: gm.$gray-500;
+  }
+
+  &:disabled {
+    background: gm.$gray-100;
+    color: gm.$gray-300;
+    cursor: not-allowed;
+  }
+}
+
+.inputError {
+  border-color: gm.$error;
+}
+
+.caption {
+  margin-top: 4px;
+  font-size: #{gm-type.$fs-caption-1}; // 11px, igual que shared
+  color: gm.$gray-500;
+}
+
+.error {
+  margin-top: 4px;
+  font-size: #{gm-type.$fs-caption-1};
+  color: gm.$error;
+}

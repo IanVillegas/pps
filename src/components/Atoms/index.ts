@@ -5,3 +5,5 @@
 // equivalente (ver tasks/preparacion-tecnica-visual.md, seccion 3).
 export { default as Button } from '@/sad-aml-shared/components/Atoms/Button/Button';
 export { ColorEnum as ButtonColor } from '@/sad-aml-shared/types/enum/Color.enum';
+export { default as TextField } from './TextField/TextField';
+export type { TextFieldProps } from './TextField/TextField';

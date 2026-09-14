@@ -30,7 +30,7 @@ Cada tarea debe registrar archivos reales, validaciones, diferencias Figma, orde
 
 | Tarea                          | Aceptacion                                                                                          | Dependencias | Areas previstas                                                     | Tamano / checks |
 | ------------------------------ | --------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------- | --------------- |
-| [ ] DEC-002B Campo de texto    | Label/error asociados, ref y atributos nativos; required/disabled/error visibles                    | 001A         | src/components/Atoms/TextField                                      | M; V1,V3        |
+| [x] DEC-002B Campo de texto    | Label/error asociados, ref y atributos nativos; required/disabled/error visibles                    | 001A         | src/components/Atoms/TextField                                      | M; V1,V3        |
 | [ ] DEC-002C Checkbox y select | Nombre accesible, teclado, seleccion controlada y error; separar subtareas si excede cinco archivos | 002B         | src/components/Atoms/Checkbox, src/components/Molecules/SelectField | M; V1,V3        |
 | [ ] DEC-002D Dialogo           | Apertura controlada, foco inicial y retorno, Escape, scroll y footer accesible                      | 002A         | src/components/Organisms/Modal                                      | M; V1,V3        |
 
@@ -152,6 +152,15 @@ DEC-002E (Notificaciones) y DEC-002F (Tabla editable) se mueven a la quincena de
 | [ ] DEC-020C Entrega | Evidencia, configuracion, pendientes y orden de copia por DEC; entrega revisable al 6 noviembre | 020B         | README.md, tasks/plan.md, tasks/todo.md, documento de entrega | M; lectura y consistencia |
 
 Cada D-xx se cierra con fecha, decision, origen de confirmacion y tareas afectadas. No marcar resuelto por el paso del tiempo. Commit/push solo con permiso del usuario; antes de commit revisar diff.
+
+### DEC-002B Campo de texto (2026-09-14)
+
+A diferencia de DEC-002A, aqui si hizo falta un componente propio: el label de `InputText` (shared) no tiene `htmlFor` y su error no tiene asociacion ARIA, y ninguna de las dos cosas se puede arreglar pasando props desde afuera — hay que cambiar el JSX interno del componente (agregar `id`/`htmlFor`/`aria-describedby`), y eso si es "cambiar su comportamiento", no completar un valor a medias (no aplica la excepcion de `AGENTS.md`).
+
+- Archivos: `src/components/Atoms/TextField/TextField.tsx`, `TextField.module.scss`, `TextField.test.tsx` (nuevos); `src/components/Atoms/index.ts` (export).
+- Reuso real: el diseno (bordes `gray-200`, radio `tokens.$radius-control`, tipografia `gm-type.$fs-body-3`/`$fs-body-4`/`$fs-caption-1`) viene de los mismos archivos de GM que ya tocamos en las tareas anteriores; el markup (label/input/caption/error) es nuevo, escrito para asociar todo correctamente. `id` se genera con `useId()` si no se pasa uno.
+- Validaciones: `check-types`, `lint`, `test -- --runInBand` OK (4 pruebas nuevas). `build` OK (V2, consume `_tokens.scss`). V3: montado en `src/app/page.tsx`, revisado en `http://localhost:3004/seguridad` — se confirmo en el DOM real que clickear la etiqueta "Correo" enfoca su input (label/htmlFor) y que el campo con error trae `aria-invalid="true"` y `aria-describedby` apuntando al mensaje; foco por teclado recorre los campos en orden, salta el deshabilitado. `page.tsx` revertido al terminar.
+- Commit sugerido (no ejecutado): `feat(textfield): agrega Campo de texto propio con label y error asociados`.
 
 ## Registro de tareas cerradas
 
