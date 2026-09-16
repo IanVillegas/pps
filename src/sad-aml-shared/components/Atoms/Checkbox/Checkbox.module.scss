@@ -1,0 +1,87 @@
+@use '@/sad-aml-shared/styles/settings' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.checkbox {
+  display: flex;
+  flex-direction: column;
+
+  &__row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__input {
+    appearance: none;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1px solid variables.$gray-200;
+    background: variables.$white;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+
+    &::before {
+      content: '';
+      width: 5px;
+      height: 9px;
+      margin-top: -2px;
+      border: solid variables.$white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg) scale(0);
+      transition: transform 0.1s ease-in;
+    }
+
+    &:checked {
+      background-color: variables.$green-400;
+      border-color: variables.$green-400;
+
+      &::before {
+        transform: rotate(45deg) scale(1);
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background: variables.$gray-100;
+      border-color: variables.$gray-200;
+
+      &:checked {
+        background-color: variables.$gray-300;
+        border-color: variables.$gray-300;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid variables.$gray-500;
+      outline-offset: 2px;
+    }
+  }
+
+  &__label {
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      14px,
+      18px,
+      variables.$gray-500
+    );
+    cursor: pointer;
+  }
+
+  &__errors {
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      11px,
+      18px,
+      variables.$error
+    );
+    margin-top: 4px;
+  }
+}

@@ -30,9 +30,11 @@ Cada tarea debe registrar archivos reales, validaciones, diferencias Figma, orde
 
 | Tarea                          | Aceptacion                                                                                          | Dependencias | Areas previstas                                                     | Tamano / checks |
 | ------------------------------ | --------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------- | --------------- |
-| [x] DEC-002B Campo de texto    | Label/error asociados, ref y atributos nativos; required/disabled/error visibles                    | 001A         | src/components/Atoms/TextField                                      | M; V1,V3        |
-| [ ] DEC-002C Checkbox y select | Nombre accesible, teclado, seleccion controlada y error; separar subtareas si excede cinco archivos | 002B         | src/components/Atoms/Checkbox, src/components/Molecules/SelectField | M; V1,V3        |
+| [x] DEC-002B Campo de texto    | Label/error asociados, ref y atributos nativos; required/disabled/error visibles                    | 001A         | sad-aml-shared/components/Atoms/InputText (corregido)                | M; V1,V3        |
+| [x] DEC-002C Checkbox          | Nombre accesible, teclado, estado controlado y error visible                                        | 002B         | sad-aml-shared/components/Atoms/Checkbox (nuevo)                     | S; V1,V3        |
 | [ ] DEC-002D Dialogo           | Apertura controlada, foco inicial y retorno, Escape, scroll y footer accesible                      | 002A         | src/components/Organisms/Modal                                      | M; V1,V3        |
+
+`DEC-002C` originalmente era "Checkbox y select" en una sola tarea. Se separo (2026-09-14): `sad-aml-shared/Dropdown` (Select) tiene un bug real (`key={randomKey(...)}` genera una key con `Math.random()` en cada render, React destruye y recrea las opciones en vez de reconciliarlas) y no expone `error` ni hace `...rest`, asi que no es ajustable desde afuera — necesita componente propio, mas grande que Checkbox. Login solo necesita el checkbox de "recordar usuario"; el select lo necesita recien `DEC-007` (estado civil, grado academico, etc.), asi que se movio como `DEC-002C2` justo antes de esa tarea, sin frenar Login.
 
 ### Checkpoint C2
 
@@ -64,7 +66,8 @@ DEC-002E (Notificaciones) y DEC-002F (Tabla editable) se mueven a la quincena de
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
 | [ ] DEC-006A Stepper   | Doce pasos configurados, activo/completo/pendiente y navegacion por teclado; no replicar doce pantallas estaticas | 005A         | src/components/Molecules/DeclarationStepper, src/types/DeclarationStep.types.ts                                                               | M; V1,V3        |
 | [ ] DEC-006B Borrador  | Siguiente/anterior conserva datos y valida paso; modal inicial; paso fuera de rango controlado                    | 006A,002D    | src/app/mi-declaracion/[paso]/page.tsx, src/utils/hooks/useDeclaration.ts, src/services/DeclarationService.ts, src/types/Declaration.types.ts | M; V2,V4        |
-| [ ] DEC-007 Personales | Una composicion D-03; once campos, obligatoriedad/editabilidad acordadas; ida/vuelta sin perdida                  | 006B,002C    | src/components/Pages/Declaration/PersonalData, src/types/PersonalData.types.ts                                                                | M; V1,V3        |
+| [ ] DEC-002C2 Select   | Nombre accesible, teclado, seleccion controlada y error; corrige el bug de keys aleatorias (`Math.random()`) de `sad-aml-shared/Dropdown`, que no es ajustable desde afuera | 002C         | src/components/Molecules/SelectField                                                                                                          | M; V1,V3        |
+| [ ] DEC-007 Personales | Una composicion D-03; once campos (estado civil, grado academico, agencia y oficina son select), obligatoriedad/editabilidad acordadas; ida/vuelta sin perdida | 006B,002C2   | src/components/Pages/Declaration/PersonalData, src/types/PersonalData.types.ts                                                                | M; V1,V3        |
 
 ### Checkpoint C5 (objetivo 25/09, ver plan.md)
 
@@ -161,6 +164,26 @@ A diferencia de DEC-002A, aqui si hizo falta un componente propio: el label de `
 - Reuso real: el diseno (bordes `gray-200`, radio `tokens.$radius-control`, tipografia `gm-type.$fs-body-3`/`$fs-body-4`/`$fs-caption-1`) viene de los mismos archivos de GM que ya tocamos en las tareas anteriores; el markup (label/input/caption/error) es nuevo, escrito para asociar todo correctamente. `id` se genera con `useId()` si no se pasa uno.
 - Validaciones: `check-types`, `lint`, `test -- --runInBand` OK (4 pruebas nuevas). `build` OK (V2, consume `_tokens.scss`). V3: montado en `src/app/page.tsx`, revisado en `http://localhost:3004/seguridad` — se confirmo en el DOM real que clickear la etiqueta "Correo" enfoca su input (label/htmlFor) y que el campo con error trae `aria-invalid="true"` y `aria-describedby` apuntando al mensaje; foco por teclado recorre los campos en orden, salta el deshabilitado. `page.tsx` revertido al terminar.
 - Commit sugerido (no ejecutado): `feat(textfield): agrega Campo de texto propio con label y error asociados`.
+
+### DEC-002C Checkbox (2026-09-14)
+
+Se separo de "Checkbox y select" (ver nota en la seccion Fundaciones). `sad-aml-shared` no tiene ningun checkbox generico (solo `CardRadioButton`); se construyo con `<input type="checkbox">` nativo y estilo propio en vez de traer Radix solo para esto — el nativo ya da teclado y semantica de formulario gratis.
+
+- Archivos: `src/components/Atoms/Checkbox/Checkbox.tsx`, `Checkbox.module.scss`, `Checkbox.test.tsx` (nuevos); `src/components/Atoms/index.ts` (export).
+- Reuso: mismos tokens de GM que TextField (`gm.$gray-200`, `gm.$green-400` para el check, tipografia `gm-type.$fs-body-3`/`$fs-caption-1`). El radio del cuadro (4px) y el verde de "marcado" quedaron documentados en el propio SCSS como decisiones sin confirmar en Figma (Figma no da spec de checkbox especifica; el verde de marca 2026 sigue sin resolver por componente).
+- Validaciones: `check-types`, `lint`, `test -- --runInBand` OK (5 pruebas nuevas). `build` OK (V2). V3: montado en `src/app/page.tsx`, revisado en `http://localhost:3004/seguridad`: se confirmo por JS que el click sobre la etiqueta (usando el `ref` del accessibility tree, no coordenadas de pixel) marca el checkbox correcto; el toggle por teclado (espacio) no se pudo verificar manualmente en el navegador porque la herramienta de automatizacion no dispara la accion nativa del navegador con teclas sinteticas (se probo con un checkbox nativo sin ningun estilo y tampoco respondio, aislando que es una limitacion de la herramienta, no del componente) — si quedo cubierto por la prueba automatizada con `@testing-library/user-event`, que sí simula esto correctamente. `page.tsx` revertido al terminar.
+- Commit sugerido (no ejecutado): `feat(checkbox): agrega Checkbox propio con label y error asociados`.
+
+### Migracion DEC-002B/DEC-002C a sad-aml-shared (2026-09-14, mismo dia)
+
+El usuario aclaro que `sad-aml-shared` no es una dependencia externa que se refresca y pisa lo local: Grupo Mutual lo jala al iniciar cada proyecto y se queda permanente, es una libreria compartida real pensada para que cualquier proyecto la extienda. Con eso, el criterio para decidir donde va cada cosa cambio de "cuanto hay que tocar" a "de quien es el componente" (ver `AGENTS.md`, seccion "Estrategia de implementacion"). Se revirtio la separacion anterior:
+
+- `Checkbox` se movio de `src/components/Atoms/Checkbox` a `sad-aml-shared/components/Atoms/Checkbox`, renombrado a la convencion BEM de esa carpeta (`checkbox__row`, `checkbox__input`, `checkbox__label`, `checkbox__errors`, prop `errors` en vez de `error`) y agregado a su `index.ts`. Ya no importa `src/styles/_tokens.scss` (shared no debe depender de la app): el radio de 4px queda hardcodeado, igual que el resto de los componentes de esa carpeta.
+- El `TextField` propio se elimino. Se corrigio `InputText.tsx` directo en `sad-aml-shared`: label con `htmlFor`, error con `aria-describedby`/`aria-invalid`, y se elimino el prop `maxlength` (minuscula) que nunca hacia nada — `maxLength` nativo ya pasa por `...rest`.
+- `src/components/Atoms/index.ts` reexporta `InputText` y `Checkbox` directo de shared, sin wrapper.
+- Pruebas: como Jest excluye `src/sad-aml-shared/`, las pruebas de ambos (asociacion de label, aria-describedby, teclado, disabled, que `maxLength` si funcione) se movieron a `src/components/Atoms/index.test.tsx`, que importa el barril. 9 pruebas en total, todas en verde.
+- Revalidado en navegador con el mismo criterio que antes de migrar: clic en la etiqueta de `InputText` (con id generado por `useId`) enfoca el input real; clic en la etiqueta del `Checkbox` ya migrado tambien lo marca/desmarca correctamente.
+- Commit sugerido (no ejecutado): `refactor(shared): mueve Checkbox e InputText corregido a sad-aml-shared`.
 
 ## Registro de tareas cerradas
 

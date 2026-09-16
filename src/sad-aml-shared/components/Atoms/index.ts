@@ -15,5 +15,6 @@ export { default as TextInformation } from './TextInformation/TextInformation';
 export { default as InputSecret } from './InputSecret/InputSecret';
 export { default as LastAccess } from './LastAccess/LastAccess';
 export { default as CardRadioButton } from './CardRadioButton/CardRadioButton';
+export { default as Checkbox } from './Checkbox/Checkbox';
 export { default as RoundIcon } from './RoundIcon/RoundIcon';
 export { default as Spinner } from './Spinner/Spinner';

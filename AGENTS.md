@@ -80,19 +80,24 @@ feat(login): implementa pantalla base de inicio de sesion
 
 ## Estrategia de implementacion
 
-Actualizado 2026-09-14: esta seccion antes decia "no depender de sad-aml-shared para nuevas implementaciones". El usuario confirmo que esa no era la intencion: la mayoria de lo que necesita DecPat SI esta disponible en esta copia de `sad-aml-shared` (Button, InputText, InputSecret, Dropdown, Modal, Notification, Alert, Header, SideBar, DashboardLayout, entre otros — ver inventario en `tasks/preparacion-tecnica-visual.md` seccion 3), y usarlo evita duplicar codigo y horas que el cronograma no tiene de sobra.
+Actualizado 2026-09-14, segunda vuelta. Primera correccion: esta seccion decia "no depender de sad-aml-shared", y se corrigio a "usar shared primero, wrapper solo para ajustes puntuales, no modificar shared salvo completar un valor a medias". Segunda correccion (mismo dia): esa regla asumia que `sad-aml-shared` es una dependencia externa que se refresca y pisa lo local, como `node_modules`. El usuario aclaro que no es asi: Grupo Mutual jala `sad-aml-shared` al iniciar cada proyecto y se queda permanente, no se reemplaza por una libreria al pasar a produccion. Es una libreria compartida real, mantenida para que cualquier proyecto la extienda — mas parecido a un paquete compartido de monorepo que a una dependencia de solo lectura.
 
-- Usar componentes de `src/sad-aml-shared` primero cuando expongan lo que la pantalla necesita. Importarlos directo o envolverlos (wrapper) en `src/components` cuando haga falta ajustar un detalle puntual (un color que falta, una asociacion ARIA, que el spinner deshabilite el boton). No copiar su implementacion interna para "hacerla propia" sin razon.
-- Crear un componente local nuevo en `src/components` solo cuando `sad-aml-shared` no tenga nada equivalente (ejemplos ya confirmados: tabla editable, selector/carga de adjuntos, stepper del wizard de 12 pasos) o cuando lo que expone no sea ajustable desde afuera sin modificar el propio shared.
-- No modificar `src/sad-aml-shared` para redisenarlo o cambiar su comportamiento. Se acepta una excepcion puntual: completar algo que el archivo ya tiene la estructura para recibir (una familia de colores, una escala tipografica, un enum) pero le falta el valor puntual que pide Figma DecPat. Registro de esa excepcion, 2026-09-14:
-  - `types/enum/Color.enum.ts` + `components/Atoms/Button/Button.module.scss`: se agrego `ColorEnum.Cta` y la clase `.cta` (usa `$accent-400`/`$accent-500`, ya existentes) porque el enum tenia `Warning`, `Danger`, `Yellow600` sin ninguna clase que los pintara.
-  - `styles/settings/_colors.scss`: se agrego el par verde 2026 (`$green-2026-400/300`) y el rojo 2026 (`$red-2026`) de Figma DecPat, junto a los heredados existentes (no los reemplazan).
-  - `styles/settings/_typography.scss`: se agrego `$fs-body-4` (12px) apuntando a `$_fs-12`, que ya existia sin usar como tamano publico.
-  - Si se refresca esta copia de `sad-aml-shared` desde el repositorio real, revisar si estos cambios siguen haciendo falta o si el real ya los resolvio distinto.
-  - No repetir este tipo de cambio para algo que shared no tiene ninguna estructura para recibir (ej. no hay archivo ni convencion de border-radius en shared; esos tokens van en `src/styles/_tokens.scss`, no aqui) — eso es un token o componente local nuevo, no esta excepcion.
-- Usar Figma como fuente visual para medidas, colores, tipografias, estados e intencion de componentes; cuando shared no logre igualar a Figma en un detalle, documentar la diferencia en vez de forzarla.
+Con eso, el criterio para decidir donde va cada cosa **ya no es "cuanto hay que tocar"**, es **de quien es el componente**:
+
+- **Generico y reutilizable por cualquier proyecto de Grupo Mutual** (Boton, Campo de texto, Checkbox, Modal, Select, Tabla — cualquier atomo/molecula de UI sin logica de negocio de DecPat) → construirlo o corregirlo **directo dentro de `src/sad-aml-shared`**, siguiendo sus convenciones de carpeta/exports/nombres. No crear un duplicado en `src/components` para evitar tocar shared.
+- **Especifico de DecPat** (pantallas, el wizard de 12 pasos, calculos, servicios del dominio, cualquier composicion que no tenga sentido fuera de este flujo) → va en `src/components`/`src/app`/`src/services`/etc., nunca en `sad-aml-shared`.
+- Esto tambien aplica a corregir comportamiento, no solo a agregar valores: si `sad-aml-shared` tiene un bug o una falta de accesibilidad en un componente generico (label sin `htmlFor`, keys aleatorias, etc.), se corrige ahi mismo. Ya no aplica la restriccion anterior de "no cambiar su comportamiento, solo completar valores a medias".
+- Antes de crear algo nuevo en `sad-aml-shared`, seguir sus convenciones existentes (mismo patron de carpeta `Componente/Componente.tsx` + `.module.scss`, agregarlo al `index.ts` de Atoms/Molecules/Organisms que corresponda) para que no se note como un injerto ajeno si algun dia se sube al repositorio real.
+- Motivo practico: como esta copia nunca hace push a un remoto real (ver seccion de contexto), el traspaso manual sigue siendo la unica via de llevar esto al repositorio real. Que la carpeta de esta copia coincida con el destino real (`sad-aml-shared` aqui → repo de shared alla; todo lo demas → repo de decpat-cloud) hace ese traspaso mecanico, sin tener que reclasificar componente por componente.
+- Usar Figma como fuente visual para medidas, colores, tipografias, estados e intencion de componentes.
 - Usar el Design System GM como referencia para tokens y componentes base cuando este disponible.
-- Si luego el repositorio real tiene una version distinta o mas completa de `sad-aml-shared`, revisar en el traspaso manual si el wrapper propio sigue siendo necesario o si se puede simplificar.
+
+Registro de lo agregado a `sad-aml-shared` bajo la regla anterior (mas restrictiva), que sigue siendo valido, solo que ya no hace falta tratarlo como excepcion:
+- `types/enum/Color.enum.ts` + `components/Atoms/Button/Button.module.scss`: `ColorEnum.Cta` y la clase `.cta` (usa `$accent-400`/`$accent-500`).
+- `styles/settings/_colors.scss`: `$green-2026-400/300` y `$red-2026`, junto a los heredados.
+- `styles/settings/_typography.scss`: `$fs-body-4` (12px), sobre `$_fs-12`.
+
+Migrado 2026-09-14: `Checkbox` (antes en `src/components/Atoms/Checkbox`) ahora vive en `components/Atoms/Checkbox` dentro de `sad-aml-shared`, siguiendo su convencion de nombres (`checkbox__row`, `checkbox__input`, etc., igual que `inputText__label`). `InputText.tsx` se corrigio directo (label con `htmlFor`, error con `aria-describedby`/`aria-invalid`, se elimino el prop `maxlength` muerto que nunca funcionaba) en vez de mantener un `TextField` propio en paralelo. `src/components/Atoms/index.ts` ahora reexporta ambos directo de shared, sin wrapper. Las pruebas de ambos viven en `src/components/Atoms/index.test.tsx` (shared no corre Jest).
 
 ## Orden recomendado inicial
 

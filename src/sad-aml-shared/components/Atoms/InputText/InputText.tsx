@@ -1,4 +1,4 @@
-import { type InputHTMLAttributes, type JSX, forwardRef } from 'react';
+import { type InputHTMLAttributes, type JSX, forwardRef, useId } from 'react';
 import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import styles from './InputText.module.scss';
 
@@ -7,40 +7,44 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   errors?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   caption?: string;
   pattern?: string;
-  maxlength?: string;
   tooltip?: JSX.Element;
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  (
-    {
-      label,
-      errors,
-      caption,
-      maxlength: _maxlength,
-      pattern,
-      tooltip,
-      ...rest
-    },
-    ref
-  ) => {
+  ({ label, errors, caption, pattern, tooltip, id, ...rest }, ref) => {
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
+    const captionId = caption ? `${inputId}-caption` : undefined;
+    const errorId = errors ? `${inputId}-error` : undefined;
+    const describedBy =
+      [captionId, errorId].filter(Boolean).join(' ') || undefined;
+
     return (
       <div className={styles.inputText}>
-        <label className={styles.inputText__label}>{label}</label>
+        <label htmlFor={inputId} className={styles.inputText__label}>
+          {label}
+        </label>
         <input
           ref={ref}
+          id={inputId}
           className={styles.inputText__input}
           type="text"
           pattern={pattern}
+          aria-invalid={errors ? true : undefined}
+          aria-describedby={describedBy}
           {...rest}
         />
         {tooltip}
         <div className={styles.inputText__alerts}>
           {caption && (
-            <div className={styles.inputText__captions}>{caption}</div>
+            <div id={captionId} className={styles.inputText__captions}>
+              {caption}
+            </div>
           )}
           {errors && (
-            <div className={styles.inputText__errors}>{errors as string}</div>
+            <div id={errorId} className={styles.inputText__errors} role="alert">
+              {errors as string}
+            </div>
           )}
         </div>
       </div>
