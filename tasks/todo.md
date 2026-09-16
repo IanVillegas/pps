@@ -3,6 +3,14 @@
 Base: [plan y presupuesto](plan.md), [inventario Figma y decisiones](preparacion-tecnica-visual.md).
 IDs alineados con AGENTS: DEC-004 estados de login, DEC-005 shell, DEC-006 wizard, DEC-007+ pasos. Los sufijos dividen tareas conservando su identidad.
 
+## Estado actual (actualizado 2026-09-16)
+
+- Ultima tarea cerrada: `DEC-003 Login base` (tabla "Acceso y navegacion" queda para despues; DEC-003 esta en la tabla del Checkpoint C2). Todo lo de esa tarea (Login + assets Figma + fixes de pixelado/margen) ya esta commiteado (`7f79d64`); `git status` solo tiene este archivo (`tasks/todo.md`, esta seccion) sin commitear.
+- Siguiente tarea sugerida: `DEC-004 Estados de acceso` (tabla "Acceso y navegacion"), aun no iniciada.
+- Pixelado de `LoginWave3`/logo: **cerrado 2026-09-16**. Confirmado como comportamiento de Chrome en Windows a 125% de escala de pantalla (DPR fraccionario), no un defecto de codigo — el fix de `drop-shadow` en `LoginWave3.tsx` se mantiene como mejora real, pero no era la causa completa. Detalle en el cierre de DEC-003 mas abajo ("Investigacion de pixelado persistente").
+- `DEC-002C2 Select` sigue diferida (tabla "Acceso y navegacion", antes de DEC-007), no iniciada; solo hace falta antes de `DEC-007`.
+- Antes de asumir este estado como verdad absoluta, correr `git status`/`git log -5` para confirmar que nadie avanzo por fuera de esta nota.
+
 ## Preparacion
 
 - [x] DEC-000: repositorio y Figma revisados; inventario, brechas, linea base, cronograma y backlog documentados.
@@ -248,6 +256,7 @@ Se probo el servidor oficial de Figma directo y **si funciona** sin autorizacion
   - `LoginWave3` es la unica de las 3 formas con un `<filter>` SVG nativo (sombra), y se estira de forma no uniforme (226% alto / 91.8% ancho del contenedor) — un filtro `userSpaceOnUse` sobre contenido asi estirado es un patron donde algunos navegadores rasterizan el area del filtro a la resolucion del viewBox original en vez de al tamano final en pantalla, mas grande. Es la explicacion tecnica mas probable, aunque no se logro reproducir el pixelado de forma concluyente en las pruebas de este lado (el render aislado se veia limpio). Se reemplazo el filtro SVG nativo por un `filter: drop-shadow(...)` CSS en el contenedor (mismos valores: offset 10px, blur 2px, negro 25%), que los navegadores rasterizan con el tamano final ya compuesto.
   - El logo (`LogoGrupoMutual`) no tiene filtro y esta casi a escala 1:1 (viewBox 175.871x45.6626 vs ~177px de ancho renderizado); no se encontro un defecto de codigo equivalente. La hipotesis mas probable para este y para cualquier residuo en la diagonal es el **escalado de pantalla de Windows** (125%/150% es comun) generando tamanos de pixel fraccionarios — un efecto de todo el sistema operativo/navegador, no de este codigo especifico. Pendiente de que el usuario confirme revisando su configuracion de escala de pantalla y con zoom del navegador en 100% (Ctrl+0).
   - Archivo: `src/assets/images/LoginWave3.tsx` (filtro SVG nativo reemplazado por CSS).
+  - **Cerrado 2026-09-16**: el usuario confirmo que el pixelado sigue igual con zoom de navegador en 100% (Ctrl+0), y que su Windows esta a **125% de escala** en **Chrome**. Esto confirma la hipotesis: 125% es una escala fraccionaria "no limpia" (DPR 1.25) y es un comportamiento documentado de Chromium en Windows — el compositor rasteriza bordes diagonales/curvos con un ligero desenfoque/aliasing en ese DPR especifico, sin importar el sitio. Prueba de que no es un defecto de este codigo: afecta por igual a `LoginWave3` (que si tenia `<filter>`, ya reemplazado por CSS) y al logo (que nunca tuvo filtro ni estiramiento no uniforme relevante) — el unico factor en comun es la escala de Windows, no el SVG. No requiere mas cambios de codigo; el fix de `drop-shadow` en `LoginWave3.tsx` se mantiene porque es una mejora real (evita el riesgo de rasterizado de filtro a resolucion de viewBox), aunque no haya sido la causa completa del pixelado reportado. Si se necesita confirmacion adicional en algun momento, la prueba definitiva seria cambiar Windows a 100% o 150% (escalas enteras) y comparar — no se le pidio al usuario por ser un cambio molesto a todo su escritorio para un defecto ya explicado.
 
 ## Registro de tareas cerradas
 
