@@ -19,7 +19,11 @@ const nextConfig = {
       process.env.NEXT_PUBLIC_ENVIRONMENT?.toUpperCase() !== 'DEV' &&
       process.env.NEXT_PUBLIC_ENVIRONMENT?.toUpperCase() !== 'CERT',
   },
-  basePath: '/seguridad',
+  // Sin basePath (DEC-001B, resuelve D-02 de preparacion-tecnica-visual.md):
+  // el arquetipo traia '/seguridad' heredado de otro microfrontend; el plan
+  // de DecPat define rutas sin prefijo (/, /inicio, /mi-declaracion/[paso]).
+  // Si el despliegue real necesita un prefijo, se define aqui cuando se
+  // conozca — no se inventa uno ahora.
   images: {
     unoptimized: true,
   },

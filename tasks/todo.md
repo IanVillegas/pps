@@ -21,7 +21,7 @@ Cada tarea debe registrar archivos reales, validaciones, diferencias Figma, orde
 | Tarea                           | Aceptacion                                                                                                  | Dependencias | Areas previstas                                                                            | Tamano / checks |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------ | --------------- |
 | [x] DEC-001A Tokens y assets    | Fuentes y colores trazables a GM; assets 2026 identificados; diferencias de marca registradas               | DEC-000      | src/styles, src/assets                                                                     | M; V1,V3        |
-| [ ] DEC-001B Base de aplicacion | Metadata y estructura DecPat; basePath decidido; README y ejemplo de entorno coherentes                     | 001A         | src/app/layout.tsx, src/styles/globals.scss, next.config.js, README.md, .env.local.example | M; V2           |
+| [x] DEC-001B Base de aplicacion | Metadata y estructura DecPat; basePath decidido; README y ejemplo de entorno coherentes                     | 001A         | src/app/layout.tsx, next.config.js, README.md, .env.local.example, package.json | M; V2           |
 | [x] DEC-002A Boton              | Variantes CTA/secundario, disabled y loading; foco visible (variante icono retirada: ningun caso confirmado la necesita) | 001A         | sad-aml-shared/components/Atoms/Button (ColorEnum.Cta), src/components/Atoms/index.ts      | S; V1,V3        |
 
 ### Checkpoint C1
@@ -201,6 +201,14 @@ Bugs reales encontrados y corregidos (no solo estilo):
 - Archivos: `src/sad-aml-shared/components/Organisms/Modal/Modal.tsx`, `Modal.module.scss`; `src/components/Organisms/index.ts` (nuevo, reexporta `Modal`), `src/components/Organisms/index.test.tsx` (nuevo).
 - Validaciones: `check-types`, `lint`, `test -- --runInBand` OK (4 pruebas nuevas: Escape dispara `onOpenChange(false)`, boton cerrar con nombre accesible, sin `<p><div>` invalido, no renderiza nada si `open=false`). `build` OK. El retorno de foco NO se probo en Jest (jsdom no simula de forma confiable el foco async de Radix); se verifico a mano en el navegador con esperas explicitas para descartar condiciones de carrera, documentado arriba.
 - Commit sugerido (no ejecutado): `fix(modal): corrige hidratacion, foco, scroll y footer del Modal de sad-aml-shared`.
+
+### DEC-001B Base de aplicacion (2026-09-16)
+
+- Archivos: `next.config.js` (elimina `basePath: '/seguridad'`, resuelve D-02), `src/app/layout.tsx` (metadata DecPat, `robots: noindex, nofollow` por ser sistema interno, quita el header/footer hardcodeado de SAD-AML — el shell real es DEC-005A), `.env.local.example` (reemplaza variables de un microfrontend bancario que no se usan en ningun lado del codigo por las 2 que si se leen), `README.md` (reescrito para DecPat), `package.json` (`name: decpat-cloud`).
+- Hallazgos al revisar antes de escribir: Husky no esta instalado (ni `.husky/`, ni en `devDependencies`, ni script `prepare`) pero el README tenia una seccion completa explicandolo — se quito. Las variables de `.env.local.example` (`NEXT_PUBLIC_MY_PRODUCTS_HOME_MF_END_POINT_URL` y similares) no aparecen en ningun archivo `.ts/.tsx` del proyecto (verificado con grep); las 2 reales son `NEXT_PUBLIC_ENVIRONMENT` (`next.config.js`) y `NEXT_PUBLIC_API_BASE_URL` (`sad-aml-shared/services/api/AxiosClient.ts`).
+- No se agrego `openGraph`/`twitter` a la metadata: esos campos necesitan una URL de dominio real que este proyecto no tiene; se omiten en vez de inventar una.
+- Validaciones: `check-types`, `lint`, `test -- --runInBand` OK. `build` OK (V2, cambian rutas/config). Verificado en navegador (pestaña nueva, sin historial de pruebas previas): la app carga en `http://localhost:3004/` sin `/seguridad`, `document.title` = "DecPat", meta `robots` = "noindex, nofollow", cero errores de consola.
+- Commit sugerido (no ejecutado): `feat(app): configura metadata, basePath y documentacion de DecPat`.
 
 ## Registro de tareas cerradas
 
