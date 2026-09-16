@@ -135,7 +135,17 @@ Ejecutar las validaciones razonables segun el cambio:
 
 Si una validacion no se puede ejecutar, indicarlo claramente en el cierre de la tarea.
 
+## Alcance de dispositivos
+
+Decision del usuario, 2026-09-16: el sistema se construye para **laptop, PC de escritorio y tablet**. **Los telefonos moviles no son un dispositivo soportado.**
+
+- No disenar ni priorizar layouts mobile-first. Los viewports de referencia para V3 son **1366/1440 (escritorio) y 768 (tablet)**, no 360 (telefono) — a diferencia de lo que decia una version anterior de `todo.md`/`plan.md`.
+- Un breakpoint angosto (`max-width` chico, ej. 480px) puede existir como resguardo minimo para que la pantalla no se vea completamente rota si alguien la abre en un telefono, pero no es un diseno movil real ni requiere paridad de funcionalidad. No gastar tiempo de tarea afinando esa vista.
+- Si una tarea existente menciona el viewport 360px como parte de su V3, tratarlo como no aplicable salvo que el usuario diga lo contrario.
+
 ## Figma y sistema de diseno
+
+**El servidor oficial de Figma (herramientas `get_design_context`, `get_screenshot`, `get_metadata`, etc.) funciona en este entorno sin pedir autorizacion.** Se confirmo el 2026-09-16 despues de que una tarea (Login, DEC-003) se hizo dos veces porque se asumio sin probar que Figma no estaba disponible, solo porque OTRO conector distinto (`plugin:figma:figma`) si aparecia en la lista de MCPs que piden autorizacion. Antes de decir "no tengo acceso a Figma", probar `get_screenshot` o `get_metadata` con el nodo real primero — no asumir por la lista de conectores pendientes de autorizar. Si una tarea es visual (implica una pantalla o componente con un nodo de Figma conocido), usar `get_design_context` de verdad en vez de trabajar solo del inventario escrito en `preparacion-tecnica-visual.md` — ese inventario es un resumen textual, no sustituye ver el diseno real.
 
 - Para implementaciones visuales, tomar como referencia el Figma de flujo de DecPat y el Figma de Design System GM.
 - No copiar jerarquias de Figma de forma literal cuando esten hechas con grupos o posiciones absolutas.

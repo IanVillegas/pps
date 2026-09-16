@@ -71,7 +71,7 @@ La capacidad nominal de dos semanas es 40-50 h (ver tabla de capacidad); el cont
 
 - Diferir DEC-002E (Notificaciones) y DEC-002F (Tabla editable) a la quincena siguiente: `todo.md` ya los deja sin dependientes antes de DEC-008B, asi que no hay retrabajo.
 - Trabajar en el extremo alto de la dedicacion supuesta (25 h/semana) durante estas dos semanas.
-- Recortar el alcance de V3 en esta quincena a los viewports 1366 y 360 (no los cuatro completos); registrar la revision completa como pendiente para DEC-020A.
+- Recortar el alcance de V3 en esta quincena al viewport 1366 (no los tres completos); registrar la revision de tablet/1440 como pendiente para DEC-020A. (Actualizado 2026-09-16: el sistema es solo laptop/escritorio/tablet, ya no se valida 360px en ningun momento — ver AGENTS.md.)
 - Simplificar DEC-004 al caso de credenciales incorrectas; dejar el contador de bloqueo por exceso de intentos con una version minima y revisarlo en estabilizacion si el tiempo no alcanza.
 
 Las quincenas de 12-23 y 26-30 de octubre quedan con holgura (30 y 26 h contra un presupuesto de 40 h cada una) precisamente para absorber lo que no se alcance a compensar aqui. Si al 22/09 DEC-006/007 no ha iniciado, registrar el pendiente y trasladarlo a la quincena siguiente sin sumar sus horas otra vez, igual que se hizo con ARQ.

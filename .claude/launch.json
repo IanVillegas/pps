@@ -4,8 +4,8 @@
     {
       "name": "decpat-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3004
+      "runtimeArgs": ["run", "dev-preview"],
+      "port": 3005
     }
   ]
 }
