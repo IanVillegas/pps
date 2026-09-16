@@ -59,7 +59,17 @@
 
   &--3 {
     top: -86.39%;
-    left: 43.34%;
+    // El 43.34% original (calculado desde Figma a 1366px) deja de tener
+    // margen contra el borde derecho real del texto de .login__brand
+    // (9% de padding + 460px de max-width, ambos fijos) por debajo de un
+    // viewport de ~1427px: se confirmo con Path2D.isPointInPath que a
+    // 768px (breakpoint de tablet) el titulo y el parrafo completos caen
+    // encima de esta forma blanca (texto blanco sobre blanco), y a
+    // 1280px (ancho efectivo tipico de una laptop 1920x1080 con Windows
+    // al 150%) las ultimas lineas del parrafo tambien. calc(9vw + 490px)
+    // mantiene un margen fijo de 30px contra ese borde (9vw + 460px) por
+    // debajo del cruce; por encima gana el 43.34% original sin cambios.
+    left: max(43.34%, calc(9vw + 490px));
     width: 91.8%; // 100 - 43.34 - (-35.14)
     height: 226.53%; // 100 - (-86.39) - (-40.14)
   }
