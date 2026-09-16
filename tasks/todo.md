@@ -11,7 +11,7 @@ IDs alineados con AGENTS: DEC-004 estados de login, DEC-005 shell, DEC-006 wizar
 
 - V1: `npm run check-types`, `npm run lint` y pruebas relevantes de comportamiento con `npm run test -- --runInBand`.
 - V2: V1 y `npm run build` al cambiar rutas, paginas o estilos globales.
-- V3: comparacion con nodo Figma del inventario, teclado y viewports 360/768/1366/1440; registrar adaptaciones cuando no haya diseno responsive.
+- V3: comparacion con nodo Figma del inventario, teclado y viewports 768/1366/1440 (escritorio y tablet). **Actualizado 2026-09-16**: el sistema es solo para laptop/escritorio/tablet, no telefonos (ver `AGENTS.md`); ya no se valida 360px como viewport objetivo. Registrar adaptaciones cuando no haya diseno responsive.
 - V4: recorrido con datos sinteticos, fallo de servicio/reintento y prevencion de duplicados; adaptador real desactivado mientras no haya contrato.
 
 Cada tarea debe registrar archivos reales, validaciones, diferencias Figma, orden de copia y commit sugerido. Areas indicadas abajo son propuestas, no archivos ya existentes. Tamano S: 1-2 archivos; M: 3-5. Crear componente, estilos, pruebas y export segun necesidad; si excede cinco archivos funcionales, dividir en una subtarea antes de implementar. Las horas por bloque estan en plan.md y no son horas realizadas.
@@ -42,7 +42,7 @@ Cada tarea debe registrar archivos reales, validaciones, diferencias Figma, orde
 
 | Tarea                       | Aceptacion                                                                                     | Dependencias | Areas previstas                                                           | Tamano / checks |
 | --------------------------- | ---------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------- | --------------- |
-| [ ] DEC-003 Login base      | Usuario/contrasena, mostrar/ocultar, recordar solo usuario y exito mock; campos validados      | 002B,002C    | src/components/Pages/Login, src/services/AuthService.ts, src/app/page.tsx | M; V2,V3        |
+| [x] DEC-003 Login base      | Usuario/contrasena, mostrar/ocultar, recordar solo usuario y exito mock; campos validados      | 002B,002C    | src/components/Pages/Login, src/services/AuthService.ts, src/app/page.tsx | M; V2,V3        |
 
 DEC-002E (Notificaciones) y DEC-002F (Tabla editable) se mueven a la quincena de DEC-008 (ver plan.md, Cronograma): ningun bloque hasta DEC-007 depende de ellas, y adelantar login/inicio/paso 1 es lo que exige el 25/09 del cronograma de control. Se retoman antes de DEC-008B, que si las necesita.
 
@@ -142,7 +142,7 @@ DEC-002E (Notificaciones) y DEC-002F (Tabla editable) se mueven a la quincena de
 | Tarea                            | Aceptacion                                                                                                            | Dependencias | Areas previstas                                                 | Tamano / checks   |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------------------------------------------- | ----------------- |
 | [ ] DEC-019B Recuperacion        | Fallo de carga/guardado/adjunto con reintento; salida con cambios y expiracion segun contrato; sin perdida silenciosa | 019A         | src/utils/hooks/useDeclaration.ts, feedback y pruebas del flujo | M; V1,V4          |
-| [ ] DEC-020A Visual y responsive | Diferencias Figma registradas y defectos operativos corregidos en 360/768/1366/1440                                   | 019B         | Pantallas afectadas, hasta cinco archivos por lote              | M por lote; V2,V3 |
+| [ ] DEC-020A Visual y responsive | Diferencias Figma registradas y defectos operativos corregidos en 768/1366/1440 (sin telefonos, ver AGENTS.md)                                   | 019B         | Pantallas afectadas, hasta cinco archivos por lote              | M por lote; V2,V3 |
 | [ ] DEC-020B Regresion           | Recorrido feliz/errores, teclado/foco, adjuntos/calculos; usar reserva en defectos, no funciones nuevas               | 020A         | Pruebas y modulos afectados                                     | M por lote; V2,V4 |
 
 ### Checkpoint C12: hito funcional 30/31 octubre y estabilizacion
@@ -209,6 +209,45 @@ Bugs reales encontrados y corregidos (no solo estilo):
 - No se agrego `openGraph`/`twitter` a la metadata: esos campos necesitan una URL de dominio real que este proyecto no tiene; se omiten en vez de inventar una.
 - Validaciones: `check-types`, `lint`, `test -- --runInBand` OK. `build` OK (V2, cambian rutas/config). Verificado en navegador (pestaña nueva, sin historial de pruebas previas): la app carga en `http://localhost:3004/` sin `/seguridad`, `document.title` = "DecPat", meta `robots` = "noindex, nofollow", cero errores de consola.
 - Commit sugerido (no ejecutado): `feat(app): configura metadata, basePath y documentacion de DecPat`.
+
+### DEC-003 Login base (2026-09-16)
+
+Antes de armar la pantalla se reviso `InputSecret` de shared (necesario para "mostrar/ocultar") con la misma disciplina que Button/TextField/Modal, y aparecieron bugs reales confirmados con evidencia, no solo lectura del codigo:
+
+- **`useTranslation` de react-i18next sin instancia inicializada**: el proyecto no inicializa i18next en ningun lado (`src/app/providers` vacio, sin `initReactI18next`) y `src/translations/es/global.json` esta vacio (`{}`). Confirmado en consola del navegador: `react-i18next:: NO_I18NEXT_INSTANCE`, y el boton de mostrar/ocultar literalmente mostraba el texto `"button.shared.toggleHide"` (la key sin traducir) en vez de algo legible. Se quito i18next del componente y se hardcodeo el texto en espanol ("Mostrar contraseña"/"Ocultar contraseña"), consistente con que el resto del proyecto no usa i18n en ningun lado.
+- **Ref interno muerto**: se creaba un `useRef` para enfocar el input al hacer click en el wrapper, pero nunca se conectaba al input real (el `ref` reenviado por el padre se usaba por separado) — ese click no hacia nada. Se combinaron ambos refs. Confirmado en navegador: `wrapper.click()` ahora si mueve el foco al input.
+- **Label sin `htmlFor`, sin `aria-describedby`/`aria-invalid`**: mismo patron que `InputText` antes de corregirse.
+- **`onFocus`/`onBlur` reemplazables**: iban al final via `...rest`, asi que un padre que pasara los suyos (ej. React Hook Form) los hubiera pisado por completo, rompiendo el estilo de foco. Se encadenaron ambos.
+- **Boton de mostrar/ocultar sin `aria-label`**: solo tenia `title` (poco confiable para lectores de pantalla) con la key de traduccion rota.
+- Archivos: `src/sad-aml-shared/components/Atoms/InputSecret/InputSecret.tsx` (corregido).
+
+Pantalla, primera version (nodo Figma 43121:6904 solo por el inventario escrito, sin ver el diseno real):
+
+- Validacion con reglas nativas de React Hook Form (`register(..., { required })`), sin agregar `@hookform/resolvers`/schema de `yup`: no estan instalados y dos campos requeridos no justifican la dependencia nueva.
+- "Recordar usuario": guarda **solo el usuario** en `localStorage` (`decpat.rememberedUsername`), nunca la contrasena; se precarga al montar.
+- Exito mock: `AuthService.login` resuelve `success` si usuario y contrasena no estan vacios (sin backend, D-08 sigue abierto). Se muestra un estado de exito en la misma pantalla en vez de redirigir a `/inicio` (esa ruta no existe hasta DEC-005B; redirigir hoy resultaria en 404).
+- Archivos: `src/services/AuthService.ts` (nuevo), `src/components/Pages/Login/Login.tsx`, `Login.module.scss`, `Login.test.tsx` (nuevos), `src/app/page.tsx` (renderiza `Login`).
+- El usuario noto que esta version no se parecia al diseno real y no estaba pensada a escala de escritorio. Se investigo por que: esta sesion nunca habia probado el conector oficial de Figma (`5714a1b5-...`), solo se sabia que un conector *distinto* (`plugin:figma:figma`) pedia autorizacion, y se asumio sin probar que ningun acceso a Figma estaba disponible.
+
+### DEC-003 Login base — reconstruccion con Figma real (2026-09-16, mismo dia)
+
+Se probo el servidor oficial de Figma directo y **si funciona** sin autorizacion adicional (`get_screenshot`/`get_design_context` respondieron con datos reales del archivo). Se recargo el nodo 43121:6904 completo y se rehizo la pantalla:
+
+- Layout real: dos paneles a escala de escritorio (canvas de referencia 1366x720), no una tarjeta centrada. Panel izquierdo con fondo rojo diagonal, logo de Grupo Mutual, titulo "Bienvenido a la Declaración Patrimonial" y texto descriptivo; panel derecho con el formulario.
+- Texto corregido al real de Figma: titulo del formulario "Iniciar sesión" (no "DecPat"), checkbox "Recordar mi usuario" (no "Recordar usuario"), se agrego el enlace "Centro de ayuda" (se habia omitido) y el texto "¿Olvidó su contraseña? Comuníquese con soporte interno.".
+- Confirmado con el diseno real: el rojo de marca 2026 (`#E62C3A`) **si es el que usa Login** (resuelve la ambiguedad rojo-2026-vs-heredado que quedaba abierta desde `DEC-001A`).
+- Ajustes a `sad-aml-shared` con valores exactos del diseno (mismo criterio de siempre: valores confirmados por Figma, no inventados): `Checkbox` con borde verde `#12A195` y 22px (no gris 20px), label 12px/Medium/gris-400 (no 14px/gris-500); `Button.cta` con el `box-shadow` de "iluminacion" (`0px 16px 24px rgba(255,207,77,0.3)`) que `preparacion-tecnica-visual.md` ya tenia anotado como pendiente sin el valor exacto.
+- Assets reales descargados (logo + 3 formas del fondo) — ver `src/assets/README.md` para el detalle y por que se guardaron como `.tsx` con SVG incrustado en vez de `.svg` sueltos (evita que un `<img>` de SVG se pixele al escalar, reportado por el usuario en una laptop real).
+- Bug de CSS encontrado y corregido: un `@media` para ocultar el panel de marca en telefonos se habia anidado dentro de `.login` en vez de dentro de `.login__brand`; Sass lo compilaba *antes* de la regla base de `.login__brand` en el CSS final, asi que esa regla base (sin condicion) ganaba siempre sin importar el ancho de pantalla. Se detecto probando en un viewport real angosto, no leyendo el SCSS. Se corrigio anidando el `@media` dentro de la propia regla que modifica.
+- **Decision de alcance del usuario, 2026-09-16**: el sistema es solo para laptop/escritorio/tablet, los telefonos no son un dispositivo soportado. Se ajusto el breakpoint que oculta el panel de marca de `768px` (que hubiera afectado tablet, que si esta en alcance) a `480px` (resguardo minimo solo para telefonos). Se registro esta regla en `AGENTS.md` y se quito el viewport 360px de las validaciones V3 en `todo.md`/`plan.md`/`preparacion-tecnica-visual.md`.
+- Archivos adicionales: `src/assets/images/LoginWave1.tsx`, `LoginWave2.tsx`, `LoginWave3.tsx`, `LogoGrupoMutual.tsx` (nuevos); `src/sad-aml-shared/components/Atoms/Checkbox/Checkbox.module.scss`, `src/sad-aml-shared/components/Atoms/Button/Button.module.scss` (corregidos); `Login.tsx`/`Login.module.scss`/`Login.test.tsx` (reescritos).
+- Validaciones: `check-types`, `lint`, `test -- --runInBand` OK (18 pruebas). `build` OK (V2). V3: comparado contra la captura real de Figma — colores, radio, sombra del boton y borde del checkbox verificados por `getComputedStyle` (coinciden exacto); funcionalidad reprobada completa (validacion, envio exitoso, persistencia de "recordar usuario", toggle de contrasena) en viewport 1366; confirmado que a 768px (tablet) el panel de marca se mantiene visible y a 375px (fuera de alcance) se oculta sin verse roto.
+- Commit sugerido (no ejecutado): `feat(login): reconstruye Login desde el diseno real de Figma y corrige assets/checkbox/boton`.
+- **Fix adicional (mismo dia)**: el usuario reviso Login en su propio navegador (`npm run dev`, puerto 3004) a resolucion de laptop real y noto un marco/borde en toda la pagina, mas visible del lado rojo. Causa: `<body>` nunca reseteo el margen de 8px que aplican los navegadores por defecto. Es un fix global (`src/styles/globals.scss`), no especifico de Login — afecta a cualquier pantalla, se corrigio ahi para que beneficie a todas. Verificado con `getComputedStyle` (`margin: 0px`) y capturas a 1920px de ancho.
+- **Investigacion de pixelado persistente (mismo dia)**: tras el fix de `<img>`→`<svg>` incrustado, el usuario siguio viendo bordes pixelados especificamente en `LoginWave3` (la forma blanca diagonal) y el logo de Grupo Mutual. Se investigo con evidencia (render aislado del SVG en un canvas propio, sin pasar por la captura de pantalla de la herramienta) antes de tocar codigo:
+  - `LoginWave3` es la unica de las 3 formas con un `<filter>` SVG nativo (sombra), y se estira de forma no uniforme (226% alto / 91.8% ancho del contenedor) — un filtro `userSpaceOnUse` sobre contenido asi estirado es un patron donde algunos navegadores rasterizan el area del filtro a la resolucion del viewBox original en vez de al tamano final en pantalla, mas grande. Es la explicacion tecnica mas probable, aunque no se logro reproducir el pixelado de forma concluyente en las pruebas de este lado (el render aislado se veia limpio). Se reemplazo el filtro SVG nativo por un `filter: drop-shadow(...)` CSS en el contenedor (mismos valores: offset 10px, blur 2px, negro 25%), que los navegadores rasterizan con el tamano final ya compuesto.
+  - El logo (`LogoGrupoMutual`) no tiene filtro y esta casi a escala 1:1 (viewBox 175.871x45.6626 vs ~177px de ancho renderizado); no se encontro un defecto de codigo equivalente. La hipotesis mas probable para este y para cualquier residuo en la diagonal es el **escalado de pantalla de Windows** (125%/150% es comun) generando tamanos de pixel fraccionarios — un efecto de todo el sistema operativo/navegador, no de este codigo especifico. Pendiente de que el usuario confirme revisando su configuracion de escala de pantalla y con zoom del navegador en 100% (Ctrl+0).
+  - Archivo: `src/assets/images/LoginWave3.tsx` (filtro SVG nativo reemplazado por CSS).
 
 ## Registro de tareas cerradas
 

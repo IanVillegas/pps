@@ -3,6 +3,15 @@
 // :root ni CSS que emitir. Cada componente que necesite $radius-control o
 // $radius-cta debe hacer @use '@/styles/tokens' as tokens; el suyo.
 
+// El navegador aplica 8px de margen a <body> por defecto; sin resetearlo
+// se ve un marco/borde alrededor de toda la pagina (reportado por el
+// usuario viendo Login en su propio navegador).
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: var(--font-poppins), sans-serif;
 }

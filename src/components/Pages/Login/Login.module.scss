@@ -1,0 +1,183 @@
+// Login (DEC-003), reconstruido desde el diseno real de Figma (nodo
+// 43121:6904, canvas de referencia 1366x720). Los porcentajes del fondo
+// decorativo vienen de las mismas proporciones que exporto Figma; el resto
+// (campos, espaciados) se tradujo a flexbox en vez de posiciones absolutas
+// literales, siguiendo AGENTS.md.
+@use '@/sad-aml-shared/styles/settings/colors' as gm;
+@use '@/sad-aml-shared/styles/settings/typography' as gm-type;
+@use '@/styles/tokens' as tokens;
+
+.login {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: gm.$white;
+}
+
+.login__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+
+  // Se oculta junto con .login__brand: un fondo rojo diagonal sin el logo
+  // ni el texto que le dan sentido se ve roto, no simplificado.
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+.login__bg {
+  position: absolute;
+  inset: 0;
+  background-color: gm.$red-2026;
+}
+
+// Contenedores del fondo decorativo. Porcentajes calculados desde los
+// insets [top,right,bottom,left] que exporto Figma para este nodo
+// (100% - lado_a - lado_b = ancho/alto); las imagenes llevan
+// preserveAspectRatio="none" (confirmado en el SVG), es decir que
+// estirarlas sin mantener proporcion es el comportamiento que el propio
+// diseno espera, no una distorsion.
+.login__wave {
+  position: absolute;
+
+  &--1 {
+    top: 19.08%;
+    left: -5.78%;
+    width: 41.09%; // 100 - (-5.78) - 64.69
+    height: 101.33%; // 100 - 19.08 - (-20.41)
+  }
+
+  &--2 {
+    top: -4.31%;
+    left: 28.12%;
+    width: 71.9%; // 100 - 28.12 - (-0.02)
+    height: 124.72%; // 100 - (-4.31) - (-20.41)
+  }
+
+  &--3 {
+    top: -86.39%;
+    left: 43.34%;
+    width: 91.8%; // 100 - 43.34 - (-35.14)
+    height: 226.53%; // 100 - (-86.39) - (-40.14)
+  }
+}
+
+.login__brand {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 66.67%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  max-width: 460px;
+  padding: 64px 9%;
+  color: gm.$white;
+
+  // El sistema es solo para laptop/escritorio/tablet (ver AGENTS.md); los
+  // telefonos no son un dispositivo soportado. Este @media es solo un
+  // resguardo minimo para que no se vea completamente roto si alguien lo
+  // abre en un telefono, no un diseno movil real. Nota: esta regla debe
+  // vivir DENTRO de .login__brand, no en un @media anidado en .login —
+  // anidada ahi, Sass la compila antes que esta regla base y el
+  // `display: flex` de aqui termina ganando siempre (se detecto probando
+  // en viewport real, no solo leyendo el SCSS).
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+.login__logo {
+  display: block;
+  width: 177px;
+  // El logo ahora es un <div> con el SVG incrustado al 100% adentro (ver
+  // LogoGrupoMutual.tsx); "height: auto" no funciona con un hijo al 100%
+  // dentro de un contenedor de alto automatico (colapsa a 0). aspect-ratio
+  // fija el alto real del viewBox (175.871 x 45.6626) sin ese problema.
+  aspect-ratio: 175.871 / 45.6626;
+  margin-bottom: 16px;
+}
+
+.login__heading {
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.2;
+  margin: 0;
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+.login__intro {
+  font-family: var(--font-poppins), sans-serif;
+  font-size: #{gm-type.$fs-body-1}; // 16px
+  line-height: 1.5;
+  text-align: justify;
+  margin: 0;
+}
+
+.login__panel {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 306px;
+  }
+}
+
+.login__title {
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 600;
+  font-size: #{gm-type.$fs-h5}; // 24px
+  color: gm.$gray-500;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.login__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login__help {
+  align-self: flex-start;
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 600;
+  font-size: #{gm-type.$fs-body-3}; // 14px
+  color: gm.$gray-400;
+  text-decoration: underline;
+}
+
+.login__remember {
+  margin-top: 4px;
+}
+
+.login__forgot {
+  font-family: var(--font-worksans), sans-serif;
+  font-size: #{gm-type.$fs-caption-1}; // 13px aprox (GM tiene 11px; se deja el mas cercano)
+  color: gm.$gray-400;
+  text-align: center;
+  margin: 0;
+}
+
+// El boton CTA de Figma va mas angosto que el formulario y centrado, no a
+// todo el ancho (250px dentro de un contenedor de 306px).
+.login__panel form > button {
+  align-self: center;
+  width: 250px;
+}

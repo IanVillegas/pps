@@ -345,6 +345,10 @@
 .cta {
   background-color: variables.$accent-400;
   color: variables.$gray-500;
+  // "Ilumination-1" del CTA, confirmada en Figma (nodo 43121:6904, Login):
+  // ya estaba anotada como pendiente en preparacion-tecnica-visual.md
+  // seccion 7 ("iluminacion de CTA amarilla") sin el valor exacto.
+  box-shadow: 0px 16px 24px rgba(255, 207, 77, 0.3);
 
   &:hover {
     background-color: variables.$accent-500;
@@ -353,6 +357,7 @@
   &.disabled {
     background-color: variables.$gray-100;
     color: variables.$gray-300;
+    box-shadow: none;
   }
 }
 

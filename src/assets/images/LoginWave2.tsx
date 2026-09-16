@@ -1,0 +1,18 @@
+// Ver comentario en LoginWave1.tsx: mismo motivo (evitar rasterizado de un
+// <img> de SVG), mismo markup real de Figma, solo width/height del root a
+// 100%.
+const SVG_MARKUP = `<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="100%" height="100%" viewBox="0 0 982.264 897.951" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Vector" d="M804.801 897.862C789.057 897.851 773.381 895.763 758.175 891.652C735.573 885.636 714.378 875.163 695.817 860.837C677.256 846.511 661.697 828.618 650.039 808.192L500.052 546.282C499.084 544.591 497.693 543.187 496.016 542.211C494.34 541.234 492.438 540.72 490.502 540.72C488.566 540.72 486.664 541.234 484.988 542.211C483.312 543.187 481.92 544.591 480.953 546.282L330.966 808.192C307.026 848.718 268.221 878.113 222.947 890.018C177.673 901.924 129.57 895.381 89.0442 871.807C48.5184 848.232 18.8287 809.521 6.39793 764.048C-6.03281 718.575 -0.205003 669.996 22.6206 628.821L331.231 89.6113C346.893 62.3056 369.419 39.6446 396.538 23.9122C423.656 8.17987 454.41 -0.0678536 485.698 0.000499077H490.384H495.071C526.36 -0.0739003 557.116 8.1712 584.236 23.9041C611.355 39.6371 633.88 62.3015 649.538 89.6113L958.384 628.821C973.997 656.054 982.233 686.946 982.264 718.4C982.296 749.853 974.123 780.762 958.564 808.026C943.005 835.29 920.609 857.951 893.62 873.734C866.632 889.517 836.001 897.869 804.801 897.951V897.862Z" fill="url(#paint0_linear_0_153)"/>
+<defs>
+<linearGradient id="paint0_linear_0_153" x1="811.123" y1="-82.3121" x2="43.4055" y2="463.02" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E62C3A"/>
+<stop offset="1" stop-color="#B22C25"/>
+</linearGradient>
+</defs>
+</svg>`;
+
+const LoginWave2 = ({ className }: { className?: string }) => (
+  <div className={className} dangerouslySetInnerHTML={{ __html: SVG_MARKUP }} />
+);
+
+export default LoginWave2;
