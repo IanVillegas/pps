@@ -1,4 +1,13 @@
-import type { Dispatch, JSX, SetStateAction } from 'react';
+'use client';
+
+import {
+  useEffect,
+  useRef,
+  type Dispatch,
+  type JSX,
+  type MouseEvent,
+  type SetStateAction,
+} from 'react';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import styles from '@/sad-aml-shared/components/Organisms/Modal/Modal.module.scss';
 import 'remixicon/fonts/remixicon.css';
@@ -29,7 +38,6 @@ interface ModalAlertProps {
   onConfirm?: () => void;
   contentCard?: JSX.Element;
   loading?: boolean;
-  marginContent?: string;
   width?: string;
   height?: string;
 }
@@ -53,78 +61,122 @@ const ModalAlert = ({
   onConfirm,
   contentCard,
   loading,
-  marginContent,
-}: ModalAlertProps) => (
-  <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
-    <AlertDialog.Trigger asChild></AlertDialog.Trigger>
-    <AlertDialog.Portal>
-      <AlertDialog.Overlay className={styles.alertDialogOverlay} />
-      <AlertDialog.Content
-        className={`${className} ? ${className} : ${
-          styles.alertDialogContent
-        } ${(!title || hideModalTitle(title)) && styles.withoutTitle}`}
-        style={{ width: marginContent ? marginContent : 535 }}
-      >
-        <div className={styles.closeIcon}>
-          <AlertDialog.Cancel
-            asChild
-            onClick={(event: any) => {
-              if (onCloseChange) {
-                return onCloseChange(event);
-              }
-            }}
-          >
-            {(showCloseIcon == null || showCloseIcon) && (
-              <button>
-                <i className="ri-close-line"></i>
-              </button>
-            )}
-          </AlertDialog.Cancel>
-        </div>
-        {icon &&
-          (!includesErrorString(title) ? (
-            <div className={`${iconColor && styles[iconColor]} ${styles.icon}`}>
-              {loading ? <span className={styles.spinner}>{icon}</span> : icon}
-            </div>
-          ) : (
-            <div className={`${styles['red']} ${styles.icon}`}>
-              <i className="ri-alert-line"></i>
-            </div>
-          ))}
-        {title && !hideModalTitle(title) && (
-          <AlertDialog.Title
-            className={`${
-              classNameTitle && styles[classNameTitle]
-            } ? ${styles.classNameTitle} : ${styles.alertDialogTitle}`}
-          >
-            {title}
-          </AlertDialog.Title>
-        )}
-        {description && (
-          <AlertDialog.Description
-            className={`${
-              classNameDescription ?? styles.alertDialogDescription
-            }`}
-            asChild={typeof description !== 'string' ? true : undefined}
-          >
-            <div>{description}</div>
-          </AlertDialog.Description>
-        )}
-        {contentCard}
-        <div className={styles.buttonsFooter}>{buttonsFooter}</div>
-        {showLayoutButtons && (
-          <div className={styles.buttonsFooter}>
-            <Button
-              text={onCancelText ?? 'Cancelar'}
-              color={ColorEnum.Secondary}
-              onClick={onCancel}
-            />
-            <Button text={onConfirmText ?? 'Continuar'} onClick={onConfirm} />
+  width,
+  height,
+}: ModalAlertProps) => {
+  // Radix restaura el foco al elemento que lo abrio via su Trigger interno
+  // (context.triggerRef); como este modal es totalmente controlado y no usa
+  // AlertDialog.Trigger (se abre desde afuera cambiando el prop `open`), ese
+  // ref nunca se llena y la restauracion automatica no ocurre (verificado:
+  // sin esto, el foco cae en <body> al cerrar). Se guarda a mano observando
+  // el prop `open` directo -- onOpenChange NO sirve para esto: Radix solo lo
+  // llama cuando el cierre lo inicia el propio dialogo (Escape, overlay),
+  // nunca cuando el padre cambia `open` de afuera.
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (open) {
+      previouslyFocused.current = document.activeElement as HTMLElement;
+    }
+  }, [open]);
+
+  return (
+    <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
+      <AlertDialog.Portal>
+        <AlertDialog.Overlay className={styles.alertDialogOverlay} />
+        <AlertDialog.Content
+          className={[
+            className || styles.alertDialogContent,
+            (!title || hideModalTitle(title)) && styles.withoutTitle,
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          onCloseAutoFocus={event => {
+            if (previouslyFocused.current) {
+              event.preventDefault();
+              previouslyFocused.current.focus();
+            }
+          }}
+          style={{ width, height }}
+        >
+          <div className={styles.closeIcon}>
+            <AlertDialog.Cancel
+              asChild
+              onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                if (onCloseChange) {
+                  return onCloseChange(event.nativeEvent);
+                }
+              }}
+            >
+              {(showCloseIcon == null || showCloseIcon) && (
+                <button aria-label="Cerrar">
+                  <i className="ri-close-line"></i>
+                </button>
+              )}
+            </AlertDialog.Cancel>
           </div>
-        )}
-      </AlertDialog.Content>
-    </AlertDialog.Portal>
-  </AlertDialog.Root>
-);
+          {icon &&
+            (!includesErrorString(title) ? (
+              <div
+                className={[iconColor && styles[iconColor], styles.icon]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                {loading ? (
+                  <span className={styles.spinner}>{icon}</span>
+                ) : (
+                  icon
+                )}
+              </div>
+            ) : (
+              <div className={`${styles.red} ${styles.icon}`}>
+                <i className="ri-alert-line"></i>
+              </div>
+            ))}
+          {title && !hideModalTitle(title) && (
+            <AlertDialog.Title
+              className={
+                (classNameTitle && styles[classNameTitle]) ||
+                styles.alertDialogTitle
+              }
+            >
+              {title}
+            </AlertDialog.Title>
+          )}
+          {description &&
+            (typeof description === 'string' ? (
+              <AlertDialog.Description
+                className={
+                  classNameDescription ?? styles.alertDialogDescription
+                }
+              >
+                {description}
+              </AlertDialog.Description>
+            ) : (
+              <AlertDialog.Description
+                asChild
+                className={
+                  classNameDescription ?? styles.alertDialogDescription
+                }
+              >
+                {description}
+              </AlertDialog.Description>
+            ))}
+          {contentCard}
+          <div className={styles.buttonsFooter}>{buttonsFooter}</div>
+          {showLayoutButtons && (
+            <div className={styles.buttonsFooter}>
+              <Button
+                text={onCancelText ?? 'Cancelar'}
+                color={ColorEnum.Secondary}
+                onClick={onCancel}
+              />
+              <Button text={onConfirmText ?? 'Continuar'} onClick={onConfirm} />
+            </div>
+          )}
+        </AlertDialog.Content>
+      </AlertDialog.Portal>
+    </AlertDialog.Root>
+  );
+};
 
 export default ModalAlert;

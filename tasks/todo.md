@@ -32,7 +32,7 @@ Cada tarea debe registrar archivos reales, validaciones, diferencias Figma, orde
 | ------------------------------ | --------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------- | --------------- |
 | [x] DEC-002B Campo de texto    | Label/error asociados, ref y atributos nativos; required/disabled/error visibles                    | 001A         | sad-aml-shared/components/Atoms/InputText (corregido)                | M; V1,V3        |
 | [x] DEC-002C Checkbox          | Nombre accesible, teclado, estado controlado y error visible                                        | 002B         | sad-aml-shared/components/Atoms/Checkbox (nuevo)                     | S; V1,V3        |
-| [ ] DEC-002D Dialogo           | Apertura controlada, foco inicial y retorno, Escape, scroll y footer accesible                      | 002A         | src/components/Organisms/Modal                                      | M; V1,V3        |
+| [x] DEC-002D Dialogo           | Apertura controlada, foco inicial y retorno, Escape, scroll y footer accesible                      | 002A         | sad-aml-shared/components/Organisms/Modal (corregido)                | M; V1,V3        |
 
 `DEC-002C` originalmente era "Checkbox y select" en una sola tarea. Se separo (2026-09-14): `sad-aml-shared/Dropdown` (Select) tiene un bug real (`key={randomKey(...)}` genera una key con `Math.random()` en cada render, React destruye y recrea las opciones en vez de reconciliarlas) y no expone `error` ni hace `...rest`, asi que no es ajustable desde afuera — necesita componente propio, mas grande que Checkbox. Login solo necesita el checkbox de "recordar usuario"; el select lo necesita recien `DEC-007` (estado civil, grado academico, etc.), asi que se movio como `DEC-002C2` justo antes de esa tarea, sin frenar Login.
 
@@ -184,6 +184,23 @@ El usuario aclaro que `sad-aml-shared` no es una dependencia externa que se refr
 - Pruebas: como Jest excluye `src/sad-aml-shared/`, las pruebas de ambos (asociacion de label, aria-describedby, teclado, disabled, que `maxLength` si funcione) se movieron a `src/components/Atoms/index.test.tsx`, que importa el barril. 9 pruebas en total, todas en verde.
 - Revalidado en navegador con el mismo criterio que antes de migrar: clic en la etiqueta de `InputText` (con id generado por `useId`) enfoca el input real; clic en la etiqueta del `Checkbox` ya migrado tambien lo marca/desmarca correctamente.
 - Commit sugerido (no ejecutado): `refactor(shared): mueve Checkbox e InputText corregido a sad-aml-shared`.
+
+### DEC-002D Dialogo (2026-09-14)
+
+Se corrigio `Modal.tsx`/`Modal.module.scss` directo en `sad-aml-shared` (mismo criterio de "de quien es el componente": un dialogo generico no es especifico de DecPat). Ningun consumidor existente usaba este componente todavia (se verifico con grep antes de tocarlo), asi que no hay riesgo de romper algo.
+
+Bugs reales encontrados y corregidos (no solo estilo):
+- **Error de hidratacion confirmado por consola**: cuando `description` es un string, Radix ya envuelve el contenido en un `<p>`, pero el componente ademas metia un `<div>` adentro (`<AlertDialog.Description><div>{description}</div></AlertDialog.Description>`) — HTML invalido, React tiraba "`<p>` cannot contain a nested `<div>`". Se corrigio pasando el string directo cuando es string, y usando `asChild` solo cuando `description` ya es un elemento JSX.
+- **Boton de cerrar sin nombre accesible**: `<button><i className="ri-close-line"></i></button>` no tenia `aria-label`; un lector de pantalla no sabria que hace. Se agrego `aria-label="Cerrar"`.
+- **Foco no vuelve al cerrar**: verificado en navegador (esperando el efecto async de Radix para descartar condicion de carrera) que al presionar Escape el foco caia en `<body>`, no en el elemento que abrio el modal. Causa: el modal es controlado desde afuera sin `AlertDialog.Trigger`, asi que Radix no tiene que ref restaurar. Se guarda el elemento enfocado en un `useEffect` que observa el prop `open` (no `onOpenChange`: ese solo se dispara cuando Radix decide cerrar, no cuando el padre cambia `open` de afuera) y se restaura en `onCloseAutoFocus`.
+- **Sin scroll para contenido largo**: `max-height: 100%` sin `overflow-y` recortaba el contenido sin forma de llegar al resto. Se agrego `overflow-y: auto` y `max-height: calc(100vh - 64px)`. Verificado con 25 lineas de texto: `scrollHeight` (942px) > `clientHeight` (600px), con scroll activo.
+- **Footer desbordaba en viewport angosto**: dos botones de 219px + 32px de gap no caben en 360-375px. Se agrego `flex-wrap` y una regla `@include mixin.lessThanX(500px)` que apila los botones. Verificado a 375px: `flexDirection: column`, sin overflow horizontal de la pagina.
+- **Props `width`/`height` declaradas pero nunca usadas**; el ancho real lo controlaba `marginContent` (prop mal nombrada, ninguna otra cosa la usaba). Se elimino `marginContent` y se conectaron `width`/`height` de verdad.
+- Se corrigieron dos "ternarios" armados con template literals que en realidad concatenaban texto literal (`` `${className} ? ${className} : ...` ``, `` `${classNameTitle && styles[classNameTitle]} ? ...` ``) — nunca fueron condicionales reales, dejaban clases como `undefined` y `?` en el DOM.
+- Se elimino `<AlertDialog.Trigger asChild></AlertDialog.Trigger>` (sin children, invalido con `asChild`; no se usaba ya que el modal es controlado).
+- Archivos: `src/sad-aml-shared/components/Organisms/Modal/Modal.tsx`, `Modal.module.scss`; `src/components/Organisms/index.ts` (nuevo, reexporta `Modal`), `src/components/Organisms/index.test.tsx` (nuevo).
+- Validaciones: `check-types`, `lint`, `test -- --runInBand` OK (4 pruebas nuevas: Escape dispara `onOpenChange(false)`, boton cerrar con nombre accesible, sin `<p><div>` invalido, no renderiza nada si `open=false`). `build` OK. El retorno de foco NO se probo en Jest (jsdom no simula de forma confiable el foco async de Radix); se verifico a mano en el navegador con esperas explicitas para descartar condiciones de carrera, documentado arriba.
+- Commit sugerido (no ejecutado): `fix(modal): corrige hidratacion, foco, scroll y footer del Modal de sad-aml-shared`.
 
 ## Registro de tareas cerradas
 
