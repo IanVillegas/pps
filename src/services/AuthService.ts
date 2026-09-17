@@ -1,6 +1,7 @@
 // Adaptador simulado (DEC-004), sin backend ni contrato de API (D-08).
 // error.demo, bloqueo.demo y conexion.demo permiten verificar los estados.
 // Los demas usuarios no vacios resuelven exito. No usar como autenticacion real.
+// Datos de prueba: error.demo, bloqueo.demo, conexion.demo
 
 export interface LoginCredentials {
   username: string;
