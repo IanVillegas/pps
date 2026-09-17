@@ -23,17 +23,21 @@ en pantallas grandes (reportado por el usuario en una laptop real,
 `width`/`height` del `<svg>` raiz cambiados a `100%`), asi el navegador
 siempre lo dibuja como vector.
 
+## Entregados para DEC-005A (2026-09-17)
+
+| Asset                | Componente                              | Nota                                                                 |
+| --------------------- | ---------------------------------------- | --------------------------------------------------------------------- |
+| Logo rojo/negro 2026  | `src/assets/images/LogoHeader.tsx`       | Usado en el header/sidebar del shell (`AppShell`). Reemplaza un `public/logo-header.png` provisional (PNG rasterizado sin `srcset`, mismo riesgo de pixelado que ya se investigo en Login) que se elimino al llegar este SVG real. Tamano intrinseco 159x41, sin `preserveAspectRatio="none"` forzado a otra proporcion: el contenedor usa `aspect-ratio: 159/41` para no distorsionarlo. |
+
 ## Pendientes de exportar desde Figma
 
 | Asset                    | Uso                              | Referencia Figma                                                     | Archivo destino propuesto              |
 | ------------------------ | --------------------------------- | ---------------------------------------------------------------------- | --------------------------------------- |
-| Logo rojo/negro 2026      | Header, shell                     | Design System GM, ver `tasks/preparacion-tecnica-visual.md` seccion 7  | `src/assets/images/LogoHeader.tsx`      |
 | Ilustracion de error      | Pantallas de error general/shell  | Nodos 43121:455 y 43121:517                                            | `src/assets/images/ErrorIllustration.tsx` |
 
-Estos dos siguen sin exportar porque ninguna tarea cerrada hasta ahora los
-necesita todavia (son de DEC-005A/shell y DEC-005B/errores). Se traen
-cuando toque esa tarea, siguiendo el mismo patron `.tsx` con SVG incrustado
-de arriba, no como `.svg` sueltos.
+Este sigue sin exportar porque ninguna tarea cerrada hasta ahora lo necesita
+todavia (es de DEC-005B/errores). Se trae cuando toque esa tarea, siguiendo
+el mismo patron `.tsx` con SVG incrustado de arriba, no como `.svg` suelto.
 
 Hasta que existan estos archivos, no se debe simular su presencia (ni con un
 export vacio ni con un placeholder que rompa `next/image`). Los componentes

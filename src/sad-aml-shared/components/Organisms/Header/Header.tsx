@@ -1,28 +1,38 @@
-import { CurrencyInfo } from '@/sad-aml-shared/components/Atoms';
-import { ProfileInfoHeader } from '@/sad-aml-shared/components/Molecules';
-import styles from '@/sad-aml-shared/components/Organisms/Header/Header.module.scss';
-//import store, { RootState } from '../../../../../redux/store'
+'use client';
 
-interface IProp {
+import type { ReactNode } from 'react';
+import ProfileNavigation from '../../Atoms/ProfileNavigation/ProfileNavigation';
+import styles from './Header.module.scss';
+
+interface HeaderProps {
+  clientName: string;
   handleLogout: () => void;
-  openDrawer: () => void;
+  children?: ReactNode;
+  profileIcon?: ReactNode;
+  logoutIcon?: ReactNode;
 }
 
-const Header = ({ handleLogout, openDrawer }: IProp) => {
-  return (
-    <header className={styles.wrapper}>
-      <div className={styles.header}>
-        <CurrencyInfo buyRate={'0'} sellRate={'0'} />
-        <ProfileInfoHeader
-          clientName={'Oficina: 100 CN Alajuela'}
-          profileHref="/perfil"
-          logOutAction={handleLogout}
-          settingsHref="/configuracion"
-          openDrawer={openDrawer}
-        />
+const Header = ({
+  clientName,
+  handleLogout,
+  children,
+  profileIcon,
+  logoutIcon,
+}: HeaderProps) => (
+  <header className={styles.header}>
+    {children}
+    <div className={styles.header__profile}>
+      <div className={styles.header__name}>
+        <strong>Hola,</strong>
+        <span>{clientName}</span>
       </div>
-    </header>
-  );
-};
+      <ProfileNavigation
+        logOutAction={handleLogout}
+        icon={profileIcon}
+        logoutIcon={logoutIcon}
+      />
+    </div>
+  </header>
+);
 
 export default Header;

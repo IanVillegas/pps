@@ -1,0 +1,12 @@
+// El logo es un <div> con el SVG incrustado al 100% adentro (ver
+// LogoHeader.tsx); "height: auto" no funciona con un hijo al 100% dentro de
+// un contenedor de alto automatico (colapsa a 0, mismo problema que
+// Login.module.scss .login__logo). aspect-ratio fija el alto real del
+// viewBox (159 x 41) sin ese problema.
+.logo {
+  display: block;
+  // 159x41 es el tamano intrinseco real exportado (no un valor elegido);
+  // aspect-ratio evita el colapso a alto 0 explicado arriba.
+  width: 159px;
+  aspect-ratio: 159 / 41;
+}

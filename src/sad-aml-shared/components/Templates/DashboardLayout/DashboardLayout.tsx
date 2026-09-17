@@ -1,32 +1,32 @@
 import type { ReactNode } from 'react';
-import styles from '@/sad-aml-shared/components/Templates/DashboardLayout/DashboardLayout.module.scss';
-import { SideBar, Header } from '@/sad-aml-shared/components/Organisms';
-import useDrawer from '@/sad-aml-shared/utils/hooks/useDrawer';
+import styles from './DashboardLayout.module.scss';
 
 interface DashboardLayoutProps {
   children: ReactNode;
+  sidebar: ReactNode;
+  header: ReactNode;
+  title: string;
 }
 
-const handleLogout = () => {};
-
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const { isDrawerOpen, openDrawer, closeDrawer } = useDrawer();
-
-  return (
-    <div className={styles.wrapper}>
-      <SideBar
-        isDrawerOpen={isDrawerOpen}
-        openDrawer={openDrawer}
-        closeDrawer={closeDrawer}
-        handleLogout={handleLogout}
-      />
-      <div className={styles.sideContent}>
-        <Header handleLogout={handleLogout} openDrawer={openDrawer} />
-        <div className={styles.content}>{children}</div>
-        {/* <Footer /> */}
-      </div>
+const DashboardLayout = ({
+  children,
+  sidebar,
+  header,
+  title,
+}: DashboardLayoutProps) => (
+  <div className={styles.wrapper}>
+    <a className={styles.skipLink} href="#contenido-principal">
+      Saltar al contenido
+    </a>
+    {sidebar}
+    <div className={styles.sideContent}>
+      {header}
+      <main id="contenido-principal" tabIndex={-1} className={styles.content}>
+        <h1>{title}</h1>
+        {children}
+      </main>
     </div>
-  );
-};
+  </div>
+);
 
 export default DashboardLayout;

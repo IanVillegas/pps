@@ -5,8 +5,8 @@ IDs alineados con AGENTS: DEC-004 estados de login, DEC-005 shell, DEC-006 wizar
 
 ## Estado actual (actualizado 2026-09-17)
 
-- Ultima tarea implementada y validada: `DEC-004 Estados de acceso`. Cierre y escenarios mock en [DEC-004](DEC-004-estados-acceso.md). El usuario realiza los commits.
-- Siguiente tarea sugerida: `DEC-005A Shell interno`. La autenticacion sigue simulada hasta disponer de contrato backend (D-08).
+- Ultima tarea implementada y validada: `DEC-005A Shell interno`. Se retomo una implementacion interrumpida por limite de uso de otro entorno (el usuario la referencio como "Codex"); esta sesion corrio las validaciones pendientes (`check-types`/`lint`/`build`), corrigio 1 error de formato Prettier y verifico en navegador el recorrido completo (login, redireccion a `/inicio`, shell, logout, bloqueo de ruta sin sesion, usuario recordado). El riesgo de pixelado del logo del header (PNG provisional sin `srcset`) se resolvio en la misma sesion: el usuario aporto el SVG real y se reemplazo por `src/assets/images/LogoHeader.tsx` (mismo patron de SVG incrustado que Login). Cierre en [DEC-005A](DEC-005A-shell.md); queda un hallazgo abierto para revisar antes de copiar al repo real: cambio disruptivo de props en los componentes compartidos (`Header`, `SideBar`, `ProfileNavigation`, `DashboardLayout`). El usuario realiza los commits.
+- Siguiente tarea sugerida: `DEC-005B Inicio y ayuda`. La autenticacion sigue simulada hasta disponer de contrato backend (D-08).
 - Pixelado de `LoginWave3`/logo: **cerrado 2026-09-16**. Confirmado como comportamiento de Chrome en Windows a 125% de escala de pantalla (DPR fraccionario), no un defecto de codigo — el fix de `drop-shadow` en `LoginWave3.tsx` se mantiene como mejora real, pero no era la causa completa. Detalle en el cierre de DEC-003 mas abajo ("Investigacion de pixelado persistente").
 - Texto tapado por `LoginWave3`: correccion base registrada en `ce4799a`. DEC-003A agrega ajustes para tablet compacta (481-1100px), conservando la curva y las proporciones de las ondas rojas.
 - `DEC-002C2 Select` sigue diferida (tabla "Acceso y navegacion", antes de DEC-007), no iniciada; solo hace falta antes de `DEC-007`.
@@ -64,7 +64,7 @@ DEC-002E (Notificaciones) y DEC-002F (Tabla editable) se mueven a la quincena de
 | Tarea                         | Aceptacion                                                                                                          | Dependencias | Areas previstas                                                                          | Tamano / checks |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------- | --------------- |
 | [x] DEC-004 Estados de acceso | Credenciales incorrectas y exceso de intentos; contador por vencimiento; conservar usuario y evitar doble solicitud | 003,002D     | src/components/Organisms/LoginFeedback, src/components/Pages/Login                       | M; V1,V3        |
-| [ ] DEC-005A Shell            | Header/sidebar DecPat, datos por props, submenu y logout; App Router sin rutas heredadas                            | 003,001B     | src/components/Templates/AppShell, src/types/Session.types.ts, src/app/inicio/layout.tsx | M; V2,V3        |
+| [x] DEC-005A Shell            | Header/sidebar DecPat, datos por props, submenu y logout; App Router sin rutas heredadas                            | 003,001B     | src/components/Templates/AppShell, src/types/Session.types.ts, src/app/inicio/layout.tsx | M; V2,V3        |
 | [ ] DEC-005B Inicio y ayuda   | Bienvenida y contacto configurable; estado error recuperable; no activar modulos administrativos sin alcance        | 005A,002D    | src/components/Pages/Home, src/components/Organisms/HelpDialog, src/app/inicio/page.tsx  | M; V2,V3        |
 
 ### Checkpoint C4

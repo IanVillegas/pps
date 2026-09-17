@@ -1,163 +1,138 @@
-@use '../../../../styles/settings/' as variables;
-@use '../../../../styles/tools/mixin' as mixin;
-
-@media print {
-  /* All your print styles go here */
-  .sideBar,
-  .sideBarTablet {
-    display: none !important;
-  }
-}
-
-.toggleButton {
-  position: absolute;
-  margin-top: 11%;
-  left: 20px;
-  background-color: variables.$gray-100;
-  color: variables.$gray-400;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-}
+@use '@/sad-aml-shared/styles/settings' as gm;
 
 .sideBar {
-  background-color: variables.$gray-100;
-  width: 282px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  transition-duration: 0.2s;
-  //box-shadow: 0px 8px 16px rgba(108, 117, 125, 0.09);
-  display: none;
-
-  @include mixin.from(laptop) {
-    display: inherit;
-  }
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  width: 266px;
+  flex: 0 0 266px;
+  min-height: 100vh;
+  background: gm.$white;
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
 
   &__logo {
-    margin-top: clamp(30px, mixin.ToVW(37px), 37px);
-    margin-left: 30px;
     display: flex;
     justify-content: center;
-    top: 0;
-    z-index: variables.$z-1;
+    padding: 36px 24px 0;
   }
-
-  &__wrapper {
-    height: 100%;
+  &__navigation {
+    margin-top: 95px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin-top: 5rem;
-    padding-top: 20px;
-    margin-right: 24px;
-
-    &__configuration {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-    }
+    gap: 4px;
   }
-
-  &.collapsed {
-    width: 4.2%;
-    .sideBar__wrapper {
-      align-items: center;
-      height: 100%;
-      margin-top: 6rem;
-      //margin-right: -28px;
-    }
-  }
-}
-
-.sideBarTablet {
-  height: 100vh;
-
-  @include mixin.from(laptop) {
-    display: none;
-  }
-
-  & .header {
-    height: 15%;
+  li {
     display: flex;
-    flex-direction: column;
-    padding-block: 27px;
-    padding-inline: 37px;
-    background-color: variables.$gray-100;
-
-    &__closeIcon {
-      display: flex;
-      justify-content: flex-end;
-
-      button {
-        all: unset;
-        color: variables.$gray-300;
-        font-size: 25px;
-      }
-    }
-
-    &__userSection {
-      display: flex;
-      gap: 10px;
-
-      &__userIcon {
-        width: 39.84px;
-        height: 36.05px;
-        border-radius: 8px;
-        background-color: variables.$primary-400;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        color: variables.$text_white;
-        font-size: 20px;
-      }
-
-      &__greets {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        & .greets {
-          @include mixin.config_text(
-            variables.$font-family-work-sans,
-            normal,
-            600,
-            16px,
-            19px,
-            variables.$gray-500
-          );
-        }
-
-        & .userName {
-          @include mixin.config_text(
-            variables.$font-family-poppins,
-            normal,
-            300,
-            13px,
-            20px,
-            variables.$gray-400
-          );
-        }
-      }
-    }
-  }
-
-  &__wrapper {
-    display: flex;
-    height: 85%;
-    flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    background-color: variables.$gray-100;
+    gap: 18px;
+    padding-left: 35px;
+    min-height: 48px;
+    transition:
+      gap 0.2s ease,
+      padding-left 0.2s ease;
+  }
+  &__arrow {
+    width: 16px;
+    flex: 0 0 16px;
+    color: gm.$gray-500;
+  }
+  nav a,
+  nav button {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 48px;
+    width: 215px;
+    flex-shrink: 0;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    text-decoration: none;
+    text-align: left;
+    font:
+      600 14px/20px var(--font-worksans),
+      sans-serif;
+    color: gm.$gray-500;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+    span {
+      display: inline-flex;
+      font-size: 20px;
+      flex-shrink: 0;
+      font-weight: 400;
+    }
+    &:focus-visible {
+      outline: 2px solid gm.$gray-500;
+      outline-offset: 3px;
+    }
+    &:disabled {
+      color: gm.$gray-400;
+      cursor: not-allowed;
+    }
   }
 
-  &__separator {
-    width: 212px;
-    height: 3px;
-    background-color: variables.$gray-300;
-    border-radius: 10px;
-    margin-block: 10px;
+  // Colapsado por defecto (sin flecha, sin espacio para ella) salvo que este
+  // activo o que se pase el mouse sobre su enlace: `:has()` deja excluir a
+  // los botones deshabilitados (nunca tienen un <a> adentro, nunca matchean
+  // `:has(> a:hover)`) sin depender de JS para saber si el hover corresponde
+  // a un item navegable. Soporte de `:has()`: Chrome/Edge 105+, Firefox
+  // 121+, Safari 15.4+ — suficiente para un sistema interno.
+  li:not(.active):not(:has(> a:hover)) {
+    gap: 0;
+    .sideBar__arrow {
+      display: none;
+    }
+    a,
+    button {
+      padding-left: 0;
+      gap: 22px;
+    }
+  }
+
+  // Mismo tratamiento visual que "activo" (fondo rojo, texto blanco, sombra
+  // y flecha visible) al pasar el mouse sobre un item navegable no activo,
+  // igual que en Mutual en Linea.
+  .active,
+  li:has(> a:hover) {
+    .sideBar__arrow {
+      display: flex;
+    }
+    a {
+      color: gm.$white;
+      background: gm.$red-2026;
+      box-shadow: 0 16px 24px rgba(233, 85, 93, 0.35);
+    }
+  }
+
+  @media (max-width: 1100px) {
+    width: 216px;
+    flex-basis: 216px;
+    li {
+      padding-left: 16px;
+      gap: 8px;
+    }
+    // Misma especificidad que la regla base ("nav a, nav button"; un simple
+    // "a, button" aqui nunca ganaba: bug preexistente, encontrado al probar
+    // el hover, la version angosta jamas se aplicaba aunque no se notara
+    // porque 215px igual cabia en un contenedor de 216px).
+    nav a,
+    nav button {
+      width: 184px;
+      padding-inline: 12px;
+      gap: 10px;
+    }
+    li:not(.active):not(:has(> a:hover)) a,
+    li:not(.active):not(:has(> a:hover)) button {
+      gap: 16px;
+    }
   }
 }

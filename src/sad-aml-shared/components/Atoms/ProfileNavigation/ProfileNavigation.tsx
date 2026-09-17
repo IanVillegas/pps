@@ -1,48 +1,55 @@
-import { Button } from '@/sad-aml-shared/components/Atoms';
-import styles from '@/sad-aml-shared/components/Atoms/ProfileNavigation/ProfileNavigation.module.scss';
+'use client';
+
+import type { ReactNode } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import styles from './ProfileNavigation.module.scss';
 
 interface ProfileNavigationProps {
-  profileHref: string;
-  settingsHref: string;
+  profileHref?: string;
+  settingsHref?: string;
   logOutAction: () => void;
+  icon?: ReactNode;
+  logoutIcon?: ReactNode;
 }
 
-const ProfileNavigation = ({ logOutAction }: ProfileNavigationProps) => {
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <button
-          className={styles.wrapperTrigger}
-          aria-label="Customise options"
+const ProfileNavigation = ({
+  logOutAction,
+  icon,
+  logoutIcon,
+}: ProfileNavigationProps) => (
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger asChild>
+      <button
+        type="button"
+        className={styles.wrapperTrigger}
+        aria-label="Menú de usuario"
+        title="Menú de usuario"
+      >
+        <span className={styles.wrapperTrigger__icon}>
+          {icon ?? <i className="ri-user-line" aria-hidden="true" />}
+        </span>
+        <i className="ri-arrow-down-s-line" aria-hidden="true" />
+      </button>
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Portal>
+      <DropdownMenu.Content
+        className={styles.wrapperContent}
+        align="end"
+        sideOffset={12}
+        collisionPadding={16}
+      >
+        <DropdownMenu.Item
+          className={styles.wrapperContent__item}
+          onSelect={logOutAction}
         >
-          <div className={styles.wrapperTrigger__icon}>
-            <i className="ri-user-line"></i>
-          </div>
-          <span className={styles.wrapperTrigger__caretDown}>
-            <i className="ri-arrow-down-s-line"></i>
-          </span>
-        </button>
-      </DropdownMenu.Trigger>
-
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content className={styles.wrapperContent} sideOffset={5}>
-          <DropdownMenu.Item>
-            <Button
-              text="Cerrar sesión"
-              lefIcon={<i className="ri-logout-circle-r-line"></i>}
-              onClick={logOutAction}
-              className={
-                styles.wrapperContent__item +
-                ' ' +
-                styles.wrapperContent__item__logout
-              }
-            ></Button>
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
-  );
-};
+          {logoutIcon ?? (
+            <i className="ri-logout-circle-r-line" aria-hidden="true" />
+          )}
+          Cerrar sesión
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu.Portal>
+  </DropdownMenu.Root>
+);
 
 export default ProfileNavigation;

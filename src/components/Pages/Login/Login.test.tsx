@@ -1,9 +1,18 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from './Login';
+import { getSession, endSession } from '@/services/SessionService';
+
+const mockReplace = jest.fn();
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ replace: mockReplace }),
+}));
 
 describe('Login', () => {
   beforeEach(() => {
+    mockReplace.mockClear();
+    endSession();
     window.localStorage.clear();
   });
 
@@ -40,20 +49,22 @@ describe('Login', () => {
     expect(
       await screen.findByText('El campo debe tener al menos 5 caracteres')
     ).toBeInTheDocument();
-    expect(screen.queryByText('Ingreso exitoso.')).not.toBeInTheDocument();
+    expect(mockReplace).not.toHaveBeenCalled();
     await userEvent.type(screen.getByLabelText('Usuario'), 'e');
     expect(
       screen.queryByText('El campo debe tener al menos 5 caracteres')
     ).not.toBeInTheDocument();
   });
 
-  it('logs in with valid credentials and shows the success state', async () => {
+  it('logs in with valid credentials, starts the session and redirects to /inicio without showing a message', async () => {
     render(<Login />);
     await userEvent.type(screen.getByLabelText('Usuario'), 'ivillegas');
     await userEvent.type(screen.getByLabelText('Contraseña'), 'secreta123');
     await userEvent.click(screen.getByRole('button', { name: 'Ingresar' }));
 
-    expect(await screen.findByText('Ingreso exitoso.')).toBeInTheDocument();
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/inicio'));
+    expect(getSession()?.username).toBe('ivillegas');
+    expect(screen.queryByText('Ingreso exitoso.')).not.toBeInTheDocument();
   });
 
   it('remembers only the username, never the password, when checked', async () => {
@@ -63,7 +74,7 @@ describe('Login', () => {
     await userEvent.click(screen.getByLabelText('Recordar mi usuario'));
     await userEvent.click(screen.getByRole('button', { name: 'Ingresar' }));
 
-    await screen.findByText('Ingreso exitoso.');
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/inicio'));
     expect(window.localStorage.getItem('decpat.rememberedUsername')).toBe(
       'ivillegas'
     );

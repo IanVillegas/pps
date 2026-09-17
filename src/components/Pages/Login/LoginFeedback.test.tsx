@@ -1,6 +1,18 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from './Login';
+
+const mockReplace = jest.fn();
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ replace: mockReplace }),
+}));
 import { login } from '@/services/AuthService';
 
 jest.mock('@/services/AuthService', () => ({
@@ -20,6 +32,7 @@ const fillForm = () => {
 
 beforeEach(() => {
   mockLogin.mockReset();
+  mockReplace.mockClear();
   window.localStorage.clear();
 });
 afterEach(() => {
@@ -46,7 +59,7 @@ it('preserves the username after invalid credentials and allows retry', async ()
     target: { value: 'nuevo' },
   });
   await userEvent.click(screen.getByRole('button', { name: 'Ingresar' }));
-  expect(await screen.findByText('Ingreso exitoso.')).toBeInTheDocument();
+  await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/inicio'));
 });
 
 it('keeps the lock after closing and expires using the absolute deadline', async () => {

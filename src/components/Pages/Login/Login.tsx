@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { startMockSession } from '@/services/SessionService';
 import LoginFeedback, {
   formatRetryTime,
   type LoginFeedbackKind,
@@ -31,6 +33,7 @@ interface LoginFormValues {
  * escritorio (1366x720). Los estados de error/bloqueo son DEC-004.
  */
 const Login = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -44,7 +47,6 @@ const Login = () => {
   });
   const [username, password] = watch(['username', 'password']);
   const [rememberUsername, setRememberUsernameChecked] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [feedback, setFeedback] = useState<LoginFeedbackKind | null>(null);
   const [retryAt, setRetryAt] = useState(0);
   const [now, setNow] = useState(0);
@@ -79,7 +81,8 @@ const Login = () => {
       if (result.success) {
         // Solo el usuario se recuerda, nunca la contrasena.
         setRememberedUsername(rememberUsername ? data.username : null);
-        setSuccess(true);
+        startMockSession(data.username);
+        router.replace('/inicio');
       } else {
         setValue('password', '');
         if (result.reason === 'locked') {
@@ -123,67 +126,58 @@ const Login = () => {
       </div>
 
       <div className={styles.login__panel}>
-        {success ? (
-          <p role="status" className={styles.login__title}>
-            {/* La redireccion real a /inicio se conecta cuando exista
-                DEC-005B; hoy esa ruta no tiene pantalla. */}
-            Ingreso exitoso.
-          </p>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <h2 className={styles.login__title}>Iniciar sesión</h2>
-            <div className={styles.login__field}>
-              <InputText
-                label="Usuario"
-                errors={errors.username?.message}
-                {...register('username', {
-                  required: 'El usuario es requerido',
-                  minLength: {
-                    value: 5,
-                    message: 'El campo debe tener al menos 5 caracteres',
-                  },
-                })}
-              />
-            </div>
-            <div className={styles.login__field}>
-              <InputSecret
-                label="Contraseña"
-                errors={errors.password?.message}
-                {...register('password', {
-                  required: 'La contraseña es requerida',
-                })}
-              />
-            </div>
-            <div className={styles.login__remember}>
-              <Checkbox
-                label="Recordar mi usuario"
-                checked={rememberUsername}
-                onChange={event =>
-                  setRememberUsernameChecked(event.target.checked)
-                }
-              />
-            </div>
-            <Button
-              text="Ingresar"
-              color={ButtonColor.Cta}
-              size="mediumL"
-              type="submit"
-              spinner={isSubmitting}
-              disabled={
-                isSubmitting || remainingSeconds > 0 || !username || !password
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <h2 className={styles.login__title}>Iniciar sesión</h2>
+          <div className={styles.login__field}>
+            <InputText
+              label="Usuario"
+              errors={errors.username?.message}
+              {...register('username', {
+                required: 'El usuario es requerido',
+                minLength: {
+                  value: 5,
+                  message: 'El campo debe tener al menos 5 caracteres',
+                },
+              })}
+            />
+          </div>
+          <div className={styles.login__field}>
+            <InputSecret
+              label="Contraseña"
+              errors={errors.password?.message}
+              {...register('password', {
+                required: 'La contraseña es requerida',
+              })}
+            />
+          </div>
+          <div className={styles.login__remember}>
+            <Checkbox
+              label="Recordar mi usuario"
+              checked={rememberUsername}
+              onChange={event =>
+                setRememberUsernameChecked(event.target.checked)
               }
             />
-            {remainingSeconds > 0 && feedback !== 'locked' && (
-              <p className={styles.login__forgot}>
-                Podrá intentar nuevamente en {formatRetryTime(remainingSeconds)}
-                .
-              </p>
-            )}
+          </div>
+          <Button
+            text="Ingresar"
+            color={ButtonColor.Cta}
+            size="mediumL"
+            type="submit"
+            spinner={isSubmitting}
+            disabled={
+              isSubmitting || remainingSeconds > 0 || !username || !password
+            }
+          />
+          {remainingSeconds > 0 && feedback !== 'locked' && (
             <p className={styles.login__forgot}>
-              ¿Olvidó su contraseña? Comuníquese con soporte interno.
+              Podrá intentar nuevamente en {formatRetryTime(remainingSeconds)}.
             </p>
-          </form>
-        )}
+          )}
+          <p className={styles.login__forgot}>
+            ¿Olvidó su contraseña? Comuníquese con soporte interno.
+          </p>
+        </form>
       </div>
       <LoginFeedback
         onAfterClose={() => setFocus('password')}
