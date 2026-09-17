@@ -3,12 +3,12 @@
 Base: [plan y presupuesto](plan.md), [inventario Figma y decisiones](preparacion-tecnica-visual.md).
 IDs alineados con AGENTS: DEC-004 estados de login, DEC-005 shell, DEC-006 wizard, DEC-007+ pasos. Los sufijos dividen tareas conservando su identidad.
 
-## Estado actual (actualizado 2026-09-16)
+## Estado actual (actualizado 2026-09-17)
 
-- Ultima tarea cerrada: `DEC-003 Login base` (tabla "Acceso y navegacion" queda para despues; DEC-003 esta en la tabla del Checkpoint C2). Todo lo de esa tarea (Login + assets Figma + fixes de pixelado/margen) ya esta commiteado (`7f79d64`); `git status` solo tiene este archivo (`tasks/todo.md`, esta seccion) sin commitear.
+- Ultima tarea implementada y validada: `DEC-003A Ajustes de validacion y presentacion del login`. Cierre en [DEC-003A](DEC-003A-ajustes-login.md); commit pendiente de aprobacion del usuario. Incluye validaciones, estados del boton, espaciado de errores y responsive conservando la curva blanca.
 - Siguiente tarea sugerida: `DEC-004 Estados de acceso` (tabla "Acceso y navegacion"), aun no iniciada.
 - Pixelado de `LoginWave3`/logo: **cerrado 2026-09-16**. Confirmado como comportamiento de Chrome en Windows a 125% de escala de pantalla (DPR fraccionario), no un defecto de codigo — el fix de `drop-shadow` en `LoginWave3.tsx` se mantiene como mejora real, pero no era la causa completa. Detalle en el cierre de DEC-003 mas abajo ("Investigacion de pixelado persistente").
-- Texto tapado por `LoginWave3` en viewports angostos (768-1339px, incluye el breakpoint de tablet): **corregido 2026-09-16, sin commitear**. `Login.module.scss` cambia `left` de `.login__wave--3` a `max(43.34%, calc(9vw + 490px))`. Detalle en el cierre de DEC-003 mas abajo ("Bug real encontrado y corregido... texto tapado por la diagonal blanca").
+- Texto tapado por `LoginWave3`: correccion base registrada en `ce4799a`. DEC-003A agrega ajustes para tablet compacta (481-1100px), conservando la curva y las proporciones de las ondas rojas.
 - `DEC-002C2 Select` sigue diferida (tabla "Acceso y navegacion", antes de DEC-007), no iniciada; solo hace falta antes de `DEC-007`.
 - Antes de asumir este estado como verdad absoluta, correr `git status`/`git log -5` para confirmar que nadie avanzo por fuera de esta nota.
 

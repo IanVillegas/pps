@@ -343,6 +343,7 @@
 // $accent-500 ya existian en la paleta (_colors.scss), solo les faltaba una
 // clase de boton que los usara.
 .cta {
+  border: 0;
   background-color: variables.$accent-400;
   color: variables.$gray-500;
   // "Ilumination-1" del CTA, confirmada en Figma (nodo 43121:6904, Login):
@@ -351,13 +352,26 @@
   box-shadow: 0px 16px 24px rgba(255, 207, 77, 0.3);
 
   &:hover {
-    background-color: variables.$accent-500;
+    background-color: rgb(240, 220, 168);
+    border: 0;
+    color: variables.$gray-500;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$gray-500;
+    outline-offset: 3px;
   }
 
   &.disabled {
+    border: 0 !important;
     background-color: variables.$gray-100;
     color: variables.$gray-300;
     box-shadow: none;
+
+    &:hover {
+      color: variables.$gray-300;
+    }
   }
 }
 

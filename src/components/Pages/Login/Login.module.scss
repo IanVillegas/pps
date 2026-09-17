@@ -164,16 +164,8 @@
   gap: 8px;
 }
 
-.login__help {
-  align-self: flex-start;
-  font-family: var(--font-worksans), sans-serif;
-  font-weight: 600;
-  font-size: #{gm-type.$fs-body-3}; // 14px
-  color: gm.$gray-400;
-  text-decoration: underline;
-}
-
 .login__remember {
+  align-self: center;
   margin-top: 4px;
 }
 
@@ -190,4 +182,62 @@
 .login__panel form > button {
   align-self: center;
   width: 250px;
+}
+
+// En tablet compacta, reservar espacio para la curva y escalar las ondas
+// rojas con la proporcion del canvas original, sin comprimir la marca.
+// .login__wave--1, --2 y --3: proporciones del fondo y posición de la curva blanca.
+// .login__brand: ancho y espacios del panel izquierdo.
+// .login__heading y .login__intro: tamaño del título y alineación del párrafo.
+// .login__panel: espacio disponible para el formulario.
+// .login__panel form > button: ancho del botón.
+// .login__scene::after: extensión blanca hasta el borde derecho.
+@media (min-width: 481px) and (max-width: 1100px) {
+  .login__scene::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 70%;
+    background-color: gm.$white;
+  }
+
+  .login__wave--1 {
+    width: 77.96vh;
+    height: 101.33vh;
+  }
+
+  .login__wave--2 {
+    width: 136.41vh;
+    height: 124.72vh;
+  }
+
+  .login__wave--3 {
+    left: 35%;
+  }
+
+  .login__brand {
+    box-sizing: border-box;
+    flex: 0 0 42%;
+    min-width: 0;
+    max-width: none;
+    padding: 40px 64px 40px 24px;
+  }
+
+  .login__heading {
+    font-size: 32px;
+  }
+
+  .login__intro {
+    text-align: left;
+  }
+
+  .login__panel {
+    box-sizing: border-box;
+    min-width: 0;
+    padding: 32px 24px 32px 64px;
+  }
+
+  .login__panel form > button {
+    min-width: 0;
+    max-width: 100%;
+  }
 }

@@ -7,12 +7,44 @@ describe('Login', () => {
     window.localStorage.clear();
   });
 
-  it('shows required errors when submitting empty fields', async () => {
+  it('shows required errors after leaving empty fields', async () => {
     render(<Login />);
-    await userEvent.click(screen.getByRole('button', { name: 'Ingresar' }));
+    await userEvent.click(screen.getByLabelText('Usuario'));
+    await userEvent.tab();
+    await userEvent.tab();
 
-    expect(await screen.findByText('Ingrese su usuario')).toBeInTheDocument();
-    expect(screen.getByText('Ingrese su contraseña')).toBeInTheDocument();
+    expect(
+      await screen.findByText('El usuario es requerido')
+    ).toBeInTheDocument();
+    expect(screen.getByText('La contraseña es requerida')).toBeInTheDocument();
+  });
+
+  it('enables submit only while both fields contain text', async () => {
+    render(<Login />);
+    const button = screen.getByRole('button', { name: 'Ingresar' });
+    expect(button).toBeDisabled();
+    await userEvent.type(screen.getByLabelText('Usuario'), 'ab');
+    expect(button).toBeDisabled();
+    await userEvent.type(screen.getByLabelText('Contraseña'), 'x');
+    expect(button).toBeEnabled();
+    await userEvent.clear(screen.getByLabelText('Usuario'));
+    expect(button).toBeDisabled();
+    expect(screen.queryByText('Centro de ayuda')).not.toBeInTheDocument();
+  });
+
+  it('rejects short usernames and clears the error at five characters', async () => {
+    render(<Login />);
+    await userEvent.type(screen.getByLabelText('Usuario'), 'abcd');
+    await userEvent.type(screen.getByLabelText('Contraseña'), 'x');
+    await userEvent.click(screen.getByRole('button', { name: 'Ingresar' }));
+    expect(
+      await screen.findByText('El campo debe tener al menos 5 caracteres')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Ingreso exitoso.')).not.toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText('Usuario'), 'e');
+    expect(
+      screen.queryByText('El campo debe tener al menos 5 caracteres')
+    ).not.toBeInTheDocument();
   });
 
   it('logs in with valid credentials and shows the success state', async () => {

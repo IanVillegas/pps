@@ -24,17 +24,20 @@ interface LoginFormValues {
  * Login base (DEC-003). Reconstruido desde el diseno real de Figma (nodo
  * 43121:6904, via get_design_context) despues de que la primera version se
  * hizo solo con el inventario escrito: layout de dos paneles a escala de
- * escritorio (1366x720), no una tarjeta centrada generica. "Centro de
- * ayuda" es texto/enlace visual de esta pantalla; el modal real de ayuda es
- * DEC-005B. Los estados de error/bloqueo son DEC-004.
+ * escritorio (1366x720). Los estados de error/bloqueo son DEC-004.
  */
 const Login = () => {
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormValues>();
+  } = useForm<LoginFormValues>({
+    mode: 'onTouched',
+    defaultValues: { username: '', password: '' },
+  });
+  const [username, password] = watch(['username', 'password']);
   const [rememberUsername, setRememberUsernameChecked] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -95,7 +98,13 @@ const Login = () => {
               <InputText
                 label="Usuario"
                 errors={errors.username?.message}
-                {...register('username', { required: 'Ingrese su usuario' })}
+                {...register('username', {
+                  required: 'El usuario es requerido',
+                  minLength: {
+                    value: 5,
+                    message: 'El campo debe tener al menos 5 caracteres',
+                  },
+                })}
               />
             </div>
             <div className={styles.login__field}>
@@ -103,12 +112,9 @@ const Login = () => {
                 label="Contraseña"
                 errors={errors.password?.message}
                 {...register('password', {
-                  required: 'Ingrese su contraseña',
+                  required: 'La contraseña es requerida',
                 })}
               />
-              <a href="#" className={styles.login__help}>
-                Centro de ayuda
-              </a>
             </div>
             <div className={styles.login__remember}>
               <Checkbox
@@ -125,7 +131,7 @@ const Login = () => {
               size="mediumL"
               type="submit"
               spinner={isSubmitting}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !username || !password}
             />
             <p className={styles.login__forgot}>
               ¿Olvidó su contraseña? Comuníquese con soporte interno.
