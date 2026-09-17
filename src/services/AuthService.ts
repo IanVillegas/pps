@@ -1,23 +1,38 @@
-// Servicio de acceso simulado (DEC-003). Sin backend ni contrato de API
-// todavia (D-08, tasks/preparacion-tecnica-visual.md); cualquier usuario y
-// contrasena no vacios resuelve exito. Los estados de error (credenciales
-// incorrectas, bloqueo por intentos) son DEC-004, no este servicio.
+// Adaptador simulado (DEC-004), sin backend ni contrato de API (D-08).
+// error.demo, bloqueo.demo y conexion.demo permiten verificar los estados.
+// Los demas usuarios no vacios resuelven exito. No usar como autenticacion real.
 
 export interface LoginCredentials {
   username: string;
   password: string;
 }
 
-export interface LoginResult {
-  success: boolean;
-}
+export type LoginResult =
+  | { success: true }
+  | { success: false; reason: 'invalid_credentials' | 'unavailable' }
+  | { success: false; reason: 'locked'; retryAt: number };
 
 export const login = (credentials: LoginCredentials): Promise<LoginResult> => {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve({
-        success: Boolean(credentials.username && credentials.password),
-      });
+      // Escenarios sinteticos del adaptador mock, no una politica de seguridad.
+      if (credentials.username === 'bloqueo.demo') {
+        resolve({
+          success: false,
+          reason: 'locked',
+          retryAt: Date.now() + 300000,
+        });
+      } else if (credentials.username === 'conexion.demo') {
+        resolve({ success: false, reason: 'unavailable' });
+      } else if (
+        credentials.username === 'error.demo' ||
+        !credentials.username ||
+        !credentials.password
+      ) {
+        resolve({ success: false, reason: 'invalid_credentials' });
+      } else {
+        resolve({ success: true });
+      }
     }, 600);
   });
 };

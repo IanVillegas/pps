@@ -25,6 +25,7 @@ interface ModalAlertProps {
   open: boolean;
   onOpenChange?: Dispatch<SetStateAction<boolean>>;
   onCloseChange?: (event: Event) => void;
+  onCloseAutoFocus?: (event: Event) => void;
   className?: string;
   buttonsFooter?: JSX.Element;
   iconColor?: 'green' | 'red' | 'yellow' | 'blue' | 'green300';
@@ -51,6 +52,7 @@ const ModalAlert = ({
   buttonsFooter,
   iconColor,
   onCloseChange,
+  onCloseAutoFocus,
   classNameTitle,
   classNameDescription,
   showCloseIcon,
@@ -91,6 +93,8 @@ const ModalAlert = ({
             .filter(Boolean)
             .join(' ')}
           onCloseAutoFocus={event => {
+            onCloseAutoFocus?.(event);
+            if (event.defaultPrevented) return;
             if (previouslyFocused.current) {
               event.preventDefault();
               previouslyFocused.current.focus();

@@ -1,6 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import LoginFeedback, {
+  formatRetryTime,
+  type LoginFeedbackKind,
+} from '@/components/Organisms/LoginFeedback/LoginFeedback';
 import { useForm } from 'react-hook-form';
 import { Button, ButtonColor, Checkbox, InputText } from '@/components/Atoms';
 import InputSecret from '@/sad-aml-shared/components/Atoms/InputSecret/InputSecret';
@@ -31,6 +35,7 @@ const Login = () => {
     register,
     handleSubmit,
     setValue,
+    setFocus,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
@@ -40,6 +45,23 @@ const Login = () => {
   const [username, password] = watch(['username', 'password']);
   const [rememberUsername, setRememberUsernameChecked] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [feedback, setFeedback] = useState<LoginFeedbackKind | null>(null);
+  const [retryAt, setRetryAt] = useState(0);
+  const [now, setNow] = useState(0);
+  const requestPending = useRef(false);
+  const remainingSeconds = Math.max(0, Math.ceil((retryAt - now) / 1000));
+
+  useEffect(() => {
+    if (!retryAt) return;
+    const tick = () => {
+      const current = Date.now();
+      setNow(current);
+      if (current >= retryAt) setRetryAt(0);
+    };
+    tick();
+    const timer = window.setInterval(tick, 1000);
+    return () => window.clearInterval(timer);
+  }, [retryAt]);
 
   useEffect(() => {
     const remembered = getRememberedUsername();
@@ -50,11 +72,27 @@ const Login = () => {
   }, [setValue]);
 
   const onSubmit = async (data: LoginFormValues) => {
-    const result = await login(data);
-    if (result.success) {
-      // Solo el usuario se recuerda, nunca la contrasena.
-      setRememberedUsername(rememberUsername ? data.username : null);
-      setSuccess(true);
+    if (requestPending.current || Date.now() < retryAt) return;
+    requestPending.current = true;
+    try {
+      const result = await login(data);
+      if (result.success) {
+        // Solo el usuario se recuerda, nunca la contrasena.
+        setRememberedUsername(rememberUsername ? data.username : null);
+        setSuccess(true);
+      } else {
+        setValue('password', '');
+        if (result.reason === 'locked') {
+          setNow(Date.now());
+          setRetryAt(result.retryAt);
+        }
+        setFeedback(result.reason);
+      }
+    } catch {
+      setValue('password', '');
+      setFeedback('unavailable');
+    } finally {
+      requestPending.current = false;
     }
   };
 
@@ -131,14 +169,28 @@ const Login = () => {
               size="mediumL"
               type="submit"
               spinner={isSubmitting}
-              disabled={isSubmitting || !username || !password}
+              disabled={
+                isSubmitting || remainingSeconds > 0 || !username || !password
+              }
             />
+            {remainingSeconds > 0 && feedback !== 'locked' && (
+              <p className={styles.login__forgot}>
+                Podrá intentar nuevamente en {formatRetryTime(remainingSeconds)}
+                .
+              </p>
+            )}
             <p className={styles.login__forgot}>
               ¿Olvidó su contraseña? Comuníquese con soporte interno.
             </p>
           </form>
         )}
       </div>
+      <LoginFeedback
+        onAfterClose={() => setFocus('password')}
+        kind={feedback}
+        remainingSeconds={remainingSeconds}
+        onClose={() => setFeedback(null)}
+      />
     </div>
   );
 };
