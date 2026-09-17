@@ -90,7 +90,7 @@ Todos los IDs de esta tabla pertenecen al archivo DecPat enlazado arriba. La rut
 | Paso 11                | 43121:1791 y 43121:2088 | Datos judiciales, embargos, pension y campos condicionales                             | `/mi-declaracion/11` / DEC-017                       |
 | Paso 12                | 43121:1459 y 43121:1124 | Cuestionario confidencial y variante ampliada                                          | `/mi-declaracion/12` / DEC-018A                      |
 | Cierre                 | 43121:866               | Texto de declaracion bajo juramento y accion final                                     | Estado final del flujo / DEC-018B                    |
-| Error general          | 43121:455               | Error con invitacion a intentar mas tarde                                              | Estado recuperable / DEC-005B, DEC-019               |
+| Error general          | 43121:455               | Error con invitacion a intentar mas tarde                                              | Estado recuperable / DEC-005B, DEC-019. **Implementado 2026-09-18 para Inicio**: mensaje/ilustracion/boton dentro del panel del shell (no el fondo rojo de pantalla completa, mas propio de un fallo previo al shell); ver cierre de DEC-005B. |
 | Error dentro del shell | 43121:517               | Error en Mi declaracion; nombre de capa Error sin datos                                | Estado de carga fallida, distinto de una tabla vacia |
 
 El menu muestra Reportes, Declaraciones y Mantenimientos. No hay pantallas detalladas de esos modulos en la pagina revisada. Su presencia en el menu no permite estimar CRUD, filtros, exportaciones, roles ni reglas. Se registran como alcance por definir, fuera de la estimacion base del flujo del declarante.

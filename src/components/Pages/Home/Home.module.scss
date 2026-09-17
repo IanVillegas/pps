@@ -1,0 +1,169 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Panel blanco (nodo Figma 43121:6810 "step1"/"bg-type-product"). El h1
+// "Declaracion Patrimonial" ya lo pone AppShell/DashboardLayout; esto es
+// solo el contenido debajo.
+.home {
+  // flex:1 para que el panel llene el alto disponible del <main> de
+  // DashboardLayout (el margen inferior ya lo da su padding-bottom) en vez
+  // de quedar del tamano de su contenido, como reporto el usuario a escala
+  // 125% (panel tan bajo como la mitad de la pantalla).
+  flex: 1;
+  box-sizing: border-box;
+  background: gm.$white;
+  border: 1px solid gm.$gray-100;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+  padding: 31px 40px 40px;
+}
+
+.home__title {
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: gm.$gray-500;
+  margin: 0 0 20px;
+}
+
+// Grid en vez de flex-wrap: con flex-wrap + flex-basis:380px las tarjetas
+// pasaban a una columna en cuanto el ancho disponible bajaba de ~784px
+// (380+380+24), aunque hubiera espacio de sobra para achicarlas un poco —
+// flexbox decide el wrap por el basis "hipotetico" de cada item, sin tomar
+// en cuenta que flex-shrink si podria acomodarlas (mismo tipo de problema
+// ya visto con la diagonal de Login). Eso pasaba con bastante margen en
+// laptops reales con escala de Windows (150% en una pantalla 1920x1080 deja
+// un ancho efectivo de ~1280px CSS, ver AGENTS.md): con sidebar + paddings
+// ya no sobraban los 784px que flex-wrap exigia. auto-fit/minmax si permite
+// achicar cada columna hasta 280px antes de recien ahi pasar a una sola.
+.home__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.home__card {
+  // box-sizing: sin esto min-height (content-box por default) no incluye
+  // el padding, asi que el alto real terminaba en min-height + 2*padding
+  // (~246px) en vez de los 200px que pedia Figma — de ahi el espacio de
+  // sobra reportado por el usuario incluso con el contenido mas corto.
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 200px;
+  padding: 22px;
+  background: gm.$white;
+  border: 1px solid gm.$gray-100;
+  border-radius: 12px;
+  box-shadow: 0 8px 8px rgba(108, 117, 125, 0.09);
+}
+
+.home__cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  p {
+    font-family: var(--font-worksans), sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: gm.$gray-400;
+    margin: 0;
+  }
+}
+
+// El icono de "Que es" es el glyph solo (ri-information-line ya es un
+// circulo); "Necesitas ayuda" lleva un badge circular detras (nodo Figma
+// "Ellipse 29", #00998A) porque ri-customer-service-line no trae uno.
+.home__cardIcon {
+  display: inline-flex;
+  font-size: 20px;
+  color: gm.$green-2026-400;
+  flex-shrink: 0;
+
+  &--badge {
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: gm.$green-2026-400;
+    color: gm.$white;
+    font-size: 13px;
+  }
+}
+
+.home__cardText {
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 16px;
+  color: gm.$gray-500;
+  margin: 0;
+
+  // Solo el texto de "Que es" va justificado en Figma (nodo 43121:6830);
+  // el de "Necesitas ayuda" (43121:6821) queda alineado a la izquierda.
+  &--justify {
+    text-align: justify;
+  }
+}
+
+// Boton solo de desarrollo (ver isDev en Home.tsx) para probar el estado
+// de error de abajo sin perder la sesion. Borde punteado adrede: que se
+// note a simple vista que no es parte del diseno de Figma.
+.home__devTrigger {
+  display: block;
+  margin-top: 24px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px dashed gm.$gray-300;
+  border-radius: 8px;
+  color: gm.$gray-400;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+
+  &:hover {
+    background: gm.$gray-100;
+    color: gm.$gray-500;
+  }
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+  }
+}
+
+// Estado de error recuperable (DEC-005B, nodo Figma 43121:455). Se conserva
+// el mensaje/ilustracion/boton exactos, pero dentro del panel del shell
+// (sidebar y header quedan visibles) en vez del fondo rojo diagonal a
+// pantalla completa del nodo original: ese fondo tiene mas sentido para un
+// fallo previo al render del shell (ej. DEC-019), no para un card puntual
+// de Inicio. Ver nota en Home.tsx y el cierre de DEC-005B.
+.home__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 48px 0;
+  text-align: center;
+}
+
+.home__errorIllustration {
+  width: 140px;
+  height: 142px;
+}
+
+.home__errorMessage {
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: gm.$black;
+  margin: 0;
+}
+
+// Mismo umbral que SideBar/DashboardLayout de sad-aml-shared.
+@media (max-width: 1100px) {
+  .home {
+    padding: 24px 24px 32px;
+  }
+}

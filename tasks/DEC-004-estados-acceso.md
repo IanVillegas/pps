@@ -48,3 +48,7 @@ Estos escenarios pertenecen exclusivamente al adaptador mock existente. No hay c
 - La redireccion de exito a Inicio sigue pendiente de DEC-005B.
 
 Commit sugerido: `feat(login): implementa estados de acceso y bloqueo temporal`
+
+## Ajuste posterior (2026-09-18)
+
+El icono exportado a `public/login-alert.svg` (fila 8 y 29 arriba) se reemplazo por `<i className="ri-alert-line" />` con `iconColor="red"` a pedido del usuario — remixicon ya cubre este icono de alerta y evita mantener un asset propio para algo que la libreria de iconos ya tiene. `variables.$error` (`#d23d3d`, usado por `iconColor="red"`) coincide exacto con el rojo que traia el SVG original. Archivo eliminado; unico consumidor era `LoginFeedback.tsx`.

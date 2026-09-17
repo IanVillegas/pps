@@ -11,9 +11,8 @@ Este proyecto es una copia local de trabajo para desarrollar DecPat Cloud con as
 
 ## Regla de commits
 
-- Nunca hacer un commit sin permiso explicito del usuario.
-- Nunca hacer push sin permiso explicito del usuario.
-- Antes de cualquier commit, revisar y resumir el `git diff` para que el usuario confirme.
+- **El asistente nunca ejecuta `git commit` (ni `git add` con esa intencion), en ningun caso.** Aclarado por el usuario 2026-09-18 despues de que se ejecuto un commit al pedirsele "el mensaje del commit" tras confirmar "si" a la pregunta de si se comiteaba: esa confirmacion no es autorizacion para que el asistente lo ejecute. El usuario hace todos los commits y push desde su propia herramienta.
+- El rol del asistente termina en: revisar/resumir el `git diff` y proponer el mensaje de commit. Nunca corre `git add`, `git commit` ni `git push`, sin excepcion, incluso si el usuario dice "si" o "comitea esto".
 - Todos los mensajes de commit deben estar en espanol y seguir Conventional Commits.
 - Ejemplos validos:
   - `feat(login): implementa pantalla base de inicio de sesion`

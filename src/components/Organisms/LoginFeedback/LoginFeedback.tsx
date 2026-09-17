@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
 import { Button, ButtonColor } from '@/components/Atoms';
 import styles from './LoginFeedback.module.scss';
@@ -54,7 +53,8 @@ const LoginFeedback = ({
       title={<span>{title}</span>}
       description={message}
       classNameDescription={styles.description}
-      icon={<Image src="/login-alert.svg" alt="" width={60} height={60} />}
+      icon={<i className="ri-alert-line" aria-hidden="true" />}
+      iconColor="red"
       contentCard={
         locked ? (
           <div className={styles.details}>
