@@ -12,13 +12,13 @@ describe('adaptador de acceso simulado', () => {
     ['error.demo', 'invalid_credentials'],
     ['conexion.demo', 'unavailable'],
   ])('expone el escenario %s', async (username, reason) => {
-    const result = login({ username, password: 'sintetica' });
+    const result = login({ username, password: 'password123' });
     await jest.advanceTimersByTimeAsync(600);
     await expect(result).resolves.toEqual({ success: false, reason });
   });
 
   it('entrega un vencimiento absoluto de cinco minutos', async () => {
-    const result = login({ username: 'bloqueo.demo', password: 'sintetica' });
+    const result = login({ username: 'bloqueo.demo', password: 'password123' });
     await jest.advanceTimersByTimeAsync(600);
     await expect(result).resolves.toEqual({
       success: false,

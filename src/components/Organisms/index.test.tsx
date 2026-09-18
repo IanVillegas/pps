@@ -2,14 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Modal } from './index';
 
-// sad-aml-shared esta excluido de Jest; las pruebas de lo que se corrigio ahi
-// (DEC-002D) viven aqui, importando el barril. El retorno de foco al cerrar
-// se verifico a mano en el navegador (jsdom no simula de forma confiable el
-// manejo de foco async de Radix); lo que sigue es lo que si es confiable en
-// jsdom.
+// El retorno de foco al cerrar no se prueba aqui: jsdom no simula de forma
+// confiable el manejo de foco async de Radix. Lo que sigue es lo que si es
+// confiable en jsdom.
 
-describe('Modal (DEC-002D, fix en sad-aml-shared)', () => {
-  it('closes on Escape (onOpenChange se llama con false)', async () => {
+describe('Modal', () => {
+  it('calls onOpenChange(false) on Escape', async () => {
     const onOpenChange = jest.fn();
     render(
       <Modal
@@ -23,7 +21,7 @@ describe('Modal (DEC-002D, fix en sad-aml-shared)', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 
-  it('the close button has an accessible name (antes no tenia ninguna)', () => {
+  it('gives the close button an accessible name', () => {
     render(<Modal open title="Titulo" description="Descripcion" />);
     expect(screen.getByRole('button', { name: 'Cerrar' })).toBeInTheDocument();
   });

@@ -2,11 +2,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Button, ButtonColor, Checkbox, InputText } from './index';
 
-// sad-aml-shared esta excluido de Jest (testPathIgnorePatterns); las pruebas
-// de lo que le agregamos/corregimos ahi viven aqui, importando el barril.
+// Pruebas de los atomos reexportados desde sad-aml-shared, importados por el
+// barril.
 
 describe('Button color Cta', () => {
-  it('applies a color class distinta de la de green por defecto', () => {
+  it('applies a class different from the default green one', () => {
     const { container: ctaContainer } = render(
       <Button text="Ingresar" color={ButtonColor.Cta} />
     );
@@ -20,7 +20,7 @@ describe('Button color Cta', () => {
   });
 });
 
-describe('InputText: label y error asociados (fix DEC-002B)', () => {
+describe('InputText', () => {
   it('associates the label with the input via htmlFor/id', () => {
     render(<InputText label="Cedula" />);
     expect(screen.getByLabelText('Cedula')).toBeInTheDocument();
@@ -37,13 +37,13 @@ describe('InputText: label y error asociados (fix DEC-002B)', () => {
     expect(errorNode).toHaveTextContent('Cedula invalida');
   });
 
-  it('still forwards native maxLength (la version vieja lo descartaba)', () => {
+  it('forwards the native maxLength attribute', () => {
     render(<InputText label="Codigo" maxLength={5} />);
     expect(screen.getByLabelText('Codigo')).toHaveAttribute('maxlength', '5');
   });
 });
 
-describe('Checkbox (DEC-002C, movido a sad-aml-shared)', () => {
+describe('Checkbox', () => {
   it('associates the label with the input via htmlFor/id', () => {
     render(<Checkbox label="Recordar usuario" />);
     expect(screen.getByLabelText('Recordar usuario')).toBeInTheDocument();

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import HelpDialog, { HELP_EMAIL, HELP_PHONE } from './HelpDialog';
 
 describe('HelpDialog', () => {
-  it('shows the contact email and phone from Figma when open', () => {
+  it('shows the contact email and phone when open', () => {
     render(<HelpDialog open onClose={jest.fn()} />);
     expect(screen.getByText('Contacto de ayuda')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: HELP_EMAIL })).toHaveAttribute(
