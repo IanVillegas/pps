@@ -1,0 +1,87 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Medidas del nodo Figma "Wizard" (43121:6023 / 43121:5470): 924px de ancho
+// con 12 pasos de 33px; conectores de 28px (#CED4DA); punto pendiente de
+// 12px (#CED4DA); paso actual con aro de 20px y punto de 12px (#47D1C6);
+// numero en Poppins Medium 12px gris-400. Debajo de 924px los conectores
+// se encogen (hasta 4px) para no desbordar en tablet.
+.stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 924px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    flex: none;
+  }
+
+  &__connector {
+    flex: 1 1 28px;
+    min-width: 4px;
+    max-width: 28px;
+    height: 1px;
+    // Alinea el conector con el centro de los puntos (mitad de los 20px).
+    margin-top: 10px;
+    background: gm.$gray-200;
+  }
+
+  &__button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid gm.$gray-500;
+      outline-offset: 2px;
+    }
+  }
+
+  &__marker {
+    box-sizing: border-box;
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 4px 0;
+    border-radius: 50%;
+    background: gm.$gray-200;
+
+    &--current {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      border: 1px solid gm.$green-300;
+      background: transparent;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: gm.$green-300;
+      }
+    }
+  }
+
+  &__number {
+    margin-top: 4px;
+    font-family: var(--font-poppins), sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: gm.$gray-400;
+  }
+}

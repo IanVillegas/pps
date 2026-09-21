@@ -7,3 +7,4 @@ export { default as Button } from '@/sad-aml-shared/components/Atoms/Button/Butt
 export { ColorEnum as ButtonColor } from '@/sad-aml-shared/types/enum/Color.enum';
 export { default as InputText } from '@/sad-aml-shared/components/Atoms/InputText/InputText';
 export { default as Checkbox } from '@/sad-aml-shared/components/Atoms/Checkbox/Checkbox';
+export { default as Tooltip } from '@/sad-aml-shared/components/Atoms/Tooltip/Tooltip';

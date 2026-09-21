@@ -1,1 +1,1 @@
-export const index = ''; // TODO Cambiar o eliminar
+export { default as DeclarationStepper } from './DeclarationStepper/DeclarationStepper';
