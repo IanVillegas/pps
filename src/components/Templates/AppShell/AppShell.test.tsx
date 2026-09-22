@@ -24,7 +24,10 @@ it('shows user data and only routes that exist', () => {
     'aria-current',
     'page'
   );
-  expect(screen.getByRole('button', { name: 'Mi declaración' })).toBeDisabled();
+  expect(screen.getByRole('link', { name: 'Mi declaración' })).toHaveAttribute(
+    'href',
+    '/mi-declaracion/1'
+  );
   expect(screen.getByRole('button', { name: 'Reportes' })).toBeDisabled();
   expect(screen.getByRole('main')).toHaveTextContent('Contenido');
 });

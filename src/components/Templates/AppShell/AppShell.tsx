@@ -8,6 +8,7 @@ import Header from '@/sad-aml-shared/components/Organisms/Header/Header';
 import SideBar from '@/sad-aml-shared/components/Organisms/SideBar/SideBar';
 import LogoHeader from '@/assets/images/LogoHeader';
 import type { SessionUser } from '@/types/Session.types';
+import { DECLARATION_STEPS } from '@/utils/declarationSteps';
 import styles from './AppShell.module.scss';
 
 interface AppShellProps {
@@ -18,6 +19,11 @@ interface AppShellProps {
 
 const AppShell = ({ user, onLogout, children }: AppShellProps) => {
   const pathname = usePathname();
+  const inDeclaration = pathname.startsWith('/mi-declaracion');
+  // En un paso del wizard, Figma titula la pantalla con el nombre de la
+  // seccion y su icono en lugar del titulo general del sistema.
+  const stepId = Number(pathname.match(/^\/mi-declaracion\/(\d+)$/)?.[1]);
+  const step = DECLARATION_STEPS.find(item => item.id === stepId);
   const items = [
     {
       id: 'inicio',
@@ -29,7 +35,9 @@ const AppShell = ({ user, onLogout, children }: AppShellProps) => {
     {
       id: 'declaracion',
       label: 'Mi declaración',
+      href: '/mi-declaracion/1',
       icon: <i className="ri-draft-line" />,
+      active: inDeclaration,
     },
     {
       id: 'reportes',
@@ -50,7 +58,9 @@ const AppShell = ({ user, onLogout, children }: AppShellProps) => {
 
   return (
     <DashboardLayout
-      title="Declaración Patrimonial"
+      title={step?.title ?? 'Declaración Patrimonial'}
+      titleIcon={step && <i className={step.iconClass} />}
+      compactTitle={Boolean(step)}
       sidebar={
         <SideBar
           items={items}

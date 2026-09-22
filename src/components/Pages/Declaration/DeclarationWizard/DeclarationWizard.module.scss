@@ -1,0 +1,64 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Medidas del nodo Figma 43121:5909 (Paso 2): tarjeta blanca de 1006px con
+// borde gris-100, radio 12px y sombra Elevation-3; botones de 280x60 con 59px
+// entre ellos, centrados al pie.
+.wizard {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+
+  &__card {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 1006px;
+    padding: 36px 58px 48px;
+    background: gm.$white;
+    border: 1px solid gm.$gray-100;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+  }
+
+  &__summary {
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(230, 44, 58, 0.08);
+    color: gm.$red-2026;
+    font-family: var(--font-poppins), sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__placeholder {
+    margin: 0;
+    color: gm.$gray-400;
+    font-family: var(--font-poppins), sans-serif;
+    font-size: 0.875rem;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px 59px;
+
+    // El borde del boton secundario suma 2px al tamano de Figma (280x60).
+    button {
+      box-sizing: border-box;
+      width: 280px;
+      min-width: 0;
+      height: 60px;
+    }
+  }
+}

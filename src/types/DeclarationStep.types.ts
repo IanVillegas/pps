@@ -3,4 +3,6 @@ export interface DeclarationStep {
   id: number;
   /** Nombre completo de la seccion, tal como titula la pantalla en Figma. */
   title: string;
+  /** Clase de Remix Icon que acompana el titulo de la seccion en Figma. */
+  iconClass: string;
 }

@@ -1,0 +1,77 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Mismo criterio que HelpDialog/LoginFeedback: reemplaza .alertDialogContent
+// con las medidas del nodo Figma 43121:6787 (640px, padding 62px 65px).
+.intro {
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: gm.$z-3;
+  width: 640px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: gm.$white;
+  border-radius: 12px;
+  box-shadow: 0 8px 8px rgba(108, 117, 125, 0.09);
+  padding: 62px 65px;
+  color: gm.$gray-500;
+
+  > div:first-child button {
+    color: gm.$gray-200;
+    padding: 0;
+    font-size: 30px;
+
+    &:focus-visible {
+      outline: 2px solid gm.$gray-500;
+      outline-offset: 2px;
+    }
+  }
+
+  > h2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: auto;
+    height: auto;
+    margin: 0 0 18px;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  > div:last-child {
+    display: flex;
+    justify-content: center;
+    margin-top: 42px;
+
+    button {
+      box-sizing: border-box;
+      width: 205px;
+      min-width: 0;
+      height: 48px;
+    }
+  }
+}
+
+.intro__logo {
+  display: block;
+  width: 150px;
+  height: 49px;
+}
+
+.intro__description {
+  max-width: 495px;
+  margin: 0 auto;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: justify;
+  color: gm.$gray-400;
+}

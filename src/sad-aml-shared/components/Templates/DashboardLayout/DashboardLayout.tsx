@@ -6,6 +6,10 @@ interface DashboardLayoutProps {
   sidebar: ReactNode;
   header: ReactNode;
   title: string;
+  /** Icono decorativo a la izquierda del titulo (ej. secciones del wizard). */
+  titleIcon?: ReactNode;
+  /** Reduce el espacio bajo el titulo cuando le sigue un componente ligado a el (ej. un stepper). */
+  compactTitle?: boolean;
 }
 
 const DashboardLayout = ({
@@ -13,6 +17,8 @@ const DashboardLayout = ({
   sidebar,
   header,
   title,
+  titleIcon,
+  compactTitle = false,
 }: DashboardLayoutProps) => (
   <div className={styles.wrapper}>
     <a className={styles.skipLink} href="#contenido-principal">
@@ -22,7 +28,14 @@ const DashboardLayout = ({
     <div className={styles.sideContent}>
       {header}
       <main id="contenido-principal" tabIndex={-1} className={styles.content}>
-        <h1>{title}</h1>
+        <h1 className={compactTitle ? styles.compactTitle : undefined}>
+          {titleIcon && (
+            <span className={styles.titleIcon} aria-hidden="true">
+              {titleIcon}
+            </span>
+          )}
+          {title}
+        </h1>
         {children}
       </main>
     </div>
