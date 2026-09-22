@@ -19,6 +19,7 @@ import LoginWave1 from '@/assets/images/LoginWave1';
 import LoginWave2 from '@/assets/images/LoginWave2';
 import LoginWave3 from '@/assets/images/LoginWave3';
 import LogoGrupoMutual from '@/assets/images/LogoGrupoMutual';
+import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
 import styles from './Login.module.scss';
 
 interface LoginFormValues {
@@ -131,6 +132,7 @@ const Login = () => {
           <div className={styles.login__field}>
             <InputText
               label="Usuario"
+              maxLength={FIELD_MAX_LENGTH.username}
               errors={errors.username?.message}
               {...register('username', {
                 required: 'El usuario es requerido',
@@ -144,6 +146,7 @@ const Login = () => {
           <div className={styles.login__field}>
             <InputSecret
               label="Contraseña"
+              maxLength={FIELD_MAX_LENGTH.password}
               errors={errors.password?.message}
               {...register('password', {
                 required: 'La contraseña es requerida',

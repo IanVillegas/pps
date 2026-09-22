@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Button, ButtonColor, Checkbox, InputText } from './index';
+import { Button, ButtonColor, Checkbox, InputText, Textarea } from './index';
 
 // Pruebas de los atomos reexportados desde sad-aml-shared, importados por el
 // barril.
@@ -72,5 +72,31 @@ describe('Checkbox', () => {
   it('respects disabled natively', () => {
     render(<Checkbox label="Recordar usuario" disabled />);
     expect(screen.getByLabelText('Recordar usuario')).toBeDisabled();
+  });
+});
+
+describe('Textarea', () => {
+  it('associates the label with the textarea via htmlFor/id', () => {
+    render(<Textarea label="Dirección" />);
+    expect(screen.getByLabelText('Dirección')).toBeInTheDocument();
+  });
+
+  it('links the error to the textarea via aria-describedby', () => {
+    render(<Textarea label="Dirección" errors="Dirección invalida" />);
+    const textarea = screen.getByLabelText('Dirección');
+    expect(textarea).toHaveAttribute('aria-invalid', 'true');
+
+    const describedBy = textarea.getAttribute('aria-describedby');
+    expect(describedBy).toBeTruthy();
+    expect(document.getElementById(describedBy!)).toHaveTextContent(
+      'Dirección invalida'
+    );
+  });
+
+  it('has no error association when none is given', () => {
+    render(<Textarea label="Dirección" />);
+    expect(screen.getByLabelText('Dirección')).not.toHaveAttribute(
+      'aria-invalid'
+    );
   });
 });

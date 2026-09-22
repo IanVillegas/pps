@@ -43,3 +43,7 @@ Commit sugerido: `fix(login): ajusta validaciones, estados y responsive`
 - Chrome automatizado: 768x1024, 1024x768, 912x1368, 1032x1376, 1366x768 y 1440x900, con errores requeridos visibles. Sin desbordamiento horizontal ni errores de ejecucion; formulario dentro del viewport en todos los casos. Captura de 768x1024 revisada visualmente.
 - La comprobacion corresponde a viewports en Chrome, no a dispositivos fisicos.
 - Compilacion de desarrollo correcta. No ejecutar build sobre .next mientras el servidor dev la utiliza: produjo un error de chunks en la validacion anterior.
+
+## Ajuste posterior (2026-09-22, durante DEC-007): limite de caracteres
+
+"Usuario" y "Contraseña" no tenian `maxLength`. Se agrego, junto con el mismo limite en todos los campos de texto libre del sistema (D-17, `preparacion-tecnica-visual.md`): valores simbolicos en `src/utils/fieldLimits.ts`, reemplazables cuando exista el maximo real de backend. Detalle completo, incluida la verificacion en navegador, en [DEC-007](DEC-007-personales.md). `check-types`, `lint` y `Login.test.tsx` OK (prueba nueva: `maxlength` en ambos campos).

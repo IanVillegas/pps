@@ -19,3 +19,4 @@ export { default as Checkbox } from './Checkbox/Checkbox';
 export { default as RoundIcon } from './RoundIcon/RoundIcon';
 export { default as Spinner } from './Spinner/Spinner';
 export { default as Tooltip } from './Tooltip/Tooltip';
+export { default as Textarea } from './Textarea/Textarea';

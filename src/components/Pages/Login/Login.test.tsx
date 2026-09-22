@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from './Login';
 import { getSession, endSession } from '@/services/SessionService';
+import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
 
 const mockReplace = jest.fn();
 
@@ -87,6 +88,18 @@ describe('Login', () => {
 
     expect(screen.getByLabelText('Usuario')).toHaveValue('ivillegas');
     expect(screen.getByLabelText('Recordar mi usuario')).toBeChecked();
+  });
+
+  it('caps username and password at a symbolic maxLength, ready to swap for a real one', () => {
+    render(<Login />);
+    expect(screen.getByLabelText('Usuario')).toHaveAttribute(
+      'maxlength',
+      String(FIELD_MAX_LENGTH.username)
+    );
+    expect(screen.getByLabelText('Contraseña')).toHaveAttribute(
+      'maxlength',
+      String(FIELD_MAX_LENGTH.password)
+    );
   });
 
   it('toggles the password visibility', async () => {

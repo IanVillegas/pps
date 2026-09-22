@@ -1,5 +1,8 @@
 import type { ComponentType } from 'react';
 import type { StepErrors, StepValues } from '@/types/Declaration.types';
+import PersonalData, {
+  validatePersonalData,
+} from '@/components/Pages/Declaration/PersonalData/PersonalData';
 
 /** Lo que el wizard le entrega al contenido de cada paso. */
 export interface StepProps {
@@ -21,4 +24,6 @@ export type StepDefinitions = Partial<Record<number, StepDefinition>>;
 
 // Cada tarea de paso (DEC-007 en adelante) agrega aqui su entrada. Mientras
 // no exista, el paso se puede visitar y "Continuar" avanza sin validar.
-export const STEP_DEFINITIONS: StepDefinitions = {};
+export const STEP_DEFINITIONS: StepDefinitions = {
+  1: { component: PersonalData, validate: validatePersonalData },
+};

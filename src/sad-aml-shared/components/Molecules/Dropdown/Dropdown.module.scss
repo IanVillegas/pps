@@ -1,6 +1,13 @@
 @use '@/sad-aml-shared/styles/settings/' as variables;
 @use '@/sad-aml-shared/styles/tools/mixin' as mixin;
 
+// Envuelve label+trigger+error en un solo bloque (ver comentario en
+// Dropdown.tsx): sin esto, Select.Root no aporta ningun elemento propio y
+// el label/trigger quedan sueltos como hermanos del padre real.
+.dropdown {
+  width: 100%;
+}
+
 .label {
   @include mixin.config_text(
     variables.$font-family-work-sans,

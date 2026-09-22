@@ -1,0 +1,94 @@
+@use '@/sad-aml-shared/styles/settings' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+// Nodo Figma 43121:6775 ("Direccion actual (exacta)", Paso 1): label 14px
+// Work Sans SemiBold gris-500, gap 10px, caja 79px con padding 15px/14px,
+// borde gris-200, radio 8px, placeholder Poppins Medium 12px gris-300.
+.textarea {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__label {
+    font-family: variables.$font-family-work-sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: variables.$gray-500;
+    margin-bottom: 10px;
+  }
+
+  &__input {
+    all: unset;
+    box-sizing: border-box;
+    background: variables.$white;
+    border: 1px solid variables.$gray-200;
+    border-radius: 8px;
+    min-height: 79px;
+    // Sin tirador de resize: el alto lo controla el JS del componente
+    // (crece con el contenido). Tope de 320px (~14 lineas) como respaldo;
+    // de ahi en adelante el propio campo hace scroll VERTICAL, nunca
+    // horizontal (`overflow-x: hidden`).
+    max-height: 320px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+    resize: none;
+
+    font-family: variables.$font-family-poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    color: variables.$gray-500;
+    // `all: unset` de arriba tambien borra white-space/wrap; sin esto el
+    // texto no ajustaba de linea y desbordaba horizontalmente (reportado
+    // por el usuario) en vez de respetar el ancho del campo.
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    padding: 14px 15px;
+
+    &:focus,
+    &:focus-visible {
+      border: 1px solid variables.$gray-500;
+    }
+
+    &::placeholder {
+      color: variables.$gray-300;
+    }
+  }
+
+  &__alerts {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+  }
+
+  &__captions {
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      11px,
+      18px,
+      variables.$black
+    );
+  }
+
+  &__errors {
+    margin: 4px 0 0;
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      11px,
+      18px,
+      variables.$error
+    );
+  }
+}

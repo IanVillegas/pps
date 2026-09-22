@@ -1,0 +1,17 @@
+// Nodo Figma 43121:6243 (Paso 1, composicion inferior): dos columnas de
+// 380px con 90px de separacion horizontal y ~32px vertical entre filas;
+// "Direccion actual (exacta)" ocupa el ancho completo al final.
+.personalData {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 90px;
+  row-gap: 32px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.personalData__full {
+  grid-column: 1 / -1;
+}
