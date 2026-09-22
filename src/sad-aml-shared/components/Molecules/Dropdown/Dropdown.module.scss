@@ -101,14 +101,19 @@
     font-family: variables.$font-family-poppins;
   }
 
+  // Antes `height: 30vh` fijo (y `min-height: 10vh` en ambas variantes):
+  // el listado quedaba con un bloque en blanco/gris enorme debajo de las
+  // opciones sin importar cuantas hubiera (reportado por el usuario,
+  // confirmado pintando el fondo). `max-height` deja que el listado se
+  // ajuste a su contenido real y solo haga scroll interno al superar el
+  // tope; `isShort` sigue existiendo para pedir un tope mas bajo.
   &__heightScrollAreas {
-    min-height: 10vh;
-    height: 30vh;
+    max-height: 30vh;
     padding-bottom: 10px;
   }
 
   &__heightScrollAreasShort {
-    min-height: 10vh;
+    max-height: 10vh;
     padding-bottom: 10px;
   }
 
