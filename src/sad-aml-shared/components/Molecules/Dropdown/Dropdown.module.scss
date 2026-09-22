@@ -138,6 +138,18 @@
   &__scrollAreaScrollbar[data-orientation='vertical'] {
     width: var(--scrollbar-size);
   }
+
+  &__errors {
+    margin: 4px 0 0;
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      11px,
+      18px,
+      variables.$error
+    );
+  }
 }
 
 .emptyValue {

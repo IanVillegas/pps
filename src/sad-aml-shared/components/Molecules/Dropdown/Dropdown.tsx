@@ -1,17 +1,18 @@
-import { useState, type ReactNode } from 'react';
+import { forwardRef, useId, useState, type ReactNode } from 'react';
 import 'remixicon/fonts/remixicon.css';
 
 import * as Select from '@radix-ui/react-select';
-import { randomKey } from '@/sad-aml-shared/utils/functions/randomKey';
 import styles from '@/sad-aml-shared/components/Molecules/Dropdown/Dropdown.module.scss';
 import { isStringElement } from '@/sad-aml-shared/utils/helpers/stringHelpers';
 
+interface DropdownOption {
+  value: string;
+  element: ReactNode;
+}
+
 interface CustomDropdownProps {
   isShort?: boolean;
-  options?: {
-    value: string;
-    element: ReactNode;
-  }[];
+  options?: DropdownOption[];
   placeholder: string;
   label?: string;
   onChange: (item: string) => void;
@@ -20,150 +21,181 @@ interface CustomDropdownProps {
   labelNoRegister?: string;
   multiOptions?: {
     label: string;
-    options: {
-      value: string;
-      element: ReactNode;
-    }[];
+    options: DropdownOption[];
   }[];
+  id?: string;
+  errors?: string;
 }
 
-const Dropdown = ({
-  options,
-  placeholder,
-  label,
-  onChange,
-  disabled,
-  value,
-  labelNoRegister = 'Sin registros',
-  multiOptions,
-  isShort,
-}: CustomDropdownProps) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <Select.Root
-      onValueChange={onChange}
-      value={value}
-      defaultValue={undefined}
-      open={open}
-      onOpenChange={setOpen}
-    >
-      {label && (
-        <Select.Group>
-          <Select.Label className={styles.label}>{label}</Select.Label>
-        </Select.Group>
-      )}
+const Dropdown = forwardRef<HTMLButtonElement, CustomDropdownProps>(
+  (
+    {
+      options,
+      placeholder,
+      label,
+      onChange,
+      disabled,
+      value,
+      labelNoRegister = 'Sin registros',
+      multiOptions,
+      isShort,
+      id,
+      errors,
+    },
+    ref
+  ) => {
+    const [open, setOpen] = useState(false);
+    const generatedId = useId();
+    const triggerId = id ?? generatedId;
+    const errorId = errors ? `${triggerId}-error` : undefined;
 
-      <Select.Trigger disabled={disabled} className={styles.customDropdown}>
-        <Select.Value placeholder={placeholder} />
-        <Select.Icon className={styles.customDropdown__selectIcon}>
-          <i
-            className={open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'}
-          ></i>
-        </Select.Icon>
-      </Select.Trigger>
+    return (
+      <Select.Root
+        onValueChange={onChange}
+        value={value}
+        defaultValue={undefined}
+        open={open}
+        onOpenChange={setOpen}
+      >
+        {/* Un <label htmlFor> real: Select.Label solo etiqueta un grupo de
+            opciones dentro de Select.Content (ver SelectGroup de Radix), no
+            el control. Usado como grupo aqui, quedaba sin ninguna relacion
+            programatica con el trigger (nombre accesible ausente). */}
+        {label && (
+          <label htmlFor={triggerId} className={styles.label}>
+            {label}
+          </label>
+        )}
 
-      <Select.Portal>
-        <Select.Content
-          className={styles.customDropdown__select}
-          position="popper"
+        <Select.Trigger
+          ref={ref}
+          id={triggerId}
+          disabled={disabled}
+          className={styles.customDropdown}
+          aria-invalid={errors ? true : undefined}
+          aria-describedby={errorId}
         >
+          <Select.Value placeholder={placeholder} />
+          <Select.Icon className={styles.customDropdown__selectIcon}>
+            <i
+              className={open ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'}
+            ></i>
+          </Select.Icon>
+        </Select.Trigger>
+        {errors && (
           <div
-            className={`${
-              isShort
-                ? styles.customDropdown__heightScrollAreasShort
-                : styles.customDropdown__heightScrollAreas
-            } ${styles.customDropdown__scrollAreaRoot}`}
+            id={errorId}
+            className={styles.customDropdown__errors}
+            role="alert"
           >
-            <div className={styles.customDropdown__scrollAreaViewport}>
-              <Select.Viewport asChild>
-                <div>
-                  {options ? (
-                    <>
-                      {options.length > 0 ? (
-                        options.map(element => (
-                          <Select.Item
-                            className={styles.customDropdown__option}
-                            value={element.value}
-                            key={randomKey('key-dropdown-item-')}
-                          >
-                            {isStringElement(element.element) ? (
-                              <Select.ItemText
-                                style={{
-                                  display: 'none',
-                                }}
-                                key={randomKey(element.value)}
-                              >
-                                {element.element}
-                              </Select.ItemText>
-                            ) : (
-                              element.element
-                            )}
-                          </Select.Item>
-                        ))
-                      ) : (
-                        <Select.Item
-                          disabled
-                          value={'0'}
-                          key={randomKey('key-dropdown-item-')}
-                          className={`${styles.customDropdown__option} ${styles.emptyValue}`}
-                        >
-                          {labelNoRegister}
-                        </Select.Item>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {multiOptions?.map(group => {
-                        return (
-                          <Select.Group key={randomKey('SelectGrupo')}>
-                            <Select.Label
-                              className={styles.customDropdown__labelGroup}
-                            >
-                              {group.label}
-                            </Select.Label>
-                            {group.options?.length > 0 ? (
-                              group.options?.map((element: any) => (
-                                <Select.Item
-                                  className={styles.customDropdown__option}
-                                  value={element.value.toString()}
-                                  key={randomKey('key-dropdown-item-')}
-                                >
-                                  {isStringElement(element.element) ? (
-                                    <Select.ItemText
-                                      style={{
-                                        display: 'none',
-                                      }}
-                                      key={randomKey(element.value)}
-                                    >
-                                      {element.element}
-                                    </Select.ItemText>
-                                  ) : (
-                                    element.element
-                                  )}
-                                </Select.Item>
-                              ))
-                            ) : (
-                              <Select.Item
-                                value={'0'}
-                                key={randomKey('key-dropdown-item-')}
-                                className={`${styles.customDropdown__option} ${styles.emptyValue}`}
-                                disabled
-                              >
-                                {labelNoRegister}
-                              </Select.Item>
-                            )}
-                          </Select.Group>
-                        );
-                      })}
-                    </>
-                  )}
-                </div>
-              </Select.Viewport>
-            </div>
+            {errors}
           </div>
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
-  );
-};
+        )}
+
+        <Select.Portal>
+          <Select.Content
+            className={styles.customDropdown__select}
+            position="popper"
+          >
+            <div
+              className={`${
+                isShort
+                  ? styles.customDropdown__heightScrollAreasShort
+                  : styles.customDropdown__heightScrollAreas
+              } ${styles.customDropdown__scrollAreaRoot}`}
+            >
+              <div className={styles.customDropdown__scrollAreaViewport}>
+                <Select.Viewport asChild>
+                  <div>
+                    {options ? (
+                      <>
+                        {options.length > 0 ? (
+                          options.map(element => (
+                            <Select.Item
+                              className={styles.customDropdown__option}
+                              value={element.value}
+                              key={element.value}
+                            >
+                              {isStringElement(element.element) ? (
+                                <Select.ItemText
+                                  style={{
+                                    display: 'none',
+                                  }}
+                                >
+                                  {element.element}
+                                </Select.ItemText>
+                              ) : (
+                                element.element
+                              )}
+                            </Select.Item>
+                          ))
+                        ) : (
+                          <Select.Item
+                            disabled
+                            value={'0'}
+                            key="empty"
+                            className={`${styles.customDropdown__option} ${styles.emptyValue}`}
+                          >
+                            {labelNoRegister}
+                          </Select.Item>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {multiOptions?.map(group => {
+                          return (
+                            <Select.Group key={group.label}>
+                              <Select.Label
+                                className={styles.customDropdown__labelGroup}
+                              >
+                                {group.label}
+                              </Select.Label>
+                              {group.options?.length > 0 ? (
+                                group.options?.map(element => (
+                                  <Select.Item
+                                    className={styles.customDropdown__option}
+                                    value={element.value.toString()}
+                                    key={element.value}
+                                  >
+                                    {isStringElement(element.element) ? (
+                                      <Select.ItemText
+                                        style={{
+                                          display: 'none',
+                                        }}
+                                      >
+                                        {element.element}
+                                      </Select.ItemText>
+                                    ) : (
+                                      element.element
+                                    )}
+                                  </Select.Item>
+                                ))
+                              ) : (
+                                <Select.Item
+                                  value={'0'}
+                                  key="empty"
+                                  className={`${styles.customDropdown__option} ${styles.emptyValue}`}
+                                  disabled
+                                >
+                                  {labelNoRegister}
+                                </Select.Item>
+                              )}
+                            </Select.Group>
+                          );
+                        })}
+                      </>
+                    )}
+                  </div>
+                </Select.Viewport>
+              </div>
+            </div>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+    );
+  }
+);
+
+Dropdown.displayName = 'Dropdown';
+
 export default Dropdown;
