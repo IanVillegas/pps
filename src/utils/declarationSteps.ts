@@ -7,6 +7,7 @@ import type { DeclarationStep } from '@/types/DeclarationStep.types';
 // Los iconos son el equivalente en Remix Icon del icono que Figma dibuja junto
 // al titulo; los pasos 6 (bolsa-dinero) y 12 (garantia) son iconos propios de
 // Figma sin equivalente exacto, y el paso 3 repite el de familia en el diseno.
+
 export const DECLARATION_STEPS: readonly DeclarationStep[] = [
   { id: 1, title: 'Datos generales', iconClass: 'ri-user-line' },
   {
@@ -14,11 +15,11 @@ export const DECLARATION_STEPS: readonly DeclarationStep[] = [
     title: 'Conformación del núcleo familiar',
     iconClass: 'ri-group-line',
   },
-  { id: 3, title: 'Ingresos y egresos', iconClass: 'ri-group-line' },
-  { id: 4, title: 'Bienes inmuebles', iconClass: 'ri-home-line' },
+  { id: 3, title: 'Ingresos y egresos', iconClass: 'ri-wallet-3-line' },
+  { id: 4, title: 'Bienes inmuebles', iconClass: 'ri-home-5-line' },
   { id: 5, title: 'Bienes muebles', iconClass: 'ri-roadster-line' },
-  { id: 6, title: 'Datos económicos', iconClass: 'ri-wallet-3-line' },
-  { id: 7, title: 'Cuentas corrientes', iconClass: 'ri-hand-coin-line' },
+  { id: 6, title: 'Datos económicos', iconClass: 'ri-bar-chart-box-line' },
+  { id: 7, title: 'Cuentas corrientes', iconClass: 'ri-coin-line' },
   {
     id: 8,
     title: 'Créditos que posee',
