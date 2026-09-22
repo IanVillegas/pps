@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AppShell from './AppShell';
 import {
@@ -9,6 +9,87 @@ import {
 } from '@/services/SessionService';
 
 jest.mock('next/navigation', () => ({ usePathname: () => '/inicio' }));
+
+// jest.setup.ts registra un `matchMedia` que siempre devuelve
+// matches:false; estas pruebas lo sobreescriben para simular tablet.
+const mockMatchMedia = (matches: boolean) => {
+  const listeners = new Set<(event: MediaQueryListEvent) => void>();
+  const mql = {
+    matches,
+    media: '(max-width: 1100px)',
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: (
+      _: string,
+      listener: (event: MediaQueryListEvent) => void
+    ) => listeners.add(listener),
+    removeEventListener: (
+      _: string,
+      listener: (event: MediaQueryListEvent) => void
+    ) => listeners.delete(listener),
+    dispatchEvent: () => false,
+  } as unknown as MediaQueryList;
+  window.matchMedia = jest.fn().mockReturnValue(mql);
+  return {
+    // Simula cruzar el breakpoint (evento 'change' real del navegador).
+    change: (next: boolean) => {
+      (mql as { matches: boolean }).matches = next;
+      listeners.forEach(listener =>
+        listener({ matches: next } as MediaQueryListEvent)
+      );
+    },
+  };
+};
+
+it('toggles the sidebar between expanded and collapsed, keeping the link name accessible', async () => {
+  render(
+    <AppShell
+      user={{ username: 'demo', displayName: 'Prueba' }}
+      onLogout={jest.fn()}
+    >
+      {null}
+    </AppShell>
+  );
+  const toggle = screen.getByRole('button', { name: 'Colapsar menú' });
+  expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  expect(screen.getByRole('link', { name: 'Inicio' })).toBeInTheDocument();
+
+  await userEvent.click(toggle);
+  expect(screen.getByRole('button', { name: 'Expandir menú' })).toHaveAttribute(
+    'aria-expanded',
+    'false'
+  );
+  // El nombre accesible del enlace se conserva aunque el texto quede oculto
+  // visualmente (ver sideBar__labelHidden).
+  expect(screen.getByRole('link', { name: 'Inicio' })).toBeInTheDocument();
+
+  await userEvent.click(screen.getByRole('button', { name: 'Expandir menú' }));
+  expect(screen.getByRole('button', { name: 'Colapsar menú' })).toHaveAttribute(
+    'aria-expanded',
+    'true'
+  );
+});
+
+it('starts collapsed on tablet and re-syncs when crossing the breakpoint', () => {
+  const media = mockMatchMedia(true);
+  render(
+    <AppShell
+      user={{ username: 'demo', displayName: 'Prueba' }}
+      onLogout={jest.fn()}
+    >
+      {null}
+    </AppShell>
+  );
+  expect(
+    screen.getByRole('button', { name: 'Expandir menú' })
+  ).toBeInTheDocument();
+
+  act(() => media.change(false));
+  expect(
+    screen.getByRole('button', { name: 'Colapsar menú' })
+  ).toBeInTheDocument();
+});
 
 it('shows user data and only routes that exist', () => {
   render(

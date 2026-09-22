@@ -38,6 +38,16 @@ Implementada y validada el 2026-09-21. Commit a cargo del usuario.
 - La ruta es dinámica; se puede prerenderizar con `generateStaticParams` (1–12) si hace falta, no se hizo.
 - El contenido de cada paso sigue siendo el marcador «aún no está disponible» hasta DEC-007 en adelante.
 
+## Ajuste posterior (2026-09-23): se quita el `max-width` de la tarjeta
+
+El usuario reportó a 1920px (laptop, DevTools) que la tarjeta del wizard "no se extendía" y dejaba espacio gris a los lados. La primera respuesta, confirmada por el usuario, fue mantener `max-width: 1006px` (valor literal de Figma, nodo 43121:5909) por ser distinto a propósito de `Home` (Inicio), que sí llena el ancho disponible.
+
+**Mismo día, revertido**: el usuario volvió a probarlo en una Surface Pro 10 a 1440px — un viewport de referencia oficial, no un caso extremo — y lo reportó "bastante desplazado" (~100px de gris a la derecha) pidiendo extenderlo más allá de 1006px. Se quitó el `max-width` de `.wizard__card`: ahora llena el ancho disponible, igual que `Home`, unificando el criterio de los dos paneles blancos del shell en vez de mantener dos comportamientos distintos.
+
+- Archivo: `src/components/Pages/Declaration/DeclarationWizard/DeclarationWizard.module.scss`.
+- Verificado en navegador (sesión real): 1366px → tarjeta de 1001px (practicamente igual a los 1006px originales de Figma, la diferencia es el ancho de la barra de scroll); 1440px → llena exacto el ancho disponible (antes dejaba ~100px de gris); 1920px → tarjeta de 1555px, cada campo de una sola línea (ej. "Edad") queda ~674px de ancho — más ancho de lo habitual pero no se ve roto, aceptado sin pedir más cambios; 768px (tablet) → sin desborde horizontal, sigue apilando a una columna. `check-types`, `lint` y las 77 pruebas siguen en verde (cambio solo de CSS). Sin errores de consola en ningún viewport.
+- D-18 en `preparacion-tecnica-visual.md` actualizada con la decisión final.
+
 ## Ajuste posterior (2026-09-21): se elimina `src/app/loading.tsx`
 
 El usuario reporto que al ingresar el login desaparecia unos segundos y salia un texto `Loading...` antes de Inicio. Causa: `loading.tsx` heredado del arquetipo (`c01ec27`) actua como fallback de Suspense de la raiz mientras carga `/inicio`, y en `npm run dev` esa ruta se compila la primera vez que se visita. Se elimino el archivo: el login queda visible (con el spinner del boton) hasta que aparece Inicio. `check-types` y `lint` OK. No se verifico en navegador porque el servidor dev del usuario (puerto 3004) comparte `.next`; queda para que lo confirme reiniciando `npm run dev`.

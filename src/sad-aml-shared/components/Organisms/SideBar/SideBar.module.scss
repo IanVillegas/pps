@@ -9,11 +9,78 @@
   min-height: 100vh;
   background: gm.$white;
   box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+  // Sin libreria de animacion instalada en el proyecto; una transicion CSS
+  // alcanza (mismo criterio que el hover de mas abajo, que ya usaba
+  // transition en vez de JS). El resto del layout (contenido, tarjetas)
+  // reacomoda solo, frame a frame, porque es un hermano flex del sidebar.
+  transition:
+    width 0.25s ease,
+    flex-basis 0.25s ease;
 
   &__logo {
     display: flex;
     justify-content: center;
     padding: 36px 24px 0;
+  }
+  // Posicionado absoluto para no alterar la posicion vertical ya validada
+  // contra Figma del primer item de navegacion (`&__navigation`
+  // margin-top: 95px, sin tocar): flota en vez de ocupar espacio en el
+  // flujo. `right: -16px` (mitad del boton, 32px) lo deja sobre el borde
+  // derecho del sidebar en vez de pegado al logo (reportado por el
+  // usuario); en colapsado se recentra (ver `&.sideBar--collapsed` abajo).
+  &__toggle {
+    position: absolute;
+    top: 44px;
+    right: -16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid gm.$gray-200;
+    border-radius: 8px;
+    background: gm.$white;
+    color: gm.$gray-500;
+    font-size: 16px;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      left 0.25s ease,
+      right 0.25s ease,
+      transform 0.25s ease;
+
+    &:hover {
+      background: gm.$gray-100;
+    }
+    &:focus-visible {
+      outline: 2px solid gm.$gray-500;
+      outline-offset: 2px;
+    }
+  }
+  // `font: inherit` contra un bug real: el reset global `p, span {
+  // font-family: poppins }` (globals.scss) le pegaba a este span de texto
+  // (una declaracion explicita siempre gana a la herencia, sin importar
+  // especificidad) y el `span { font-size: 20px }` de abajo, pensado solo
+  // para el icono, tambien lo agrandaba — confirmado con getComputedStyle:
+  // el enlace quedaba en Poppins 20px en vez del Work Sans 14px/600 que
+  // "nav a, nav button" ya declaraba. Heredar el font completo del enlace
+  // es mas robusto que repetir los mismos valores a mano.
+  &__label {
+    font: inherit;
+  }
+  &__labelHidden {
+    // Oculto solo visualmente (sigue en el DOM): mantiene el nombre
+    // accesible del enlace/boton para lectores de pantalla cuando el
+    // sidebar esta colapsado; el Tooltip cubre el caso visual.
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
   &__navigation {
     margin-top: 95px;
@@ -63,8 +130,13 @@
     transition:
       background-color 0.2s ease,
       color 0.2s ease,
-      box-shadow 0.2s ease;
-    span {
+      box-shadow 0.2s ease,
+      width 0.25s ease,
+      gap 0.2s ease,
+      padding 0.2s ease;
+    // Antes era un `span {}` generico: le pegaba tambien al nuevo span de
+    // texto (ver `&__label` arriba). Ahora solo el icono.
+    .sideBar__icon {
       display: inline-flex;
       font-size: 20px;
       flex-shrink: 0;
@@ -110,6 +182,62 @@
       color: gm.$white;
       background: gm.$red-2026;
       box-shadow: 0 16px 24px rgba(233, 85, 93, 0.35);
+    }
+  }
+
+  // Franja de solo iconos. `&.sideBar--collapsed` (compuesto, no
+  // `&--collapsed` suelto) a proposito: en SCSS `&--collapsed` dentro de
+  // `.sideBar { }` genera un selector de clase INDEPENDIENTE
+  // (`.sideBar--collapsed`), no uno compuesto con `.sideBar` — misma
+  // especificidad (0,1,0) que el `@media` de abajo (`.sideBar { width:
+  // 216px }`), y como ese bloque va despues en el archivo, ganaba el
+  // empate por orden de aparicion y el colapso nunca se aplicaba en
+  // tablet (confirmado con getComputedStyle antes de corregir: 216px en
+  // vez de 84px). `&.sideBar--collapsed` compone ambas clases
+  // (especificidad 0,2,0), gana sin importar el ancho ni el orden.
+  &.sideBar--collapsed {
+    width: 84px;
+    flex-basis: 84px;
+
+    // Sin logo, el nav quedaba 77px mas arriba que expandido (95px propios
+    // en vez de 36px de padding + ~41px de alto del logo + 95px = 172px) —
+    // reportado por el usuario ("los iconos suben"), confirmado con
+    // getBoundingClientRect antes de corregir. Mismo total que expandido,
+    // los iconos no se mueven al colapsar/expandir.
+    .sideBar__navigation {
+      margin-top: 172px;
+    }
+
+    // Reentra por completo a la franja (ya no flota sobre el borde) y se
+    // centra igual que los iconos de navegacion, en vez de quedar pegado a
+    // una esquina que ahora es mucho mas angosta.
+    .sideBar__toggle {
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    li {
+      justify-content: center;
+      padding-left: 0;
+      gap: 0;
+    }
+    nav a,
+    nav button {
+      width: 48px;
+      min-width: 0;
+      justify-content: center;
+      padding: 12px;
+      gap: 0;
+    }
+    // Misma especificidad que la regla de arriba ("li:not(.active):not(:has(>
+    // a:hover)) a/button", que fija gap:22px para el estado expandido) mas
+    // la clase de colapsado: sin esto ganaba ella y el icono quedaba
+    // descentrado por el gap fantasma junto al label oculto.
+    li:not(.active):not(:has(> a:hover)) a,
+    li:not(.active):not(:has(> a:hover)) button {
+      padding-left: 0;
+      gap: 0;
     }
   }
 

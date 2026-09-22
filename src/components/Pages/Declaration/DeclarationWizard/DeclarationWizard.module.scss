@@ -1,8 +1,14 @@
 @use '@/sad-aml-shared/styles/settings' as gm;
 
-// Medidas del nodo Figma 43121:5909 (Paso 2): tarjeta blanca de 1006px con
-// borde gris-100, radio 12px y sombra Elevation-3; botones de 280x60 con 59px
-// entre ellos, centrados al pie.
+// Medidas del nodo Figma 43121:5909 (Paso 2): tarjeta blanca (radio 12px,
+// borde gris-100, sombra Elevation-3, padding y botones 280x60/59px entre
+// ellos) tomadas literal a 1006px de ancho. D-18 (preparacion-tecnica-visual.md):
+// probado a 1006px fijo en 1366/1440/1920, el usuario lo reporto "desplazado"
+// incluso en 1440 (Surface Pro, viewport de referencia oficial, deja ~100px
+// de gris a la derecha) y pidio extenderlo. Se quito el `max-width`: la
+// tarjeta llena el ancho disponible, mismo patron que el panel de Inicio
+// (`Home.module.scss`, sin tope tampoco) -- unifica el comportamiento de
+// ambos paneles blancos del shell en vez de tener dos criterios distintos.
 .wizard {
   display: flex;
   flex: 1;
@@ -17,7 +23,6 @@
     flex-direction: column;
     gap: 24px;
     width: 100%;
-    max-width: 1006px;
     padding: 36px 58px 48px;
     background: gm.$white;
     border: 1px solid gm.$gray-100;

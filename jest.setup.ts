@@ -24,3 +24,21 @@ if (typeof Element.prototype.setPointerCapture !== 'function') {
 if (typeof Element.prototype.releasePointerCapture !== 'function') {
   Element.prototype.releasePointerCapture = () => {};
 }
+
+// jsdom no implementa matchMedia; SideBar/AppShell lo usan para colapsar el
+// sidebar por defecto en tablet (DEC-005A2). "matches: false" por defecto
+// (viewport de escritorio); una prueba que necesite simular tablet puede
+// sobreescribir window.matchMedia puntualmente antes de renderizar.
+if (typeof window.matchMedia !== 'function') {
+  window.matchMedia = (query: string) =>
+    ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }) as MediaQueryList;
+}
