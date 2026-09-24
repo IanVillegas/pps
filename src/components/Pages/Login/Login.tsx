@@ -118,11 +118,11 @@ const Login = () => {
       <div className={styles.login__brand}>
         <LogoGrupoMutual className={styles.login__logo} />
         <h1 className={styles.login__heading}>
-          Bienvenido a la <strong>Declaración Patrimonial</strong>
+          Bienvenido(a) al sistema de <strong>Declaración Patrimonial</strong>
         </h1>
         <p className={styles.login__intro}>
-          El sistema de Declaración Patrimonial permite registrar, actualizar y
-          presentar de forma segura la información relacionada con su patrimonio
+          Este sistema le permite registrar, actualizar y presentar de forma
+          segura la información relacionada con su patrimonio.
         </p>
       </div>
 

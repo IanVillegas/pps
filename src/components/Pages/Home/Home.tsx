@@ -70,9 +70,11 @@ const Home = () => {
           <p
             className={`${styles.home__cardText} ${styles['home__cardText--justify']}`}
           >
-            DECPAT es el Sistema de Declaración Patrimonial que permite
-            registrar, actualizar y presentar de forma segura la información
-            relacionada con su patrimonio.
+            Recuerde que la Declaración Patrimonial es una{' '}
+            <strong>declaración bajo juramento</strong>, por lo que cada persona
+            es responsable de la veracidad, integridad y actualización de la
+            información declarada, asumiendo un compromiso ético y legal con la
+            transparencia.
           </p>
         </div>
         <div className={styles.home__card}>
