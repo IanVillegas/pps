@@ -41,6 +41,9 @@
   // Figma (43237:2119): la tarjeta "Que es" va inset 22px dentro del panel
   // y ya no comparte fila con "Necesitas ayuda", que paso a ser un banner.
   padding-inline: 22px;
+  // Separacion minima con el banner de ayuda: `margin-top: auto` de este
+  // ultimo no deja aire cuando el texto crece (ej. escala 150%).
+  margin-bottom: 24px;
 }
 
 .home__card {
