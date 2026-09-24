@@ -10,3 +10,10 @@
   width: 159px;
   aspect-ratio: 159 / 41;
 }
+
+// Simbolo "M" del sidebar colapsado; 124x76 es el viewBox real del asset.
+.logoSymbol {
+  display: block;
+  width: 32px;
+  height: auto;
+}

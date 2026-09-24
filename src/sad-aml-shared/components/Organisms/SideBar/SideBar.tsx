@@ -15,6 +15,8 @@ export interface SideBarItem {
 
 interface SideBarProps {
   logo: ReactNode;
+  /** Logo compacto (simbolo) mostrado en lugar de `logo` al colapsar. */
+  collapsedLogo?: ReactNode;
   items: SideBarItem[];
   label?: string;
   /** Colapsado a una franja de solo iconos. Por defecto expandido. */
@@ -25,6 +27,7 @@ interface SideBarProps {
 
 const SideBar = ({
   logo,
+  collapsedLogo,
   items,
   label = 'Navegación principal',
   collapsed = false,
@@ -33,10 +36,15 @@ const SideBar = ({
   <aside
     className={`${styles.sideBar} ${collapsed ? styles['sideBar--collapsed'] : ''}`}
   >
-    {/* Sin logo al colapsar: no hay un simbolo "M" suelto exportado de
-        Figma, y recortar el wordmark completo a mano seria inventar un
-        asset que el diseno no define. */}
-    {!collapsed && <div className={styles.sideBar__logo}>{logo}</div>}
+    {/* Al colapsar se muestra `collapsedLogo` (el simbolo "M"); si no se
+        pasa, no se renderiza logo: no se recorta el wordmark completo. */}
+    {(!collapsed || collapsedLogo) && (
+      <div
+        className={`${styles.sideBar__logo} ${collapsed ? styles['sideBar__logo--collapsed'] : ''}`}
+      >
+        {collapsed ? collapsedLogo : logo}
+      </div>
+    )}
     {onToggleCollapse && (
       <button
         type="button"

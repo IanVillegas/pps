@@ -7,6 +7,7 @@ import DashboardLayout from '@/sad-aml-shared/components/Templates/DashboardLayo
 import Header from '@/sad-aml-shared/components/Organisms/Header/Header';
 import SideBar from '@/sad-aml-shared/components/Organisms/SideBar/SideBar';
 import LogoHeader from '@/assets/images/LogoHeader';
+import LogoSymbol from '@/assets/images/LogoSymbol';
 import type { SessionUser } from '@/types/Session.types';
 import { DECLARATION_STEPS } from '@/utils/declarationSteps';
 import styles from './AppShell.module.scss';
@@ -88,6 +89,11 @@ const AppShell = ({ user, onLogout, children }: AppShellProps) => {
           logo={
             <Link href="/inicio" aria-label="Grupo Mutual, inicio">
               <LogoHeader className={styles.logo} />
+            </Link>
+          }
+          collapsedLogo={
+            <Link href="/inicio" aria-label="Grupo Mutual, inicio">
+              <LogoSymbol className={styles.logoSymbol} />
             </Link>
           }
         />

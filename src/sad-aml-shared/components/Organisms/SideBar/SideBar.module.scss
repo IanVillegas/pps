@@ -21,6 +21,10 @@
     display: flex;
     justify-content: center;
     padding: 36px 24px 0;
+
+    &--collapsed {
+      padding: 36px 0 0;
+    }
   }
   // Posicionado absoluto para no alterar la posicion vertical ya validada
   // contra Figma del primer item de navegacion (`&__navigation`
@@ -212,6 +216,7 @@
     // centra igual que los iconos de navegacion, en vez de quedar pegado a
     // una esquina que ahora es mucho mas angosta.
     .sideBar__toggle {
+      top: 88px;
       right: auto;
       left: 50%;
       transform: translateX(-50%);
