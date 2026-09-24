@@ -22,7 +22,12 @@
     justify-content: center;
     padding: 36px 24px 0;
 
+    // Misma altura que el wordmark expandido (41px) para que el nav quede
+    // a la misma distancia del borde superior en ambos estados.
     &--collapsed {
+      align-items: center;
+      height: 77px;
+      box-sizing: border-box;
       padding: 36px 0 0;
     }
   }
@@ -202,15 +207,6 @@
   &.sideBar--collapsed {
     width: 84px;
     flex-basis: 84px;
-
-    // Sin logo, el nav quedaba 77px mas arriba que expandido (95px propios
-    // en vez de 36px de padding + ~41px de alto del logo + 95px = 172px) —
-    // reportado por el usuario ("los iconos suben"), confirmado con
-    // getBoundingClientRect antes de corregir. Mismo total que expandido,
-    // los iconos no se mueven al colapsar/expandir.
-    .sideBar__navigation {
-      margin-top: 172px;
-    }
 
     // Reentra por completo a la franja (ya no flota sobre el borde) y se
     // centra igual que los iconos de navegacion, en vez de quedar pegado a
