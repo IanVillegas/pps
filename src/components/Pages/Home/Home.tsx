@@ -90,8 +90,7 @@ const Home = () => {
         <div className={styles.home__helpAction}>
           <Button
             text="Contactos"
-            color={ButtonColor.Green}
-            variant="outlined"
+            color={ButtonColor.Secondary}
             size="x-small"
             block
             onClick={() => setHelpOpen(true)}

@@ -64,7 +64,8 @@ const Button = ({
                 ${link && styles.link}
                 ${isGap && styles.isGap} 
                 ${variant && styles[variant]}
-                ${disabled && (link ? styles.disabledLink : styles.disabled)}
+                ${disabled && !spinner && (link ? styles.disabledLink : styles.disabled)}
+                ${spinner && styles.loading}
                 ${isWhiteBackground && styles.isWhiteBackground}
                 ${styles[customClass]}
             `}
@@ -73,21 +74,30 @@ const Button = ({
       }}
       {...rest}
       disabled={disabled}
+      aria-busy={spinner || undefined}
     >
-      {children ?? children}
-      {lefIcon ? (
-        <span className={styles.button__leftIcon}>{lefIcon}</span>
-      ) : null}
-      {text ?? text}
-      {icon || spinner ? (
-        spinner ? (
-          <span className={`${styles.spinner} `}>
-            {icon ?? <i className="ri-loader-4-line"></i>}
+      {/* En carga (Figma, State=Loading) solo se ve el spinner: el contenido
+          se oculta con visibility (no se quita) para que el boton conserve su
+          ancho y no "salte" al cambiar de estado. */}
+      <span className={spinner ? styles.button__contentHidden : undefined}>
+        {children ?? children}
+        {lefIcon ? (
+          <span className={styles.button__leftIcon}>{lefIcon}</span>
+        ) : null}
+        {text ?? text}
+        {icon && !spinner ? <span>{icon}</span> : null}
+      </span>
+      {spinner && (
+        <span
+          className={styles.spinnerWrapper}
+          role="status"
+          aria-label="Cargando"
+        >
+          <span className={styles.spinner}>
+            {icon ?? <i className="ri-loader-4-line" aria-hidden="true"></i>}
           </span>
-        ) : (
-          <span>{icon}</span>
-        )
-      ) : null}
+        </span>
+      )}
     </button>
   );
 };

@@ -202,8 +202,12 @@
 }
 
 .secondary {
-  background-color: variables.$white;
-  color: variables.$primary-400;
+  // Figma "Type=Secundary" (Design System GM, nodo 424:3556): contorno
+  // verde 2026 de 1px sin relleno; hover rellena en verde, focus en gris
+  // oscuro, active solo aclara el borde a green-300.
+  background-color: transparent;
+  color: variables.$green-2026-400;
+  border: 1px solid variables.$green-2026-400;
 
   &.ghost {
     background: variables.$primary-400;
@@ -228,17 +232,36 @@
   }
 
   &.outlined {
-    color: variables.$primary-400;
+    color: variables.$green-2026-400;
   }
 
   &.border {
-    border: 1.5px solid variables.$primary-400;
+    border: 1px solid variables.$green-2026-400;
   }
 
   &:hover {
-    border-color: variables.$primary-500;
-    background: variables.$white;
-    color: variables.$primary-500;
+    background: variables.$green-2026-400;
+    border-color: variables.$green-2026-400;
+    color: variables.$white;
+  }
+
+  &:focus {
+    background: variables.$gray-500;
+    border-color: variables.$gray-500;
+    color: variables.$white;
+  }
+
+  &:active {
+    background: transparent;
+    border-color: variables.$green-2026-300;
+    color: variables.$green-2026-400;
+  }
+
+  &.disabled,
+  &.disabled:hover {
+    background: transparent !important;
+    border: 1px solid variables.$gray-200 !important;
+    color: variables.$gray-200 !important;
   }
 }
 
@@ -280,6 +303,27 @@
 
 .outlined {
   background-color: transparent;
+}
+
+// Estado Loading (Figma): solo el spinner, centrado sobre el boton, en
+// gris-500; el contenido sigue ocupando espacio pero invisible.
+.loading {
+  position: relative;
+  cursor: progress;
+  pointer-events: none;
+}
+
+.button__contentHidden {
+  visibility: hidden;
+}
+
+.spinnerWrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: variables.$gray-500;
 }
 
 .spinner {
@@ -356,6 +400,13 @@
     border: 0;
     color: variables.$gray-500;
     box-shadow: none;
+  }
+
+  &:active {
+    background-color: variables.$accent-400;
+    color: variables.$gray-500;
+    // "Elevation-3" del estado Active en Figma.
+    box-shadow: 0px 8px 16px rgba(108, 117, 125, 0.09);
   }
 
   &:focus-visible {
