@@ -90,12 +90,14 @@ const Home = () => {
             Escribí a Talento Humano o consultá la normativa de declaración
             patrimonial.
           </p>
-          <Button
-            text="Contactos"
-            color={ButtonColor.Cta}
-            size="x-small"
-            onClick={() => setHelpOpen(true)}
-          />
+          <div className={styles.home__cardAction}>
+            <Button
+              text="Contactos"
+              color={ButtonColor.Cta}
+              size="x-small"
+              onClick={() => setHelpOpen(true)}
+            />
+          </div>
         </div>
       </div>
       {isDev && (

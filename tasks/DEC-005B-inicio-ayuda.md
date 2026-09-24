@@ -50,6 +50,16 @@ El usuario pidio ver el estado de error sin depender de `/inicio?demo=error` (es
 
 Verificado explicitamente que NO aparece en produccion: `build` limpio + `npm run start` en un puerto aparte, login real, el boton no esta en el DOM. Verificado en `npm run dev` que si aparece, funciona (activa el error con la sesion intacta, "Hola, ivillegas" sigue visible) y que "Entendido" recupera el contenido normal sin perder la sesion. `check-types`, `lint` y `test -- --runInBand` (9 suites, 37 pruebas, 1 nueva) OK.
 
+## Ajuste posterior (2026-09-24): boton "Contactos" anclado al fondo de la tarjeta
+
+Se pidio cambiar el texto de la tarjeta "¿Que es?" (ahora ~8 lineas a 1920x1080 con escala 150%, ancho efectivo ~1280px CSS). Como las dos tarjetas de la grilla se estiran a la altura de la mas alta, "¿Necesitas ayuda?" quedaba con el texto y el boton arriba y un hueco grande debajo (el boton "en el aire", segun el usuario). Se ancla el boton al fondo con `margin-top: auto` en un contenedor propio (`home__cardAction`): el padding de 22px ya da el margen inferior y el `gap` del flex sigue siendo la separacion minima con el texto.
+
+- Al revisar el nodo real de Figma (43121:6798) se confirmo que **el boton ya estaba anclado al fondo de su tarjeta en el diseno**, con un espacio entre el texto y el boton; la version anterior (boton pegado al texto) era la que se desviaba. El cambio, entonces, acerca la pantalla al diseno original y no solo resuelve el hueco.
+- Consecuencia a tener presente: el ancla aplica en cualquier ancho, no solo cuando una tarjeta es mucho mas alta. A 1920x1080 al 100% (ambas tarjetas en su `min-height` de 200px) el boton tambien queda abajo, con ~60px de separacion del texto, igual que en Figma.
+- Verificado en navegador (sesion real): 1280x720 (equivale a 1920x1080 al 150%) — tarjetas de 247px, boton a 23px del borde inferior (22px de padding + 1px de borde), alineado con el final del texto de "¿Que es?"; 1920x1080 — ambas de 200px, boton a 23px del borde; 768 — sin desborde horizontal, boton igualmente anclado.
+- Error propio corregido durante el cambio: la primera version de la regla quedo anidada por accidente dentro del bloque `.home__cardText { }` y compilo como `.home__cardText .home__cardAction`, sin efecto; se detecto porque la medicion en el navegador no cambiaba, y se movio a nivel raiz.
+- `check-types`, `lint` y `test -- --runInBand` OK (15 suites, 79 pruebas, sin pruebas nuevas: es un cambio de disposicion).
+
 ## Diferencias y pendientes
 
 - D-14 (contactos de ayuda y periodicidad) sigue sin validacion de negocio; el correo/telefono usados son los literales de Figma, no un contrato confirmado.

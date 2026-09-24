@@ -94,6 +94,16 @@
   }
 }
 
+// Las dos tarjetas de la grilla se estiran a la altura de la mas alta; si el
+// texto de "Que es" es largo (ej. ~8 lineas a 1920x1080 con escala 150%),
+// "Necesitas ayuda" queda con un hueco enorme debajo del boton. `margin-top:
+// auto` ancla el boton al fondo de la tarjeta (el padding de 22px ya da el
+// margen inferior); cuando ambas tarjetas miden parecido no cambia nada,
+// el `gap` del flex sigue siendo la separacion minima con el texto.
+.home__cardAction {
+  margin-top: auto;
+}
+
 .home__cardText {
   font-family: var(--font-poppins), sans-serif;
   font-size: 16px;
