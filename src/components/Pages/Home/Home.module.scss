@@ -9,6 +9,8 @@
   // de quedar del tamano de su contenido, como reporto el usuario a escala
   // 125% (panel tan bajo como la mitad de la pantalla).
   flex: 1;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   background: gm.$white;
   border: 1px solid gm.$gray-100;
@@ -36,9 +38,9 @@
 // ya no sobraban los 784px que flex-wrap exigia. auto-fit/minmax si permite
 // achicar cada columna hasta 280px antes de recien ahi pasar a una sola.
 .home__cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  // Figma (43237:2119): la tarjeta "Que es" va inset 22px dentro del panel
+  // y ya no comparte fila con "Necesitas ayuda", que paso a ser un banner.
+  padding-inline: 22px;
 }
 
 .home__card {
@@ -94,14 +96,38 @@
   }
 }
 
-// Las dos tarjetas de la grilla se estiran a la altura de la mas alta; si el
-// texto de "Que es" es largo (ej. ~8 lineas a 1920x1080 con escala 150%),
-// "Necesitas ayuda" queda con un hueco enorme debajo del boton. `margin-top:
-// auto` ancla el boton al fondo de la tarjeta (el padding de 22px ya da el
-// margen inferior); cuando ambas tarjetas miden parecido no cambia nada,
-// el `gap` del flex sigue siendo la separacion minima con el texto.
-.home__cardAction {
-  margin-top: auto;
+// Banner de ayuda anclado al fondo del panel (Figma 43237:2110, "Card 4"):
+// `margin-top: auto` lo baja al final aunque el panel crezca de alto.
+.home__help {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 68px;
+  margin: auto 22px 0;
+  padding: 16px 22px;
+  background: gm.$green-100;
+  border: 1px solid gm.$gray-100;
+  border-radius: 12px;
+  box-shadow: 0 8px 8px rgba(108, 117, 125, 0.09);
+}
+
+.home__helpText {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 16px;
+  color: gm.$gray-500;
+}
+
+.home__helpAction {
+  flex: 0 0 190px;
+
+  // El Button compartido hace `all: unset` (content-box): con width 100% el
+  // padding y el borde se sumaban y se salia del banner.
+  > button {
+    box-sizing: border-box;
+  }
 }
 
 .home__cardText {
@@ -110,8 +136,7 @@
   color: gm.$gray-500;
   margin: 0;
 
-  // Solo el texto de "Que es" va justificado en Figma (nodo 43121:6830);
-  // el de "Necesitas ayuda" (43121:6821) queda alineado a la izquierda.
+  // El texto de "Que es" va justificado en Figma (nodo 43237:2126).
   &--justify {
     text-align: justify;
   }
@@ -175,5 +200,12 @@
 @media (max-width: 1100px) {
   .home {
     padding: 24px 24px 32px;
+  }
+  .home__cards {
+    padding-inline: 0;
+  }
+  .home__help {
+    margin-inline: 0;
+    flex-wrap: wrap;
   }
 }

@@ -77,27 +77,25 @@ const Home = () => {
             transparencia.
           </p>
         </div>
-        <div className={styles.home__card}>
-          <div className={styles.home__cardHeader}>
-            <span
-              className={`${styles.home__cardIcon} ${styles['home__cardIcon--badge']}`}
-            >
-              <i className="ri-customer-service-line" aria-hidden="true" />
-            </span>
-            <p>¿Necesitas ayuda?</p>
-          </div>
-          <p className={styles.home__cardText}>
-            Escribí a Talento Humano o consultá la normativa de declaración
-            patrimonial.
-          </p>
-          <div className={styles.home__cardAction}>
-            <Button
-              text="Contactos"
-              color={ButtonColor.Cta}
-              size="x-small"
-              onClick={() => setHelpOpen(true)}
-            />
-          </div>
+      </div>
+      <div className={styles.home__help}>
+        <span
+          className={`${styles.home__cardIcon} ${styles['home__cardIcon--badge']}`}
+        >
+          <i className="ri-customer-service-line" aria-hidden="true" />
+        </span>
+        <p className={styles.home__helpText}>
+          <strong>¿Necesitas ayuda?</strong> Escribe a Talento Humano.
+        </p>
+        <div className={styles.home__helpAction}>
+          <Button
+            text="Contactos"
+            color={ButtonColor.Green}
+            variant="outlined"
+            size="x-small"
+            block
+            onClick={() => setHelpOpen(true)}
+          />
         </div>
       </div>
       {isDev && (
