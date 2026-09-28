@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import DashboardLayout from '@/sad-aml-shared/components/Templates/DashboardLayout/DashboardLayout';
 import Header from '@/sad-aml-shared/components/Organisms/Header/Header';
 import SideBar from '@/sad-aml-shared/components/Organisms/SideBar/SideBar';
+import { NotificationProvider } from '@/components/Organisms/Notification/NotificationProvider';
 import LogoHeader from '@/assets/images/LogoHeader';
 import LogoSymbol from '@/assets/images/LogoSymbol';
 import type { SessionUser } from '@/types/Session.types';
@@ -77,31 +78,37 @@ const AppShell = ({ user, onLogout, children }: AppShellProps) => {
   ];
 
   return (
-    <DashboardLayout
-      title={step?.title ?? 'Declaración Patrimonial'}
-      titleIcon={step && <i className={step.iconClass} />}
-      compactTitle={Boolean(step)}
-      sidebar={
-        <SideBar
-          items={items}
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={() => setSidebarCollapsed(collapsed => !collapsed)}
-          logo={
-            <Link href="/inicio" aria-label="Grupo Mutual, inicio">
-              <LogoHeader className={styles.logo} />
-            </Link>
-          }
-          collapsedLogo={
-            <Link href="/inicio" aria-label="Grupo Mutual, inicio">
-              <LogoSymbol className={styles.logoSymbol} />
-            </Link>
-          }
-        />
-      }
-      header={<Header clientName={user.displayName} handleLogout={onLogout} />}
-    >
-      {children}
-    </DashboardLayout>
+    <NotificationProvider>
+      <DashboardLayout
+        title={step?.title ?? 'Declaración Patrimonial'}
+        titleIcon={step && <i className={step.iconClass} />}
+        compactTitle={Boolean(step)}
+        sidebar={
+          <SideBar
+            items={items}
+            collapsed={sidebarCollapsed}
+            onToggleCollapse={() =>
+              setSidebarCollapsed(collapsed => !collapsed)
+            }
+            logo={
+              <Link href="/inicio" aria-label="Grupo Mutual, inicio">
+                <LogoHeader className={styles.logo} />
+              </Link>
+            }
+            collapsedLogo={
+              <Link href="/inicio" aria-label="Grupo Mutual, inicio">
+                <LogoSymbol className={styles.logoSymbol} />
+              </Link>
+            }
+          />
+        }
+        header={
+          <Header clientName={user.displayName} handleLogout={onLogout} />
+        }
+      >
+        {children}
+      </DashboardLayout>
+    </NotificationProvider>
   );
 };
 
