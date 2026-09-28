@@ -1,5 +1,5 @@
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { DatePicker as DatePickerMUI } from '@mui/x-date-pickers/DatePicker';
+import { DesktopDatePicker as DatePickerMUI } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { esES } from '@mui/x-date-pickers/locales';
 import { useId } from 'react';
@@ -11,6 +11,18 @@ import styles from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker.
 import { Icon } from '@/sad-aml-shared/components/Atoms';
 
 moment.locale('es');
+
+// !Modificado para DecPat (2026-09-28): `DatePicker` (el componente
+// generico) elige entre dos interfaces segun `(pointer: coarse)`: en tablet
+// (o con el emulador tactil del navegador) usa la version "movil", un
+// <Dialog> de MUI con su propio atrapa-foco, botones Cancelar/OK y cabecera
+// "SELECCIONAR FECHA". Ese dialogo queda anidado dentro del modal de Radix
+// (Modal/FamilyDialog), y los dos atrapa-foco se pelean por el foco sin
+// parar (cada uno se lo devuelve al otro) hasta agotar la pila de llamadas
+// ("Maximum call stack size exceeded", miles de errores por minuto,
+// reportado por el usuario) y romper el layout. `DesktopDatePicker` fuerza
+// siempre la version de escritorio (el mismo popper ya corregido en este
+// componente), sin importar el tipo de puntero.
 
 // !Agregado para DecPat (2026-09-28): el calendario desplegable salia con la
 // tipografia (Roboto) y el azul por defecto de MUI. Figma no trae un diseno
