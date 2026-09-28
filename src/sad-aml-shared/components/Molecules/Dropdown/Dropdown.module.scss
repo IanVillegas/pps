@@ -32,7 +32,19 @@
   font-family: variables.$font-family-poppins;
   font-weight: 500;
   font-size: 14px;
-  color: variables.$gray-300;
+  // !Modificado para DecPat (2026-09-28): antes el texto quedaba siempre en
+  // gray-300 (color de placeholder), asi que un valor ya seleccionado se
+  // veia igual de tenue que "Seleccione" (reportado por el usuario). Radix
+  // pone `data-placeholder` en el propio Select.Trigger SOLO mientras
+  // muestra el placeholder (no en un span aparte, de ahi `&[data-placeholder]`
+  // y no un selector descendiente); el color base ahora es el del valor
+  // seleccionado (Figma "Selected", #343A40) y el placeholder se aclara
+  // aparte.
+  color: variables.$gray-500;
+
+  &[data-placeholder] {
+    color: variables.$gray-300;
+  }
   background-color: variables.$white;
   border: 1px solid variables.$gray-200;
   border-radius: 8px;
@@ -51,11 +63,25 @@
   }
 
   &__select {
-    z-index: 2;
+    // !Modificado para DecPat (2026-09-28): 2 quedaba por debajo del modal
+    // (z-index 3), asi que la lista de un Dropdown dentro de un modal se
+    // abria pero no se veia (DEC-008B, modal de familia). Radix copia este
+    // z-index al contenedor del popper, en un portal fuera del modal.
+    z-index: variables.$z-10;
     background-color: variables.$white;
     width: var(--radix-select-trigger-width);
     max-height: var(--radix-select-content-available-height);
     border-radius: 12px;
+    // !Modificado para DecPat (2026-09-28): sin esto, el `margin-top: -7px`
+    // de `&__scrollAreaRoot` (mas abajo) desplaza la primera opcion 7px por
+    // encima de este contenedor -- como este `div` no recortaba su
+    // contenido, esos 7px quedaban sueltos, sin las esquinas redondeadas,
+    // flotando sobre lo que hubiera detras (bug reportado por el usuario,
+    // confirmado antes pintando el fondo de otro color para verlo). Recortar
+    // aqui tambien redondea de forma automatica la esquina superior de la
+    // primera opcion, que antes quedaba cuadrada sin encajar con el radio
+    // de 12px de este contenedor.
+    overflow: hidden;
   }
 
   &__option {
@@ -85,8 +111,10 @@
       outline: none;
     }
 
+    // 16px en Figma (nodo 3980:1425, "Option 1"); antes 18px, una diferencia
+    // simbolica sin fuente que la explicara.
     &:first-child {
-      padding-top: 18px;
+      padding-top: 16px;
     }
 
     &:last-child {

@@ -30,3 +30,18 @@ p,
 span {
   font-family: var(--font-poppins), sans-serif;
 }
+
+// El popper del DatePicker (sad-aml-shared/Molecules/DatePicker) se porta a
+// document.body, fuera del arbol de cualquier modal. Mientras un modal de
+// Radix esta abierto, pone `pointer-events: none` en <body> y solo se lo
+// devuelve a `auto` a su propio contenido (AlertDialog.Content) -- el
+// calendario, al no ser descendiente, heredaba ese `none` y quedaba visible
+// pero sin poder pulsarse: un click en un dia le llegaba al campo que
+// estuviera debajo (DEC-008B, modal de familia; reportado por el usuario
+// como "el datepicker esta en un modo invisible" / "se cierra y no
+// cambia"). `pointer-events: auto` aqui restaura la interaccion, igual que
+// ya hace Radix consigo mismo. No puede vivir en el CSS Module del
+// DatePicker: un modulo no admite una regla totalmente global.
+.MuiPickerPopper-root {
+  pointer-events: auto;
+}

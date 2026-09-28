@@ -21,30 +21,83 @@
   margin-bottom: 10px;
 }
 
-.datePicker {
-  div {
-    border-radius: 8px;
-    border-color: red;
+// !Modificado para DecPat (2026-09-28): antes solo tocaba `div`/`input` de
+// forma generica (`border-color: red` incluido) y el contorno real de MUI,
+// que vive en un <fieldset>, quedaba con el gris/azul por defecto. Ahora
+// replica el campo de texto de Figma (nodo 43121:6211): 48px, borde 1px
+// #CED4DA, radio 8, Poppins Medium 12px, placeholder #ADB5BD y borde oscuro
+// al enfocar. `.datePicker.datePicker` sube la especificidad para ganarle a
+// los estilos que MUI inyecta en tiempo de ejecucion.
+.datePicker.datePicker {
+  :global(.MuiOutlinedInput-root) {
     height: 48px;
+    border-radius: 8px;
+    background-color: variables.$white;
+    padding-right: 12px;
+    font-family: variables.$font-family-poppins;
+    font-weight: 500;
+    font-size: 12px;
+    color: variables.$gray-500;
+
+    &.Mui-disabled {
+      background-color: variables.$gray-100;
+    }
+  }
+
+  :global(.MuiOutlinedInput-notchedOutline) {
+    border: 1px solid variables.$gray-200;
+    border-radius: 8px;
+  }
+
+  :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+    border-color: variables.$gray-200;
+  }
+
+  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border: 1px solid variables.$gray-500;
   }
 
   input {
-    background-color: variables.$white;
-    // border: 1px solid variables.$gray-200;
-    border-radius: 8px;
-    width: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 16px;
-    text-align: start;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0 0 0 16px;
     font-family: variables.$font-family-poppins;
     font-weight: 500;
-    font-size: 14px;
-    color: variables.$gray-400;
+    font-size: 12px;
+    color: variables.$gray-500;
+
+    &::placeholder {
+      color: variables.$gray-300;
+      opacity: 1;
+    }
   }
 
   &:focus {
     outline: none;
   }
+}
+
+.datePicker.datePickerError {
+  :global(.MuiOutlinedInput-notchedOutline),
+  :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline),
+  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+    border-color: variables.$error;
+  }
+}
+
+// El fix de `pointer-events` para el popper del calendario (portado a
+// document.body, fuera de este modulo) vive en styles/globals.scss: un CSS
+// Module no admite una regla totalmente global, ni siquiera con `:global`
+// (exige una clase local en cada selector de nivel superior).
+
+.errors {
+  margin: 4px 0 0;
+  @include mixin.config_text(
+    variables.$font-family-poppins,
+    normal,
+    400,
+    11px,
+    18px,
+    variables.$error
+  );
 }

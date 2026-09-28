@@ -24,3 +24,20 @@ export const AGENCY_OPTIONS: CatalogOption[] = [
   { value: 'agencia-2', label: 'Agencia 2 (mock)' },
   { value: 'agencia-3', label: 'Agencia 3 (mock)' },
 ];
+
+// Parentesco y genero del paso 2 (Familia). Mismo caso que arriba (D-09):
+// listas sinteticas hasta que el backend defina los catalogos reales.
+export const RELATIONSHIP_OPTIONS: CatalogOption[] = [
+  { value: 'conyuge', label: 'Cónyuge' },
+  { value: 'hijo', label: 'Hijo(a)' },
+  { value: 'padre', label: 'Padre' },
+  { value: 'madre', label: 'Madre' },
+  { value: 'hermano', label: 'Hermano(a)' },
+  { value: 'otro', label: 'Otro' },
+];
+
+export const GENDER_OPTIONS: CatalogOption[] = [
+  { value: 'femenino', label: 'Femenino' },
+  { value: 'masculino', label: 'Masculino' },
+  { value: 'otro', label: 'Otro' },
+];
