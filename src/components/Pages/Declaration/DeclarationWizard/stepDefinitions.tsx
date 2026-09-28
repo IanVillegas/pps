@@ -4,6 +4,7 @@ import PersonalData, {
   validatePersonalData,
 } from '@/components/Pages/Declaration/PersonalData/PersonalData';
 import Family from '@/components/Pages/Declaration/Family/Family';
+import RealEstate from '@/components/Pages/Declaration/RealEstate/RealEstate';
 
 /** Lo que el wizard le entrega al contenido de cada paso. */
 export interface StepProps {
@@ -29,4 +30,5 @@ export const STEP_DEFINITIONS: StepDefinitions = {
   1: { component: PersonalData, validate: validatePersonalData },
   // Sin `validate`: la tabla puede quedar vacia y aun asi terminar (D-16).
   2: { component: Family },
+  4: { component: RealEstate },
 };

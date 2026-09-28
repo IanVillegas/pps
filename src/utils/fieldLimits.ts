@@ -19,4 +19,12 @@ export const FIELD_MAX_LENGTH = {
   phone: 20,
   /** Direccion exacta (Textarea, texto libre mas largo). */
   address: 500,
+  /** Numero de finca (Bienes inmuebles). */
+  fincaNumber: 30,
+  /** Ubicacion de un bien inmueble o descripcion de un bien mueble. */
+  location: 200,
+  /** Monto en colones/dolares, escrito solo con digitos (sin separadores). */
+  amount: 15,
+  /** Forma de adquisicion de un bien inmueble (texto libre, ver Destino). */
+  acquisitionForm: 60,
 } as const;

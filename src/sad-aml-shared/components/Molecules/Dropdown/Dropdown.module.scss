@@ -137,18 +137,25 @@
   // tope; `isShort` sigue existiendo para pedir un tope mas bajo.
   &__heightScrollAreas {
     max-height: 30vh;
-    padding-bottom: 10px;
   }
 
   &__heightScrollAreasShort {
     max-height: 10vh;
-    padding-bottom: 10px;
   }
 
+  // !Modificado para DecPat (2026-09-28): el `padding-bottom: 5px` (mas el
+  // `10px` que traia `&__heightScrollAreas`, de mas arriba) no cubre ninguna
+  // opcion, asi que dejaba un hueco vacio bajo la ultima opcion. Cuando las
+  // opciones no necesitan scroll interno (entran todas), ese hueco es lo
+  // unico que queda pegado al borde inferior redondeado de `&__select`, y
+  // como no tiene su propio radio, se ve como un borde recto asomando bajo
+  // la esquina redondeada (bug reportado por el usuario, confirmado pintando
+  // el fondo de `&__select` de otro color para verlo). Sin padding, la
+  // ultima opcion (que ya tiene su propio `border-radius` de 8px) llega
+  // hasta el borde real del contenedor.
   &__scrollAreaRoot {
     border-radius: 4px;
     overflow: auto;
-    padding-bottom: 5px;
     --scrollbar-size: 10px;
     margin-top: -7px;
   }

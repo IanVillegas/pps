@@ -41,3 +41,14 @@ export const GENDER_OPTIONS: CatalogOption[] = [
   { value: 'masculino', label: 'Masculino' },
   { value: 'otro', label: 'Otro' },
 ];
+
+// Destino del paso 4 (Bienes inmuebles). Mismo caso que arriba (D-09):
+// lista sintetica hasta que el backend defina el catalogo real; "Vivienda"
+// es el ejemplo que trae Figma (nodo 43121:5271, columna Destino).
+export const REAL_ESTATE_DESTINATION_OPTIONS: CatalogOption[] = [
+  { value: 'vivienda', label: 'Vivienda' },
+  { value: 'alquiler', label: 'Alquiler' },
+  { value: 'uso-comercial', label: 'Uso comercial' },
+  { value: 'lote-sin-construir', label: 'Lote sin construir' },
+  { value: 'otro', label: 'Otro' },
+];

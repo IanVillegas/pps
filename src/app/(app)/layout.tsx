@@ -14,7 +14,10 @@ import AuthenticatedShell from '@/components/Templates/AuthenticatedShell/Authen
 // el efecto de matchMedia lo volviera a colapsar. Con un layout compartido,
 // AppShell se monta una sola vez y solo cambia `children`.
 
-// (app) porque así es como Next.js permite que dos rutas compartan un mismo layout sin que un layout.tsx en la raíz también envuelva el login. /inicio y /mi-declaracion/[paso] son rutas hijas de (app) y comparten este layout.tsx, que a su vez envuelve a AuthenticatedShell. El layout de login está en src/app/layout.tsx, que es el layout de la raíz y no envuelve a (app).
+// (app) porque así es como Next.js permite que dos rutas compartan un mismo layout sin que un layout.tsx en la raíz
+// también envuelva el login. /inicio y /mi-declaracion/[paso] son rutas hijas de (app) y comparten este layout.tsx, que
+// a su vez envuelve a AuthenticatedShell. El layout de login está en src/app/layout.tsx, que es el layout de la raíz y
+// no envuelve a (app).
 
 export default function AppRouteGroupLayout({
   children,
