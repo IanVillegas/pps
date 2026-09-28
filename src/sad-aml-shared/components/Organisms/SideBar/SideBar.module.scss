@@ -164,10 +164,20 @@
   // Colapsado por defecto (sin flecha, sin espacio para ella) salvo que este
   // activo o que se pase el mouse sobre su enlace: `:has()` deja excluir a
   // los botones deshabilitados (nunca tienen un <a> adentro, nunca matchean
-  // `:has(> a:hover)`) sin depender de JS para saber si el hover corresponde
-  // a un item navegable. Soporte de `:has()`: Chrome/Edge 105+, Firefox
-  // 121+, Safari 15.4+ — suficiente para un sistema interno.
-  li:not(.active):not(:has(> a:hover)) {
+  // `:has(a)`) sin depender de JS para saber si el hover corresponde a un
+  // item navegable. Soporte de `:has()`: Chrome/Edge 105+, Firefox 121+,
+  // Safari 15.4+ — suficiente para un sistema interno.
+  //
+  // `:has(a):hover` (hover en el <li>), NO `:has(> a:hover)` (hover en el
+  // <a>): con el hover en el <a>, el propio cambio de estado corre el <a>
+  // hacia la derecha (padding-left del <li> 0->35px mas la flecha), asi que
+  // un cursor quieto en esa franja quedaba unas veces dentro del <a> y otras
+  // fuera, prendiendo y apagando el hover en bucle (bug real, reportado por
+  // el usuario: "se coloca el hover una y otra vez" entre la flecha y el
+  // fondo rojo). El <li> no cambia de ancho con el hover (lo estira el flex
+  // column de `ul`), asi que su zona de hover es estable sin importar cuanto
+  // se mueva el <a> por dentro.
+  li:not(.active):not(:has(a):hover) {
     gap: 0;
     .sideBar__arrow {
       display: none;
@@ -183,7 +193,7 @@
   // y flecha visible) al pasar el mouse sobre un item navegable no activo,
   // igual que en Mutual en Linea.
   .active,
-  li:has(> a:hover) {
+  li:has(a):hover {
     .sideBar__arrow {
       display: flex;
     }
@@ -231,12 +241,12 @@
       padding: 12px;
       gap: 0;
     }
-    // Misma especificidad que la regla de arriba ("li:not(.active):not(:has(>
-    // a:hover)) a/button", que fija gap:22px para el estado expandido) mas
-    // la clase de colapsado: sin esto ganaba ella y el icono quedaba
-    // descentrado por el gap fantasma junto al label oculto.
-    li:not(.active):not(:has(> a:hover)) a,
-    li:not(.active):not(:has(> a:hover)) button {
+    // Misma especificidad que la regla de arriba ("li:not(.active):not(:has(a):hover)
+    // a/button", que fija gap:22px para el estado expandido) mas la clase de
+    // colapsado: sin esto ganaba ella y el icono quedaba descentrado por el
+    // gap fantasma junto al label oculto.
+    li:not(.active):not(:has(a):hover) a,
+    li:not(.active):not(:has(a):hover) button {
       padding-left: 0;
       gap: 0;
     }
@@ -259,8 +269,8 @@
       padding-inline: 12px;
       gap: 10px;
     }
-    li:not(.active):not(:has(> a:hover)) a,
-    li:not(.active):not(:has(> a:hover)) button {
+    li:not(.active):not(:has(a):hover) a,
+    li:not(.active):not(:has(a):hover) button {
       gap: 16px;
     }
   }
