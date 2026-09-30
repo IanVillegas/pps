@@ -3,3 +3,4 @@
 // pantallas siempre importen desde '@/components/Molecules'.
 export { default as Dropdown } from '@/sad-aml-shared/components/Molecules/Dropdown/Dropdown';
 export { default as DeclarationStepper } from './DeclarationStepper/DeclarationStepper';
+export { default as FileUpload } from './FileUpload/FileUpload';

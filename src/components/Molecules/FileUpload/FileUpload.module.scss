@@ -1,0 +1,224 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Medidas del nodo Figma "Adjuntar" (43121:5780 vacio / 43121:5802 con
+// archivos): caja punteada 8px de radio, borde gris-200, icono grande
+// centrado y texto Poppins 13px. Las tarjetas de archivo son las del nodo
+// 43121:5802 (146x118, radio 12, sombra Elevation-3).
+.fileUpload {
+  width: 100%;
+}
+
+.fileUpload__dropzone {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 24px;
+  background: gm.$white;
+  border: 1px dashed gm.$gray-200;
+  border-radius: 8px;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+
+  &--dragging {
+    border-color: gm.$green-2026-400;
+    background: gm.$green-100;
+  }
+
+  &--disabled {
+    background: gm.$gray-100;
+    cursor: not-allowed;
+  }
+}
+
+.fileUpload__trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  cursor: pointer;
+
+  i {
+    font-size: 48px;
+    color: gm.$gray-300;
+  }
+
+  &:focus-within {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+// Oculto solo visualmente (sigue en el DOM y enfocable con teclado); mismo
+// patron que `sideBar__labelHidden`.
+.fileUpload__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fileUpload__hint {
+  margin: 0;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.4;
+  color: gm.$gray-400;
+}
+
+.fileUpload__link {
+  color: gm.$green-2026-400;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.fileUpload__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fileUpload__card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 146px;
+  padding: 28px 10px 10px;
+  background: gm.$white;
+  border: 1px solid gm.$gray-100;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+}
+
+.fileUpload__cardActions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  left: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border: 0;
+    background: transparent;
+    color: gm.$gray-400;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover {
+      color: gm.$red-2026;
+    }
+
+    &:focus-visible {
+      outline: 2px solid gm.$gray-500;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+}
+
+.fileUpload__cardBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+}
+
+.fileUpload__status {
+  &--selected,
+  &--uploading {
+    color: gm.$gray-400;
+  }
+
+  &--uploaded {
+    color: gm.$green-2026-400;
+  }
+
+  &--error,
+  &--invalid {
+    color: gm.$error;
+  }
+}
+
+.fileUpload__cardBody i {
+  font-size: 28px;
+}
+
+.fileUpload__spin {
+  animation: fileUploadSpin 1000ms linear infinite;
+}
+
+@keyframes fileUploadSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fileUpload__progress {
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  background: gm.$gray-100;
+  border-radius: 999px;
+}
+
+.fileUpload__progressFill {
+  height: 100%;
+  background: gm.$green-2026-300;
+  border-radius: inherit;
+  transition: width 0.2s ease;
+}
+
+.fileUpload__name {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  color: gm.$gray-400;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileUpload__error {
+  margin: 0;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 11px;
+  line-height: 1.3;
+  color: gm.$error;
+  text-align: center;
+}
+
+.fileUpload__formError {
+  margin: 4px 0 0;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 11px;
+  line-height: 18px;
+  color: gm.$error;
+}
