@@ -52,3 +52,29 @@ export const REAL_ESTATE_DESTINATION_OPTIONS: CatalogOption[] = [
   { value: 'lote-sin-construir', label: 'Lote sin construir' },
   { value: 'otro', label: 'Otro' },
 ];
+
+// Tipo y marca del paso 5 (Bienes muebles). Mismo caso que arriba (D-09):
+// listas sinteticas hasta que el backend defina los catalogos reales.
+// "Vehiculo"/"BMW" son los ejemplos que trae Figma (nodo 43121:4527, tabla).
+//
+// IMPORTANTE: una lista cerrada para "Marca" es poco practica en la vida
+// real (hay cientos de marcas posibles entre vehiculos, joyas, equipo
+// electronico, etc.). Se sigue el diseno de Figma tal cual (Dropdown-NEW
+// para ambos campos, nodo 43121:4505), pero queda como algo a confirmar con
+// el negocio -- lo mas probable es que termine siendo texto libre o un
+// combobox que admita escribir una opcion nueva.
+export const MOVABLE_ASSET_TYPE_OPTIONS: CatalogOption[] = [
+  { value: 'vehiculo', label: 'Vehículo' },
+  { value: 'embarcacion', label: 'Embarcación' },
+  { value: 'maquinaria', label: 'Maquinaria' },
+  { value: 'equipo-electronico', label: 'Equipo electrónico' },
+  { value: 'joyas', label: 'Joyas' },
+  { value: 'otro', label: 'Otro' },
+];
+
+export const MOVABLE_ASSET_BRAND_OPTIONS: CatalogOption[] = [
+  { value: 'toyota', label: 'Toyota' },
+  { value: 'hyundai', label: 'Hyundai' },
+  { value: 'bmw', label: 'BMW' },
+  { value: 'otra', label: 'Otra' },
+];

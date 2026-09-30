@@ -1,0 +1,124 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Mismo criterio que FamilyDialog/RealEstateDialog: reemplaza
+// .alertDialogContent con las medidas del nodo Figma 43121:4486 (805px,
+// campos de 300px en dos columnas con ~90px entre ellas, botones de 205x48
+// separados 42px).
+.movableAsset {
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: gm.$z-3;
+  width: 805px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: gm.$white;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+  padding: 22px 57px 48px;
+  color: gm.$gray-500;
+
+  // Boton de cerrar (X) arriba a la derecha, en gris claro como en Figma.
+  > div:first-child button {
+    color: gm.$gray-200;
+    padding: 0;
+    font-size: 30px;
+
+    &:focus-visible {
+      outline: 2px solid gm.$gray-500;
+      outline-offset: 2px;
+    }
+  }
+
+  > h2 {
+    width: auto;
+    height: auto;
+    margin: 0 0 32px;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  // Pie: Cancelar + Agregar, centrados.
+  > div:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 42px;
+    margin-top: 32px;
+
+    button {
+      box-sizing: border-box;
+      width: 205px;
+      min-width: 0;
+      height: 48px;
+    }
+  }
+}
+
+.movableAsset__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 90px;
+  row-gap: 20px;
+  font-size: 14px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}
+
+.movableAsset__full {
+  grid-column: 1 / -1;
+}
+
+// "?" junto al campo Descripcion (Figma, nodo 43121:4494). InputText solo
+// deja poner el tooltip despues del campo (ver comentario donde se usa);
+// este boton es chico a proposito, para no competir visualmente con el
+// input.
+.movableAsset__help {
+  // `align-self`: InputText envuelve el campo en un flex column
+  // (width: 100%); sin esto este boton se estiraba a todo el ancho del
+  // campo (un anillo de foco ovalado enorme en vez de un circulo chico
+  // junto al icono, visible al enfocarlo con teclado).
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: gm.$gray-300;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    color: gm.$gray-400;
+  }
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 50%;
+  }
+}
+
+// Descripcion solo para lectores de pantalla: Figma no la dibuja, pero el
+// dialogo la necesita para tener descripcion accesible.
+.movableAsset__description {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
