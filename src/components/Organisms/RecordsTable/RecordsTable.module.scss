@@ -11,12 +11,25 @@ $line: rgba(31, 31, 31, 0.1);
 
   &__toolbar {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 20px;
+  }
+
+  // Titulo de seccion (ej. "Ingresos adicionales", nodo Figma 43121:5678);
+  // con "Agregar nuevo" ausente igual se queda a la izquierda.
+  &__title {
+    margin: 0;
+    font-family: var(--font-worksans), sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: gm.$gray-500;
   }
 
   &__add {
     display: inline-flex;
+    margin-left: auto;
     align-items: center;
     gap: 8px;
     padding: 4px 0;

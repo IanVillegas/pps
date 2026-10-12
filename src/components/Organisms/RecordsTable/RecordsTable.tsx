@@ -12,6 +12,8 @@ export interface RecordsTableColumn<T> {
 interface RecordsTableProps<T extends { id: string }> {
   /** Nombre accesible de la tabla (se anuncia; no se ve). */
   caption: string;
+  /** Titulo visible a la izquierda de la barra superior (paso 3 tiene dos tablas). */
+  title?: string;
   columns: RecordsTableColumn<T>[];
   rows: T[];
   /** Texto que identifica la fila en los nombres de sus acciones. */
@@ -34,6 +36,7 @@ interface RecordsTableProps<T extends { id: string }> {
  */
 const RecordsTable = <T extends { id: string }>({
   caption,
+  title,
   columns,
   rows,
   getRowLabel,
@@ -48,12 +51,19 @@ const RecordsTable = <T extends { id: string }>({
 
   return (
     <div className={styles.records}>
-      {onAdd && (
+      {(title || onAdd) && (
         <div className={styles.records__toolbar}>
-          <button type="button" className={styles.records__add} onClick={onAdd}>
-            <i className="ri-add-line" aria-hidden="true" />
-            {addLabel}
-          </button>
+          {title && <h3 className={styles.records__title}>{title}</h3>}
+          {onAdd && (
+            <button
+              type="button"
+              className={styles.records__add}
+              onClick={onAdd}
+            >
+              <i className="ri-add-line" aria-hidden="true" />
+              {addLabel}
+            </button>
+          )}
         </div>
       )}
       {/* Region enfocable: con muchas columnas la tabla hace scroll

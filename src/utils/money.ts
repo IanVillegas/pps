@@ -3,7 +3,10 @@
 // D-10 (preparacion-tecnica-visual.md) sigue abierta para las reglas reales
 // de formato, redondeo y moneda (colones/dolares); esto es solo para no
 // mostrar un numero plano mientras tanto.
-export const formatAmount = (value: string): string => {
+export const formatAmount = (value: string | number): string => {
+  if (typeof value === 'number') {
+    return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
   if (!/^\d+$/.test(value)) return value;
   return Number(value).toLocaleString('en-US');
 };

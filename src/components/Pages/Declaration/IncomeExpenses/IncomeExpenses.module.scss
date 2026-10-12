@@ -1,0 +1,22 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Nodo Figma 43121:5334 (Paso 3): tres bloques apilados (planilla +
+// ingresos adicionales, egresos, otros detalles). En Figma cada bloque es su
+// propia tarjeta blanca; aqui van dentro de la tarjeta del wizard separados
+// por una linea (ver DEC-009A, "Diferencias contra Figma").
+.incomeExpenses {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    & + & {
+      padding-top: 32px;
+      border-top: 1px solid rgba(31, 31, 31, 0.1);
+    }
+  }
+}

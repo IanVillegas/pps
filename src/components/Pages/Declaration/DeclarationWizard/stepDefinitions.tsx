@@ -4,6 +4,7 @@ import PersonalData, {
   validatePersonalData,
 } from '@/components/Pages/Declaration/PersonalData/PersonalData';
 import Family from '@/components/Pages/Declaration/Family/Family';
+import IncomeExpenses from '@/components/Pages/Declaration/IncomeExpenses/IncomeExpenses';
 import RealEstate from '@/components/Pages/Declaration/RealEstate/RealEstate';
 import MovableAssets from '@/components/Pages/Declaration/MovableAssets/MovableAssets';
 
@@ -31,6 +32,7 @@ export const STEP_DEFINITIONS: StepDefinitions = {
   1: { component: PersonalData, validate: validatePersonalData },
   // Sin `validate`: la tabla puede quedar vacia y aun asi terminar (D-16).
   2: { component: Family },
+  3: { component: IncomeExpenses },
   4: { component: RealEstate },
   5: { component: MovableAssets },
 };
