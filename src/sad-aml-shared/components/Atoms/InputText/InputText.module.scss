@@ -15,7 +15,10 @@
     display: flex;
     align-items: center;
     color: #343a40;
-    margin-bottom: 14px;
+    // !Modificado para DecPat (2026-10-13): antes 14px; el "Field-NEW" de Figma
+    // separa label y campo 10px, igual que el Dropdown. Con 14px, un campo de
+    // texto junto a un dropdown en la misma fila quedaba 4px mas abajo.
+    margin-bottom: 10px;
   }
 
   &__input {
