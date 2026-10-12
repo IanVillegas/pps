@@ -39,6 +39,17 @@ describe('useAttachments', () => {
     });
   });
 
+  it('starts with already uploaded files when given their names', () => {
+    const { result } = renderHook(() =>
+      useAttachments({ initialFileNames: ['cedula.pdf', 'recibo.pdf'] })
+    );
+    expect(result.current.files.map(file => file.name)).toEqual([
+      'cedula.pdf',
+      'recibo.pdf',
+    ]);
+    expect(result.current.files.every(f => f.status === 'uploaded')).toBe(true);
+  });
+
   it('rejects a file that is not a PDF', () => {
     const { result } = renderHook(() => useAttachments());
     const png = new File(['x'], 'imagen.png', { type: 'image/png' });

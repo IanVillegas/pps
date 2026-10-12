@@ -78,3 +78,13 @@ export const MOVABLE_ASSET_BRAND_OPTIONS: CatalogOption[] = [
   { value: 'bmw', label: 'BMW' },
   { value: 'otra', label: 'Otra' },
 ];
+
+// Tipos del paso 3 (Ingresos y egresos). Mismo caso que arriba (D-09): listas
+// sinteticas hasta que el backend defina los catalogos reales.
+export const INCOME_TYPE_OPTIONS: CatalogOption[] = [
+  { value: 'alquileres', label: 'Alquileres' },
+  { value: 'comisiones', label: 'Comisiones' },
+  { value: 'pension', label: 'Pensión' },
+  { value: 'actividad-independiente', label: 'Actividad independiente' },
+  { value: 'otro', label: 'Otro' },
+];
