@@ -101,3 +101,25 @@ export const EXPENSE_TYPE_OPTIONS: CatalogOption[] = [
   { value: 'cuotas-creditos', label: 'Cuotas de créditos' },
   { value: 'otro', label: 'Otro' },
 ];
+
+// Paso 6 (cuentas de ahorro). Mismo caso que arriba (D-09): listas sinteticas
+// hasta que el backend defina los catalogos reales; no se inventan nombres
+// reales de entidades financieras. "Grupo Mutual" es el ejemplo que trae
+// Figma en la tabla (nodo 43121:4458).
+export const ACCOUNT_RELATIONSHIP_OPTIONS: CatalogOption[] = [
+  { value: 'titular', label: 'Titular' },
+  ...RELATIONSHIP_OPTIONS,
+];
+
+export const CURRENCY_OPTIONS: CatalogOption[] = [
+  { value: 'colones', label: 'Colones' },
+  { value: 'dolares', label: 'Dólares' },
+];
+
+export const FINANCIAL_ENTITY_OPTIONS: CatalogOption[] = [
+  { value: 'grupo-mutual', label: 'Grupo Mutual' },
+  { value: 'banco-1', label: 'Banco 1 (mock)' },
+  { value: 'banco-2', label: 'Banco 2 (mock)' },
+  { value: 'cooperativa', label: 'Cooperativa (mock)' },
+  { value: 'otra', label: 'Otra' },
+];

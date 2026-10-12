@@ -9,6 +9,7 @@ import IncomeExpenses, {
 } from '@/components/Pages/Declaration/IncomeExpenses/IncomeExpenses';
 import RealEstate from '@/components/Pages/Declaration/RealEstate/RealEstate';
 import MovableAssets from '@/components/Pages/Declaration/MovableAssets/MovableAssets';
+import Savings from '@/components/Pages/Declaration/Savings/Savings';
 
 /** Lo que el wizard le entrega al contenido de cada paso. */
 export interface StepProps {
@@ -39,4 +40,5 @@ export const STEP_DEFINITIONS: StepDefinitions = {
   3: { component: IncomeExpenses, validate: validateIncomeExpenses },
   4: { component: RealEstate },
   5: { component: MovableAssets },
+  6: { component: Savings },
 };

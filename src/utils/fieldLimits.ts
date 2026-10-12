@@ -27,6 +27,8 @@ export const FIELD_MAX_LENGTH = {
   amount: 15,
   /** Forma de adquisicion de un bien inmueble (texto libre, ver Destino). */
   acquisitionForm: 60,
+  /** Numero de cuenta o de titulo de ahorro (paso 6, texto libre). */
+  accountNumber: 30,
   /** Descripcion de la situacion financiera (paso 3, texto libre largo). */
   situationDetail: 1000,
 } as const;

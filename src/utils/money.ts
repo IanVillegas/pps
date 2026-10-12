@@ -14,8 +14,8 @@ export const formatAmount = (value: string | number): string => {
 // Saldo mensual y razones del paso 3, tal como los dibuja Figma
 // ("₡ 1,897.45" y "0.00 %", nodos 43121:5733 y 43121:5731). Mismo caracter
 // provisional que formatAmount: el formato real depende de D-10.
-export const formatCurrency = (value: number): string =>
-  `₡ ${value.toLocaleString('en-US', {
+export const formatCurrency = (value: number, symbol = '₡'): string =>
+  `${symbol} ${value.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
