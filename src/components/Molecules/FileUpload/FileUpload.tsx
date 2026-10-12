@@ -17,11 +17,14 @@ interface FileUploadProps {
   errors?: string;
 }
 
+// Icono central de la minitarjeta por estado (Figma, nodo 43121:5802):
+// girando mientras sube, clip al terminar, alerta si el archivo no es valido
+// y flecha circular (reintentar) si la subida fallo.
 const STATUS_ICON: Record<AttachmentFile['status'], string> = {
-  selected: 'ri-attachment-2',
+  selected: 'ri-loader-4-line',
   uploading: 'ri-loader-4-line',
   uploaded: 'ri-attachment-2',
-  error: 'ri-alert-line',
+  error: 'ri-restart-line',
   invalid: 'ri-alert-line',
 };
 
@@ -81,7 +84,10 @@ const FileUpload = ({
         onDragLeave={() => setDragging(false)}
         onDrop={handleDrop}
       >
-        <label htmlFor={inputId} className={styles.fileUpload__trigger}>
+        <label
+          htmlFor={inputId}
+          className={`${styles.fileUpload__trigger} ${files.length > 0 ? styles['fileUpload__trigger--compact'] : ''}`}
+        >
           <input
             id={inputId}
             className={styles.fileUpload__input}
@@ -107,58 +113,104 @@ const FileUpload = ({
 
         {files.length > 0 && (
           <ul className={styles.fileUpload__list}>
-            {files.map(file => (
-              <li key={file.id} className={styles.fileUpload__card}>
-                <div className={styles.fileUpload__cardActions}>
-                  {file.status === 'error' && onRetry && (
+            {files.map(file => {
+              const filled =
+                file.status === 'selected' ||
+                file.status === 'uploading' ||
+                file.status === 'uploaded';
+              const failed =
+                file.status === 'error' || file.status === 'invalid';
+              const showThumbnail = Boolean(file.previewUrl) && filled;
+              const icon = (
+                <i
+                  className={`${STATUS_ICON[file.status]} ${styles[`fileUpload__status--${file.status}`]} ${file.status === 'uploading' || file.status === 'selected' ? styles.fileUpload__spin : ''}`}
+                  aria-hidden="true"
+                />
+              );
+              return (
+                <li
+                  key={file.id}
+                  className={`${styles.fileUpload__card} ${failed ? styles['fileUpload__card--failed'] : ''}`}
+                >
+                  <div
+                    className={`${styles.fileUpload__preview} ${filled ? styles['fileUpload__preview--filled'] : ''} ${showThumbnail ? styles['fileUpload__preview--thumbnail'] : ''} ${showThumbnail && file.status !== 'uploaded' ? styles['fileUpload__preview--dimmed'] : ''}`}
+                  >
+                    {showThumbnail && (
+                      // Miniatura de la primera pagina del PDF (data URL
+                      // local): decorativa, el nombre ya esta debajo.
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        className={styles.fileUpload__thumbnail}
+                        src={file.previewUrl}
+                        alt=""
+                      />
+                    )}
+                    {file.status === 'error' && onRetry ? (
+                      <button
+                        type="button"
+                        className={styles.fileUpload__retry}
+                        aria-label={`Reintentar ${file.name}`}
+                        onClick={() => onRetry(file.id)}
+                      >
+                        {icon}
+                      </button>
+                    ) : (
+                      !(showThumbnail && file.status === 'uploaded') && icon
+                    )}
                     <button
                       type="button"
-                      aria-label={`Reintentar ${file.name}`}
-                      onClick={() => onRetry(file.id)}
+                      className={`${styles.fileUpload__remove} ${filled ? styles['fileUpload__remove--onFill'] : ''} ${showThumbnail ? styles['fileUpload__remove--onThumbnail'] : ''}`}
+                      aria-label={`Quitar ${file.name}`}
+                      onClick={() => onRemove(file.id)}
                     >
-                      <i className="ri-restart-line" aria-hidden="true" />
+                      <i className="ri-delete-bin-line" aria-hidden="true" />
                     </button>
-                  )}
-                  <button
-                    type="button"
-                    aria-label={`Quitar ${file.name}`}
-                    onClick={() => onRemove(file.id)}
-                  >
-                    <i className="ri-delete-bin-line" aria-hidden="true" />
-                  </button>
-                </div>
-                <div className={styles.fileUpload__cardBody}>
-                  <i
-                    className={`${STATUS_ICON[file.status]} ${styles[`fileUpload__status--${file.status}`]} ${file.status === 'uploading' ? styles.fileUpload__spin : ''}`}
-                    aria-hidden="true"
-                  />
-                </div>
-                {file.status === 'uploading' && (
-                  <div
-                    className={styles.fileUpload__progress}
-                    role="progressbar"
-                    aria-label={`Subiendo ${file.name}`}
-                    aria-valuenow={file.progress ?? 0}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                  >
-                    <div
-                      className={styles.fileUpload__progressFill}
-                      style={{ width: `${file.progress ?? 0}%` }}
-                    />
                   </div>
-                )}
-                <p className={styles.fileUpload__name} title={file.name}>
-                  {file.name}
-                </p>
-                {(file.status === 'error' || file.status === 'invalid') &&
-                  file.errorMessage && (
-                    <p className={styles.fileUpload__error} role="alert">
+                  <div
+                    className={`${styles.fileUpload__track} ${file.status === 'uploading' || failed ? styles['fileUpload__track--visible'] : ''}`}
+                    role={
+                      file.status === 'uploading' ? 'progressbar' : undefined
+                    }
+                    aria-label={
+                      file.status === 'uploading'
+                        ? `Subiendo ${file.name}`
+                        : undefined
+                    }
+                    aria-valuenow={
+                      file.status === 'uploading'
+                        ? (file.progress ?? 0)
+                        : undefined
+                    }
+                    aria-valuemin={file.status === 'uploading' ? 0 : undefined}
+                    aria-valuemax={
+                      file.status === 'uploading' ? 100 : undefined
+                    }
+                  >
+                    {file.status === 'uploading' && (
+                      <div
+                        className={styles.fileUpload__progressFill}
+                        style={{ width: `${file.progress ?? 0}%` }}
+                      />
+                    )}
+                    {failed && (
+                      <div className={styles.fileUpload__failedFill} />
+                    )}
+                  </div>
+                  <p className={styles.fileUpload__name} title={file.name}>
+                    {file.name}
+                  </p>
+                  {failed && file.errorMessage && (
+                    <p
+                      className={styles.fileUpload__error}
+                      role="alert"
+                      title={file.errorMessage}
+                    >
                       {file.errorMessage}
                     </p>
                   )}
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

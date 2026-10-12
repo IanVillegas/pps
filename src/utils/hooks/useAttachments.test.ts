@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { useAttachments } from './useAttachments';
+import { createPdfThumbnail } from '@/utils/pdfThumbnail';
 
 const pdf = (name: string, sizeBytes = 1024) =>
   new File([new Uint8Array(sizeBytes)], name, { type: 'application/pdf' });
@@ -18,6 +19,9 @@ const flushUpload = async () => {
 describe('useAttachments', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    // La miniatura nunca llega salvo en las pruebas que la piden: una
+    // respuesta que llega sola, fuera de `act`, ensucia la salida.
+    jest.mocked(createPdfThumbnail).mockReturnValue(new Promise(() => {}));
   });
   afterEach(() => {
     jest.useRealTimers();
@@ -48,6 +52,36 @@ describe('useAttachments', () => {
       'recibo.pdf',
     ]);
     expect(result.current.files.every(f => f.status === 'uploaded')).toBe(true);
+  });
+
+  it('adds the first-page thumbnail to a valid PDF once it is ready', async () => {
+    jest
+      .mocked(createPdfThumbnail)
+      .mockResolvedValueOnce('data:image/jpeg;base64,THUMBNAIL');
+    const { result } = renderHook(() => useAttachments());
+    act(() => result.current.addFiles([pdf('cedula.pdf')]));
+    await act(async () => {});
+    expect(createPdfThumbnail).toHaveBeenCalled();
+    expect(result.current.files[0].previewUrl).toBe(
+      'data:image/jpeg;base64,THUMBNAIL'
+    );
+  });
+
+  it('keeps the file working without a thumbnail when the PDF cannot be read', async () => {
+    jest.mocked(createPdfThumbnail).mockRejectedValueOnce(new Error('corrupt'));
+    const { result } = renderHook(() => useAttachments());
+    act(() => result.current.addFiles([pdf('danado.pdf')]));
+    await flushUpload();
+    expect(result.current.files[0].previewUrl).toBeUndefined();
+    expect(result.current.files[0].status).toBe('uploaded');
+  });
+
+  it('does not build a thumbnail for a rejected file', () => {
+    jest.mocked(createPdfThumbnail).mockClear();
+    const { result } = renderHook(() => useAttachments());
+    const png = new File(['x'], 'imagen.png', { type: 'image/png' });
+    act(() => result.current.addFiles([png]));
+    expect(createPdfThumbnail).not.toHaveBeenCalled();
   });
 
   it('rejects a file that is not a PDF', () => {

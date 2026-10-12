@@ -42,3 +42,12 @@ if (typeof window.matchMedia !== 'function') {
       dispatchEvent: () => false,
     }) as MediaQueryList;
 }
+
+// pdf.js e `import.meta` no corren en jsdom (no tiene canvas), asi que la
+// miniatura de los adjuntos se reemplaza en todas las pruebas; cada una puede
+// ajustar la respuesta con `jest.mocked(createPdfThumbnail)`.
+jest.mock('@/utils/pdfThumbnail', () => ({
+  createPdfThumbnail: jest.fn(() =>
+    Promise.resolve('data:image/jpeg;base64,THUMBNAIL')
+  ),
+}));

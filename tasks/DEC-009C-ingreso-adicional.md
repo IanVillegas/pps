@@ -22,7 +22,7 @@ El criterio de aceptación original decía «error conserva formulario». Hoy el
 
 ## Diferencias y pendientes contra Figma
 
-- El enlace «selecciónelo» del selector de archivos se ve verde y en negrita (estilo de `FileUpload`, DEC-009B); en Figma va subrayado en gris. No se tocó aquí.
+- **Corregido el 2026-10-13** (reporte del usuario): en el modal, «Tipo de ingreso» quedaba 4 px más arriba que «Monto» (la etiqueta de `InputText` separaba 14 px del campo y la del `Dropdown`, 10 px; Figma usa 10 px en ambos, «Field-NEW»). Se ajustó `InputText` de `sad-aml-shared` a 10 px, lo que alinea también cualquier otra fila que mezcle campo y lista (Datos generales, Familia, Muebles...). Y las minitarjetas de archivo se rehicieron según Figma (ver DEC-009B); el enlace «selecciónelo» ahora es subrayado gris.
 - Catálogo de tipos de ingreso sintético (D-09).
 - Cantidad máxima de archivos sigue siendo simbólica (D-05, 5).
 - Eliminar no pide confirmación, mismo criterio que Familia e Inmuebles.

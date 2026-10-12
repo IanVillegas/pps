@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { uploadAttachment } from '@/services/AttachmentService';
+import { createPdfThumbnail } from '@/utils/pdfThumbnail';
 import { createId } from '@/utils/ids';
 import type {
   AttachmentFile,
@@ -127,11 +128,17 @@ export const useAttachments = (
       setFiles(current => [...current, ...added]);
       added
         .filter(item => item.status === 'selected')
-        .forEach(item =>
-          startUpload(item.id, rawFiles.current.get(item.id) as File)
-        );
+        .forEach(item => {
+          const raw = rawFiles.current.get(item.id) as File;
+          startUpload(item.id, raw);
+          // La miniatura es un extra: si el PDF no se puede leer (danado,
+          // protegido) la tarjeta se queda con su icono.
+          createPdfThumbnail(raw)
+            .then(previewUrl => updateFile(item.id, { previewUrl }))
+            .catch(() => undefined);
+        });
     },
-    [accept, files.length, maxFiles, maxSizeBytes, startUpload]
+    [accept, files.length, maxFiles, maxSizeBytes, startUpload, updateFile]
   );
 
   const remove = useCallback((id: string) => {

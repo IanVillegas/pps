@@ -15,9 +15,27 @@ Implementada y validada el 2026-09-30.
 
 En Figma las tarjetas de archivos ya agregados están dentro de la misma caja punteada que el texto «arrastre y suelte». Envolver ambos en el mismo `<label>` (necesario para abrir el selector de archivos al hacer clic) habría puesto botones («Quitar», «Reintentar») dentro de un `<label>`, y un clic en esos botones reenvía su evento al campo de archivo salvo que se detenga a mano (`preventDefault`), una solución frágil. En su lugar, el `<label>` envuelve solo el ícono y el texto; la lista de tarjetas es hermana, no hija — el contenedor exterior (no el `<label>`) escucha `onDrop`, así que arrastrar sigue funcionando en toda la caja.
 
+## Rediseño de las minitarjetas (2026-10-13)
+
+El usuario reportó que las tarjetas de archivo no se parecían a Figma. Se rehicieron contra el nodo 43121:5802 (146×118, borde gris-100, radio 12, sombra Elevation-3, 11 px entre tarjetas):
+
+- **Zona de vista previa** (69 px, esquinas superiores redondeadas) con el icono del estado al centro: gris (`#1F1F1F` al 30 %, plano; en Figma no hay degradado) y el icono en verde para *subiendo* (girando) y *subido* (clip); blanca con icono rojo para *no válido* (alerta) y para *error de subida* (flecha circular, que **es** el botón de reintentar).
+- **Barra de estado** de 5 px bajo la vista previa: avance verde mientras sube, toda roja si falló; nombre en Work Sans Bold 11 px con puntos suspensivos; el mensaje de error va en una línea debajo (texto completo en `title` y anunciado con `role="alert"`).
+- **Encabezado compacto** cuando ya hay archivos: icono de 34 px y las dos líneas de texto en una sola fila, como en Figma; vacío sigue el icono grande centrado. El enlace «selecciónelo» pasa a subrayado gris (antes verde y en negrita).
+- **Retirar** (papelera) está en todas las tarjetas, blanca sobre el gris en las llenas; Figma solo la dibuja en *subido* (más el botón de descarga, que sigue sin implementarse), pero un archivo con error también se tiene que poder quitar.
+
+## Miniatura del PDF y barra (2026-10-13, segundo ajuste)
+
+- **Barra de estado**: una vez subido el archivo ya no se pinta (antes quedaba una pista gris vacía); el espacio se conserva, así la tarjeta no cambia de alto ni el nombre de posición respecto a las que sí llevan barra (subiendo o con error).
+- **Miniatura de la primera página** (como los adjuntos de ChatGPT): `src/utils/pdfThumbnail.ts` dibuja la página 1 en un canvas (270×138 px, el doble de la zona de vista previa, recortada arriba) con **pdf.js** (`pdfjs-dist`, dependencia nueva) y `useAttachments` la guarda en `previewUrl` apenas está lista. Todo ocurre en el navegador; el archivo no sale de la máquina. La librería y su worker se cargan solo al elegir un archivo (`import()` dinámico), no pesan en la carga inicial.
+- En la tarjeta: la miniatura llena la zona de vista previa; mientras sube va oscurecida con el icono girando encima; ya subida se ve limpia, solo con la papelera (sobre un fondo oscuro para que no se pierda). Si el PDF no se puede leer (dañado o protegido) la tarjeta se queda con el icono gris de siempre. Las tarjetas con error o inválidas no muestran miniatura (se ven como en Figma).
+- Al **editar** una fila ya guardada no hay miniatura: el borrador solo conserva los nombres de los archivos, no los archivos (sin backend). Se vería con el servidor real.
+- **Contorno de foco**: el contorno de la zona de arrastre solo aparece con foco de teclado (`:has(.fileUpload__input:focus-visible)`). Con `:focus-within` salía también al elegir un archivo con el mouse y se quedaba hasta tocar otra cosa, porque el campo de archivo oculto conserva el foco (reportado por el usuario). Verificado en el navegador: tras un clic no hay contorno; con Tab sí.
+- **Dependencia nueva `pdfjs-dist` 6.x**: pide Node >= 22.13 y navegadores recientes; hay que agregarla también al repositorio real cuando se copie el trabajo. Para quitarla basta borrar `pdfThumbnail.ts` y la llamada en `useAttachments`; las tarjetas vuelven a mostrar el icono. En las pruebas se reemplaza por un doble (`jest.setup.ts`) porque jsdom no tiene canvas.
+
 ## Diferencias contra Figma
 
-- Los cuatro estados de tarjeta de Figma (spinner, listo, error, "reintentar") se simplificaron a: `uploading` (spinner + barra), `uploaded` (ícono de clip), `error` (alerta + reintentar) e `invalid` (alerta, sin reintentar). El botón de «descargar» que trae el estado «listo» en Figma no se implementó: sin backend, descargar el mismo archivo que la persona acaba de elegir no tiene un propósito claro; se retoma cuando exista un origen real del archivo (servidor).
+- El botón de «descargar» que trae el estado «listo» en Figma no se implementó: sin backend, descargar el mismo archivo que la persona acaba de elegir no tiene un propósito claro; se retoma cuando exista un origen real del archivo (servidor).
 - Sin confirmación al eliminar un adjunto (mismo criterio que las tablas de Familia e Inmuebles).
 
 ## Validación

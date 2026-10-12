@@ -66,6 +66,105 @@ describe('FileUpload', () => {
     expect(bar).toHaveAttribute('aria-valuenow', '40');
   });
 
+  it('offers a remove button on every card, including the failed ones', () => {
+    render(
+      <FileUpload
+        label="Adjuntos"
+        files={FILES}
+        onFilesSelected={jest.fn()}
+        onRemove={jest.fn()}
+        onRetry={jest.fn()}
+      />
+    );
+    ['cedula.pdf', 'recibo.pdf', 'falla.pdf', 'imagen.png'].forEach(name => {
+      expect(
+        screen.getByRole('button', { name: `Quitar ${name}` })
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('shows the thumbnail on an uploaded or uploading card but not on a failed one', () => {
+    const withPreview: AttachmentFile[] = [
+      {
+        id: 'a',
+        name: 'sube.pdf',
+        status: 'uploading',
+        progress: 10,
+        previewUrl: 'data:image/jpeg;base64,A',
+      },
+      {
+        id: 'b',
+        name: 'listo.pdf',
+        status: 'uploaded',
+        previewUrl: 'data:image/jpeg;base64,B',
+      },
+      {
+        id: 'c',
+        name: 'falla.pdf',
+        status: 'error',
+        previewUrl: 'data:image/jpeg;base64,C',
+      },
+    ];
+    const { container } = render(
+      <FileUpload
+        label="Adjuntos"
+        files={withPreview}
+        onFilesSelected={jest.fn()}
+        onRemove={jest.fn()}
+      />
+    );
+    const sources = Array.from(container.querySelectorAll('img')).map(img =>
+      img.getAttribute('src')
+    );
+    expect(sources).toEqual([
+      'data:image/jpeg;base64,A',
+      'data:image/jpeg;base64,B',
+    ]);
+  });
+
+  it('keeps the status bar slot but only paints it while uploading or after a failure', () => {
+    const { container } = render(
+      <FileUpload
+        label="Adjuntos"
+        files={FILES}
+        onFilesSelected={jest.fn()}
+        onRemove={jest.fn()}
+      />
+    );
+    const cards = container.querySelectorAll('li');
+    const track = (index: number) =>
+      cards[index].querySelector('[class*="fileUpload__track"]');
+    expect(cards).toHaveLength(4);
+    FILES.forEach((_, index) => expect(track(index)).not.toBeNull());
+    expect(track(0)?.className).toMatch(/visible/);
+    expect(track(1)?.className).not.toMatch(/visible/);
+    expect(track(2)?.className).toMatch(/visible/);
+    expect(track(3)?.className).toMatch(/visible/);
+  });
+
+  it('uses the compact header only once there are files', () => {
+    const { rerender } = render(
+      <FileUpload
+        label="Adjuntos"
+        files={[]}
+        onFilesSelected={jest.fn()}
+        onRemove={jest.fn()}
+      />
+    );
+    const trigger = () =>
+      screen.getByText('Arrastre y suelte el archivo aquí').closest('label');
+    expect(trigger()?.className).not.toMatch(/compact/);
+    rerender(
+      <FileUpload
+        label="Adjuntos"
+        files={FILES}
+        onFilesSelected={jest.fn()}
+        onRemove={jest.fn()}
+      />
+    );
+    expect(trigger()?.className).toMatch(/compact/);
+  });
+
   it('shows the error message for both error and invalid files', () => {
     render(
       <FileUpload

@@ -17,4 +17,6 @@ export interface AttachmentFile {
   progress?: number;
   /** Mensaje para 'error'/'invalid' (ej. "Solo se aceptan PDF"). */
   errorMessage?: string;
+  /** Miniatura de la primera pagina (data URL); llega un momento despues de agregar el archivo. */
+  previewUrl?: string;
 }

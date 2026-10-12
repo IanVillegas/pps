@@ -1,9 +1,12 @@
 @use '@/sad-aml-shared/styles/settings' as gm;
 
 // Medidas del nodo Figma "Adjuntar" (43121:5780 vacio / 43121:5802 con
-// archivos): caja punteada 8px de radio, borde gris-200, icono grande
-// centrado y texto Poppins 13px. Las tarjetas de archivo son las del nodo
-// 43121:5802 (146x118, radio 12, sombra Elevation-3).
+// archivos): caja punteada 8px de radio y borde gris-200. Vacia, el icono es
+// grande y va centrado sobre el texto; con archivos, el icono (34px) y el
+// texto pasan a una sola fila arriba y debajo van las minitarjetas de 146x118
+// (radio 12, borde gris-100, sombra Elevation-3, 11px entre una y otra).
+$overlay: rgba(31, 31, 31, 0.3);
+
 .fileUpload {
   width: 100%;
 }
@@ -18,6 +21,12 @@
   transition:
     border-color 0.15s ease,
     background-color 0.15s ease;
+
+  // Con archivos: el encabezado se compacta (Figma: icono a 8px del borde
+  // superior y tarjetas a 14px de los lados).
+  &:has(.fileUpload__list) {
+    padding: 8px 14px 22px;
+  }
 
   &--dragging {
     border-color: gm.$green-2026-400;
@@ -43,10 +52,23 @@
     color: gm.$gray-300;
   }
 
-  &:focus-within {
+  // Solo con foco de teclado: con `:focus-within` el contorno aparecia tambien
+  // al elegir un archivo con el mouse y se quedaba hasta tocar otra cosa (el
+  // campo de archivo oculto conserva el foco).
+  &:has(.fileUpload__input:focus-visible) {
     outline: 2px solid gm.$gray-500;
     outline-offset: 2px;
     border-radius: 4px;
+  }
+
+  &--compact {
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+
+    i {
+      font-size: 34px;
+    }
   }
 }
 
@@ -73,8 +95,9 @@
   color: gm.$gray-400;
 }
 
+// Figma lo dibuja subrayado y del mismo gris que el resto del texto.
 .fileUpload__link {
-  color: gm.$green-2026-400;
+  color: inherit;
   font-weight: 500;
   text-decoration: underline;
 }
@@ -82,74 +105,138 @@
 .fileUpload__list {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 11px;
   width: 100%;
-  margin: 20px 0 0;
+  margin: 11px 0 0;
   padding: 0;
   list-style: none;
 }
 
+// Minitarjeta de archivo: zona de vista previa (gris con el icono de estado),
+// barra de estado y nombre; todo a las medidas del nodo 43121:5808.
 .fileUpload__card {
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
   width: 146px;
-  padding: 28px 10px 10px;
+  height: 118px;
+  overflow: hidden;
   background: gm.$white;
   border: 1px solid gm.$gray-100;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
 }
 
-.fileUpload__cardActions {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  left: 8px;
+.fileUpload__preview {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
-  gap: 4px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: 69px;
+  margin: 3px 4px 0;
+  border-radius: 12px 12px 0 0;
 
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px;
-    border: 0;
-    background: transparent;
-    color: gm.$gray-400;
-    font-size: 16px;
-    line-height: 1;
-    cursor: pointer;
+  // Subiendo y subido: gris (#1F1F1F al 30 % sobre blanco).
+  &--filled {
+    background: $overlay;
+  }
 
-    &:hover {
-      color: gm.$red-2026;
+  i {
+    font-size: 20px;
+  }
+
+  // Con miniatura del PDF: la imagen llena la zona y el icono de estado (si
+  // sigue visible, mientras sube) va encima, oscurecida la miniatura.
+  &--thumbnail {
+    overflow: hidden;
+    background: gm.$white;
+
+    i {
+      position: relative;
+      z-index: 2;
+      color: gm.$white;
     }
+  }
 
-    &:focus-visible {
-      outline: 2px solid gm.$gray-500;
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
+  &--dimmed::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: $overlay;
   }
 }
 
-.fileUpload__cardBody {
+.fileUpload__thumbnail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.fileUpload__retry {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+// Retirar: Figma lo dibuja solo en la tarjeta "subido" (blanco sobre el
+// gris); aqui esta en todas porque un archivo con error tambien se retira.
+.fileUpload__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 3;
+  display: flex;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  color: gm.$gray-400;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+
+  i {
+    font-size: 16px;
+  }
+
+  &--onFill {
+    color: gm.$white;
+  }
+
+  // Sobre una miniatura (puede ser blanca) la papelera lleva un fondo oscuro
+  // para no perderse.
+  &--onThumbnail {
+    background: rgba(31, 31, 31, 0.55);
+    border-radius: 50%;
+  }
+
+  &:hover {
+    color: gm.$red-2026;
+  }
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 }
 
 .fileUpload__status {
   &--selected,
-  &--uploading {
-    color: gm.$gray-400;
-  }
-
+  &--uploading,
   &--uploaded {
     color: gm.$green-2026-400;
   }
@@ -158,10 +245,6 @@
   &--invalid {
     color: gm.$error;
   }
-}
-
-.fileUpload__cardBody i {
-  font-size: 28px;
 }
 
 .fileUpload__spin {
@@ -178,12 +261,20 @@
   }
 }
 
-.fileUpload__progress {
-  width: 100%;
-  height: 4px;
+// Barra de estado (5px, a 8px de la zona de vista previa): pista gris con el
+// avance en verde mientras sube, o toda roja si fallo. Una vez subido el
+// archivo ya no hace falta y no se pinta, pero el espacio se conserva para que
+// la tarjeta no cambie de alto ni de posicion del nombre.
+.fileUpload__track {
+  flex: none;
+  height: 5px;
+  margin: 8px 14px 0;
   overflow: hidden;
-  background: gm.$gray-100;
-  border-radius: 999px;
+  border-radius: 50px;
+
+  &--visible {
+    background: gm.$gray-100;
+  }
 }
 
 .fileUpload__progressFill {
@@ -193,26 +284,36 @@
   transition: width 0.2s ease;
 }
 
-.fileUpload__name {
+.fileUpload__failedFill {
   width: 100%;
-  margin: 0;
+  height: 100%;
+  background: gm.$error;
+  border-radius: inherit;
+}
+
+.fileUpload__name {
+  margin: 1px 13px 0;
   overflow: hidden;
   font-family: var(--font-worksans), sans-serif;
   font-weight: 700;
   font-size: 11px;
+  line-height: 13px;
   color: gm.$gray-400;
-  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+// Mensaje de error de una linea bajo el nombre; el texto completo queda en el
+// `title` y se anuncia con role="alert".
 .fileUpload__error {
-  margin: 0;
+  margin: 1px 13px 0;
+  overflow: hidden;
   font-family: var(--font-poppins), sans-serif;
-  font-size: 11px;
-  line-height: 1.3;
+  font-size: 9px;
+  line-height: 11px;
   color: gm.$error;
-  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .fileUpload__formError {
