@@ -111,7 +111,7 @@ interface DialogState<T> {
  * el backend; aqui solo se muestran (D-10, ver FinancialSummaryService). Cada
  * alta/edicion/retiro se guarda en el borrador al instante (D-11).
  */
-const IncomeExpenses = ({ values, errors, onChange }: StepProps) => {
+const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
   const { notify } = useNotification();
   const data = values as IncomeExpensesValues;
   const incomes = data.additionalIncomes ?? NO_INCOMES;
@@ -192,7 +192,7 @@ const IncomeExpenses = ({ values, errors, onChange }: StepProps) => {
 
   return (
     <div className={styles.incomeExpenses}>
-      <section className={styles.incomeExpenses__section}>
+      <section className={styles.incomeExpenses__card}>
         <RecordsTable
           caption="Ingresos de planilla"
           title="Ingresos planilla"
@@ -217,7 +217,7 @@ const IncomeExpenses = ({ values, errors, onChange }: StepProps) => {
         />
       </section>
 
-      <section className={styles.incomeExpenses__section}>
+      <section className={styles.incomeExpenses__card}>
         <RecordsTable
           caption="Egresos mensuales"
           title="Egresos mensuales"
@@ -236,7 +236,7 @@ const IncomeExpenses = ({ values, errors, onChange }: StepProps) => {
         </p>
       </section>
 
-      <section className={styles.incomeExpenses__section}>
+      <section className={styles.incomeExpenses__card}>
         <div className={styles.incomeExpenses__details}>
           <div>
             <h3 className={styles.incomeExpenses__heading}>Otros detalles</h3>
@@ -266,7 +266,6 @@ const IncomeExpenses = ({ values, errors, onChange }: StepProps) => {
             </dl>
           </div>
           <RadioGroup
-            layout="inline"
             compact
             legend="¿Existen cambios en el periodo actual en su situación patrimonial?"
             options={PATRIMONIAL_CHANGES_OPTIONS}
@@ -293,6 +292,7 @@ const IncomeExpenses = ({ values, errors, onChange }: StepProps) => {
           value={data.situationDetail ?? ''}
           onChange={event => patch({ situationDetail: event.target.value })}
         />
+        {actions}
       </section>
 
       <IncomeDialog

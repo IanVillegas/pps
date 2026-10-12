@@ -25,6 +25,6 @@ Figma dibuja «Salario bruto» y «Salario neto» como texto plano, sin lápiz n
 
 ## Diferencias y pendientes contra Figma
 
-- En Figma cada bloque del paso (planilla + ingresos adicionales, egresos, otros detalles) es su propia tarjeta blanca; aquí van dentro de la tarjeta del wizard separados por una línea, porque el wizard ya pone una tarjeta alrededor de cada paso y anidar tarjetas con sombra se ve mal.
+- **Corregido el 2026-10-13** (reporte del usuario): el paso se dibuja en **tres tarjetas separadas**, como en Figma (nodo 42863:2584: planilla + ingresos adicionales, egresos, y otros detalles con los botones Regresar/Continuar dentro de la última), con 44 px entre ellas. Para eso `StepDefinition` ganó `cards: true` (el wizard no le pone su tarjeta única) y `StepProps` recibe `actions` (los botones ya armados, que el paso coloca en su última tarjeta). Antes iban todas dentro de una sola tarjeta separadas por una línea.
 - Con ancho de tablet (768) las tablas hacen scroll horizontal dentro de sí mismas (`min-width: 560px` de `RecordsTable`, criterio de DEC-002F); incluso la de planilla, que tiene solo dos columnas.
 - Las fórmulas del servicio simulado y los datos de planilla son de mentira (ver arriba).

@@ -109,6 +109,33 @@ describe('DeclarationWizard', () => {
     expect(push).toHaveBeenCalledWith('/mi-declaracion/4');
   });
 
+  it('gives a step with its own cards the buttons to place inside, without a second set below', () => {
+    const CardsStep = ({ actions }: StepProps) => (
+      <section aria-label="Ultima tarjeta">{actions}</section>
+    );
+    render(
+      <DeclarationWizard
+        stepId={1}
+        definitions={{ 1: { component: CardsStep, cards: true } }}
+      />
+    );
+    const card = screen.getByRole('region', { name: 'Ultima tarjeta' });
+    expect(card).toContainElement(
+      screen.getByRole('button', { name: 'Continuar' })
+    );
+    expect(screen.getAllByRole('button', { name: 'Continuar' })).toHaveLength(
+      1
+    );
+    expect(screen.getAllByRole('button', { name: 'Regresar' })).toHaveLength(1);
+  });
+
+  it('still places the buttons below the content for a step without its own cards', () => {
+    setup(1);
+    expect(screen.getAllByRole('button', { name: 'Continuar' })).toHaveLength(
+      1
+    );
+  });
+
   it('shows the intro dialog until it is acknowledged, once per session', async () => {
     clearDraft();
     setup(1);

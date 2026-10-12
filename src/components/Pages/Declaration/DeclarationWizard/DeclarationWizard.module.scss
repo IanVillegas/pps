@@ -30,6 +30,17 @@
     box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
   }
 
+  // Pasos con tarjetas propias (`cards: true`): sin la tarjeta unica de
+  // arriba; cada tarjeta la dibuja el paso y el resumen de errores queda
+  // suelto encima.
+  &__cards {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+
   &__summary {
     margin: 0;
     padding: 12px 16px;

@@ -1,23 +1,25 @@
 @use '@/sad-aml-shared/styles/settings' as gm;
 
-// Nodo Figma 43121:5334 (Paso 3): tres bloques apilados (planilla +
-// ingresos adicionales, egresos, otros detalles). En Figma cada bloque es su
-// propia tarjeta blanca; aqui van dentro de la tarjeta del wizard separados
-// por una linea (ver DEC-009A, "Diferencias contra Figma").
+// Nodo Figma 43121:5334 (Paso 3): tres tarjetas blancas separadas (planilla +
+// ingresos adicionales, egresos, otros detalles; la ultima lleva dentro los
+// botones Regresar/Continuar). Misma tarjeta que `wizard__card`
+// (DeclarationWizard.module.scss: radio 12px, borde gris-100, sombra
+// Elevation-3, padding 36/58/48), con 44px entre una y otra como en Figma.
 .incomeExpenses {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 44px;
 
-  &__section {
+  &__card {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 32px;
-
-    & + & {
-      padding-top: 32px;
-      border-top: 1px solid rgba(31, 31, 31, 0.1);
-    }
+    padding: 36px 58px 48px;
+    background: gm.$white;
+    border: 1px solid gm.$gray-100;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
   }
 
   // «Total de egresos» (Figma, nodo 43121:5742): Work Sans SemiBold 18px;
@@ -33,6 +35,13 @@
     font-size: 18px;
     font-weight: 600;
     color: gm.$gray-500;
+
+    // El `span` de la etiqueta toma Poppins de una regla global de `span`
+    // (no hereda el Work Sans del `p`) y se veia mas grande que los titulos
+    // de seccion, que si son Work Sans 18px.
+    span {
+      font-family: inherit;
+    }
 
     strong {
       font-family: var(--font-poppins), sans-serif;

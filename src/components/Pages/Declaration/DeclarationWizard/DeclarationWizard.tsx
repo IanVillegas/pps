@@ -31,6 +31,7 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
 
   const definition = definitions[stepId];
   const Content = definition?.component;
+  const cards = definition?.cards ?? false;
   const values = draft.steps[stepId] ?? EMPTY_VALUES;
   const validate = (next: StepValues) => definition?.validate?.(next) ?? {};
   const hasErrors = Object.keys(errors).length > 0;
@@ -60,11 +61,31 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
     router.push(stepPath(stepId + 1));
   };
 
+  const actions = (
+    <div className={styles.wizard__actions}>
+      <Button
+        type="button"
+        text="Regresar"
+        color={ButtonColor.Secondary}
+        size="large"
+        disabled={stepId === 1}
+        onClick={() => router.push(stepPath(stepId - 1))}
+      />
+      <Button
+        type="submit"
+        text="Continuar"
+        color={ButtonColor.Cta}
+        size="large"
+        disabled={stepId === LAST_STEP}
+      />
+    </div>
+  );
+
   return (
     <form
       ref={formRef}
       noValidate
-      className={styles.wizard__card}
+      className={cards ? styles.wizard__cards : styles.wizard__card}
       onSubmit={handleSubmit}
     >
       {hasErrors && (
@@ -74,30 +95,19 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
       )}
       <div className={styles.wizard__content}>
         {Content ? (
-          <Content values={values} errors={errors} onChange={handleChange} />
+          <Content
+            values={values}
+            errors={errors}
+            onChange={handleChange}
+            actions={cards ? actions : undefined}
+          />
         ) : (
           <p className={styles.wizard__placeholder}>
             El contenido de este paso aún no está disponible.
           </p>
         )}
       </div>
-      <div className={styles.wizard__actions}>
-        <Button
-          type="button"
-          text="Regresar"
-          color={ButtonColor.Secondary}
-          size="large"
-          disabled={stepId === 1}
-          onClick={() => router.push(stepPath(stepId - 1))}
-        />
-        <Button
-          type="submit"
-          text="Continuar"
-          color={ButtonColor.Cta}
-          size="large"
-          disabled={stepId === LAST_STEP}
-        />
-      </div>
+      {!cards && actions}
     </form>
   );
 };

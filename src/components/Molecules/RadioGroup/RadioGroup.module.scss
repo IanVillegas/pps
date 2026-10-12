@@ -12,13 +12,9 @@
   padding: 0;
   border: 0;
 
-  &--inline {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
+  // `float` hace que la leyenda deje de ser la "leyenda renderizada" del
+  // fieldset y pase a ser un elemento mas del flex: asi le aplica el `gap` de
+  // 16px hacia las opciones. Sin el, las opciones quedaban pegadas al texto.
   &__legend {
     float: left;
     width: 100%;
@@ -27,13 +23,6 @@
     font-size: 16px;
     font-weight: 400;
     color: gm.$gray-500;
-  }
-
-  &--inline &__legend {
-    float: none;
-    width: auto;
-    flex: 1 1 200px;
-    max-width: 273px;
   }
 
   &__options {

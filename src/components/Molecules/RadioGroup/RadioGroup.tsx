@@ -15,8 +15,6 @@ interface RadioGroupProps {
   value?: string;
   onChange: (value: string) => void;
   errors?: string;
-  /** 'inline': la pregunta a la izquierda y las opciones a su derecha. */
-  layout?: 'stacked' | 'inline';
   /** Etiquetas mas chicas (Poppins Light 13px), como el Si/No de Figma. */
   compact?: boolean;
 }
@@ -35,7 +33,6 @@ const RadioGroup = ({
   value,
   onChange,
   errors,
-  layout = 'stacked',
   compact = false,
 }: RadioGroupProps) => {
   const name = useId();
@@ -46,7 +43,7 @@ const RadioGroup = ({
     // wizard puede llevar el foco aqui tras un intento fallido de continuar.
     <fieldset
       role="radiogroup"
-      className={`${styles.radioGroup} ${layout === 'inline' ? styles['radioGroup--inline'] : ''}`}
+      className={styles.radioGroup}
       aria-invalid={errors ? true : undefined}
       aria-describedby={errorId}
       tabIndex={errors ? -1 : undefined}
