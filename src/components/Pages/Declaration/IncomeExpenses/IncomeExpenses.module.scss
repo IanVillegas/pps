@@ -19,4 +19,73 @@
       border-top: 1px solid rgba(31, 31, 31, 0.1);
     }
   }
+
+  // «Total de egresos» (Figma, nodo 43121:5742): Work Sans SemiBold 18px;
+  // la cifra va en Poppins Bold 14px rojo, alineada a la derecha de la
+  // columna de montos.
+  &__total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: gm.$gray-500;
+
+    strong {
+      font-family: var(--font-poppins), sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: gm.$error;
+    }
+  }
+
+  // Dos columnas: cifras a la izquierda, pregunta Si/No a la derecha (Figma,
+  // nodos 43121:5728 y 43121:5711).
+  &__details {
+    display: grid;
+    grid-template-columns: minmax(0, 328px) minmax(0, 420px);
+    justify-content: space-between;
+    gap: 24px 48px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__heading {
+    margin: 0 0 8px;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: gm.$gray-500;
+  }
+
+  &__figures {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    dt {
+      color: gm.$gray-500;
+    }
+
+    dd {
+      margin: 0;
+      color: gm.$green-400;
+      text-align: right;
+    }
+  }
 }

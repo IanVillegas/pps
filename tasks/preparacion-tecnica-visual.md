@@ -79,7 +79,7 @@ Todos los IDs de esta tabla pertenecen al archivo DecPat enlazado arriba. La rut
 | Perfil                 | 43121:6869              | Submenu con cerrar sesion; otras opciones ocultas                                      | Parte del shell / DEC-005A                           |
 | Paso 1                 | 43121:6243              | Datos personales; dos composiciones superpuestas                                       | `/mi-declaracion/1` / DEC-007                        |
 | Paso 2                 | 43121:5909              | Conformacion del nucleo familiar; tabla y alta                                         | `/mi-declaracion/2` / DEC-008                        |
-| Paso 3                 | 43121:5334              | Planilla, ingresos adicionales, egresos, situacion financiera, razones y saldo mensual | `/mi-declaracion/3` / DEC-009A-C                     |
+| Paso 3                 | 43121:5334              | Planilla, ingresos adicionales, egresos, situacion financiera, razones y saldo mensual | `/mi-declaracion/3` / DEC-009A-D                    |
 | Paso 4                 | 43121:4951              | Bienes inmuebles, tabla y alta                                                         | `/mi-declaracion/4` / DEC-010                        |
 | Paso 5                 | 43121:4527              | Bienes muebles/vehiculos, tabla y alta                                                 | `/mi-declaracion/5` / DEC-011                        |
 | Paso 6                 | 43121:4102              | Cuentas de ahorro, titular, relacion, entidad, montos, acciones y totales CRC/USD      | `/mi-declaracion/6` / DEC-012                        |
@@ -110,7 +110,7 @@ Hay 16 frames con nombre de modal en la pagina, incluyendo dos variantes de ingr
 | Nucleo familiar            | 43121:6211 | Nombre, parentesco, genero, edad, fecha de nacimiento                                                | DEC-008  |
 | Ingresos sin adjuntos      | 43121:5766 | Tipo, monto, justificacion, seleccion/arrastre de PDF                                                | DEC-009B |
 | Ingresos con adjuntos      | 43121:5788 | Lista de cuatro ejemplos Imagen.png y acciones                                                       | DEC-009B |
-| Egresos                    | 43121:5323 | Modal informativo sobre rebajos de planilla y cuotas; no confundir con un formulario de alta         | DEC-009C |
+| Egresos                    | 43121:5323 | Texto «Favor considerar» sobre rebajos de planilla y cuotas, mas tipo y monto (**si es formulario de alta**, corregido en DEC-009D) | DEC-009D |
 | Inmueble                   | 43121:4922 | Finca, ubicacion, adquisicion, destino, valor de mercado                                             | DEC-010  |
 | Mueble                     | 43121:4486 | Tipo, marca, placa, descripcion, ano, valor, observacion                                             | DEC-011  |
 | Ahorro                     | 43121:4067 | Titular, relacion con cuenta, moneda, monto, numero, entidad                                         | DEC-012  |

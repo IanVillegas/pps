@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import IncomeExpenses from './IncomeExpenses';
+import IncomeExpenses, { validateIncomeExpenses } from './IncomeExpenses';
 import {
   NotificationProvider,
   TOAST_MESSAGES,
@@ -9,7 +9,9 @@ import {
 import { fetchFinancialSummary } from '@/services/FinancialSummaryService';
 import type { StepValues } from '@/types/Declaration.types';
 import type {
+  ExpenseItem,
   FinancialSummary,
+  IncomeExpensesValues,
   IncomeItem,
 } from '@/types/IncomeExpenses.types';
 
@@ -43,11 +45,18 @@ const mockedFetch = jest.mocked(fetchFinancialSummary);
 
 // El paso guarda sus valores en el borrador del wizard; aqui un estado local
 // hace el mismo papel para ver el resultado de cada accion.
-const Harness = ({ initial }: { initial: StepValues }) => {
+const Harness = ({
+  initial,
+  errors = {},
+}: {
+  initial: StepValues;
+  errors?: Record<string, string>;
+}) => {
   const [values, setValues] = useState<StepValues>(initial);
   return (
     <NotificationProvider>
-      <IncomeExpenses values={values} errors={{}} onChange={setValues} />
+      <IncomeExpenses values={values} errors={errors} onChange={setValues} />
+      <output data-testid="draft">{JSON.stringify(values)}</output>
       <output data-testid="incomes">
         {String(
           (values.additionalIncomes as IncomeItem[] | undefined)?.length ?? 0
@@ -59,6 +68,23 @@ const Harness = ({ initial }: { initial: StepValues }) => {
 
 const renderStep = (incomes?: IncomeItem[]) =>
   render(<Harness initial={incomes ? { additionalIncomes: incomes } : {}} />);
+
+const GAS: ExpenseItem = { id: 'e1', type: 'transporte', amount: '90000' };
+const LOAN: ExpenseItem = {
+  id: 'e2',
+  type: 'cuotas-creditos',
+  amount: '150000',
+};
+
+const renderValues = (
+  initial: StepValues,
+  errors: Record<string, string> = {}
+) => render(<Harness initial={initial} errors={errors} />);
+
+const draft = () =>
+  JSON.parse(
+    screen.getByTestId('draft').textContent ?? '{}'
+  ) as IncomeExpensesValues;
 
 const pdf = (name: string) =>
   new File([new Uint8Array(1024)], name, { type: 'application/pdf' });
@@ -217,5 +243,181 @@ describe('IncomeExpenses (paso 3)', () => {
         await screen.findByText('Eliminado satisfactoriamente')
       ).toBeInTheDocument();
     });
+  });
+
+  describe('egresos', () => {
+    const openExpenseDialog = async () => {
+      const [, addExpense] = screen.getAllByRole('button', {
+        name: 'Agregar nuevo',
+      });
+      await userEvent.click(addExpense);
+    };
+
+    it('shows an empty table and lets the person add', async () => {
+      renderValues({});
+      expect(screen.getAllByText('No existen registros')).toHaveLength(2);
+      expect(
+        screen.getAllByRole('button', { name: 'Agregar nuevo' })
+      ).toHaveLength(2);
+      await screen.findByText('Salario bruto');
+    });
+
+    it('lists each expense and shows the total given by the backend', async () => {
+      mockedFetch.mockResolvedValue({ ...SUMMARY, totalExpenses: 240000 });
+      renderValues({ expenses: [GAS, LOAN] });
+      const row = screen.getByRole('row', { name: /Transporte/ });
+      expect(within(row).getByText('90,000')).toBeInTheDocument();
+      expect(screen.getByText('Cuotas de créditos')).toBeInTheDocument();
+      expect(await screen.findByText('240,000')).toBeInTheDocument();
+      expect(screen.getByText('Total de egresos')).toBeInTheDocument();
+    });
+
+    it('opens the informative modal and adds nothing when submitting empty', async () => {
+      renderValues({});
+      await openExpenseDialog();
+      expect(screen.getByText('Favor considerar:')).toBeInTheDocument();
+      expect(screen.getByLabelText('Tipo de egreso *')).toBeInTheDocument();
+      expect(screen.getByLabelText('Monto *')).toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+      expect(
+        screen.getByText('El tipo de egreso es requerido')
+      ).toBeInTheDocument();
+      expect(screen.getByText('El monto es requerido')).toBeInTheDocument();
+      expect(draft().expenses).toBeUndefined();
+      await screen.findByText('Salario bruto');
+    });
+
+    it('adds an expense and confirms with a notification', async () => {
+      renderValues({});
+      await openExpenseDialog();
+      screen.getByLabelText('Tipo de egreso *').focus();
+      await userEvent.keyboard('{Enter}');
+      await userEvent.click(
+        await screen.findByRole('option', { name: 'Vivienda' })
+      );
+      await userEvent.type(screen.getByLabelText('Monto *'), '200000');
+      await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+
+      expect(await screen.findByText('200,000')).toBeInTheDocument();
+      expect(draft().expenses).toHaveLength(1);
+      expect(draft().expenses?.[0]).toMatchObject({
+        type: 'vivienda',
+        amount: '200000',
+      });
+      expect(
+        (await screen.findAllByText(TOAST_MESSAGES.saved.message)).length
+      ).toBeGreaterThan(0);
+    });
+
+    it('edits and removes an expense', async () => {
+      renderValues({ expenses: [GAS, LOAN] });
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Editar egreso Transporte' })
+      );
+      expect(screen.getByLabelText('Monto *')).toHaveValue('90000');
+      const amount = screen.getByLabelText('Monto *');
+      await userEvent.clear(amount);
+      await userEvent.type(amount, '95000');
+      await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
+      expect(await screen.findByText('95,000')).toBeInTheDocument();
+
+      await userEvent.click(
+        screen.getByRole('button', {
+          name: 'Eliminar egreso Cuotas de créditos',
+        })
+      );
+      expect(screen.queryByText('150,000')).not.toBeInTheDocument();
+      expect(draft().expenses).toHaveLength(1);
+    });
+  });
+
+  describe('otros detalles', () => {
+    it('shows the balance and ratios given by the backend, formatted', async () => {
+      mockedFetch.mockResolvedValue({
+        ...SUMMARY,
+        monthlyBalance: 1897.45,
+        expenseToIncomeRatio: 12.5,
+        creditPaymentToIncomeRatio: 4.17,
+      });
+      renderValues({});
+      expect(await screen.findByText('₡ 1,897.45')).toBeInTheDocument();
+      expect(screen.getByText('12.50 %')).toBeInTheDocument();
+      expect(screen.getByText('4.17 %')).toBeInTheDocument();
+    });
+
+    it('asks the backend again when an expense is added', async () => {
+      renderValues({});
+      await screen.findByText('Salario bruto');
+      const callsBefore = mockedFetch.mock.calls.length;
+      const [, addExpense] = screen.getAllByRole('button', {
+        name: 'Agregar nuevo',
+      });
+      await userEvent.click(addExpense);
+      screen.getByLabelText('Tipo de egreso *').focus();
+      await userEvent.keyboard('{Enter}');
+      await userEvent.click(
+        await screen.findByRole('option', { name: 'Vivienda' })
+      );
+      await userEvent.type(screen.getByLabelText('Monto *'), '5');
+      await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+
+      await waitFor(() =>
+        expect(mockedFetch.mock.calls.length).toBeGreaterThan(callsBefore)
+      );
+      expect(mockedFetch).toHaveBeenLastCalledWith({
+        additionalIncomes: [],
+        expenses: [expect.objectContaining({ type: 'vivienda', amount: '5' })],
+      });
+    });
+
+    it('stores both answers and the description in the draft', async () => {
+      renderValues({});
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Difícil' }));
+      await userEvent.type(
+        screen.getByLabelText(/Agregue una descripción detallada/),
+        'Gastos médicos'
+      );
+      expect(draft()).toMatchObject({
+        patrimonialChanges: 'si',
+        financialSituation: 'dificil',
+        situationDetail: 'Gastos médicos',
+      });
+      await screen.findByText('Salario bruto');
+    });
+
+    it('shows the errors the wizard hands over for the two questions', async () => {
+      renderValues(
+        {},
+        {
+          patrimonialChanges: 'Indique si existen cambios',
+          financialSituation: 'Seleccione una opción',
+        }
+      );
+      expect(
+        screen.getByText('Indique si existen cambios')
+      ).toBeInTheDocument();
+      expect(screen.getByText('Seleccione una opción')).toBeInTheDocument();
+      await screen.findByText('Salario bruto');
+    });
+  });
+});
+
+describe('validateIncomeExpenses', () => {
+  it('requires the two questions but never the tables or the description (D-16)', () => {
+    expect(Object.keys(validateIncomeExpenses({})).sort()).toEqual([
+      'financialSituation',
+      'patrimonialChanges',
+    ]);
+  });
+
+  it('accepts a step with both answers and empty tables', () => {
+    expect(
+      validateIncomeExpenses({
+        patrimonialChanges: 'no',
+        financialSituation: 'estable',
+      })
+    ).toEqual({});
   });
 });

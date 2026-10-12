@@ -81,10 +81,23 @@ export const MOVABLE_ASSET_BRAND_OPTIONS: CatalogOption[] = [
 
 // Tipos del paso 3 (Ingresos y egresos). Mismo caso que arriba (D-09): listas
 // sinteticas hasta que el backend defina los catalogos reales.
+// IMPORTANTE: el valor 'cuotas-creditos' lo usa la simulacion del backend
+// (FinancialSummaryService) para la razon cuota-ingreso; el modal de egresos
+// pide anotar ahi las cuotas de creditos de Grupo Mutual (nodo Figma 43121:5323).
 export const INCOME_TYPE_OPTIONS: CatalogOption[] = [
   { value: 'alquileres', label: 'Alquileres' },
   { value: 'comisiones', label: 'Comisiones' },
   { value: 'pension', label: 'Pensión' },
   { value: 'actividad-independiente', label: 'Actividad independiente' },
+  { value: 'otro', label: 'Otro' },
+];
+
+export const EXPENSE_TYPE_OPTIONS: CatalogOption[] = [
+  { value: 'vivienda', label: 'Vivienda' },
+  { value: 'alimentacion', label: 'Alimentación' },
+  { value: 'servicios', label: 'Servicios públicos' },
+  { value: 'educacion', label: 'Educación' },
+  { value: 'transporte', label: 'Transporte' },
+  { value: 'cuotas-creditos', label: 'Cuotas de créditos' },
   { value: 'otro', label: 'Otro' },
 ];
