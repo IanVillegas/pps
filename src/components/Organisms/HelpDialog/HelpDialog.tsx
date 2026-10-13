@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { Button, ButtonColor } from '@/components/Atoms';
 import styles from './HelpDialog.module.scss';
 
@@ -16,19 +16,21 @@ interface HelpDialogProps {
 }
 
 /**
- * Modal de "Contacto de ayuda" (DEC-005B, nodo Figma 43121:6886). Reutiliza
- * Modal/Button de sad-aml-shared, mismo patron que LoginFeedback.
+ * Modal de "Contacto de ayuda" (DEC-005B, nodo Figma 43121:6886). Usa
+ * AppDialog (dialogo estandar de DecPat, DEC-002G).
  */
 const HelpDialog = ({ open, onClose }: HelpDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.help}
-    icon={<i className="ri-customer-service-line" aria-hidden="true" />}
-    iconColor="yellow"
-    title={<span>Contacto de ayuda</span>}
+    onClose={onClose}
+    size="sm"
+    title="Contacto de ayuda"
+    media={
+      <i
+        className={`ri-customer-service-line ${styles.help__icon}`}
+        aria-hidden="true"
+      />
+    }
     description={
       <div>
         <p>
@@ -41,8 +43,8 @@ const HelpDialog = ({ open, onClose }: HelpDialogProps) => (
         </p>
       </div>
     }
-    classNameDescription={styles.contacts}
-    buttonsFooter={
+    descriptionClassName={styles.contacts}
+    footer={
       <Button
         text="Entendido"
         color={ButtonColor.Cta}

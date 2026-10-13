@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { Button, ButtonColor } from '@/components/Atoms';
 import styles from './LoginFeedback.module.scss';
 
@@ -40,37 +40,27 @@ const LoginFeedback = ({
       : 'No fue posible iniciar sesión. Intente nuevamente en unos momentos.';
 
   return (
-    <Modal
+    <AppDialog
       onCloseAutoFocus={event => {
         event.preventDefault();
         onAfterClose();
       }}
       open={kind !== null}
-      onOpenChange={open => {
-        if (!open) onClose();
-      }}
-      className={`${styles.feedback} ${!locked ? styles.compact : ''}`}
-      title={<span>{title}</span>}
-      description={message}
-      classNameDescription={styles.description}
-      icon={<i className="ri-alert-line" aria-hidden="true" />}
-      iconColor="red"
-      contentCard={
-        locked ? (
-          <div className={styles.details}>
-            <span
-              role="timer"
-              aria-label="Tiempo restante"
-              aria-live="off"
-              className={styles.timer}
-            >
-              {formatRetryTime(remainingSeconds)}
-            </span>
-            <p>Para recibir asistencia comuníquese con soporte interno.</p>
-          </div>
-        ) : undefined
+      onClose={onClose}
+      size="md"
+      title={title}
+      // Sin bloqueo, el icono y el mensaje bastan (Figma); el titulo queda
+      // solo para los lectores de pantalla.
+      hideTitle={!locked}
+      media={
+        <i
+          className={`ri-alert-line ${styles.feedback__icon}`}
+          aria-hidden="true"
+        />
       }
-      buttonsFooter={
+      description={message}
+      descriptionClassName={styles.description}
+      footer={
         <Button
           text="Entendido"
           color={ButtonColor.Cta}
@@ -78,7 +68,21 @@ const LoginFeedback = ({
           onClick={onClose}
         />
       }
-    />
+    >
+      {locked && (
+        <div className={styles.details}>
+          <span
+            role="timer"
+            aria-label="Tiempo restante"
+            aria-live="off"
+            className={styles.timer}
+          >
+            {formatRetryTime(remainingSeconds)}
+          </span>
+          <p>Para recibir asistencia comuníquese con soporte interno.</p>
+        </div>
+      )}
+    </AppDialog>
   );
 };
 

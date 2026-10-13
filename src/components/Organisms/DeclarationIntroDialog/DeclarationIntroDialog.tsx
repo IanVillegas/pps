@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { Button, ButtonColor } from '@/components/Atoms';
 import LogoHeader from '@/assets/images/LogoHeader';
 import styles from './DeclarationIntroDialog.module.scss';
@@ -17,23 +17,19 @@ const DeclarationIntroDialog = ({
   open,
   onClose,
 }: DeclarationIntroDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.intro}
-    title={
-      <>
-        <span className={styles.intro__logo} aria-hidden="true">
-          <LogoHeader />
-        </span>
-        <span>Declaración Patrimonial Funcionarios</span>
-      </>
+    onClose={onClose}
+    size="md"
+    title="Declaración Patrimonial Funcionarios"
+    media={
+      <span className={styles.intro__logo} aria-hidden="true">
+        <LogoHeader />
+      </span>
     }
     description="La presente declaración debe ser llenada por todos los colaboradores de Grupo Mutual, una vez al año en el mes de enero. En el caso de personal de nuevo ingreso o que sea beneficiado con la recontratación, debe llenar el presente formulario 1 mes después de su ingreso."
-    classNameDescription={styles.intro__description}
-    buttonsFooter={
+    descriptionClassName={styles.intro__description}
+    footer={
       <Button
         text="Entendido"
         color={ButtonColor.Cta}

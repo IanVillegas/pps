@@ -1,56 +1,10 @@
 @use '@/sad-aml-shared/styles/settings' as gm;
 
-// Mismo criterio que LoginFeedback.module.scss: reemplaza por completo
-// .alertDialogContent con un ancho propio (558px, nodo Figma 43121:6886) en
-// vez de reusar el default de 640px de Modal.
-.help {
-  box-sizing: border-box;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: gm.$z-3;
-  width: 558px;
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 48px);
-  overflow-y: auto;
-  background: gm.$white;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
-  padding: 24px 32px 32px;
-  color: gm.$gray-500;
-
-  > div:first-child button {
-    color: gm.$gray-200;
-    padding: 0;
-
-    &:focus-visible {
-      outline: 2px solid gm.$gray-500;
-      outline-offset: 2px;
-    }
-  }
-
-  > h2 {
-    font-family: var(--font-worksans), sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    width: auto;
-    height: auto;
-    margin: 12px 0 24px;
-  }
-
-  > div:last-child {
-    margin-top: 32px;
-
-    button {
-      box-sizing: border-box;
-      width: 219px;
-      min-width: 0;
-      height: 48px;
-    }
-  }
+// Icono sobre el titulo (Figma, nodo 43121:6886): amarillo, 60px.
+.help__icon {
+  font-size: 60px;
+  line-height: 1;
+  color: gm.$warning;
 }
 
 .contacts {

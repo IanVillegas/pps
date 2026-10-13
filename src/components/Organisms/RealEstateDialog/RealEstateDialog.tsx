@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { REAL_ESTATE_DESTINATION_OPTIONS } from '@/services/CatalogService';
 import type {
   RealEstateItem,
@@ -170,7 +170,7 @@ interface RealEstateDialogProps {
 
 /**
  * Modal «Datos del bien inmueble» (DEC-010, nodo Figma 43121:4922). Usa
- * Modal de sad-aml-shared, mismo patron que FamilyDialog. El texto de la
+ * AppDialog (dialogo estandar de DecPat, DEC-002G). El texto de la
  * accion es «Agregar» (Figma) al crear y «Guardar» al editar (Figma solo
  * dibuja el alta).
  */
@@ -180,17 +180,13 @@ const RealEstateDialog = ({
   onSave,
   onClose,
 }: RealEstateDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.realEstate}
+    onClose={onClose}
+    size="lg"
     title="Datos del bien inmueble"
-    description="Complete los datos del bien inmueble. Los campos con asterisco son obligatorios."
-    classNameDescription={styles.realEstate__description}
-    contentCard={<RealEstateForm item={item} onSave={onSave} />}
-    buttonsFooter={
+    srDescription="Complete los datos del bien inmueble. Los campos con asterisco son obligatorios."
+    footer={
       <>
         <Button
           text="Cancelar"
@@ -208,7 +204,9 @@ const RealEstateDialog = ({
         />
       </>
     }
-  />
+  >
+    <RealEstateForm item={item} onSave={onSave} />
+  </AppDialog>
 );
 
 export default RealEstateDialog;

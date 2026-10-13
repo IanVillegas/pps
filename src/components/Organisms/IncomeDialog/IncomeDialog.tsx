@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText, Textarea } from '@/components/Atoms';
 import { Dropdown, FileUpload } from '@/components/Molecules';
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { INCOME_TYPE_OPTIONS } from '@/services/CatalogService';
 import type { AttachmentFile } from '@/types/Attachment.types';
 import type { IncomeItem, IncomeItemData } from '@/types/IncomeExpenses.types';
@@ -188,22 +188,18 @@ interface IncomeDialogProps {
 
 /**
  * Modal «Ingresos adicionales» (DEC-009C, nodos Figma 43121:5766 sin adjuntos
- * y 43121:5788 con adjuntos: es el mismo modal). Usa Modal de sad-aml-shared,
- * mismo patron que FamilyDialog/RealEstateDialog. El texto de la accion es
+ * y 43121:5788 con adjuntos: es el mismo modal). Usa AppDialog
+ * (dialogo estandar de DecPat, DEC-002G). El texto de la accion es
  * «Agregar» (Figma) al crear y «Guardar» al editar.
  */
 const IncomeDialog = ({ open, item, onSave, onClose }: IncomeDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.income}
+    onClose={onClose}
+    size="xl"
     title="Ingresos adicionales"
-    description="Complete los datos del ingreso adicional. Los campos con asterisco son obligatorios."
-    classNameDescription={styles.income__description}
-    contentCard={<IncomeForm item={item} onSave={onSave} />}
-    buttonsFooter={
+    srDescription="Complete los datos del ingreso adicional. Los campos con asterisco son obligatorios."
+    footer={
       <>
         <Button
           text="Cancelar"
@@ -221,7 +217,9 @@ const IncomeDialog = ({ open, item, onSave, onClose }: IncomeDialogProps) => (
         />
       </>
     }
-  />
+  >
+    <IncomeForm item={item} onSave={onSave} />
+  </AppDialog>
 );
 
 export default IncomeDialog;

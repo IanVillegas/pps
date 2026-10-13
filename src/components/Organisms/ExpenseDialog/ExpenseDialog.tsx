@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { EXPENSE_TYPE_OPTIONS } from '@/services/CatalogService';
 import type {
   ExpenseItem,
@@ -143,22 +143,18 @@ interface ExpenseDialogProps {
 
 /**
  * Modal «Egresos» (DEC-009D, nodo Figma 43121:5323): texto de «Favor
- * considerar» mas tipo y monto. Usa Modal de sad-aml-shared, mismo patron que
- * IncomeDialog. El texto de la accion es «Agregar» (Figma) al crear y
+ * considerar» mas tipo y monto. Usa AppDialog (dialogo estandar de DecPat,
+ * DEC-002G). El texto de la accion es «Agregar» (Figma) al crear y
  * «Guardar» al editar.
  */
 const ExpenseDialog = ({ open, item, onSave, onClose }: ExpenseDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.expense}
+    onClose={onClose}
+    size="xl"
     title="Egresos"
-    description="Complete los datos del egreso mensual. Los campos con asterisco son obligatorios."
-    classNameDescription={styles.expense__description}
-    contentCard={<ExpenseForm item={item} onSave={onSave} />}
-    buttonsFooter={
+    srDescription="Complete los datos del egreso mensual. Los campos con asterisco son obligatorios."
+    footer={
       <>
         <Button
           text="Cancelar"
@@ -176,7 +172,9 @@ const ExpenseDialog = ({ open, item, onSave, onClose }: ExpenseDialogProps) => (
         />
       </>
     }
-  />
+  >
+    <ExpenseForm item={item} onSave={onSave} />
+  </AppDialog>
 );
 
 export default ExpenseDialog;

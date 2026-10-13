@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import {
   ACCOUNT_RELATIONSHIP_OPTIONS,
   CURRENCY_OPTIONS,
@@ -184,23 +184,19 @@ interface SavingsDialogProps {
 }
 
 /**
- * Modal «Datos económicos» (DEC-012, nodo Figma 43121:4067). Usa Modal de
- * sad-aml-shared, mismo patron que FamilyDialog/RealEstateDialog. El texto de
+ * Modal «Datos económicos» (DEC-012, nodo Figma 43121:4067). Usa
+ * AppDialog (dialogo estandar de DecPat, DEC-002G). El texto de
  * la accion es «Agregar» (Figma) al crear y «Guardar» al editar (Figma solo
  * dibuja el alta).
  */
 const SavingsDialog = ({ open, item, onSave, onClose }: SavingsDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.savings}
+    onClose={onClose}
+    size="lg"
     title="Datos económicos"
-    description="Complete los datos de la cuenta de ahorro. Los campos con asterisco son obligatorios."
-    classNameDescription={styles.savings__description}
-    contentCard={<SavingsForm item={item} onSave={onSave} />}
-    buttonsFooter={
+    srDescription="Complete los datos de la cuenta de ahorro. Los campos con asterisco son obligatorios."
+    footer={
       <>
         <Button
           text="Cancelar"
@@ -218,7 +214,9 @@ const SavingsDialog = ({ open, item, onSave, onClose }: SavingsDialogProps) => (
         />
       </>
     }
-  />
+  >
+    <SavingsForm item={item} onSave={onSave} />
+  </AppDialog>
 );
 
 export default SavingsDialog;

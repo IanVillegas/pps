@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText, Textarea } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import Tooltip from '@/sad-aml-shared/components/Atoms/Tooltip/Tooltip';
 import {
   MOVABLE_ASSET_BRAND_OPTIONS,
@@ -230,8 +230,8 @@ interface MovableAssetDialogProps {
 }
 
 /**
- * Modal «Datos del bien mueble» (DEC-011, nodo Figma 43121:4486). Usa Modal
- * de sad-aml-shared, mismo patron que FamilyDialog/RealEstateDialog. El
+ * Modal «Datos del bien mueble» (DEC-011, nodo Figma 43121:4486). Usa
+ * AppDialog (dialogo estandar de DecPat, DEC-002G). El
  * texto de la accion es «Agregar» (Figma) al crear y «Guardar» al editar
  * (Figma solo dibuja el alta).
  */
@@ -241,17 +241,13 @@ const MovableAssetDialog = ({
   onSave,
   onClose,
 }: MovableAssetDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.movableAsset}
+    onClose={onClose}
+    size="lg"
     title="Datos del bien mueble"
-    description="Complete los datos del bien mueble. Los campos con asterisco son obligatorios."
-    classNameDescription={styles.movableAsset__description}
-    contentCard={<MovableAssetForm item={item} onSave={onSave} />}
-    buttonsFooter={
+    srDescription="Complete los datos del bien mueble. Los campos con asterisco son obligatorios."
+    footer={
       <>
         <Button
           text="Cancelar"
@@ -269,7 +265,9 @@ const MovableAssetDialog = ({
         />
       </>
     }
-  />
+  >
+    <MovableAssetForm item={item} onSave={onSave} />
+  </AppDialog>
 );
 
 export default MovableAssetDialog;

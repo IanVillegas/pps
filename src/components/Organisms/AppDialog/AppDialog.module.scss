@@ -1,0 +1,191 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Dialogo estandar de DecPat (DEC-002G). Reemplaza por completo el
+// `.alertDialogContent` de Modal (sad-aml-shared) con las medidas del nodo
+// Figma 43277:5624 (modal con scroll): X de 30px a 32px del borde derecho y
+// alineada con el titulo, area con scroll hasta 40px del borde inferior, y la
+// barra de scroll (6px, gris-200) por dentro, a 41px del borde derecho, justo
+// bajo la X. La distancia al borde superior (`--dialog-top`) es de 40px: el
+// ejemplo de Figma usa 77px, pero el usuario la pidio mas corta.
+//
+// Los selectores de hijos (`> div:first-child`, `> h2`, `> div:last-child`)
+// siguen el orden fijo del DOM de Modal: [X, titulo, descripcion, contenido,
+// pie]. Viven aqui, en un solo lugar, en vez de repetirse en cada dialogo.
+$scrollbar: 6px;
+
+.dialog {
+  // Ancho y margen lateral de cada tamano (ver AppDialogSize).
+  --dialog-width: 805px;
+  --dialog-pad-x: 57px;
+  // Distancia del borde a la barra de scroll.
+  --dialog-edge: 41px;
+  // Distancia del borde superior al titulo; la X se alinea con el.
+  --dialog-top: 40px;
+
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: gm.$z-3;
+  display: flex;
+  flex-direction: column;
+  width: var(--dialog-width);
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  // El recorte va aqui, en la tarjeta redondeada, y el scroll en un area
+  // interior: asi la barra no cambia las esquinas del modal.
+  overflow: hidden;
+  padding: 0;
+  background: gm.$white;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+  color: gm.$gray-500;
+
+  &--sm {
+    --dialog-width: 575px;
+  }
+
+  &--md {
+    --dialog-width: 640px;
+    --dialog-pad-x: 65px;
+  }
+
+  &--lg {
+    --dialog-width: 805px;
+  }
+
+  &--xl {
+    --dialog-width: 891px;
+    --dialog-pad-x: 62px;
+  }
+
+  @media (max-width: 700px) {
+    --dialog-pad-x: 24px;
+    --dialog-edge: 12px;
+  }
+
+  // X de cerrar.
+  > div:first-child {
+    position: absolute;
+    top: calc(var(--dialog-top) - 1px);
+    right: 32px;
+    z-index: 2;
+    width: auto;
+    height: 30px;
+
+    button {
+      display: flex;
+      padding: 0;
+      color: gm.$gray-200;
+      font-size: 30px;
+      line-height: 1;
+
+      &:hover {
+        color: gm.$gray-400;
+      }
+
+      &:focus-visible {
+        outline: 2px solid gm.$gray-500;
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  // Titulo (con el icono o logo encima, si lo trae).
+  > h2 {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: auto;
+    height: auto;
+    margin: var(--dialog-top) 0 34px;
+    // Deja libre el lado de la X en pantallas angostas.
+    padding: 0 max(var(--dialog-pad-x), 56px);
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    color: gm.$gray-500;
+  }
+
+  // Pie vacio que Modal siempre dibuja (los botones van dentro del scroll).
+  > div:last-child:empty {
+    display: none;
+  }
+}
+
+// Area con scroll. Margenes y rellenos hacen que el contenido quede a
+// `--dialog-pad-x` de cada borde y la barra a `--dialog-edge` del derecho;
+// `scrollbar-gutter` reserva el sitio de la barra para que el contenido no se
+// corra cuando aparece.
+.dialog__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  // 8px de margen + 32px de relleno inferior = los 40px de Figma hasta el borde
+  // del modal. El relleno va DENTRO del area con scroll porque el recorte la
+  // alcanza: sin el, el borde inferior cortaba los botones y la sombra
+  // amarilla que les cae debajo (~28px).
+  margin: 0 var(--dialog-edge) 8px;
+  padding: 20px
+    max(0px, calc(var(--dialog-pad-x) - var(--dialog-edge) - #{$scrollbar}))
+    32px max(0px, calc(var(--dialog-pad-x) - var(--dialog-edge)));
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+
+  // Barra delgada y discreta (Figma: 6px, gris-200, esquinas de 5px). El
+  // `::-webkit-scrollbar` se ignora si tambien se define `scrollbar-width`,
+  // por eso las propiedades estandar solo se usan donde no existe el prefijo.
+  &::-webkit-scrollbar {
+    width: $scrollbar;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: gm.$gray-200;
+    border-radius: 5px;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: gm.$gray-200 transparent;
+  }
+}
+
+// Botones al final del contenido (Figma: 205x48, 42px entre ellos).
+.dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 42px;
+  margin-top: 32px;
+
+  button {
+    box-sizing: border-box;
+    width: 205px;
+    min-width: 0;
+    height: 48px;
+  }
+}
+
+// Texto solo para lectores de pantalla (descripcion de formularios o titulo
+// que Figma no dibuja).
+.dialog__srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

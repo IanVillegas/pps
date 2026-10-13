@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import DatePicker from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker';
 import {
   GENDER_OPTIONS,
@@ -230,7 +230,7 @@ interface FamilyDialogProps {
 
 /**
  * Modal «Miembro del nucleo familiar» (DEC-008B, nodo Figma 43121:6211). Usa
- * Modal de sad-aml-shared, mismo patron que HelpDialog/DeclarationIntroDialog.
+ * AppDialog (dialogo estandar de DecPat, DEC-002G).
  * El texto de la accion es «Agregar» (Figma) al crear y «Guardar» al editar
  * (Figma solo dibuja el alta).
  */
@@ -241,17 +241,13 @@ const FamilyDialog = ({
   onSave,
   onClose,
 }: FamilyDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.family}
+    onClose={onClose}
+    size="lg"
     title="Miembro del núcleo familiar"
-    description="Complete los datos del familiar. Los campos con asterisco son obligatorios."
-    classNameDescription={styles.family__description}
-    contentCard={<FamilyForm member={member} others={others} onSave={onSave} />}
-    buttonsFooter={
+    srDescription="Complete los datos del familiar. Los campos con asterisco son obligatorios."
+    footer={
       <>
         <Button
           text="Cancelar"
@@ -269,7 +265,9 @@ const FamilyDialog = ({
         />
       </>
     }
-  />
+  >
+    <FamilyForm member={member} others={others} onSave={onSave} />
+  </AppDialog>
 );
 
 export default FamilyDialog;

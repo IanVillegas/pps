@@ -1,58 +1,10 @@
 @use '@/sad-aml-shared/styles/settings' as gm;
 
-.feedback {
-  box-sizing: border-box;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: gm.$z-3;
-  width: 640px;
-  min-height: 448px;
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 48px);
-  overflow-y: auto;
-  background: gm.$white;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
-  padding: 22px 24px 32px;
-  color: gm.$gray-500;
-
-  > div:first-child button {
-    color: gm.$gray-200;
-    padding: 0;
-
-    &:focus-visible {
-      outline: 2px solid gm.$gray-500;
-      outline-offset: 2px;
-    }
-  }
-
-  > div:nth-child(2) {
-    margin: -7px 0 34px;
-    height: 60px;
-  }
-
-  > h2 {
-    font-family: var(--font-worksans), sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1.2;
-    width: auto;
-    height: auto;
-    margin: 0 0 20px;
-  }
-
-  > div:last-child {
-    margin-top: 32px;
-
-    button {
-      box-sizing: border-box;
-      width: 205px;
-      min-width: 0;
-      height: 48px;
-    }
-  }
+// Icono de alerta sobre el titulo (Figma): rojo, 60px.
+.feedback__icon {
+  font-size: 60px;
+  line-height: 1;
+  color: gm.$error;
 }
 
 .description,
@@ -82,20 +34,4 @@
 .timer {
   color: gm.$error;
   font-variant-numeric: tabular-nums;
-}
-
-.compact {
-  > div:nth-child(2) {
-    margin-top: 52px;
-  }
-
-  > h2 {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-    margin: 0;
-  }
 }

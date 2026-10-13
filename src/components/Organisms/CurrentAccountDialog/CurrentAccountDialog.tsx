@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import Modal from '@/sad-aml-shared/components/Organisms/Modal/Modal';
+import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import {
   CURRENCY_OPTIONS,
   FINANCIAL_ENTITY_OPTIONS,
@@ -142,7 +142,7 @@ interface CurrentAccountDialogProps {
 
 /**
  * Modal «Datos económicos» del paso 7 (DEC-013, nodo Figma 43121:3674). Usa
- * Modal de sad-aml-shared, mismo patron que SavingsDialog. El texto de la
+ * AppDialog (dialogo estandar de DecPat, DEC-002G). El texto de la
  * accion es «Agregar» (Figma) al crear y «Guardar» al editar (Figma solo
  * dibuja el alta).
  */
@@ -152,17 +152,13 @@ const CurrentAccountDialog = ({
   onSave,
   onClose,
 }: CurrentAccountDialogProps) => (
-  <Modal
+  <AppDialog
     open={open}
-    onOpenChange={isOpen => {
-      if (!isOpen) onClose();
-    }}
-    className={styles.currentAccount}
+    onClose={onClose}
+    size="sm"
     title="Datos económicos"
-    description="Complete los datos de la cuenta corriente. Los campos con asterisco son obligatorios."
-    classNameDescription={styles.currentAccount__description}
-    contentCard={<CurrentAccountForm item={item} onSave={onSave} />}
-    buttonsFooter={
+    srDescription="Complete los datos de la cuenta corriente. Los campos con asterisco son obligatorios."
+    footer={
       <>
         <Button
           text="Cancelar"
@@ -180,7 +176,9 @@ const CurrentAccountDialog = ({
         />
       </>
     }
-  />
+  >
+    <CurrentAccountForm item={item} onSave={onSave} />
+  </AppDialog>
 );
 
 export default CurrentAccountDialog;
