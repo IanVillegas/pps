@@ -1,0 +1,46 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Nodo Figma 43121:3695 (Paso 7): tabla de Grupo Mutual, tabla de montos a la
+// fecha y, debajo, "Saldos de cuentas corrientes" con un saldo por moneda
+// (Work Sans SemiBold 14px, cifra en verde alineada a la derecha de un bloque
+// de ~328px; mismo bloque que el paso 6).
+.currentAccounts {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  &__heading {
+    margin: 0 0 12px;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: gm.$gray-500;
+  }
+
+  &__totals {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 328px;
+    margin: 0;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    dt {
+      color: gm.$gray-500;
+    }
+
+    dd {
+      margin: 0;
+      color: gm.$green-400;
+      text-align: right;
+    }
+  }
+}
