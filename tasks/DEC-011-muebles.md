@@ -15,7 +15,7 @@ Implementada y validada el 2026-09-30.
 
 El nodo de la anotación original de Figma (43121:4485, «descripción vs modelo») ya no existe en el archivo, así que no se pudo leer su texto exacto. El nodo del modal sí trae un ícono «?» junto al campo «Descripción» (nodo 43121:4494), sin texto propio visible. Se resolvió agregando un tooltip en ese ícono: «Incluya marca, modelo y demás características que permitan identificar el bien.» — **texto propuesto, no una cita de Figma**, pendiente de validación de negocio. No se agregó un campo «Modelo» aparte: Figma solo define «Descripción».
 
-`InputText` (sad-aml-shared) ya tenía un slot `tooltip`, pero lo renderiza *después* del campo, no junto a la etiqueta como en Figma. Se usó ese slot tal cual, sin modificar el componente compartido por una diferencia de posición.
+`InputText` (sad-aml-shared) ya tenía un slot `tooltip`, pero lo renderizaba *después* del campo. **Corregido el 2026-10-13** (reporte del usuario): ahora `InputText` pone el tooltip en una fila con la etiqueta, a su derecha, como en Figma (solo cuando se le pasa `tooltip`; el resto de los campos no cambia).
 
 ## Diferencia sin resolver: «Marca» como lista cerrada
 
@@ -29,7 +29,6 @@ Figma dibuja tanto «Tipo de bien mueble» como «Marca del bien mueble» como `
 
 ## Diferencias y pendientes contra Figma
 
-- El tooltip de «Descripción» queda después del campo (slot existente de `InputText`), no junto a la etiqueta como en Figma.
 - Catálogos de tipo y marca son sintéticos hasta que el backend los defina (D-09); «Marca» como lista cerrada queda como punto a revisar (ver arriba).
 - Eliminar no pide confirmación, mismo criterio que Familia e Inmuebles.
 - El tooltip (Radix) no se pudo ver con clic u hover simulados por la herramienta de navegador de esta sesión; sí se confirmó con foco de teclado real (`.focus()` + verificación de `data-state="instant-open"` y el texto en el DOM). No hay indicio de que sea un problema del componente: es la primera vez que se prueba visualmente este `Tooltip` compartido en esta sesión.

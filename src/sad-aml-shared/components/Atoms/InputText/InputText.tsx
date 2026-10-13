@@ -21,9 +21,24 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
 
     return (
       <div className={styles.inputText}>
-        <label htmlFor={inputId} className={styles.inputText__label}>
-          {label}
-        </label>
+        {tooltip ? (
+          // !Modificado para DecPat (2026-10-13): Figma pone el "?" junto a la
+          // etiqueta (a su derecha), no debajo del campo como lo dejaba
+          // este slot (nodo 43121:4494, "Descripcion" de bienes muebles).
+          <div className={styles.inputText__labelRow}>
+            <label
+              htmlFor={inputId}
+              className={`${styles.inputText__label} ${styles['inputText__label--inRow']}`}
+            >
+              {label}
+            </label>
+            {tooltip}
+          </div>
+        ) : (
+          <label htmlFor={inputId} className={styles.inputText__label}>
+            {label}
+          </label>
+        )}
         <input
           ref={ref}
           id={inputId}
@@ -34,7 +49,6 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
           aria-describedby={describedBy}
           {...rest}
         />
-        {tooltip}
         <div className={styles.inputText__alerts}>
           {caption && (
             <div id={captionId} className={styles.inputText__captions}>

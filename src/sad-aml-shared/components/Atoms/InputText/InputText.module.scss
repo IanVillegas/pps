@@ -21,6 +21,22 @@
     margin-bottom: 10px;
   }
 
+  // Etiqueta + icono de ayuda en una fila (ver InputText.tsx): la separacion de
+  // 10px con el campo pasa de la etiqueta a la fila.
+  // Alto fijo de la etiqueta (16px): el icono de ayuda es mas alto y, sin esto,
+  // empujaba el campo ~2px mas abajo que el de sus vecinos de la fila.
+  &__labelRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 16px;
+    margin-bottom: 10px;
+  }
+
+  &__label--inRow {
+    margin-bottom: 0;
+  }
+
   &__input {
     all: unset;
     box-sizing: border-box;

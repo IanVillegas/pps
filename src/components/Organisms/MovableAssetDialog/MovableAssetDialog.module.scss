@@ -77,20 +77,13 @@
   grid-column: 1 / -1;
 }
 
-// "?" junto al campo Descripcion (Figma, nodo 43121:4494). InputText solo
-// deja poner el tooltip despues del campo (ver comentario donde se usa);
-// este boton es chico a proposito, para no competir visualmente con el
-// input.
+// "?" a la derecha de la etiqueta "Descripcion" (Figma, nodo 43121:4494);
+// InputText lo coloca en la fila de la etiqueta. Es chico a proposito, para no
+// competir visualmente con ella.
 .movableAsset__help {
-  // `align-self`: InputText envuelve el campo en un flex column
-  // (width: 100%); sin esto este boton se estiraba a todo el ancho del
-  // campo (un anillo de foco ovalado enorme en vez de un circulo chico
-  // junto al icono, visible al enfocarlo con teclado).
   display: inline-flex;
-  align-self: flex-start;
   align-items: center;
   justify-content: center;
-  margin-top: 6px;
   padding: 0;
   border: 0;
   background: transparent;

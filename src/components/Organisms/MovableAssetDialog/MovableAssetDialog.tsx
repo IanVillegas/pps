@@ -165,14 +165,8 @@ const MovableAssetForm = ({ item, onSave }: MovableAssetFormProps) => {
         errors={errors.description}
         onChange={event => update({ description: event.target.value })}
         tooltip={
-          // Figma (nodo 43121:4494) pone el "?" junto a la etiqueta; InputText
-          // solo tiene un slot de tooltip despues del campo (ver
-          // InputText.tsx). Se usa ese slot para no tocar el componente
-          // compartido por una diferencia de posicion, no de contenido.
-          <Tooltip
-            content="Incluya marca, modelo y demás características que permitan identificar el bien."
-            side="right"
-          >
+          // Figma (nodo 43121:4494): el "?" va a la derecha de la etiqueta.
+          <Tooltip content="Modelo del bien mueble." side="right">
             <button
               type="button"
               className={styles.movableAsset__help}
