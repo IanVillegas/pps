@@ -43,19 +43,16 @@ describe('validateMovableAssetItem', () => {
     );
   });
 
-  it('rejects a year outside a reasonable range', () => {
+  it('does not limit the year to a range, only requires digits', () => {
     expect(
       validateMovableAssetItem({ ...VALID, year: '1800' }).year
-    ).toBeDefined();
-    expect(
-      validateMovableAssetItem({
-        ...VALID,
-        year: String(new Date().getFullYear() + 5),
-      }).year
-    ).toBeDefined();
-    expect(
-      validateMovableAssetItem({ ...VALID, year: '2020' }).year
     ).toBeUndefined();
+    expect(
+      validateMovableAssetItem({ ...VALID, year: '2099' }).year
+    ).toBeUndefined();
+    expect(validateMovableAssetItem({ ...VALID, year: '20a0' }).year).toBe(
+      'Escriba solo números'
+    );
   });
 
   it('rejects a market value that is not a plain number', () => {

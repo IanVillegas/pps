@@ -39,13 +39,6 @@ const EMPTY: MovableAssetItemData = {
   observation: '',
 };
 
-const CURRENT_YEAR = new Date().getFullYear();
-// Rango simbolico (sin contrato de backend, mismo criterio que fieldLimits.ts):
-// el vehiculo mas viejo razonable y un margen de un año hacia adelante
-// (compras del año entrante, ej. fin de diciembre).
-const MIN_YEAR = 1900;
-const MAX_YEAR = CURRENT_YEAR + 1;
-
 /**
  * Valida el formulario de un bien mueble. Todos los campos son obligatorios
  * (Figma, nodo 43121:4486: los siete llevan asterisco).
@@ -60,12 +53,8 @@ export const validateMovableAssetItem = (
 
   if (!values.year.trim()) {
     errors.year = 'El año es requerido';
-  } else if (
-    !/^\d+$/.test(values.year) ||
-    Number(values.year) < MIN_YEAR ||
-    Number(values.year) > MAX_YEAR
-  ) {
-    errors.year = `Escriba un año entre ${MIN_YEAR} y ${MAX_YEAR}`;
+  } else if (!/^\d+$/.test(values.year)) {
+    errors.year = 'Escriba solo números';
   }
 
   if (!values.marketValue.trim()) {

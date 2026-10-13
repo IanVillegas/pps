@@ -8,7 +8,7 @@ Implementada y validada el 2026-09-30.
 - **Modal** `src/components/Organisms/MovableAssetDialog/MovableAssetDialog.tsx` (nodo Figma 43121:4486, «Datos del bien mueble»): tipo (lista), marca (lista), descripción, número de placa, año, valor de mercado y observación, todos obligatorios. El botón dice «Agregar» al crear y «Guardar» al editar (Figma solo dibuja el alta).
 - **Alta, edición y retiro**: cada acción actualiza el borrador al instante y muestra un toast. Las filas se identifican por `id` estable.
 - **Cancelar no altera la fila**: mismo patrón que Familia e Inmuebles.
-- **Validaciones**: los siete campos son requeridos; año solo dígitos entre 1900 y el año entrante (rango simbólico, sin contrato de backend); valor de mercado solo dígitos.
+- **Validaciones**: los siete campos son requeridos; año solo dígitos (se quitó el 2026-10-14 el rango 1900 a año entrante, que no venía de Figma ni de ninguna decisión); valor de mercado solo dígitos.
 - **Formato del valor**: reutiliza `formatAmount` de DEC-010 (comas de miles), mismo criterio, sin relación con los cálculos financieros pendientes (D-10).
 
 ## D-06, resuelta con un tooltip
