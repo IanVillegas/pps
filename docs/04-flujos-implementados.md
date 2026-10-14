@@ -4,6 +4,17 @@ Estado: frontend en desarrollo con servicios simulados. Revisión: 14 de octubre
 
 El acceso está compuesto por la pantalla de login y sus estados de retroalimentación. La sesión actual es una demostración en memoria; no autoriza servicios institucionales. La ruta `/inicio` contiene la pantalla informativa. La ruta `/mi-declaracion/[paso]` presenta el formulario progresivo.
 
+## Flujos documentados en detalle
+
+| Documento | Alcance revisado |
+| --- | --- |
+| [Acceso al sistema](flujos/acceso-al-sistema.md) | Validación, estados, bloqueo simulado, usuario recordado y sesión. |
+| [Navegación interna e inicio](flujos/navegacion-interna.md) | Rutas internas, encabezado, menú compacto, ayuda y estado de error de demostración. |
+
+Estos dos bloques se revisaron contra el commit `9384bcd911d610c821da7c9c3c03e5a469984672`. El detalle de la declaración permanece como inventario inicial y se ampliará por bloques.
+
+## Declaración patrimonial
+
 | Paso | Contenido disponible |
 | --- | --- |
 | 1 | Datos generales y validación de campos. |

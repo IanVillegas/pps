@@ -10,6 +10,8 @@ Evitar instrucciones dirigidas a asistentes, relatos de conversaciones, referenc
 
 Cada página debe indicar su estado cuando corresponda y su fecha de revisión. Distinguir funcionalidad implementada con servicios simulados, integración pendiente y comportamiento confirmado por el equipo. No presentar datos sintéticos como información institucional ni reglas provisionales como requisitos aprobados.
 
+Los bloques revisados en detalle deben registrar el commit de referencia del código. Después de incorporar cambios de `main`, revisar el diff de las áreas documentadas respecto a esa referencia, actualizar las páginas afectadas y renovar su fecha y referencia cuando se haya verificado el contenido. Una página sin cambios funcionales también puede conservar su referencia anterior hasta la siguiente revisión.
+
 Para afirmar un comportamiento, verificar el código y registrar su ubicación. Para afirmar una validación, indicar fecha, comando o procedimiento, resultado y origen de la evidencia. Los resultados históricos deben identificarse como tales; no equivalen a una ejecución actual. Cuando no exista evidencia suficiente, escribir «pendiente de confirmar».
 
 ## Actualización durante el desarrollo

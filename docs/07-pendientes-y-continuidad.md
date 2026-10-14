@@ -15,6 +15,19 @@ Estado: recomendaciones iniciales para transferencia. Revisión: 14 de octubre d
 
 Estas prioridades son una propuesta documental; los responsables y fechas deben acordarse con el equipo interno.
 
+## Pendientes de acceso y navegación
+
+Identificados por revisión de código el 14 de octubre de 2026, referencia `9384bcd911d610c821da7c9c3c03e5a469984672`:
+
+- Confirmar contrato de autenticación, sesión y bloqueo en servidor; la demostración no cuenta intentos y pierde el bloqueo al recargar.
+- Confirmar límites y reglas de usuario y contraseña, procedimiento de recuperación y uso de recordar usuario.
+- Validar los contactos de ayuda y el texto informativo de inicio con el equipo interno.
+- Definir alcance de Reportes, Declaraciones y Mantenimientos, actualmente deshabilitados.
+- Decidir el tratamiento del estado de error de demostración: el botón se restringe a desarrollo, pero `?demo=error` no tiene esa restricción.
+- Revisar comentarios históricos de login y layout; algunas explicaciones mezclan el proceso de implementación con el funcionamiento actual.
+
+Detalles en [acceso](flujos/acceso-al-sistema.md) y [navegación](flujos/navegacion-interna.md). Estos puntos permanecen pendientes; no se modificó el comportamiento de la aplicación en esta tarea.
+
 ## Transferencia recomendada
 
 1. Comparar el estado actual del proyecto institucional con esta copia y seleccionar la unidad funcional que se transferirá.

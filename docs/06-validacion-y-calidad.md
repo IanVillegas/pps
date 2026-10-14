@@ -15,3 +15,17 @@ Para futuros registros, indicar fecha, versión revisada, comando o escenario, r
 Antes de la entrega, ejecutar las validaciones sobre la versión consolidada y conservar el resultado real. Confirmar que el comando de lint configurado es compatible con el entorno; no declarar éxito por la sola existencia del script.
 
 La elaboración de estas páginas no valida nuevamente el funcionamiento, la accesibilidad completa ni la seguridad del sistema. La evidencia final debe corresponder al contenido efectivamente entregado.
+
+## Revisión de acceso y navegación — DOC-002
+
+Fecha: 14 de octubre de 2026. Código revisado: `9384bcd911d610c821da7c9c3c03e5a469984672`, rama `documentacion`. En esta tarea se modificó únicamente documentación.
+
+Se ejecutaron las pruebas existentes de autenticación simulada, formulario de acceso, retroalimentación de acceso, contenedor interno, inicio y contactos:
+
+```text
+npm.cmd run test -- --runInBand --runTestsByPath src/services/AuthService.test.ts src/components/Pages/Login/Login.test.tsx src/components/Pages/Login/LoginFeedback.test.tsx src/components/Templates/AppShell/AppShell.test.tsx src/components/Pages/Home/Home.test.tsx src/components/Organisms/HelpDialog/HelpDialog.test.tsx
+```
+
+Resultado: seis suites y 27 pruebas satisfactorias. Incluyen validaciones del formulario, recuerdo de usuario, respuestas simuladas, bloqueo local, envíos concurrentes, menú compacto, salida, ayuda y error recuperable. Este resultado corresponde a una ejecución actual, independiente de la evidencia histórica de créditos.
+
+No se ejecutó una compilación ni una revisión nueva en navegador o Figma por tratarse de un cambio documental. Tampoco se añadió cobertura para `AuthenticatedShell`: su comportamiento se describió mediante lectura del código. Las pruebas seleccionadas no acreditan integración institucional ni accesibilidad completa.

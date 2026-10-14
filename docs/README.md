@@ -17,4 +17,6 @@ Esta documentación prepara la transferencia del trabajo al equipo interno y ati
 
 Los registros de [tasks](../tasks/todo.md) conservan el historial de implementación. Las páginas de esta carpeta presentan el estado vigente con lenguaje orientado al equipo receptor. No se requiere duplicar todo el historial por tarea.
 
+Los primeros bloques detallados son [acceso al sistema](flujos/acceso-al-sistema.md) y [navegación interna e inicio](flujos/navegacion-interna.md). Para Confluence pueden publicarse como páginas hijas de «Flujos implementados». Cada bloque registra el commit revisado para facilitar su actualización después de incorporar cambios de `main`.
+
 Para Confluence se propone una página principal «DecPat Cloud — documentación técnica» con las siete páginas de contenido como hijas. Antes de publicar, revisar enlaces, ejemplos, pendientes y correspondencia con la versión efectivamente transferida. Las rutas relativas de Markdown deberán convertirse en enlaces de Confluence o referencias al repositorio institucional.
