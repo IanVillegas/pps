@@ -11,6 +11,7 @@ import RealEstate from '@/components/Pages/Declaration/RealEstate/RealEstate';
 import MovableAssets from '@/components/Pages/Declaration/MovableAssets/MovableAssets';
 import Savings from '@/components/Pages/Declaration/Savings/Savings';
 import CurrentAccounts from '@/components/Pages/Declaration/CurrentAccounts/CurrentAccounts';
+import Credits from '@/components/Pages/Declaration/Credits/Credits';
 
 /** Lo que el wizard le entrega al contenido de cada paso. */
 export interface StepProps {
@@ -58,4 +59,5 @@ export const STEP_DEFINITIONS: StepDefinitions = {
   5: { component: MovableAssets },
   6: { component: Savings },
   7: { component: CurrentAccounts },
+  8: { component: Credits },
 };
