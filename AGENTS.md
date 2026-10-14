@@ -159,6 +159,15 @@ Decision del usuario, 2026-09-16: el sistema se construye para **laptop, PC de e
 - No asumir acceso a paquetes, assets, fuentes o componentes internos si no estan presentes en esta copia local.
 - Si falta algo exclusivo, crear una alternativa local propia o detenerse y reportar la dependencia.
 
-## Principio general
+## Documentación continua y comentarios
+
+- Mantener la documentación de transferencia en `docs/` siguiendo `docs/reglas-documentacion.md`; actualizarla como parte del cierre de cada tarea que cambie funcionalidad, componentes, contratos o decisiones relevantes.
+- DEC es un identificador local de seguimiento de unidades de trabajo, no un código institucional. Su definición y correspondencia están en `docs/01-alcance-y-contexto.md`. Usarlo acompañado de un nombre funcional en documentación, sin exigir su incorporación a comentarios, identificadores o interfaz.
+- Redactar para el equipo interno: español formal y claro, propósito funcional y detalle técnico suficiente para mantener el sistema. Evitar instrucciones para asistentes, relatos de conversaciones y referencias al proceso de generación.
+- No agregar comentarios de código salvo petición explícita. Al revisar comentarios existentes, conservar contratos, restricciones y motivos útiles; registrar o reformular los orientados a asistentes dentro del alcance autorizado.
+- Diferenciar implementación con servicios simulados, integración pendiente y resultados históricos de validación. No declarar una prueba ejecutada si solo se consultó su registro.
+- La documentación de esta copia debe compararse con la versión institucional antes de publicarse en Confluence. Mantener pendientes y evidencia hasta el cierre formal.
+
+## Principio general de desarrollo
 
 Desarrollar como si este fuera un proyecto propio, limpio y autosuficiente, pero manteniendo suficiente trazabilidad para que el usuario pueda copiar cada tarea al repositorio real en orden y con seguridad.

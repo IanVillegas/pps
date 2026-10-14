@@ -6,6 +6,8 @@ Esta es una **copia local de trabajo** para desarrollar con asistencia de IA (ve
 
 ## Documentación del proyecto
 
+- [docs/README.md](docs/README.md) — documentación técnica de transferencia, guía inicial de componentes y continuidad; versión de trabajo.
+
 - [AGENTS.md](AGENTS.md) — reglas de trabajo, alcance de este repositorio y criterio para usar/extender `sad-aml-shared`.
 - [tasks/plan.md](tasks/plan.md) — presupuesto de horas y cronograma.
 - [tasks/todo.md](tasks/todo.md) — tareas verificables, dependencias y registro de cierre de cada una.
@@ -83,7 +85,7 @@ decpat-cloud/
 - Componentes propios en PascalCase por carpeta (`Componente/Componente.tsx` + `.module.scss` + `.test.tsx`).
 - Sufijos como `.test.ts`, `.types.ts`, `.service.ts` para archivos no-componente.
 - Antes de crear un componente nuevo, revisar si `sad-aml-shared` ya lo tiene (ver criterio en `AGENTS.md`, sección "Estrategia de implementación").
-- Commits en español, Conventional Commits (ver `AGENTS.md`, sección "Regla de commits"). Nunca commitear ni hacer push sin permiso explícito del usuario.
+- Commits en español, Conventional Commits (ver `AGENTS.md`, sección "Regla de commits"). El asistente propone el mensaje; el usuario ejecuta todos los commits y push.
 
 ## Stack técnico
 
