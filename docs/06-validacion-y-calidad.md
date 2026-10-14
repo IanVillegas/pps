@@ -41,3 +41,15 @@ npm.cmd run test -- --runInBand --runTestsByPath src/components/Pages/Declaratio
 Resultado actual: cuatro suites y 24 pruebas satisfactorias. Cubren navegación libre, validación y foco del contenedor, conservación y limpieza del borrador, suscripciones, teclado del indicador e introducción. Las pruebas del contenedor incluyen definiciones de prueba; no acreditan todas las reglas de las secciones de captura.
 
 No se ejecutó build, revisión en navegador ni comparación nueva con Figma. La redirección de rutas inválidas se describió por lectura de la página; no se ejercitó mediante estas suites. No se modificaron componentes ni comentarios de código.
+
+## Datos generales y núcleo familiar — DOC-004
+
+Fecha: 14 de octubre de 2026. Código revisado: `bda881c3316f635e2c0579c040b2dca1395d7f7a`, rama `documentacion`. Cambios exclusivamente documentales.
+
+```text
+npm.cmd run test -- --runInBand --runTestsByPath src/components/Pages/Declaration/PersonalData/PersonalData.test.tsx src/components/Pages/Declaration/Family/Family.test.tsx src/components/Organisms/FamilyDialog/FamilyDialog.test.tsx
+```
+
+Resultado actual: tres suites y 26 pruebas satisfactorias. Cubren campos obligatorios, límites de entrada, tipos de controles, conservación de campos al cambiar, errores accesibles, tabla vacía, edición, cancelación, retiro y validación de familiares, incluyendo duplicados y ausencia de comparación edad-fecha.
+
+No se ejecutó build ni nueva revisión en navegador o Figma. Las pruebas seleccionadas no acreditan reglas institucionales, persistencia a servidor ni cobertura integral del selector de fecha. Los campos, catálogos y supuestos se documentaron mediante lectura del código vigente.

@@ -51,7 +51,15 @@ Referencia revisada: `875867890e6e48ce97668b7a0019cc8255a8f3a6`, 14 de octubre d
 
 Los cambios enviados por el contenido deben incluir todos los valores del paso que se necesiten conservar. La navegación mediante el indicador no ejecuta `validate`. Detalle del comportamiento y archivos en [declaración y borrador](flujos/declaracion-y-borrador.md).
 
-## Fichas pendientes de ampliación
+## Formulario de familiar
+
+Referencia revisada: `bda881c3316f635e2c0579c040b2dca1395d7f7a`, 14 de octubre de 2026.
+
+`FamilyDialog`, ubicado en `src/components/Organisms/FamilyDialog/FamilyDialog.tsx`, recibe `open`, `member` opcional para edición, `others` para comparar duplicados, `onSave` y `onClose`. El consumidor debe excluir de `others` el registro que está editando. `onSave` entrega datos validados sin identificador; la pantalla asigna o conserva ese identificador y actualiza el borrador.
+
+El formulario mantiene cambios locales hasta guardar y los descarta al cerrar. Su validación es específica de familiares; no reutilizarla como una validación genérica de personas sin revisar sus supuestos. Detalle de campos y límites en [núcleo familiar](flujos/nucleo-familiar.md).
+
+## Fichas restantes
 
 Para cada componente ampliado, documentar propósito, ruta, propiedades principales, ejemplo breve, estados, accesibilidad y límites. Evitar copiar interfaces completas que puedan quedar desactualizadas. Los ejemplos deben verificarse contra el contrato vigente.
 

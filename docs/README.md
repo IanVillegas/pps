@@ -21,4 +21,6 @@ Los primeros bloques detallados son [acceso al sistema](flujos/acceso-al-sistema
 
 También se documentó [navegación de la declaración y gestión del borrador](flujos/declaracion-y-borrador.md), incluyendo el contrato para incorporar nuevas secciones. El detalle de los campos y reglas de cada paso se ampliará progresivamente.
 
+Las primeras secciones de captura documentadas son [datos generales](flujos/datos-generales.md) y [núcleo familiar](flujos/nucleo-familiar.md). Sus páginas explican reglas vigentes y asuntos que requieren confirmación institucional.
+
 Para Confluence se propone una página principal «DecPat Cloud — documentación técnica» con las siete páginas de contenido como hijas. Antes de publicar, revisar enlaces, ejemplos, pendientes y correspondencia con la versión efectivamente transferida. Las rutas relativas de Markdown deberán convertirse en enlaces de Confluence o referencias al repositorio institucional.

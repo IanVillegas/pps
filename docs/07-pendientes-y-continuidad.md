@@ -41,7 +41,19 @@ Revisión del 14 de octubre de 2026, referencia `875867890e6e48ce97668b7a0019cc8
 
 Detalles en [declaración y borrador](flujos/declaracion-y-borrador.md).
 
-## Orden de transferencia
+## Pendientes de datos generales y familia
+
+Revisión del 14 de octubre de 2026, referencia `bda881c3316f635e2c0579c040b2dca1395d7f7a`:
+
+- Confirmar formatos y límites de datos generales; actualmente se exige presencia y la sugerencia de teclado numérico no restringe caracteres.
+- Definir precarga institucional y campos editables; sustituir catálogos de demostración por contratos confirmados.
+- Confirmar rango de edad de familiares y si debe calcularse o contrastarse con la fecha de nacimiento.
+- Acordar criterio de duplicados y política de eliminación, actualmente inmediata y sin deshacer.
+- Validar datos procedentes de API, incluyendo fechas y pertenencia a catálogos; las reglas actuales están orientadas a captura en interfaz.
+
+Detalles en [datos generales](flujos/datos-generales.md) y [núcleo familiar](flujos/nucleo-familiar.md).
+
+## Transferencia de cambios
 
 1. Comparar el estado actual del proyecto institucional con esta copia y seleccionar la unidad funcional que se transferirá.
 2. Transferir tokens y cambios de componentes compartidos a su ubicación correspondiente.
