@@ -28,7 +28,20 @@ Identificados por revisión de código el 14 de octubre de 2026, referencia `938
 
 Detalles en [acceso](flujos/acceso-al-sistema.md) y [navegación](flujos/navegacion-interna.md). Estos puntos permanecen pendientes; no se modificó el comportamiento de la aplicación en esta tarea.
 
-## Transferencia recomendada
+## Pendientes de declaración y borrador
+
+Revisión del 14 de octubre de 2026, referencia `875867890e6e48ce97668b7a0019cc8255a8f3a6`:
+
+- Acordar persistencia, recuperación, asociación al usuario y tratamiento de fallos o conflictos de guardado.
+- Definir validación global y envío final: el último paso tiene «Continuar» deshabilitado y no existe envío en el contenedor actual.
+- Confirmar periodicidad y texto de introducción; cerrar el diálogo no representa aceptación formal.
+- Definir si se requiere seguimiento de completitud; el indicador actual solo marca la sección visitada.
+- Verificar rutas inválidas mediante pruebas específicas de la página: la lectura confirma su redirección, pero las pruebas seleccionadas del contenedor no ejercitan esa ruta.
+- Completar revisión visual y de teclado sobre las rutas reales antes de la transferencia.
+
+Detalles en [declaración y borrador](flujos/declaracion-y-borrador.md).
+
+## Orden de transferencia
 
 1. Comparar el estado actual del proyecto institucional con esta copia y seleccionar la unidad funcional que se transferirá.
 2. Transferir tokens y cambios de componentes compartidos a su ubicación correspondiente.

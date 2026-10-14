@@ -10,8 +10,9 @@ El acceso está compuesto por la pantalla de login y sus estados de retroaliment
 | --- | --- |
 | [Acceso al sistema](flujos/acceso-al-sistema.md) | Validación, estados, bloqueo simulado, usuario recordado y sesión. |
 | [Navegación interna e inicio](flujos/navegacion-interna.md) | Rutas internas, encabezado, menú compacto, ayuda y estado de error de demostración. |
+| [Declaración y borrador](flujos/declaracion-y-borrador.md) | Navegación libre, validación al continuar, introducción y conservación local de datos. |
 
-Estos dos bloques se revisaron contra el commit `9384bcd911d610c821da7c9c3c03e5a469984672`. El detalle de la declaración permanece como inventario inicial y se ampliará por bloques.
+Acceso y navegación interna se revisaron contra el commit `9384bcd911d610c821da7c9c3c03e5a469984672`; declaración y borrador, contra `875867890e6e48ce97668b7a0019cc8255a8f3a6`. Las secciones de captura permanecen como inventario inicial y se ampliarán por bloques.
 
 ## Declaración patrimonial
 

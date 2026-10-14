@@ -29,3 +29,15 @@ npm.cmd run test -- --runInBand --runTestsByPath src/services/AuthService.test.t
 Resultado: seis suites y 27 pruebas satisfactorias. Incluyen validaciones del formulario, recuerdo de usuario, respuestas simuladas, bloqueo local, envíos concurrentes, menú compacto, salida, ayuda y error recuperable. Este resultado corresponde a una ejecución actual, independiente de la evidencia histórica de créditos.
 
 No se ejecutó una compilación ni una revisión nueva en navegador o Figma por tratarse de un cambio documental. Tampoco se añadió cobertura para `AuthenticatedShell`: su comportamiento se describió mediante lectura del código. Las pruebas seleccionadas no acreditan integración institucional ni accesibilidad completa.
+
+## Declaración y borrador — DOC-003
+
+Fecha: 14 de octubre de 2026. Código revisado: `875867890e6e48ce97668b7a0019cc8255a8f3a6`, rama `documentacion`. Cambios exclusivamente documentales.
+
+```text
+npm.cmd run test -- --runInBand --runTestsByPath src/components/Pages/Declaration/DeclarationWizard/DeclarationWizard.test.tsx src/services/DeclarationService.test.ts src/components/Molecules/DeclarationStepper/DeclarationStepper.test.tsx src/components/Organisms/DeclarationIntroDialog/DeclarationIntroDialog.test.tsx
+```
+
+Resultado actual: cuatro suites y 24 pruebas satisfactorias. Cubren navegación libre, validación y foco del contenedor, conservación y limpieza del borrador, suscripciones, teclado del indicador e introducción. Las pruebas del contenedor incluyen definiciones de prueba; no acreditan todas las reglas de las secciones de captura.
+
+No se ejecutó build, revisión en navegador ni comparación nueva con Figma. La redirección de rutas inválidas se describió por lectura de la página; no se ejercitó mediante estas suites. No se modificaron componentes ni comentarios de código.

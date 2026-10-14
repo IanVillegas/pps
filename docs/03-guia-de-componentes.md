@@ -35,7 +35,23 @@ import { Button, ButtonColor } from '@/components/Atoms';
 
 Los formularios específicos aportan campos y validación; el contenedor concentra presentación y cierre. Revisar título accesible, foco, teclado y desplazamiento cuando se modifique un diálogo.
 
-## Fichas por completar
+## Indicador y contenedor de la declaración
+
+Referencia revisada: `875867890e6e48ce97668b7a0019cc8255a8f3a6`, 14 de octubre de 2026.
+
+`DeclarationStepper` recibe `steps` (lista de números, títulos e iconos), `currentStep` y `onStepSelect`. Informa el paso actual y permite seleccionar cualquiera de los demás; no valida valores ni determina completitud. Las flechas, Home y End mueven el foco; activar un botón selecciona el paso. Puede importarse desde `@/components/Molecules`.
+
+`DeclarationWizard` recibe `stepId` y, opcionalmente, `definitions`. Normalmente utiliza el registro del proyecto. Coordina borrador, introducción y validación al continuar. Su importación es directa desde `src/components/Pages/Declaration/DeclarationWizard/DeclarationWizard.tsx`.
+
+| Propiedad de definición | Uso |
+| --- | --- |
+| `component` | Contenido que recibe valores, errores y un callback para reemplazar los valores del paso. Si falta, se muestra un mensaje de contenido pendiente. |
+| `validate` | Devuelve mensajes por campo. Si falta o devuelve un objeto vacío, el contenedor permite continuar. |
+| `cards` | Si es verdadero, el contenido coloca las acciones recibidas dentro de sus tarjetas. |
+
+Los cambios enviados por el contenido deben incluir todos los valores del paso que se necesiten conservar. La navegación mediante el indicador no ejecuta `validate`. Detalle del comportamiento y archivos en [declaración y borrador](flujos/declaracion-y-borrador.md).
+
+## Fichas pendientes de ampliación
 
 Para cada componente ampliado, documentar propósito, ruta, propiedades principales, ejemplo breve, estados, accesibilidad y límites. Evitar copiar interfaces completas que puedan quedar desactualizadas. Los ejemplos deben verificarse contra el contrato vigente.
 
