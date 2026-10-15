@@ -67,3 +67,21 @@ Resultado actual: siete suites y 59 pruebas satisfactorias. Incluyen operaciones
 Durante las pruebas de la pantalla apareció el aviso de Radix «Select is changing from uncontrolled to controlled», ya identificado en evidencia histórica. No impidió el éxito de las pruebas y queda pendiente de revisión del selector compartido.
 
 No se ejecutó build ni nueva revisión de navegador o Figma. Las pruebas del hook de adjuntos sustituyen la generación de miniaturas; no acreditan renderizado real de PDF ni carga o almacenamiento en servidor. No se modificó código de aplicación.
+
+## Pasos 4 a 8 — DOC-006 a DOC-010
+
+Fecha: 14 de octubre de 2026. Código revisado: `343c313c503bd25c652236b319c6e3874efeb8d4`, rama `documentacion`. Cambios exclusivamente documentales.
+
+Se ejecutó `npm.cmd run test -- --runInBand --runTestsByPath` con los siguientes archivos:
+
+| Bloque | Archivos de prueba |
+| --- | --- |
+| DOC-006 Inmuebles | `src/components/Pages/Declaration/RealEstate/RealEstate.test.tsx`, `src/components/Organisms/RealEstateDialog/RealEstateDialog.test.tsx`. |
+| DOC-007 Muebles | `src/components/Pages/Declaration/MovableAssets/MovableAssets.test.tsx`, `src/components/Organisms/MovableAssetDialog/MovableAssetDialog.test.tsx`. |
+| DOC-008 Ahorro | `src/components/Pages/Declaration/Savings/Savings.test.tsx`, `src/components/Organisms/SavingsDialog/SavingsDialog.test.tsx`, `src/services/SavingsTotalsService.test.ts`, `src/utils/hooks/useSavingsTotals.test.ts`. |
+| DOC-009 Corrientes | `src/components/Pages/Declaration/CurrentAccounts/CurrentAccounts.test.tsx`, `src/components/Organisms/CurrentAccountDialog/CurrentAccountDialog.test.tsx`, `src/services/CurrentAccountsService.test.ts`, `src/utils/hooks/useCurrentAccounts.test.ts`. |
+| DOC-010 Créditos | `src/components/Pages/Declaration/Credits/Credits.test.tsx`, `src/components/Organisms/CreditDialog/CreditDialog.test.tsx`, `src/services/CreditsTotalsService.test.ts`, `src/utils/hooks/useCreditsTotals.test.ts`. |
+
+Resultado conjunto actual: 16 suites y 95 pruebas satisfactorias. Cubren tablas, diálogos, operaciones, validaciones y servicios y hooks de totales. Apareció el aviso conocido de Radix sobre transición del selector de no controlado a controlado; no impidió el éxito de las pruebas.
+
+No se ejecutó build ni nueva revisión en navegador o Figma. Los resultados no acreditan API institucional, reglas de negocio aprobadas ni revisión integral de accesibilidad. Se comprobaron los enlaces relativos de la documentación y `git diff --check`.

@@ -67,7 +67,23 @@ Referencia revisada: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`, 14 de octubre d
 
 `FileUpload` se exporta desde `@/components/Molecules` y presenta archivos y acciones; `useAttachments` concentra validación y simulación. Sus propiedades, límites y estados se detallan en [adjuntos](flujos/adjuntos-de-ingresos.md). Antes de reutilizar con otra configuración, revisar textos fijos de tamaño y tipo.
 
-## Fichas por ampliar
+## Diálogos de bienes, cuentas y créditos
+
+Revisión: 14 de octubre de 2026, código `343c313c503bd25c652236b319c6e3874efeb8d4`.
+
+| Componente en `src/components/Organisms` | Responsabilidad y contrato de datos |
+| --- | --- |
+| `RealEstateDialog` | Propiedad: `RealEstateItemData`; campos en [inmuebles](flujos/bienes-inmuebles.md). |
+| `MovableAssetDialog` | Bien mueble: `MovableAssetItemData`; campos en [muebles](flujos/bienes-muebles.md). |
+| `SavingsDialog` | Cuenta de ahorro: `SavingsAccountItemData`; campos en [ahorro](flujos/cuentas-de-ahorro.md). |
+| `CurrentAccountDialog` | Monto agregado: `CurrentAccountItemData`; campos en [cuentas corrientes](flujos/cuentas-corrientes.md). |
+| `CreditDialog` | Préstamo: `CreditItemData`; campos en [créditos](flujos/creditos.md). |
+
+Todos reciben `open`, `item` opcional, `onSave` y `onClose`; el consumidor administra las filas y sus identificadores. Los tipos viven en `src/types`. Son composiciones de dominio: sus reglas no deben trasladarse sin revisión a formularios genéricos. Los controles base proceden de shared y la tabla de `RecordsTable`.
+
+Los hooks `useSavingsTotals`, `useCurrentAccounts` y `useCreditsTotals` reciben arreglos de registros y entregan resultados con estado. Mantener estables las referencias cuando los datos no cambian para evitar solicitudes repetidas. Los estados y límites de actualización se describen en [operaciones comunes](flujos/registros-patrimoniales.md).
+
+## Fichas restantes
 
 Para cada componente ampliado, documentar propósito, ruta, propiedades principales, ejemplo breve, estados, accesibilidad y límites. Evitar copiar interfaces completas que puedan quedar desactualizadas. Los ejemplos deben verificarse contra el contrato vigente.
 

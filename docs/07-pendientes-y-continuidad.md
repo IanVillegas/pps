@@ -66,7 +66,22 @@ Revisión del 14 de octubre de 2026, referencia `78b3e72e6274248af2648ace1e567a5
 
 Detalles en [ingresos y egresos](flujos/ingresos-y-egresos.md) y [adjuntos](flujos/adjuntos-de-ingresos.md).
 
-## Orden de copia
+## Pendientes de los pasos 4 a 8
+
+Revisión: 14 de octubre de 2026, código `343c313c503bd25c652236b319c6e3874efeb8d4`.
+
+| Bloque | Confirmaciones necesarias |
+| --- | --- |
+| Inmuebles | Formato de finca, moneda del valor, destino y duplicados. |
+| Muebles | Catálogo de marcas, campos según tipo de bien, ayuda de descripción y nombre accesible de tabla. |
+| Ahorro | Cuentas incluidas, identificación, titularidad, catálogos y precisión de saldos. |
+| Corrientes | Precarga por usuario, fecha de saldos, identificación de montos agregados y prevención de doble contabilización. |
+| Créditos | Fechas, relaciones entre importes, duplicados y relación con cuotas declaradas como egresos. |
+| Común | Persistencia, identificadores de servidor, validación de catálogos, límites y tratamiento de totales desactualizados. |
+
+Las páginas específicas conservan sus diferencias históricas contra diseño. La revisión visual actual y la corrección del aviso del selector compartido siguen pendientes. Los pasos 9 a 12 no tienen contenido registrado al corte; no se documentan como funcionalidades terminadas.
+
+## Transferencia recomendada
 
 1. Comparar el estado actual del proyecto institucional con esta copia y seleccionar la unidad funcional que se transferirá.
 2. Transferir tokens y cambios de componentes compartidos a su ubicación correspondiente.
