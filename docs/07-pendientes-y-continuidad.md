@@ -53,7 +53,20 @@ Revisión del 14 de octubre de 2026, referencia `bda881c3316f635e2c0579c040b2dca
 
 Detalles en [datos generales](flujos/datos-generales.md) y [núcleo familiar](flujos/nucleo-familiar.md).
 
-## Transferencia de cambios
+## Pendientes de ingresos, egresos y adjuntos
+
+Revisión del 14 de octubre de 2026, referencia `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`:
+
+- Confirmar planilla, fórmulas, moneda, decimales, redondeo y límites de montos con el backend.
+- Resolver la justificación de egresos registrada en el historial de Figma y validar textos y obligatoriedad de preguntas y respaldo documental.
+- Definir tratamiento de cifras desactualizadas y recuperación de errores al refrescar el resumen.
+- Integrar documentos recuperables: hoy solo se guardan nombres y la carga es simulada.
+- Acordar límites y aviso por exceso de archivos, eliminación, cancelación y limpieza de cargas cuyo formulario se descarta.
+- Confirmar validación de archivos en servidor y acceso a documentos por usuario.
+
+Detalles en [ingresos y egresos](flujos/ingresos-y-egresos.md) y [adjuntos](flujos/adjuntos-de-ingresos.md).
+
+## Orden de copia
 
 1. Comparar el estado actual del proyecto institucional con esta copia y seleccionar la unidad funcional que se transferirá.
 2. Transferir tokens y cambios de componentes compartidos a su ubicación correspondiente.

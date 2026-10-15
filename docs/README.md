@@ -23,4 +23,6 @@ También se documentó [navegación de la declaración y gestión del borrador](
 
 Las primeras secciones de captura documentadas son [datos generales](flujos/datos-generales.md) y [núcleo familiar](flujos/nucleo-familiar.md). Sus páginas explican reglas vigentes y asuntos que requieren confirmación institucional.
 
+El paso 3 se detalla en [ingresos y egresos](flujos/ingresos-y-egresos.md) y [adjuntos de ingresos](flujos/adjuntos-de-ingresos.md), con los cálculos provisionales y límites de conservación de documentos.
+
 Para Confluence se propone una página principal «DecPat Cloud — documentación técnica» con las siete páginas de contenido como hijas. Antes de publicar, revisar enlaces, ejemplos, pendientes y correspondencia con la versión efectivamente transferida. Las rutas relativas de Markdown deberán convertirse en enlaces de Confluence o referencias al repositorio institucional.

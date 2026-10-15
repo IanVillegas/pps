@@ -59,7 +59,15 @@ Referencia revisada: `bda881c3316f635e2c0579c040b2dca1395d7f7a`, 14 de octubre d
 
 El formulario mantiene cambios locales hasta guardar y los descarta al cerrar. Su validación es específica de familiares; no reutilizarla como una validación genérica de personas sin revisar sus supuestos. Detalle de campos y límites en [núcleo familiar](flujos/nucleo-familiar.md).
 
-## Fichas restantes
+## Formularios económicos y selector de adjuntos
+
+Referencia revisada: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`, 14 de octubre de 2026.
+
+`IncomeDialog` y `ExpenseDialog`, ubicados en sus carpetas de `src/components/Organisms`, reciben `open`, `item` opcional, `onSave` y `onClose`. Mantienen edición local hasta guardar; entregan datos sin identificador a la pantalla. El primero incorpora justificación y archivos; el segundo solo tipo y monto. Sus reglas se describen en [ingresos y egresos](flujos/ingresos-y-egresos.md).
+
+`FileUpload` se exporta desde `@/components/Molecules` y presenta archivos y acciones; `useAttachments` concentra validación y simulación. Sus propiedades, límites y estados se detallan en [adjuntos](flujos/adjuntos-de-ingresos.md). Antes de reutilizar con otra configuración, revisar textos fijos de tamaño y tipo.
+
+## Fichas por ampliar
 
 Para cada componente ampliado, documentar propósito, ruta, propiedades principales, ejemplo breve, estados, accesibilidad y límites. Evitar copiar interfaces completas que puedan quedar desactualizadas. Los ejemplos deben verificarse contra el contrato vigente.
 

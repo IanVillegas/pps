@@ -53,3 +53,17 @@ npm.cmd run test -- --runInBand --runTestsByPath src/components/Pages/Declaratio
 Resultado actual: tres suites y 26 pruebas satisfactorias. Cubren campos obligatorios, límites de entrada, tipos de controles, conservación de campos al cambiar, errores accesibles, tabla vacía, edición, cancelación, retiro y validación de familiares, incluyendo duplicados y ausencia de comparación edad-fecha.
 
 No se ejecutó build ni nueva revisión en navegador o Figma. Las pruebas seleccionadas no acreditan reglas institucionales, persistencia a servidor ni cobertura integral del selector de fecha. Los campos, catálogos y supuestos se documentaron mediante lectura del código vigente.
+
+## Ingresos, egresos y adjuntos — DOC-005
+
+Fecha: 14 de octubre de 2026. Código revisado: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`, rama `documentacion`. Cambios exclusivamente documentales.
+
+```text
+npm.cmd run test -- --runInBand --runTestsByPath src/components/Pages/Declaration/IncomeExpenses/IncomeExpenses.test.tsx src/components/Organisms/IncomeDialog/IncomeDialog.test.tsx src/components/Organisms/ExpenseDialog/ExpenseDialog.test.tsx src/components/Molecules/FileUpload/FileUpload.test.tsx src/utils/hooks/useAttachments.test.ts src/utils/hooks/useFinancialSummary.test.ts src/services/FinancialSummaryService.test.ts
+```
+
+Resultado actual: siete suites y 59 pruebas satisfactorias. Incluyen operaciones de registros, campos obligatorios, preguntas del paso, carga y error de planilla, actualización de resumen, fórmulas simuladas, selección de archivos, límites, estados, retiro y reintento.
+
+Durante las pruebas de la pantalla apareció el aviso de Radix «Select is changing from uncontrolled to controlled», ya identificado en evidencia histórica. No impidió el éxito de las pruebas y queda pendiente de revisión del selector compartido.
+
+No se ejecutó build ni nueva revisión de navegador o Figma. Las pruebas del hook de adjuntos sustituyen la generación de miniaturas; no acreditan renderizado real de PDF ni carga o almacenamiento en servidor. No se modificó código de aplicación.

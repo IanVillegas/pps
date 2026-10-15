@@ -13,6 +13,10 @@ El acceso está compuesto por la pantalla de login y sus estados de retroaliment
 | [Declaración y borrador](flujos/declaracion-y-borrador.md) | Navegación libre, validación al continuar, introducción y conservación local de datos. |
 | [Datos generales](flujos/datos-generales.md) | Once campos, catálogos y validación de presencia del paso 1. |
 | [Núcleo familiar](flujos/nucleo-familiar.md) | Alta, edición, retiro, fechas y detección de duplicados del paso 2. |
+| [Ingresos y egresos](flujos/ingresos-y-egresos.md) | Planilla, registros, preguntas y resumen financiero del paso 3. |
+| [Adjuntos de ingresos](flujos/adjuntos-de-ingresos.md) | Límites, estados, miniaturas y conservación de nombres de documentos. |
+
+Ingresos, egresos y adjuntos se revisaron contra `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`.
 
 Acceso y navegación interna se revisaron contra el commit `9384bcd911d610c821da7c9c3c03e5a469984672`; declaración y borrador, contra `875867890e6e48ce97668b7a0019cc8255a8f3a6`; datos generales y familia, contra `bda881c3316f635e2c0579c040b2dca1395d7f7a`. Las demás secciones de captura permanecen como inventario inicial y se ampliarán por bloques.
 
