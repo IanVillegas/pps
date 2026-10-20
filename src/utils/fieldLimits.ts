@@ -31,6 +31,10 @@ export const FIELD_MAX_LENGTH = {
   loanType: 60,
   /** Periodo de una tarjeta de credito (paso 9, texto libre). */
   cardPeriod: 40,
+  /** Objetivo de una personeria juridica (paso 10, texto libre). */
+  legalEntityPurpose: 200,
+  /** Plazo de una personeria juridica (paso 10, texto libre). */
+  legalEntityTerm: 60,
   /** Numero de cuenta o de titulo de ahorro (paso 6, texto libre). */
   accountNumber: 30,
   /** Descripcion de la situacion financiera (paso 3, texto libre largo). */

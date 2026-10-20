@@ -13,6 +13,7 @@ import Savings from '@/components/Pages/Declaration/Savings/Savings';
 import CurrentAccounts from '@/components/Pages/Declaration/CurrentAccounts/CurrentAccounts';
 import Credits from '@/components/Pages/Declaration/Credits/Credits';
 import CreditCards from '@/components/Pages/Declaration/CreditCards/CreditCards';
+import LegalEntities from '@/components/Pages/Declaration/LegalEntities/LegalEntities';
 
 /** Lo que el wizard le entrega al contenido de cada paso. */
 export interface StepProps {
@@ -62,4 +63,5 @@ export const STEP_DEFINITIONS: StepDefinitions = {
   7: { component: CurrentAccounts },
   8: { component: Credits },
   9: { component: CreditCards },
+  10: { component: LegalEntities },
 };

@@ -1,0 +1,7 @@
+// Nodo Figma 43121:2464 (Paso 10): tabla de personerías jurídicas; la sección
+// de sociedades (DEC-016B) irá debajo con el mismo espaciado.
+.legalEntities {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
