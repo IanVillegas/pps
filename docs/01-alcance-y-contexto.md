@@ -4,7 +4,7 @@ Estado: documentación inicial en desarrollo. Revisión: 14 de octubre de 2026.
 
 DecPat Cloud proporciona el frontend de declaración patrimonial. El trabajo revisado comprende acceso, inicio informativo, navegación interna y desarrollo progresivo de un formulario de doce pasos. El objetivo de la documentación es permitir que el equipo interno comprenda, integre y continúe las funcionalidades construidas.
 
-La implementación local contiene pantallas para los pasos 1 a 8. Las rutas de los doce pasos forman parte de la navegación, pero disponer de una ruta no significa que su contenido esté terminado. Los servicios actuales simulan autenticación, datos y operaciones; la integración institucional permanece pendiente.
+La implementación local contiene pantallas para los pasos 1 a 9. Las rutas de los doce pasos forman parte de la navegación, pero disponer de una ruta no significa que su contenido esté terminado. Los servicios actuales simulan autenticación, datos y operaciones; la integración institucional permanece pendiente.
 
 Los dispositivos previstos son computadoras de escritorio, laptops y tablets. Las referencias de revisión son 1366/1440 px y 768 px. Los teléfonos no forman parte del alcance soportado.
 
@@ -24,6 +24,6 @@ El código debe acompañarse de un nombre funcional. Su presencia en documentaci
 | DEC-007 / DEC-008 | Datos generales y núcleo familiar. |
 | DEC-009 | Ingresos, egresos y adjuntos. |
 | DEC-010 / DEC-011 | Bienes inmuebles y muebles. |
-| DEC-012 / DEC-013 / DEC-014 | Ahorro, cuentas corrientes y créditos. |
+| DEC-012 / DEC-013 / DEC-014 / DEC-015 | Ahorro, cuentas corrientes, créditos y tarjetas de crédito. |
 
 Fuente del registro: [seguimiento de tareas](../tasks/todo.md). La correspondencia con los archivos del proyecto institucional aún debe verificarse durante la transferencia.

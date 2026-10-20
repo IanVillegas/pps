@@ -85,3 +85,21 @@ Se ejecutó `npm.cmd run test -- --runInBand --runTestsByPath` con los siguiente
 Resultado conjunto actual: 16 suites y 95 pruebas satisfactorias. Cubren tablas, diálogos, operaciones, validaciones y servicios y hooks de totales. Apareció el aviso conocido de Radix sobre transición del selector de no controlado a controlado; no impidió el éxito de las pruebas.
 
 No se ejecutó build ni nueva revisión en navegador o Figma. Los resultados no acreditan API institucional, reglas de negocio aprobadas ni revisión integral de accesibilidad. Se comprobaron los enlaces relativos de la documentación y `git diff --check`.
+
+## Tarjetas de crédito — DOC-011
+
+Fecha: 20 de octubre de 2026. Código revisado: `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`, rama `main`. Cambios documentales en la rama `documentacion`; esa rama no contiene todavía el código del paso 9, por lo que su contenido se verificó leyendo los archivos de `main`.
+
+La evidencia corresponde a las validaciones ejecutadas sobre `main` al cerrar el paso 9, con el mismo contenido de código del commit de referencia. No se reejecutaron desde la rama `documentacion`.
+
+```text
+npx eslint src
+npx tsc --noEmit
+npx jest --runInBand
+```
+
+Resultado: sin errores de lint ni de tipos; 49 suites y 306 pruebas satisfactorias, de las cuales 24 son nuevas: validación del diálogo de tarjetas, servicio simulado de totales, hook de totales, componente `CurrencyTotals` y pantalla del paso. La pantalla se prueba con tabla vacía, listado con catálogos y fechas legibles, totales por moneda, guion y aviso cuando falla el servicio, campos y errores del diálogo, restricción a dígitos y máximo de cuatro en el número de operación, alta, edición, cancelación y retiro. Las pruebas del paso 8 siguen satisfactorias tras reemplazar su sección de totales por `CurrencyTotals`.
+
+Revisión en navegador (servidor local, sesión de demostración): la pantalla y el diálogo se compararon con el diseño; se agregó una tarjeta en colones con límite 2,000,000, saldo 350,000, cuota 25,000, saldo y cuota en dólares 100 y 10, vencimiento 20/05/2028 y operación 1234. Se mostró la notificación de guardado y los totales pasaron de ₡ 0.00 y $ 0.00 a ₡ 350,000.00 y ₡ 25,000.00 en colones, y $ 100.00 y $ 10.00 en dólares. La consola no registró errores.
+
+Persiste el aviso de Radix «Select is changing from uncontrolled to controlled» en las pruebas con listas desplegables; no impide su éxito. No se ejecutó build ni revisión en tablet, no se repitió la comparación con Figma después de la verificación inicial y las pruebas no acreditan reglas institucionales, integración con servicios reales ni accesibilidad completa.

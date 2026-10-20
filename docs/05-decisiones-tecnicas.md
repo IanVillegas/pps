@@ -9,7 +9,8 @@ Estado: decisiones vigentes y asuntos por confirmar. Revisión: 14 de octubre de
 | Usar Figma y el Design System GM como referencia visual | Las medidas y estados deben verificarse contra el diseño; las diferencias se documentan con su motivo. |
 | Mantener sesión y borrador de demostración en memoria | Evita persistir información patrimonial localmente durante esta etapa; la recarga pierde el estado. |
 | Recibir totales desde servicios | El backend será responsable de los cálculos. Las fórmulas simuladas no constituyen reglas institucionales aprobadas. |
-| Separar importes por moneda | Los servicios de ahorro, cuentas corrientes y créditos no convierten ni mezclan colones y dólares. |
+| Separar importes por moneda | Los servicios de ahorro, cuentas corrientes, créditos y tarjetas no convierten ni mezclan colones y dólares. |
+| Compartir la presentación de totales repetida entre pasos | `CurrencyTotals` presenta los totales por moneda de créditos y tarjetas; evita mantener dos copias de la misma composición. |
 | Priorizar escritorio y tablet | Responde al alcance de dispositivos acordado. |
 | Mantener trazabilidad DEC en documentación | Permite relacionar trabajo y evidencia sin exigir referencias en el código fuente. |
 

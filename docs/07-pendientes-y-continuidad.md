@@ -4,7 +4,7 @@ Estado: recomendaciones iniciales para transferencia. Revisión: 14 de octubre d
 
 | Prioridad propuesta | Trabajo | Criterio de cierre |
 | --- | --- | --- |
-| Alta | Completar pasos 9 a 12 y envío final | Contenido, reglas, estados y validaciones acordados e implementados. |
+| Alta | Completar pasos 10 a 12 y envío final | Contenido, reglas, estados y validaciones acordados e implementados. |
 | Alta | Integrar autenticación, persistencia y servicios reales | Contratos confirmados y escenarios de éxito y error verificados. |
 | Alta | Confirmar catálogos, cálculos y reglas de negocio | Sustitución de datos sintéticos y supuestos aprobada por el equipo. |
 | Alta | Comparar copia local y proyecto institucional | Registro de archivos transferidos, diferencias y validaciones en destino. |
@@ -79,7 +79,20 @@ Revisión: 14 de octubre de 2026, código `343c313c503bd25c652236b319c6e3874efeb
 | Créditos | Fechas, relaciones entre importes, duplicados y relación con cuotas declaradas como egresos. |
 | Común | Persistencia, identificadores de servidor, validación de catálogos, límites y tratamiento de totales desactualizados. |
 
-Las páginas específicas conservan sus diferencias históricas contra diseño. La revisión visual actual y la corrección del aviso del selector compartido siguen pendientes. Los pasos 9 a 12 no tienen contenido registrado al corte; no se documentan como funcionalidades terminadas.
+Las páginas específicas conservan sus diferencias históricas contra diseño. La revisión visual actual y la corrección del aviso del selector compartido siguen pendientes. Los pasos 10 a 12 no tienen contenido registrado al corte; no se documentan como funcionalidades terminadas.
+
+## Pendientes de tarjetas de crédito
+
+Revisión: 20 de octubre de 2026, código `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`.
+
+- Confirmar qué representa «Periodo»: hoy es texto libre obligatorio, pero el diseño muestra un valor con forma de fecha en la tabla de ejemplo. Si es una fecha o un catálogo hay que cambiar el campo del diálogo y la columna de la tabla.
+- Confirmar si «Últimos 4 # de operación» identifica la tarjeta o una operación y si debe evitarse su repetición.
+- Acordar reglas de saldo frente a límite, vencimiento, duplicados, moneda de cada columna, catálogos y precisión.
+- Decidir si la tabla de once columnas debe ajustarse sin desplazamiento horizontal en 1280 px, como la dibuja el diseño, y completar la revisión en tablet.
+- Definir la relación entre las cuotas de tarjetas, las de créditos y las declaradas como egresos del paso 3.
+- Cuando exista la API real, unificar los hooks `useSavingsTotals`, `useCreditsTotals` y `useCreditCardsTotals` en uno genérico: hoy repiten la misma lógica de solicitud y descarte de respuestas anteriores.
+
+Detalle en [tarjetas de crédito](flujos/tarjetas-de-credito.md).
 
 ## Transferencia recomendada
 

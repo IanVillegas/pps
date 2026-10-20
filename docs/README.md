@@ -1,6 +1,6 @@
 # Documentación de DecPat Cloud
 
-Versión de trabajo. Fecha de corte: 14 de octubre de 2026.
+Versión de trabajo. Fecha de corte: 20 de octubre de 2026.
 
 Esta documentación prepara la transferencia del trabajo al equipo interno y atiende los entregables de documentación técnica, guía de componentes y recomendaciones de continuidad. Describe la copia local revisada; no certifica el contenido del repositorio institucional ni una entrega a producción.
 
@@ -25,6 +25,6 @@ Las primeras secciones de captura documentadas son [datos generales](flujos/dato
 
 El paso 3 se detalla en [ingresos y egresos](flujos/ingresos-y-egresos.md) y [adjuntos de ingresos](flujos/adjuntos-de-ingresos.md), con los cálculos provisionales y límites de conservación de documentos.
 
-La documentación funcional cubre ahora todos los pasos implementados, del 1 al 8. Los pasos restantes disponibles son [inmuebles](flujos/bienes-inmuebles.md), [muebles](flujos/bienes-muebles.md), [ahorro](flujos/cuentas-de-ahorro.md), [cuentas corrientes](flujos/cuentas-corrientes.md) y [créditos](flujos/creditos.md). Las [operaciones comunes](flujos/registros-patrimoniales.md) se documentan una vez para facilitar mantenimiento. Los pasos 9 a 12 se documentarán al implementarse.
+La documentación funcional cubre ahora todos los pasos implementados, del 1 al 9. Los pasos de registros patrimoniales disponibles son [inmuebles](flujos/bienes-inmuebles.md), [muebles](flujos/bienes-muebles.md), [ahorro](flujos/cuentas-de-ahorro.md), [cuentas corrientes](flujos/cuentas-corrientes.md), [créditos](flujos/creditos.md) y [tarjetas de crédito](flujos/tarjetas-de-credito.md). Las [operaciones comunes](flujos/registros-patrimoniales.md) se documentan una vez para facilitar mantenimiento. Los pasos 10 a 12 se documentarán al implementarse.
 
 Para Confluence se propone una página principal «DecPat Cloud — documentación técnica» con las siete páginas de contenido como hijas. Antes de publicar, revisar enlaces, ejemplos, pendientes y correspondencia con la versión efectivamente transferida. Las rutas relativas de Markdown deberán convertirse en enlaces de Confluence o referencias al repositorio institucional.

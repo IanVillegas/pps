@@ -28,7 +28,9 @@ La tabla muestra entidad, monto inicial, moneda, tipo de crédito, saldo a la fe
 
 `CreditsTotalsService.fetchCreditsTotals` devuelve, para cada moneda, suma de saldos actuales y suma de cuotas. No suma montos iniciales ni toma datos del paso de egresos. Una lista vacía devuelve cero. `useCreditsTotals` conserva el último resultado e ignora respuestas anteriores según el [criterio común](registros-patrimoniales.md).
 
-Los totales no sincronizan automáticamente las cuotas con los egresos del paso 3. «Continuar» abre el paso 9, cuyo contenido aún es un marcador; no constituye envío final.
+Los totales no sincronizan automáticamente las cuotas con los egresos del paso 3. «Continuar» abre el [paso 9, tarjetas de crédito](tarjetas-de-credito.md); no constituye envío final.
+
+La sección «Saldo actual de créditos» se presenta con `CurrencyTotals` (`@/components/Molecules`), componente compartido con las tarjetas, desde el commit `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`. El cambio no modificó la presentación ni los datos de esta pantalla.
 
 ## Mantenimiento y continuidad
 

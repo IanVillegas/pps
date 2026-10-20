@@ -1,7 +1,7 @@
 # Operaciones comunes de registros patrimoniales
 
-Revisión: 14 de octubre de 2026. Código: `343c313c503bd25c652236b319c6e3874efeb8d4`.
-Alcance: pasos 4 a 8 implementados con borrador en memoria.
+Revisión: 20 de octubre de 2026. Código: `343c313c503bd25c652236b319c6e3874efeb8d4` para los pasos 4 a 8 y `779fd7ad2b39796d3d2466f0ddb9ac44298f9193` para el paso 9.
+Alcance: pasos 4 a 9 implementados con borrador en memoria.
 
 Los pasos permiten continuar con sus tablas vacías; no registran una validación global en el contenedor. Sus diálogos sí validan cada registro al guardar. La navegación y duración del borrador se describen en [declaración y borrador](declaracion-y-borrador.md).
 
@@ -18,10 +18,10 @@ Los diálogos reciben `open`, `item` opcional, `onSave` y `onClose`. `onSave` en
 
 Los catálogos de `CatalogService` son de demostración. La validación comprueba presencia de selecciones, no pertenencia al catálogo. Los montos capturados son cadenas de dígitos, con máximo provisional de 15 caracteres; la interfaz elimina otros caracteres al escribir. Se admite cero, sin decimales ni importes negativos. Estos límites no sustituyen la validación institucional.
 
-## Totales de los pasos 6 a 8
+## Totales de los pasos 6 a 9
 
 Los hooks solicitan cifras al montar y cuando cambia la referencia del arreglo de registros. Ignoran respuestas anteriores y conservan el último resultado mientras llega otro o si falla. No vuelven a marcar carga en cada refresco ni ofrecen reintento automático. Antes del primer resultado se muestra «—»; un fallo genera una notificación y no impide editar o continuar. Los valores conservados pueden estar desactualizados respecto a las filas.
 
-Los servicios actuales simulan aproximadamente 250 ms de demora y sumas por moneda. No convierten ni mezclan colones y dólares. Los totales se muestran con símbolo y dos decimales; las filas utilizan el formato de `money.ts`. Fórmulas, precisión y formatos requieren confirmación del backend. Los cálculos no se incorporan como datos persistidos del borrador.
+Los servicios actuales simulan aproximadamente 250 ms de demora y sumas por moneda. No convierten ni mezclan colones y dólares. Los totales se muestran con símbolo y dos decimales, y los pasos 8 y 9 los presentan con el componente compartido `CurrencyTotals`. Las filas utilizan el formato de `money.ts`. Fórmulas, precisión y formatos requieren confirmación del backend. Los cálculos no se incorporan como datos persistidos del borrador.
 
-Las páginas específicas detallan campos y excepciones: [inmuebles](bienes-inmuebles.md), [muebles](bienes-muebles.md), [ahorro](cuentas-de-ahorro.md), [cuentas corrientes](cuentas-corrientes.md) y [créditos](creditos.md).
+Las páginas específicas detallan campos y excepciones: [inmuebles](bienes-inmuebles.md), [muebles](bienes-muebles.md), [ahorro](cuentas-de-ahorro.md), [cuentas corrientes](cuentas-corrientes.md), [créditos](creditos.md) y [tarjetas de crédito](tarjetas-de-credito.md).

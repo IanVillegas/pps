@@ -1,6 +1,6 @@
 # Flujos implementados
 
-Estado: frontend en desarrollo con servicios simulados. Revisión: 14 de octubre de 2026.
+Estado: frontend en desarrollo con servicios simulados. Revisión: 20 de octubre de 2026.
 
 El acceso está compuesto por la pantalla de login y sus estados de retroalimentación. La sesión actual es una demostración en memoria; no autoriza servicios institucionales. La ruta `/inicio` contiene la pantalla informativa. La ruta `/mi-declaracion/[paso]` presenta el formulario progresivo.
 
@@ -20,12 +20,15 @@ El acceso está compuesto por la pantalla de login y sus estados de retroaliment
 | [Cuentas de ahorro](flujos/cuentas-de-ahorro.md) | Cuentas y saldos por moneda del paso 6. |
 | [Cuentas corrientes](flujos/cuentas-corrientes.md) | Precarga, montos agregados y saldos del paso 7. |
 | [Créditos](flujos/creditos.md) | Préstamos, fechas, saldos y cuotas del paso 8. |
+| [Tarjetas de crédito](flujos/tarjetas-de-credito.md) | Tarjetas, saldos y cuotas en colones y dólares del paso 9. |
 
 Los pasos 4 a 8 se revisaron contra `343c313c503bd25c652236b319c6e3874efeb8d4`. Sus operaciones repetidas se reúnen en [registros patrimoniales](flujos/registros-patrimoniales.md).
 
+El paso 9 se revisó contra `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`, rama `main`.
+
 Ingresos, egresos y adjuntos se revisaron contra `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`.
 
-Acceso y navegación interna se revisaron contra el commit `9384bcd911d610c821da7c9c3c03e5a469984672`; declaración y borrador, contra `875867890e6e48ce97668b7a0019cc8255a8f3a6`; datos generales y familia, contra `bda881c3316f635e2c0579c040b2dca1395d7f7a`. Los pasos 1 a 8 cuentan con páginas de detalle; los pasos 9 a 12 continúan pendientes de implementación.
+Acceso y navegación interna se revisaron contra el commit `9384bcd911d610c821da7c9c3c03e5a469984672`; declaración y borrador, contra `875867890e6e48ce97668b7a0019cc8255a8f3a6`; datos generales y familia, contra `bda881c3316f635e2c0579c040b2dca1395d7f7a`. Los pasos 1 a 9 cuentan con páginas de detalle; los pasos 10 a 12 continúan pendientes de implementación.
 
 ## Declaración patrimonial
 
@@ -39,7 +42,8 @@ Acceso y navegación interna se revisaron contra el commit `9384bcd911d610c821da
 | 6 | Ahorro y totales por moneda. |
 | 7 | Cuentas corrientes y datos simulados de cuentas de Grupo Mutual. |
 | 8 | Créditos y totales de saldos y cuotas por moneda. |
-| 9–12 | Contenido pendiente: tarjetas, personería jurídica, datos judiciales y cuestionario final. |
+| 9 | Tarjetas de crédito y totales de saldos y cuotas por moneda. |
+| 10–12 | Contenido pendiente: personería jurídica y sociedades, datos judiciales y cuestionario final. |
 
 El registro actual asigna validación al paso 1 y al paso 3. Los demás pasos implementados con tablas permiten continuar sin registros; sus diálogos aplican sus propias validaciones. Esta descripción refleja el comportamiento vigente y debe contrastarse con las reglas institucionales al integrar el backend.
 

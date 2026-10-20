@@ -78,10 +78,19 @@ Revisión: 14 de octubre de 2026, código `343c313c503bd25c652236b319c6e3874efeb
 | `SavingsDialog` | Cuenta de ahorro: `SavingsAccountItemData`; campos en [ahorro](flujos/cuentas-de-ahorro.md). |
 | `CurrentAccountDialog` | Monto agregado: `CurrentAccountItemData`; campos en [cuentas corrientes](flujos/cuentas-corrientes.md). |
 | `CreditDialog` | Préstamo: `CreditItemData`; campos en [créditos](flujos/creditos.md). |
+| `CreditCardDialog` | Tarjeta: `CreditCardItemData`; campos en [tarjetas de crédito](flujos/tarjetas-de-credito.md). Código revisado: `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`. |
 
 Todos reciben `open`, `item` opcional, `onSave` y `onClose`; el consumidor administra las filas y sus identificadores. Los tipos viven en `src/types`. Son composiciones de dominio: sus reglas no deben trasladarse sin revisión a formularios genéricos. Los controles base proceden de shared y la tabla de `RecordsTable`.
 
-Los hooks `useSavingsTotals`, `useCurrentAccounts` y `useCreditsTotals` reciben arreglos de registros y entregan resultados con estado. Mantener estables las referencias cuando los datos no cambian para evitar solicitudes repetidas. Los estados y límites de actualización se describen en [operaciones comunes](flujos/registros-patrimoniales.md).
+Los hooks `useSavingsTotals`, `useCurrentAccounts`, `useCreditsTotals` y `useCreditCardsTotals` reciben arreglos de registros y entregan resultados con estado. Mantener estables las referencias cuando los datos no cambian para evitar solicitudes repetidas. Los estados y límites de actualización se describen en [operaciones comunes](flujos/registros-patrimoniales.md).
+
+## Totales por moneda
+
+Referencia revisada: `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`, 20 de octubre de 2026.
+
+`CurrencyTotals`, ubicado en `src/components/Molecules/CurrencyTotals` y exportado desde `@/components/Molecules`, presenta dos columnas (colones y dólares), cada una con su icono, la suma de saldos y la sumatoria de cuotas mensuales. Reciben las propiedades `heading` (título de la sección), `colonesTitle`, `dolaresTitle` y `totals`, con la forma `{ colones: { balance, installments }, dolares: { balance, installments } }`. Mientras `totals` no existe cada cifra muestra «—». El componente solo presenta lo que entrega el servicio: no suma ni convierte.
+
+Lo utilizan los pasos de [créditos](flujos/creditos.md) y [tarjetas de crédito](flujos/tarjetas-de-credito.md). Los totales de [ahorro](flujos/cuentas-de-ahorro.md) y [cuentas corrientes](flujos/cuentas-corrientes.md) tienen otra estructura (un saldo por moneda, sin cuotas) y mantienen su propia presentación.
 
 ## Fichas restantes
 
