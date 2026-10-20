@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
 } from '@/components/Organisms/RecordsTable/RecordsTable';
+import { CurrencyTotals } from '@/components/Molecules';
 import CreditDialog from '@/components/Organisms/CreditDialog/CreditDialog';
 import {
   TOAST_MESSAGES,
@@ -16,7 +17,6 @@ import {
 } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
-  CreditCurrencyTotals,
   CreditItem,
   CreditItemData,
   CreditsValues,
@@ -24,15 +24,12 @@ import type {
 import { formatIsoDate } from '@/utils/dates';
 import { createId } from '@/utils/ids';
 import { useCreditsTotals } from '@/utils/hooks/useCreditsTotals';
-import { formatAmount, formatCurrency } from '@/utils/money';
+import { formatAmount } from '@/utils/money';
 import styles from './Credits.module.scss';
 
 // Referencia estable: un `[]` nuevo en cada render dispararia de nuevo el
 // pedido de totales en useCreditsTotals.
 const NO_CREDITS: CreditItem[] = [];
-
-// Mientras no llega la primera respuesta del backend no hay cifra que mostrar.
-const NO_FIGURE = '—';
 
 const labelOf = (options: CatalogOption[], value: string) =>
   options.find(option => option.value === value)?.label ?? value;
@@ -76,37 +73,6 @@ interface DialogState {
   open: boolean;
   item?: CreditItem;
 }
-
-interface TotalsColumnProps {
-  title: string;
-  symbol: string;
-  totals?: CreditCurrencyTotals;
-}
-
-// Nodo Figma 43121:3274: cada moneda lleva su icono rojo, la suma de saldos y
-// la sumatoria de cuotas mensuales.
-const TotalsColumn = ({ title, symbol, totals }: TotalsColumnProps) => (
-  <div className={styles.credits__currency}>
-    <span className={styles.credits__icon} aria-hidden="true">
-      {symbol}
-    </span>
-    <div>
-      <h4 className={styles.credits__currencyTitle}>{title}</h4>
-      <dl className={styles.credits__figures}>
-        <div>
-          <dt>Suma de saldos totales</dt>
-          <dd>{totals ? formatCurrency(totals.balance, symbol) : NO_FIGURE}</dd>
-        </div>
-        <div>
-          <dt>Sumatoria de cuotas mensuales</dt>
-          <dd>
-            {totals ? formatCurrency(totals.installments, symbol) : NO_FIGURE}
-          </dd>
-        </div>
-      </dl>
-    </div>
-  </div>
-);
 
 /**
  * Paso 8, Créditos que posee (DEC-014, nodo Figma 43121:3274). Tabla editable
@@ -164,23 +130,12 @@ const Credits = ({ values, onChange }: StepProps) => {
         onEdit={credit => setDialog({ open: true, item: credit })}
         onDelete={handleDelete}
       />
-      <section aria-labelledby="credits-totals-heading">
-        <h3 id="credits-totals-heading" className={styles.credits__heading}>
-          Saldo actual de créditos
-        </h3>
-        <div className={styles.credits__totals}>
-          <TotalsColumn
-            title="Saldo total de créditos en colones"
-            symbol="₡"
-            totals={totals?.colones}
-          />
-          <TotalsColumn
-            title="Saldo total de créditos en dólares"
-            symbol="$"
-            totals={totals?.dolares}
-          />
-        </div>
-      </section>
+      <CurrencyTotals
+        heading="Saldo actual de créditos"
+        colonesTitle="Saldo total de créditos en colones"
+        dolaresTitle="Saldo total de créditos en dólares"
+        totals={totals}
+      />
       <CreditDialog
         open={dialog.open}
         item={dialog.item}

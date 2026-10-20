@@ -1,0 +1,80 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Nodos Figma 43121:3274 (Paso 8) y 43121:2819 (Paso 9): dos columnas (colones
+// y dólares), cada una con su icono rojo, la suma de saldos y la sumatoria de
+// cuotas en verde (Work Sans SemiBold 14px).
+.currencyTotals {
+  &__heading {
+    margin: 0 0 16px;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: gm.$gray-500;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+
+    @media (max-width: 700px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__currency {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  &__icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: gm.$red-2026;
+    // El CSS global fija Poppins en span: aqui va Work Sans.
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  &__currencyTitle {
+    margin: 0 0 12px;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: gm.$gray-500;
+  }
+
+  &__figures {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    dt {
+      color: gm.$gray-500;
+    }
+
+    dd {
+      margin: 0;
+      color: gm.$green-400;
+      text-align: right;
+    }
+  }
+}

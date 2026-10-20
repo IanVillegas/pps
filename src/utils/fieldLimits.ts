@@ -29,6 +29,8 @@ export const FIELD_MAX_LENGTH = {
   acquisitionForm: 60,
   /** Tipo de prestamo o de credito (paso 8, texto libre). */
   loanType: 60,
+  /** Periodo de una tarjeta de credito (paso 9, texto libre). */
+  cardPeriod: 40,
   /** Numero de cuenta o de titulo de ahorro (paso 6, texto libre). */
   accountNumber: 30,
   /** Descripcion de la situacion financiera (paso 3, texto libre largo). */

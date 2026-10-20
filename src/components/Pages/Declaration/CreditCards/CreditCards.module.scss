@@ -1,0 +1,7 @@
+// Nodo Figma 43121:2819 (Paso 9): tabla de tarjetas y, debajo, los totales
+// por moneda (Molecules/CurrencyTotals).
+.creditCards {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
