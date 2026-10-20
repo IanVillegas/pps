@@ -14,6 +14,9 @@ import CurrentAccounts from '@/components/Pages/Declaration/CurrentAccounts/Curr
 import Credits from '@/components/Pages/Declaration/Credits/Credits';
 import CreditCards from '@/components/Pages/Declaration/CreditCards/CreditCards';
 import LegalEntities from '@/components/Pages/Declaration/LegalEntities/LegalEntities';
+import JudicialData, {
+  validateJudicialData,
+} from '@/components/Pages/Declaration/JudicialData/JudicialData';
 
 /** Lo que el wizard le entrega al contenido de cada paso. */
 export interface StepProps {
@@ -64,4 +67,6 @@ export const STEP_DEFINITIONS: StepDefinitions = {
   8: { component: Credits },
   9: { component: CreditCards },
   10: { component: LegalEntities },
+  // Solo la pension alimenticia exige campos, y unicamente cuando esta en «Sí».
+  11: { component: JudicialData, validate: validateJudicialData },
 };

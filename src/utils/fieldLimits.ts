@@ -35,6 +35,8 @@ export const FIELD_MAX_LENGTH = {
   legalEntityPurpose: 200,
   /** Plazo de una personeria juridica (paso 10, texto libre). */
   legalEntityTerm: 60,
+  /** Detalle de un juicio o embargo (paso 11, texto libre). */
+  judicialDetail: 300,
   /** Numero de cuenta o de titulo de ahorro (paso 6, texto libre). */
   accountNumber: 30,
   /** Descripcion de la situacion financiera (paso 3, texto libre largo). */
