@@ -17,6 +17,7 @@ import LegalEntities from '@/components/Pages/Declaration/LegalEntities/LegalEnt
 import JudicialData, {
   validateJudicialData,
 } from '@/components/Pages/Declaration/JudicialData/JudicialData';
+import ConfidentialReport from '@/components/Pages/Declaration/ConfidentialReport/ConfidentialReport';
 
 /** Lo que el wizard le entrega al contenido de cada paso. */
 export interface StepProps {
@@ -69,4 +70,7 @@ export const STEP_DEFINITIONS: StepDefinitions = {
   10: { component: LegalEntities },
   // Solo la pension alimenticia exige campos, y unicamente cuando esta en «Sí».
   11: { component: JudicialData, validate: validateJudicialData },
+  // El cuestionario confidencial guarda sus respuestas aparte del borrador
+  // (ConfidentialReportService, D-12); por eso no usa los valores del wizard.
+  12: { component: ConfidentialReport },
 };

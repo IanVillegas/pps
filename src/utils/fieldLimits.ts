@@ -37,6 +37,8 @@ export const FIELD_MAX_LENGTH = {
   legalEntityTerm: 60,
   /** Detalle de un juicio o embargo (paso 11, texto libre). */
   judicialDetail: 300,
+  /** Detalle de una denuncia del cuestionario confidencial (paso 12, texto libre largo). */
+  confidentialDetail: 1000,
   /** Numero de cuenta o de titulo de ahorro (paso 6, texto libre). */
   accountNumber: 30,
   /** Descripcion de la situacion financiera (paso 3, texto libre largo). */

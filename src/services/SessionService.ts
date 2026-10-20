@@ -1,4 +1,5 @@
 import type { SessionUser } from '@/types/Session.types';
+import { clearConfidentialAnswers } from '@/services/ConfidentialReportService';
 import { clearDraft } from '@/services/DeclarationService';
 
 // Sesion de demostracion en memoria. No guarda credenciales ni autoriza APIs.
@@ -23,5 +24,7 @@ export const endSession = () => {
   // El borrador es patrimonio de quien inicio sesion: no debe sobrevivir a
   // un cierre de sesion en un equipo compartido.
   clearDraft();
+  // El cuestionario confidencial es aun mas sensible: tampoco sobrevive.
+  clearConfidentialAnswers();
   listeners.forEach(listener => listener());
 };

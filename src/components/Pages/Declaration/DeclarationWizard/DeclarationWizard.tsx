@@ -73,7 +73,9 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
       />
       <Button
         type="submit"
-        text="Continuar"
+        // Figma rotula la accion del ultimo paso «Terminar»; sigue
+        // deshabilitada hasta que exista el juramento y el envio (DEC-018B).
+        text={stepId === LAST_STEP ? 'Terminar' : 'Continuar'}
         color={ButtonColor.Cta}
         size="large"
         disabled={stepId === LAST_STEP}

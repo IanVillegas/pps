@@ -57,12 +57,15 @@ describe('DeclarationWizard', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it('disables "Regresar" on the first step and "Continuar" on the last', () => {
+  it('disables "Regresar" on the first step and the action of the last step, which Figma calls "Terminar"', () => {
     const { unmount } = setup(1);
     expect(screen.getByRole('button', { name: 'Regresar' })).toBeDisabled();
     unmount();
     setup(12);
-    expect(screen.getByRole('button', { name: 'Continuar' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Terminar' })).toBeDisabled();
+    expect(
+      screen.queryByRole('button', { name: 'Continuar' })
+    ).not.toBeInTheDocument();
   });
 
   it('blocks "Continuar" while the step is invalid, announces it and focuses the first bad field', async () => {
