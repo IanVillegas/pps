@@ -1,6 +1,7 @@
 import type { SessionUser } from '@/types/Session.types';
 import { clearConfidentialAnswers } from '@/services/ConfidentialReportService';
 import { clearDraft } from '@/services/DeclarationService';
+import { clearFinalization } from '@/services/FinalizationService';
 
 // Sesion de demostracion en memoria. No guarda credenciales ni autoriza APIs.
 // Recargar la pagina termina la sesion hasta integrar el backend (D-08).
@@ -26,5 +27,7 @@ export const endSession = () => {
   clearDraft();
   // El cuestionario confidencial es aun mas sensible: tampoco sobrevive.
   clearConfidentialAnswers();
+  // Un guardado en curso o terminado tampoco debe pasar a la sesion siguiente.
+  clearFinalization();
   listeners.forEach(listener => listener());
 };

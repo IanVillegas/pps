@@ -32,6 +32,8 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
   const definition = definitions[stepId];
   const Content = definition?.component;
   const cards = definition?.cards ?? false;
+  // Con `ownActions` el paso recibe los botones y decide si los muestra.
+  const stepRendersActions = cards || (definition?.ownActions ?? false);
   const values = draft.steps[stepId] ?? EMPTY_VALUES;
   const validate = (next: StepValues) => definition?.validate?.(next) ?? {};
   const hasErrors = Object.keys(errors).length > 0;
@@ -58,6 +60,11 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
       setFailedAttempts(count => count + 1);
       return;
     }
+    // El ultimo paso no tiene siguiente: su accion la define el propio paso.
+    if (stepId === LAST_STEP) {
+      definition?.onFinish?.();
+      return;
+    }
     router.push(stepPath(stepId + 1));
   };
 
@@ -73,12 +80,11 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
       />
       <Button
         type="submit"
-        // Figma rotula la accion del ultimo paso «Terminar»; sigue
-        // deshabilitada hasta que exista el juramento y el envio (DEC-018B).
+        // Figma rotula la accion del ultimo paso «Terminar».
         text={stepId === LAST_STEP ? 'Terminar' : 'Continuar'}
         color={ButtonColor.Cta}
         size="large"
-        disabled={stepId === LAST_STEP}
+        disabled={stepId === LAST_STEP && !definition?.onFinish}
       />
     </div>
   );
@@ -101,7 +107,7 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
             values={values}
             errors={errors}
             onChange={handleChange}
-            actions={cards ? actions : undefined}
+            actions={stepRendersActions ? actions : undefined}
           />
         ) : (
           <p className={styles.wizard__placeholder}>
@@ -109,7 +115,7 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
           </p>
         )}
       </div>
-      {!cards && actions}
+      {!stepRendersActions && actions}
     </form>
   );
 };

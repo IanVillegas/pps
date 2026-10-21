@@ -68,6 +68,42 @@ describe('DeclarationWizard', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('lets the last step define what its action does and decide where the buttons go', async () => {
+    const onFinish = jest.fn();
+    const LastStep = ({ actions }: StepProps) => (
+      <>
+        <p>Contenido propio</p>
+        {actions}
+      </>
+    );
+    render(
+      <DeclarationWizard
+        stepId={12}
+        definitions={{
+          12: { component: LastStep, ownActions: true, onFinish },
+        }}
+      />
+    );
+    const finish = screen.getByRole('button', { name: 'Terminar' });
+    expect(finish).toBeEnabled();
+    await userEvent.click(finish);
+    expect(onFinish).toHaveBeenCalledTimes(1);
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it('does not show the buttons twice when the step renders them itself', () => {
+    const LastStep = ({ actions }: StepProps) => <>{actions}</>;
+    render(
+      <DeclarationWizard
+        stepId={12}
+        definitions={{
+          12: { component: LastStep, ownActions: true, onFinish: jest.fn() },
+        }}
+      />
+    );
+    expect(screen.getAllByRole('button', { name: 'Terminar' })).toHaveLength(1);
+  });
+
   it('blocks "Continuar" while the step is invalid, announces it and focuses the first bad field', async () => {
     setup(1);
     await userEvent.click(screen.getByRole('button', { name: 'Continuar' }));
