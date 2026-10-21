@@ -23,16 +23,16 @@ La marca indica que el diálogo se cerró; no acredita lectura, aceptación lega
 | Seleccionar un número del indicador | Abre ese paso sin validar el actual. Todos los pasos configurados son alcanzables. |
 | Seleccionar el número actual | No solicita una nueva navegación. |
 | Regresar | Abre el paso anterior sin validar. Está deshabilitado en el primero. |
-| Continuar | Valida el paso actual si tiene una función registrada; si no hay errores, abre el siguiente. Está deshabilitado en el último. |
-| Visitar un paso sin contenido | Muestra «El contenido de este paso aún no está disponible». Sin validación registrada, permite continuar, salvo en el último. |
+| Continuar | Valida el paso actual si tiene una función registrada; si no hay errores, abre el siguiente. En el último paso se rotula «Terminar» y ejecuta la acción `onFinish` del paso (en el paso 12 abre el [juramento](juramento-y-cierre.md)); si el paso no la define, permanece deshabilitado. |
+| Visitar un paso sin contenido | Muestra «El contenido de este paso aún no está disponible». Sin validación registrada, permite continuar, salvo en el último si no define `onFinish`. |
 
 El indicador distingue únicamente el paso actual. No muestra pasos completados ni calcula un porcentaje de avance. Haber visitado una sección o guardar valores no implica que esté completa.
 
-Actualmente los pasos 1 y 3 registran validación en el contenedor. Los demás pasos implementados con tablas pueden quedar sin filas; sus diálogos validan los registros al agregarlos o editarlos. Las reglas de cada sección se documentarán por separado.
+Actualmente los pasos 1, 3 y 11 registran validación en el contenedor. Los demás pasos implementados con tablas pueden quedar sin filas; sus diálogos validan los registros al agregarlos o editarlos. Las reglas de cada sección se documentarán por separado.
 
 Cuando «Continuar» encuentra errores, permanece en el paso, muestra un aviso con `role="alert"` e intenta enfocar el primer campo marcado con `aria-invalid="true"`. Mientras haya errores activos, los cambios vuelven a evaluar la validación. Cambiar de paso reinicia el estado local de errores, pero conserva los valores; regresar no restaura los mensajes anteriores.
 
-El último paso no contiene una acción de envío implementada. Alcanzarlo no finaliza la declaración. La estructura actual tampoco realiza una validación conjunta de las doce secciones.
+El último paso abre el [juramento](juramento-y-cierre.md) con «Terminar» y lo guarda con un servicio simulado; guardar no constituye un envío institucional. La estructura actual tampoco realiza una validación conjunta de las doce secciones. Cada definición de paso admite también `ownActions` (el paso decide si muestra los botones del contenedor) y `onFinish` (acción del último paso).
 
 ## Conservación de datos
 
