@@ -34,6 +34,8 @@ export interface IncomeExpensesValues {
   additionalIncomes?: IncomeItem[];
   expenses?: ExpenseItem[];
   patrimonialChanges?: PatrimonialChanges;
+  /** Detalle de los cambios; solo existe mientras `patrimonialChanges` es «si». */
+  patrimonialChangesDetail?: string;
   financialSituation?: FinancialSituation;
   situationDetail?: string;
 }

@@ -2,11 +2,10 @@
 
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
-import { Dropdown } from '@/components/Molecules';
+import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import {
   ACCOUNT_RELATIONSHIP_OPTIONS,
-  CURRENCY_OPTIONS,
   FINANCIAL_ENTITY_OPTIONS,
 } from '@/services/CatalogService';
 import type {
@@ -14,6 +13,7 @@ import type {
   SavingsAccountItemData,
 } from '@/types/Savings.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './SavingsDialog.module.scss';
 
 const FORM_ID = 'savings-form';
@@ -22,7 +22,6 @@ const toOptions = (options: { value: string; label: string }[]) =>
   options.map(option => ({ value: option.value, element: option.label }));
 
 const RELATIONSHIPS = toOptions(ACCOUNT_RELATIONSHIP_OPTIONS);
-const CURRENCIES = toOptions(CURRENCY_OPTIONS);
 const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
 
 type SavingsErrors = Partial<Record<keyof SavingsAccountItemData, string>>;
@@ -53,10 +52,10 @@ export const validateSavingsAccount = (
   if (!values.relationship) {
     errors.relationship = 'La relación con la cuenta es requerida';
   }
-  if (!values.amount.trim()) {
+  // Con MoneyInput el campo solo admite un monto con centavos, asi que lo unico
+  // que puede faltar es escribirlo (0.00 si es valido).
+  if (amountToCents(values.amount) === null) {
     errors.amount = 'El monto es requerido';
-  } else if (!/^\d+$/.test(values.amount)) {
-    errors.amount = 'Escriba solo números';
   }
   if (!values.currency) errors.currency = 'La moneda es requerida';
   if (!values.entity) errors.entity = 'La entidad financiera es requerida';
@@ -136,16 +135,12 @@ const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
         errors={errors.holderName}
         onChange={event => update({ holderName: event.target.value })}
       />
-      <InputText
-        label="Monto *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
-        value={state.amount}
-        errors={errors.amount}
-        onChange={event =>
-          update({ amount: event.target.value.replace(/\D/g, '') })
-        }
+      {/* Moneda antes que monto: la moneda elegida decide el icono del monto. */}
+      <CurrencySelect
+        label="Moneda *"
+        value={state.currency || undefined}
+        errors={errors.currency}
+        onChange={value => update({ currency: value })}
       />
       <Dropdown
         label="Relación con la cuenta *"
@@ -155,13 +150,12 @@ const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
         errors={errors.relationship}
         onChange={value => update({ relationship: value })}
       />
-      <Dropdown
-        label="Moneda *"
-        placeholder="Selecciona"
-        options={CURRENCIES}
-        value={state.currency || undefined}
-        errors={errors.currency}
-        onChange={value => update({ currency: value })}
+      <MoneyInput
+        label="Monto *"
+        currency={state.currency}
+        value={state.amount}
+        errors={errors.amount}
+        onChange={value => update({ amount: value })}
       />
       <Dropdown
         label="Entidad financiera *"

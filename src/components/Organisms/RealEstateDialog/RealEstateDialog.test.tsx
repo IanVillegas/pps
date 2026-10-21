@@ -37,10 +37,16 @@ describe('validateRealEstateItem', () => {
     ).toBe('El número de finca es requerido');
   });
 
-  it('rejects a market value that is not a plain number', () => {
+  it('requires the market value, accepting an amount with cents and a whole amount from older data', () => {
     expect(
-      validateRealEstateItem({ ...VALID, marketValue: '45.000' }).marketValue
-    ).toBe('Escriba solo números');
+      validateRealEstateItem({ ...VALID, marketValue: '' }).marketValue
+    ).toBe('El valor de mercado es requerido');
+    expect(
+      validateRealEstateItem({ ...VALID, marketValue: '45000.50' }).marketValue
+    ).toBeUndefined();
+    expect(
+      validateRealEstateItem({ ...VALID, marketValue: '45000000' }).marketValue
+    ).toBeUndefined();
   });
 
   it('accepts a market value of zero', () => {

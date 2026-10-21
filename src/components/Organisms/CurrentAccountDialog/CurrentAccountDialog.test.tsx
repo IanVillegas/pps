@@ -25,9 +25,15 @@ describe('validateCurrentAccount', () => {
     expect(validateCurrentAccount(VALID)).toEqual({});
   });
 
-  it('rejects a balance that is not only digits', () => {
-    expect(validateCurrentAccount({ ...VALID, balance: '1.5' }).balance).toBe(
-      'Escriba solo números'
+  it('requires the balance, but accepts zero and a whole amount from older data', () => {
+    expect(validateCurrentAccount({ ...VALID, balance: '' }).balance).toBe(
+      'El saldo actual es requerido'
     );
+    expect(
+      validateCurrentAccount({ ...VALID, balance: '0.00' }).balance
+    ).toBeUndefined();
+    expect(
+      validateCurrentAccount({ ...VALID, balance: '500000' }).balance
+    ).toBeUndefined();
   });
 });

@@ -55,9 +55,16 @@ describe('validateMovableAssetItem', () => {
     );
   });
 
-  it('rejects a market value that is not a plain number', () => {
+  it('requires the market value, but accepts zero and a whole amount from older data', () => {
     expect(
-      validateMovableAssetItem({ ...VALID, marketValue: '15.000' }).marketValue
-    ).toBe('Escriba solo números');
+      validateMovableAssetItem({ ...VALID, marketValue: '' }).marketValue
+    ).toBe('El valor de mercado es requerido');
+    expect(
+      validateMovableAssetItem({ ...VALID, marketValue: '0.00' }).marketValue
+    ).toBeUndefined();
+    expect(
+      validateMovableAssetItem({ ...VALID, marketValue: '15000000' })
+        .marketValue
+    ).toBeUndefined();
   });
 });

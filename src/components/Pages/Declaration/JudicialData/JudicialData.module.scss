@@ -1,0 +1,74 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Nodos Figma 43121:1791 y 43121:2088 (Paso 11): cuatro preguntas separadas
+// por una línea fina; cada una tiene su interruptor Sí/No a la derecha y, al
+// responder «Sí», sus campos debajo. La pregunta es Work Sans SemiBold 18px
+// gris-500; el detalle de juicios y embargos mide 668px y los dos campos de
+// la pensión 304px con 60px entre ellos.
+.judicial {
+  display: flex;
+  flex-direction: column;
+
+  &__row {
+    padding: 16px 0;
+    border-bottom: 1px solid gm.$gray-200;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    // Figma coloca el interruptor, con su «No» y su «Sí», a unos 100px del
+    // borde derecho de la línea.
+    padding-right: 80px;
+  }
+
+  &__question {
+    margin: 0;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: gm.$gray-500;
+  }
+
+  &__detail {
+    max-width: 668px;
+    margin-top: 16px;
+
+    // Figma no dibuja etiqueta sobre estos campos: la pregunta ya los explica.
+    // La etiqueta se conserva solo para lectores de pantalla.
+    label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  }
+
+  &__alimony {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 304px));
+    column-gap: 60px;
+    row-gap: 20px;
+    margin-top: 24px;
+
+    @media (max-width: 700px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

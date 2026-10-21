@@ -2,15 +2,13 @@
 
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
-import { Dropdown } from '@/components/Molecules';
+import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import DatePicker from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker';
-import {
-  CURRENCY_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-} from '@/services/CatalogService';
+import { FINANCIAL_ENTITY_OPTIONS } from '@/services/CatalogService';
 import type { CreditItem, CreditItemData } from '@/types/Credit.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './CreditDialog.module.scss';
 
 const FORM_ID = 'credit-form';
@@ -19,7 +17,6 @@ const toOptions = (options: { value: string; label: string }[]) =>
   options.map(option => ({ value: option.value, element: option.label }));
 
 const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
-const CURRENCIES = toOptions(CURRENCY_OPTIONS);
 
 type CreditErrors = Partial<Record<keyof CreditItemData, string>>;
 
@@ -40,11 +37,9 @@ const EMPTY: FormState = {
   endDateInvalid: false,
 };
 
-const digitsError = (value: string, requiredMessage: string) => {
-  if (!value.trim()) return requiredMessage;
-  if (!/^\d+$/.test(value)) return 'Escriba solo números';
-  return undefined;
-};
+// Con MoneyInput solo puede faltar escribir el monto (0.00 es valido).
+const amountError = (value: string, requiredMessage: string) =>
+  amountToCents(value) === null ? requiredMessage : undefined;
 
 /**
  * Valida el formulario de un credito. Los ocho campos son obligatorios
@@ -60,17 +55,17 @@ export const validateCredit = (
   if (!values.loanType.trim()) {
     errors.loanType = 'El tipo de préstamo es requerido';
   }
-  const initial = digitsError(
+  const initial = amountError(
     values.initialAmount,
     'El monto inicial es requerido'
   );
   if (initial) errors.initialAmount = initial;
-  const balance = digitsError(
+  const balance = amountError(
     values.currentBalance,
     'El saldo actual es requerido'
   );
   if (balance) errors.currentBalance = balance;
-  const installment = digitsError(
+  const installment = amountError(
     values.installment,
     'El monto de la cuota es requerido'
   );
@@ -140,8 +135,6 @@ const CreditForm = ({ item, onSave }: CreditFormProps) => {
     });
   };
 
-  const digitsOnly = (value: string) => value.replace(/\D/g, '');
-
   return (
     <form
       id={FORM_ID}
@@ -166,38 +159,12 @@ const CreditForm = ({ item, onSave }: CreditFormProps) => {
         errors={errors.loanType}
         onChange={event => update({ loanType: event.target.value })}
       />
-      <InputText
-        label="Monto inicial *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
-        value={state.initialAmount}
-        errors={errors.initialAmount}
-        onChange={event =>
-          update({ initialAmount: digitsOnly(event.target.value) })
-        }
-      />
-      <InputText
-        label="Saldo actual *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
-        value={state.currentBalance}
-        errors={errors.currentBalance}
-        onChange={event =>
-          update({ currentBalance: digitsOnly(event.target.value) })
-        }
-      />
-      <InputText
-        label="Monto cuota *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
-        value={state.installment}
-        errors={errors.installment}
-        onChange={event =>
-          update({ installment: digitsOnly(event.target.value) })
-        }
+      {/* Moneda antes que los montos: la moneda elegida decide su icono. */}
+      <CurrencySelect
+        label="Moneda *"
+        value={state.currency || undefined}
+        errors={errors.currency}
+        onChange={value => update({ currency: value })}
       />
       <InputText
         label="Número de préstamo *"
@@ -207,13 +174,26 @@ const CreditForm = ({ item, onSave }: CreditFormProps) => {
         errors={errors.loanNumber}
         onChange={event => update({ loanNumber: event.target.value })}
       />
-      <Dropdown
-        label="Moneda *"
-        placeholder="Selecciona"
-        options={CURRENCIES}
-        value={state.currency || undefined}
-        errors={errors.currency}
-        onChange={value => update({ currency: value })}
+      <MoneyInput
+        label="Monto inicial *"
+        currency={state.currency}
+        value={state.initialAmount}
+        errors={errors.initialAmount}
+        onChange={value => update({ initialAmount: value })}
+      />
+      <MoneyInput
+        label="Saldo actual *"
+        currency={state.currency}
+        value={state.currentBalance}
+        errors={errors.currentBalance}
+        onChange={value => update({ currentBalance: value })}
+      />
+      <MoneyInput
+        label="Monto cuota *"
+        currency={state.currency}
+        value={state.installment}
+        errors={errors.installment}
+        onChange={value => update({ installment: value })}
       />
       <DatePicker
         label="Fecha de conclusión *"

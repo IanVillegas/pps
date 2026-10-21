@@ -163,6 +163,7 @@ describe('Family (paso 2)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar Luis Mora' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('Luis Mora')).not.toBeInTheDocument();
     expect(screen.getByText('Ana Mora')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

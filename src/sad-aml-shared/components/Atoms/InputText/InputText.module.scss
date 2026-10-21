@@ -73,6 +73,26 @@
     }
   }
 
+  // !Modificado para DecPat (2026-10-21): icono al inicio del campo.
+  &__field {
+    position: relative;
+    display: flex;
+    width: 100%;
+  }
+
+  &__adornment {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    display: flex;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  &__input--withAdornment {
+    padding-left: 40px;
+  }
+
   &__alerts {
     display: flex;
     width: 100%;

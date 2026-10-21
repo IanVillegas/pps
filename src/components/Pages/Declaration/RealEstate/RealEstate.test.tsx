@@ -101,14 +101,18 @@ describe('RealEstate (paso 4)', () => {
     expect(screen.getByText('Datos del bien inmueble')).toBeInTheDocument();
   });
 
-  it('only accepts digits in the market value field', async () => {
+  it('formats the market value as it is typed, with no currency icon because the step has none', async () => {
     renderRealEstate();
     await userEvent.click(
       screen.getByRole('button', { name: 'Agregar nuevo' })
     );
     const value = screen.getByLabelText('Valor de mercado *');
+    expect(value).toHaveAttribute('placeholder', '0,000.00');
     await userEvent.type(value, '4a5');
-    expect(value).toHaveValue('45');
+    expect(value).toHaveValue('0.45');
+    await userEvent.type(value, '0000');
+    expect(value).toHaveValue('4,500.00');
+    expect(value.parentElement?.querySelector('svg')).toBeNull();
   });
 
   it('cancelling leaves the table untouched', async () => {
@@ -131,7 +135,10 @@ describe('RealEstate (paso 4)', () => {
       screen.getByRole('button', { name: 'Editar finca 123456789' })
     );
     expect(screen.getByLabelText('Número de finca *')).toHaveValue('123456789');
-    expect(screen.getByLabelText('Valor de mercado *')).toHaveValue('45000000');
+    // Un valor entero anterior se lee como unidades enteras con centavos.
+    expect(screen.getByLabelText('Valor de mercado *')).toHaveValue(
+      '45,000,000.00'
+    );
 
     const location = screen.getByLabelText('Ubicación *');
     await userEvent.clear(location);
@@ -148,6 +155,7 @@ describe('RealEstate (paso 4)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar finca 987654321' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('San Rafael')).not.toBeInTheDocument();
     expect(screen.getByText('Guácima arriba')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

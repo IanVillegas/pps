@@ -8,10 +8,16 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   caption?: string;
   pattern?: string;
   tooltip?: JSX.Element;
+  // !Modificado para DecPat (2026-10-21): icono dentro del campo, al inicio
+  // (el de la moneda en los montos, ver MoneyInput). Decorativo: no se anuncia.
+  startAdornment?: JSX.Element;
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ label, errors, caption, pattern, tooltip, id, ...rest }, ref) => {
+  (
+    { label, errors, caption, pattern, tooltip, startAdornment, id, ...rest },
+    ref
+  ) => {
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const captionId = caption ? `${inputId}-caption` : undefined;
@@ -39,16 +45,34 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             {label}
           </label>
         )}
-        <input
-          ref={ref}
-          id={inputId}
-          className={styles.inputText__input}
-          type="text"
-          pattern={pattern}
-          aria-invalid={errors ? true : undefined}
-          aria-describedby={describedBy}
-          {...rest}
-        />
+        {startAdornment ? (
+          <div className={styles.inputText__field}>
+            <span className={styles.inputText__adornment} aria-hidden="true">
+              {startAdornment}
+            </span>
+            <input
+              ref={ref}
+              id={inputId}
+              className={`${styles.inputText__input} ${styles['inputText__input--withAdornment']}`}
+              type="text"
+              pattern={pattern}
+              aria-invalid={errors ? true : undefined}
+              aria-describedby={describedBy}
+              {...rest}
+            />
+          </div>
+        ) : (
+          <input
+            ref={ref}
+            id={inputId}
+            className={styles.inputText__input}
+            type="text"
+            pattern={pattern}
+            aria-invalid={errors ? true : undefined}
+            aria-describedby={describedBy}
+            {...rest}
+          />
+        )}
         <div className={styles.inputText__alerts}>
           {caption && (
             <div id={captionId} className={styles.inputText__captions}>

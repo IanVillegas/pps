@@ -95,7 +95,79 @@ describe('RecordsTable', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar Ana Mora' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(onDelete).toHaveBeenCalledWith(rows[0]);
+  });
+
+  describe('delete confirmation', () => {
+    const QUESTION =
+      '¿Está seguro(a) que desea eliminar este registro del sistema?';
+
+    it('asks before deleting and does not delete until the person confirms', async () => {
+      const onDelete = jest.fn();
+      setup({ onDelete });
+      expect(screen.queryByText(QUESTION)).not.toBeInTheDocument();
+
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Eliminar Luis Mora' })
+      );
+      expect(screen.getByText(QUESTION)).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Cancelar' })
+      ).toBeInTheDocument();
+      expect(onDelete).not.toHaveBeenCalled();
+
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
+      );
+      expect(onDelete).toHaveBeenCalledTimes(1);
+      expect(onDelete).toHaveBeenCalledWith(rows[1]);
+      expect(screen.queryByText(QUESTION)).not.toBeInTheDocument();
+    });
+
+    it('deletes nothing when the person cancels, closes with the X or presses Escape', async () => {
+      const onDelete = jest.fn();
+      setup({ onDelete });
+      const open = () =>
+        userEvent.click(
+          screen.getByRole('button', { name: 'Eliminar Ana Mora' })
+        );
+
+      await open();
+      await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      expect(screen.queryByText(QUESTION)).not.toBeInTheDocument();
+
+      await open();
+      await userEvent.keyboard('{Escape}');
+      expect(screen.queryByText(QUESTION)).not.toBeInTheDocument();
+
+      await open();
+      await userEvent.click(screen.getByRole('button', { name: /cerrar/i }));
+      expect(screen.queryByText(QUESTION)).not.toBeInTheDocument();
+
+      expect(onDelete).not.toHaveBeenCalled();
+    });
+
+    it('asks again for each record instead of remembering the last answer', async () => {
+      const onDelete = jest.fn();
+      setup({ onDelete });
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Eliminar Ana Mora' })
+      );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
+      );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Eliminar Luis Mora' })
+      );
+      expect(screen.getByText(QUESTION)).toBeInTheDocument();
+      expect(onDelete).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not render the modal when the table cannot delete', () => {
+      setup({ onEdit: jest.fn() });
+      expect(screen.queryByText(QUESTION)).not.toBeInTheDocument();
+    });
   });
 
   it('omits the actions column and add button when no handlers are given', () => {

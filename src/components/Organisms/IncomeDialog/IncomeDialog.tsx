@@ -1,13 +1,14 @@
 'use client';
 
 import { useRef, useState, type FormEvent } from 'react';
-import { Button, ButtonColor, InputText, Textarea } from '@/components/Atoms';
-import { Dropdown, FileUpload } from '@/components/Molecules';
+import { Button, ButtonColor, Textarea } from '@/components/Atoms';
+import { Dropdown, FileUpload, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { INCOME_TYPE_OPTIONS } from '@/services/CatalogService';
 import type { AttachmentFile } from '@/types/Attachment.types';
 import type { IncomeItem, IncomeItemData } from '@/types/IncomeExpenses.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import { useAttachments } from '@/utils/hooks/useAttachments';
 import styles from './IncomeDialog.module.scss';
 
@@ -31,10 +32,9 @@ const EMPTY: IncomeFields = { type: '', amount: '', justification: '' };
 export const validateIncomeItem = (values: IncomeFields): IncomeErrors => {
   const errors: IncomeErrors = {};
   if (!values.type) errors.type = 'El tipo de ingreso es requerido';
-  if (!values.amount.trim()) {
+  // Con MoneyInput solo puede faltar escribir el monto (0.00 es valido).
+  if (amountToCents(values.amount) === null) {
     errors.amount = 'El monto es requerido';
-  } else if (!/^\d+$/.test(values.amount)) {
-    errors.amount = 'Escriba solo números';
   }
   if (!values.justification.trim()) {
     errors.justification = 'La justificación es requerida';
@@ -137,16 +137,12 @@ const IncomeForm = ({ item, onSave }: IncomeFormProps) => {
         errors={errors.type}
         onChange={value => update({ type: value })}
       />
-      <InputText
+      <MoneyInput
         label="Monto *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
+        currency="colones"
         value={state.amount}
         errors={errors.amount}
-        onChange={event =>
-          update({ amount: event.target.value.replace(/\D/g, '') })
-        }
+        onChange={value => update({ amount: value })}
       />
       <div className={styles.income__full}>
         <Textarea

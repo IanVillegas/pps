@@ -150,15 +150,125 @@ describe('Savings (paso 6)', () => {
     await screen.findByText('₡ 1,897.45');
   });
 
-  it('only accepts digits in the amount', async () => {
-    renderSavings();
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Agregar nuevo' })
-    );
-    const amount = screen.getByLabelText('Monto *');
-    await userEvent.type(amount, '1a5b0');
-    expect(amount).toHaveValue('150');
-    await screen.findByText('₡ 1,897.45');
+  describe('amount field', () => {
+    const openModal = async () => {
+      renderSavings();
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Agregar nuevo' })
+      );
+    };
+
+    it('shows the 0,000.00 example as placeholder', async () => {
+      await openModal();
+      expect(screen.getByLabelText('Monto *')).toHaveAttribute(
+        'placeholder',
+        '0,000.00'
+      );
+      await screen.findByText('₡ 1,897.45');
+    });
+
+    it('enters each digit as cents, with commas and two decimals', async () => {
+      await openModal();
+      const amount = screen.getByLabelText('Monto *') as HTMLInputElement;
+      const seen: string[] = [];
+      for (const digit of '123456') {
+        await userEvent.type(amount, digit);
+        seen.push(amount.value);
+      }
+      expect(seen).toEqual([
+        '0.01',
+        '0.12',
+        '1.23',
+        '12.34',
+        '123.45',
+        '1,234.56',
+      ]);
+      await userEvent.type(amount, '00');
+      expect(amount).toHaveValue('123,456.00');
+      await screen.findByText('₡ 1,897.45');
+    });
+
+    it('ignores anything that is not a digit', async () => {
+      await openModal();
+      const amount = screen.getByLabelText('Monto *');
+      await userEvent.type(amount, '1a5b0');
+      expect(amount).toHaveValue('1.50');
+      await screen.findByText('₡ 1,897.45');
+    });
+
+    it('removes the last digit with Backspace and can be emptied again', async () => {
+      await openModal();
+      const amount = screen.getByLabelText('Monto *');
+      await userEvent.type(amount, '12345');
+      expect(amount).toHaveValue('123.45');
+      await userEvent.type(amount, '{Backspace}');
+      expect(amount).toHaveValue('12.34');
+      await userEvent.type(
+        amount,
+        '{Backspace}{Backspace}{Backspace}{Backspace}'
+      );
+      expect(amount).toHaveValue('');
+      await screen.findByText('₡ 1,897.45');
+    });
+
+    it('stops accepting digits after fifteen', async () => {
+      await openModal();
+      const amount = screen.getByLabelText('Monto *');
+      await userEvent.type(amount, '1234567890123456789');
+      expect(amount).toHaveValue('1,234,567,890,123.45');
+      await screen.findByText('₡ 1,897.45');
+    });
+  });
+
+  describe('currency before amount', () => {
+    it('asks for the currency above the amount', async () => {
+      renderSavings();
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Agregar nuevo' })
+      );
+      const currency = screen.getByLabelText('Moneda *');
+      const amount = screen.getByLabelText('Monto *');
+      expect(
+        currency.compareDocumentPosition(amount) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy();
+      await screen.findByText('₡ 1,897.45');
+    });
+
+    it('puts the colones or dollar icon in the currency and at the start of the amount', async () => {
+      renderSavings();
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Agregar nuevo' })
+      );
+      const amountIcon = () =>
+        screen.getByLabelText('Monto *').parentElement?.querySelector('svg');
+      expect(amountIcon()).toBeFalsy();
+
+      await pick('Moneda *', 'Colones');
+      expect(
+        screen.getByLabelText('Moneda *').querySelector('svg')
+      ).toBeInTheDocument();
+      const colones = amountIcon()?.innerHTML;
+      expect(colones).toBeTruthy();
+
+      await pick('Moneda *', 'Dólares');
+      expect(amountIcon()).toBeInTheDocument();
+      expect(amountIcon()?.innerHTML).not.toBe(colones);
+      await screen.findByText('₡ 1,897.45');
+    });
+
+    it('keeps what was typed when the currency changes', async () => {
+      renderSavings();
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Agregar nuevo' })
+      );
+      await userEvent.type(screen.getByLabelText('Monto *'), '12345');
+      await pick('Moneda *', 'Colones');
+      expect(screen.getByLabelText('Monto *')).toHaveValue('123.45');
+      await pick('Moneda *', 'Dólares');
+      expect(screen.getByLabelText('Monto *')).toHaveValue('123.45');
+      await screen.findByText('₡ 1,897.45');
+    });
   });
 
   it('adds an account, confirms with a notification and asks the backend again', async () => {
@@ -173,13 +283,13 @@ describe('Savings (paso 6)', () => {
       screen.getByLabelText('Nombre del titular *'),
       'Ana Mora'
     );
-    await userEvent.type(screen.getByLabelText('Monto *'), '300000');
-    await pick('Relación con la cuenta *', 'Titular');
     await pick('Moneda *', 'Colones');
+    await userEvent.type(screen.getByLabelText('Monto *'), '30000000');
+    await pick('Relación con la cuenta *', 'Titular');
     await pick('Entidad financiera *', 'Grupo Mutual');
     await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
 
-    expect(await screen.findByText('300,000')).toBeInTheDocument();
+    expect(await screen.findByText('300,000.00')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
     expect(
       (await screen.findAllByText(TOAST_MESSAGES.saved.message)).length
@@ -188,7 +298,7 @@ describe('Savings (paso 6)', () => {
       expect(mockedFetch.mock.calls.length).toBeGreaterThan(callsBefore)
     );
     expect(mockedFetch).toHaveBeenLastCalledWith([
-      expect.objectContaining({ amount: '300000', currency: 'colones' }),
+      expect.objectContaining({ amount: '300000.00', currency: 'colones' }),
     ]);
   });
 
@@ -215,14 +325,15 @@ describe('Savings (paso 6)', () => {
     expect(screen.getByLabelText('Número de cuenta *')).toHaveValue(
       '000111222'
     );
-    expect(screen.getByLabelText('Monto *')).toHaveValue('1500000');
+    // Un monto entero heredado se lee como unidades enteras con centavos.
+    expect(screen.getByLabelText('Monto *')).toHaveValue('1,500,000.00');
 
     const amount = screen.getByLabelText('Monto *');
     await userEvent.clear(amount);
-    await userEvent.type(amount, '2000000');
+    await userEvent.type(amount, '200000000');
     await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
 
-    expect(await screen.findByText('2,000,000')).toBeInTheDocument();
+    expect(await screen.findByText('2,000,000.00')).toBeInTheDocument();
     expect(screen.queryByText('1,500,000')).not.toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
   });
@@ -232,6 +343,7 @@ describe('Savings (paso 6)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar cuenta 000333444' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('000333444')).not.toBeInTheDocument();
     expect(screen.getByText('000111222')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

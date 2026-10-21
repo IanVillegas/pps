@@ -215,7 +215,8 @@ describe('IncomeExpenses (paso 3)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: 'Editar ingreso Alquileres' })
       );
-      expect(screen.getByLabelText('Monto *')).toHaveValue('350000');
+      // Un monto entero anterior se lee como unidades enteras con centavos.
+      expect(screen.getByLabelText('Monto *')).toHaveValue('350,000.00');
       expect(screen.getByLabelText('Justificación *')).toHaveValue(
         'Apartamento'
       );
@@ -223,10 +224,10 @@ describe('IncomeExpenses (paso 3)', () => {
 
       const amount = screen.getByLabelText('Monto *');
       await userEvent.clear(amount);
-      await userEvent.type(amount, '400000');
+      await userEvent.type(amount, '40000000');
       await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
 
-      expect(await screen.findByText('400,000')).toBeInTheDocument();
+      expect(await screen.findByText('400,000.00')).toBeInTheDocument();
       expect(screen.getByText('1 archivo(s)')).toBeInTheDocument();
       expect(screen.getByTestId('incomes')).toHaveTextContent('1');
     });
@@ -235,6 +236,9 @@ describe('IncomeExpenses (paso 3)', () => {
       renderStep([RENT, COMMISSION]);
       await userEvent.click(
         screen.getByRole('button', { name: 'Eliminar ingreso Comisiones' })
+      );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
       );
       expect(screen.queryByText('80,000')).not.toBeInTheDocument();
       expect(screen.getByText('350,000')).toBeInTheDocument();
@@ -296,14 +300,14 @@ describe('IncomeExpenses (paso 3)', () => {
       await userEvent.click(
         await screen.findByRole('option', { name: 'Vivienda' })
       );
-      await userEvent.type(screen.getByLabelText('Monto *'), '200000');
+      await userEvent.type(screen.getByLabelText('Monto *'), '20000000');
       await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
 
-      expect(await screen.findByText('200,000')).toBeInTheDocument();
+      expect(await screen.findByText('200,000.00')).toBeInTheDocument();
       expect(draft().expenses).toHaveLength(1);
       expect(draft().expenses?.[0]).toMatchObject({
         type: 'vivienda',
-        amount: '200000',
+        amount: '200000.00',
       });
       expect(
         (await screen.findAllByText(TOAST_MESSAGES.saved.message)).length
@@ -315,17 +319,20 @@ describe('IncomeExpenses (paso 3)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: 'Editar egreso Transporte' })
       );
-      expect(screen.getByLabelText('Monto *')).toHaveValue('90000');
+      expect(screen.getByLabelText('Monto *')).toHaveValue('90,000.00');
       const amount = screen.getByLabelText('Monto *');
       await userEvent.clear(amount);
-      await userEvent.type(amount, '95000');
+      await userEvent.type(amount, '9500000');
       await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
-      expect(await screen.findByText('95,000')).toBeInTheDocument();
+      expect(await screen.findByText('95,000.00')).toBeInTheDocument();
 
       await userEvent.click(
         screen.getByRole('button', {
           name: 'Eliminar egreso Cuotas de créditos',
         })
+      );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
       );
       expect(screen.queryByText('150,000')).not.toBeInTheDocument();
       expect(draft().expenses).toHaveLength(1);
@@ -367,7 +374,9 @@ describe('IncomeExpenses (paso 3)', () => {
       );
       expect(mockedFetch).toHaveBeenLastCalledWith({
         additionalIncomes: [],
-        expenses: [expect.objectContaining({ type: 'vivienda', amount: '5' })],
+        expenses: [
+          expect.objectContaining({ type: 'vivienda', amount: '0.05' }),
+        ],
       });
     });
 
@@ -384,6 +393,83 @@ describe('IncomeExpenses (paso 3)', () => {
         financialSituation: 'dificil',
         situationDetail: 'Gastos médicos',
       });
+      await screen.findByText('Salario bruto');
+    });
+
+    it('lays the questions out in the order of Figma: situation, description, then patrimonial changes', async () => {
+      renderValues({});
+      const order = [
+        '¿Cómo califica su situación financiera?',
+        'Agregue una descripción detallada',
+        '¿Existen cambios en el periodo actual en su situación patrimonial?',
+      ].map(text => screen.getByText(new RegExp(text.replace(/[?¿]/g, '\$&'))));
+      order.slice(1).forEach((node, index) => {
+        expect(
+          order[index].compareDocumentPosition(node) &
+            Node.DOCUMENT_POSITION_FOLLOWING
+        ).toBeTruthy();
+      });
+      await screen.findByText('Salario bruto');
+    });
+
+    it('keeps the detail of the patrimonial changes visible but enabled only while the answer is Sí (D-27)', async () => {
+      renderValues({});
+      const detail = () =>
+        screen.getByLabelText(
+          'Detalle los cambios en su situación patrimonial'
+        );
+      // Sin responder: visible y deshabilitado.
+      expect(detail()).toBeDisabled();
+
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      expect(detail()).toBeEnabled();
+      await userEvent.type(detail(), 'Heredé una propiedad');
+      expect(draft()).toMatchObject({
+        patrimonialChanges: 'si',
+        patrimonialChangesDetail: 'Heredé una propiedad',
+      });
+
+      await userEvent.click(screen.getByRole('radio', { name: 'No' }));
+      expect(detail()).toBeDisabled();
+      expect(detail()).toHaveValue('');
+      await screen.findByText('Salario bruto');
+    });
+
+    it('drops the detail from the draft when the answer goes back to No, keeping the rest', async () => {
+      renderValues({});
+      await userEvent.click(screen.getByRole('radio', { name: 'Difícil' }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      await userEvent.type(
+        screen.getByLabelText(
+          'Detalle los cambios en su situación patrimonial'
+        ),
+        'Texto'
+      );
+      await userEvent.click(screen.getByRole('radio', { name: 'No' }));
+
+      const stored = draft();
+      expect(stored).toMatchObject({
+        patrimonialChanges: 'no',
+        financialSituation: 'dificil',
+      });
+      expect(stored).not.toHaveProperty('patrimonialChangesDetail');
+      await screen.findByText('Salario bruto');
+    });
+
+    it('starts the detail empty when the answer is turned to Sí again', async () => {
+      renderValues({});
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      await userEvent.type(
+        screen.getByLabelText(
+          'Detalle los cambios en su situación patrimonial'
+        ),
+        'Texto'
+      );
+      await userEvent.click(screen.getByRole('radio', { name: 'No' }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      expect(
+        screen.getByLabelText('Detalle los cambios en su situación patrimonial')
+      ).toHaveValue('');
       await screen.findByText('Salario bruto');
     });
 
@@ -410,6 +496,15 @@ describe('validateIncomeExpenses', () => {
       'financialSituation',
       'patrimonialChanges',
     ]);
+  });
+
+  it('never requires the detail of the patrimonial changes, even when the answer is Sí', () => {
+    expect(
+      validateIncomeExpenses({
+        patrimonialChanges: 'si',
+        financialSituation: 'grave',
+      })
+    ).toEqual({});
   });
 
   it('accepts a step with both answers and empty tables', () => {

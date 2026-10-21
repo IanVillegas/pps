@@ -1,0 +1,32 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Nodo Figma 43121:866 (cierre del paso 12): el texto del juramento en Work
+// Sans Regular 16px, justificado, color negro (#1F1F1F) y con una línea en
+// blanco entre párrafos; debajo, un único botón «Guardar» de 280x60 centrado.
+.completion {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+
+  &__oath {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    // El CSS global fija Poppins en `p`: Work Sans se declara en cada párrafo.
+    p {
+      margin: 0;
+      font-family: var(--font-worksans), sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.2;
+      text-align: justify;
+      color: gm.$black;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+  }
+}

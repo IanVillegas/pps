@@ -15,8 +15,6 @@ interface RadioGroupProps {
   value?: string;
   onChange: (value: string) => void;
   errors?: string;
-  /** Etiquetas mas chicas (Poppins Light 13px), como el Si/No de Figma. */
-  compact?: boolean;
 }
 
 /**
@@ -33,7 +31,6 @@ const RadioGroup = ({
   value,
   onChange,
   errors,
-  compact = false,
 }: RadioGroupProps) => {
   const name = useId();
   const errorId = errors ? `${name}-error` : undefined;
@@ -60,11 +57,7 @@ const RadioGroup = ({
               checked={value === option.value}
               onChange={() => onChange(option.value)}
             />
-            <span
-              className={`${styles.radioGroup__label} ${compact ? styles['radioGroup__label--compact'] : ''}`}
-            >
-              {option.label}
-            </span>
+            <span className={styles.radioGroup__label}>{option.label}</span>
           </label>
         ))}
       </div>

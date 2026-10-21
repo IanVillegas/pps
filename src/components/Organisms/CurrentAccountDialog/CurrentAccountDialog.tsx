@@ -1,18 +1,15 @@
 'use client';
 
 import { useRef, useState, type FormEvent } from 'react';
-import { Button, ButtonColor, InputText } from '@/components/Atoms';
-import { Dropdown } from '@/components/Molecules';
+import { Button, ButtonColor } from '@/components/Atoms';
+import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
-import {
-  CURRENCY_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-} from '@/services/CatalogService';
+import { FINANCIAL_ENTITY_OPTIONS } from '@/services/CatalogService';
 import type {
   CurrentAccountItem,
   CurrentAccountItemData,
 } from '@/types/CurrentAccount.types';
-import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './CurrentAccountDialog.module.scss';
 
 const FORM_ID = 'current-account-form';
@@ -21,7 +18,6 @@ const toOptions = (options: { value: string; label: string }[]) =>
   options.map(option => ({ value: option.value, element: option.label }));
 
 const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
-const CURRENCIES = toOptions(CURRENCY_OPTIONS);
 
 type CurrentAccountErrors = Partial<
   Record<keyof CurrentAccountItemData, string>
@@ -38,10 +34,9 @@ export const validateCurrentAccount = (
 ): CurrentAccountErrors => {
   const errors: CurrentAccountErrors = {};
   if (!values.entity) errors.entity = 'La entidad financiera es requerida';
-  if (!values.balance.trim()) {
+  // Con MoneyInput solo puede faltar escribir el saldo (0.00 es valido).
+  if (amountToCents(values.balance) === null) {
     errors.balance = 'El saldo actual es requerido';
-  } else if (!/^\d+$/.test(values.balance)) {
-    errors.balance = 'Escriba solo números';
   }
   if (!values.currency) errors.currency = 'La moneda es requerida';
   return errors;
@@ -109,24 +104,19 @@ const CurrentAccountForm = ({ item, onSave }: CurrentAccountFormProps) => {
         errors={errors.entity}
         onChange={value => update({ entity: value })}
       />
-      <InputText
-        label="Saldo actual *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
-        value={state.balance}
-        errors={errors.balance}
-        onChange={event =>
-          update({ balance: event.target.value.replace(/\D/g, '') })
-        }
-      />
-      <Dropdown
+      {/* Moneda antes que saldo: la moneda elegida decide el icono del saldo. */}
+      <CurrencySelect
         label="Moneda *"
-        placeholder="Selecciona"
-        options={CURRENCIES}
         value={state.currency || undefined}
         errors={errors.currency}
         onChange={value => update({ currency: value })}
+      />
+      <MoneyInput
+        label="Saldo actual *"
+        currency={state.currency}
+        value={state.balance}
+        errors={errors.balance}
+        onChange={value => update({ balance: value })}
       />
     </form>
   );

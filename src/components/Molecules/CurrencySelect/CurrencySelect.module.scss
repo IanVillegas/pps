@@ -1,0 +1,7 @@
+// Icono de 20px y 8px hasta el nombre de la moneda, en una sola línea (en la
+// lista y en el campo cerrado).
+.currencySelect__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -177,14 +177,39 @@ describe('Credits (paso 8)', () => {
     await settle();
   });
 
-  it('only accepts digits in the amounts', async () => {
+  it('formats the three amounts as they are typed and puts the currency above them', async () => {
     renderCredits();
     await userEvent.click(
       screen.getByRole('button', { name: 'Agregar nuevo' })
     );
+    const currency = screen.getByLabelText('Moneda *');
+    for (const label of [
+      'Monto inicial *',
+      'Saldo actual *',
+      'Monto cuota *',
+    ]) {
+      const amount = screen.getByLabelText(label);
+      expect(amount).toHaveAttribute('placeholder', '0,000.00');
+      expect(
+        currency.compareDocumentPosition(amount) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy();
+      expect(amount.parentElement?.querySelector('svg')).toBeFalsy();
+    }
     const amount = screen.getByLabelText('Monto inicial *');
     await userEvent.type(amount, '1a5b0');
-    expect(amount).toHaveValue('150');
+    expect(amount).toHaveValue('1.50');
+
+    await pick('Moneda *', 'Dólares');
+    for (const label of [
+      'Monto inicial *',
+      'Saldo actual *',
+      'Monto cuota *',
+    ]) {
+      expect(
+        screen.getByLabelText(label).parentElement?.querySelector('svg')
+      ).toBeInTheDocument();
+    }
     await settle();
   });
 
@@ -200,9 +225,9 @@ describe('Credits (paso 8)', () => {
       screen.getByLabelText('Tipo de préstamo *'),
       'Hipoteca'
     );
-    await userEvent.type(screen.getByLabelText('Monto inicial *'), '9000000');
-    await userEvent.type(screen.getByLabelText('Saldo actual *'), '8000000');
-    await userEvent.type(screen.getByLabelText('Monto cuota *'), '120000');
+    await userEvent.type(screen.getByLabelText('Monto inicial *'), '900000000');
+    await userEvent.type(screen.getByLabelText('Saldo actual *'), '800000000');
+    await userEvent.type(screen.getByLabelText('Monto cuota *'), '12000000');
     await userEvent.type(
       screen.getByLabelText('Número de préstamo *'),
       'OP-0099'
@@ -214,7 +239,7 @@ describe('Credits (paso 8)', () => {
     );
     await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
 
-    expect(await screen.findByText('8,000,000')).toBeInTheDocument();
+    expect(await screen.findByText('8,000,000.00')).toBeInTheDocument();
     expect(screen.getByText('20/05/2040')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
     expect(
@@ -225,8 +250,8 @@ describe('Credits (paso 8)', () => {
     );
     expect(mockedFetch).toHaveBeenLastCalledWith([
       expect.objectContaining({
-        currentBalance: '8000000',
-        installment: '120000',
+        currentBalance: '8000000.00',
+        installment: '120000.00',
         currency: 'colones',
       }),
     ]);
@@ -253,17 +278,18 @@ describe('Credits (paso 8)', () => {
       screen.getByRole('button', { name: 'Editar crédito OP-0001' })
     );
     expect(screen.getByLabelText('Tipo de préstamo *')).toHaveValue('Personal');
-    expect(screen.getByLabelText('Saldo actual *')).toHaveValue('3200000');
+    // Un monto entero anterior se lee como unidades enteras con centavos.
+    expect(screen.getByLabelText('Saldo actual *')).toHaveValue('3,200,000.00');
     expect(screen.getByLabelText('Fecha de conclusión *')).toHaveValue(
       '20/05/2027'
     );
 
     const balance = screen.getByLabelText('Saldo actual *');
     await userEvent.clear(balance);
-    await userEvent.type(balance, '3000000');
+    await userEvent.type(balance, '300000000');
     await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
 
-    expect(await screen.findByText('3,000,000')).toBeInTheDocument();
+    expect(await screen.findByText('3,000,000.00')).toBeInTheDocument();
     expect(screen.queryByText('3,200,000')).not.toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
     await settle();
@@ -274,6 +300,7 @@ describe('Credits (paso 8)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar crédito OP-0002' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('OP-0002')).not.toBeInTheDocument();
     expect(screen.getByText('OP-0001')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

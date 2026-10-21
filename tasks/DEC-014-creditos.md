@@ -2,6 +2,8 @@
 
 Implementada y validada el 2026-10-13.
 
+> **Actualización 2026-10-22**: los tres montos se formatean al escribir (centavos, comas, dos decimales) con el icono de la moneda elegida, y «Moneda» va ahora antes de los montos. Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
+
 ## Implementación
 
 - **Paso** `src/components/Pages/Declaration/Credits/Credits.tsx` (nodo Figma 43121:3274, «Créditos que posee»), registrado como paso 8 en `stepDefinitions.tsx`, **sin `validate`**: la tabla puede quedar vacía y aun así continuar (D-16), mismo criterio que los demás pasos de tabla.

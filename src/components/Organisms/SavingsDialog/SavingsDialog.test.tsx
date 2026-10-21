@@ -47,9 +47,18 @@ describe('validateSavingsAccount', () => {
     ).toBeUndefined();
   });
 
-  it('rejects an amount that is not only digits', () => {
-    expect(validateSavingsAccount({ ...VALID, amount: '1.5' }).amount).toBe(
-      'Escriba solo números'
+  it('requires the amount, but accepts zero and a whole amount from older data', () => {
+    expect(validateSavingsAccount({ ...VALID, amount: '' }).amount).toBe(
+      'El monto es requerido'
     );
+    expect(
+      validateSavingsAccount({ ...VALID, amount: '0.00' }).amount
+    ).toBeUndefined();
+    expect(
+      validateSavingsAccount({ ...VALID, amount: '1500000' }).amount
+    ).toBeUndefined();
+    expect(
+      validateSavingsAccount({ ...VALID, amount: '1234.56' }).amount
+    ).toBeUndefined();
   });
 });

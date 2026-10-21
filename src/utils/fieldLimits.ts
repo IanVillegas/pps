@@ -29,6 +29,16 @@ export const FIELD_MAX_LENGTH = {
   acquisitionForm: 60,
   /** Tipo de prestamo o de credito (paso 8, texto libre). */
   loanType: 60,
+  /** Objetivo de una personeria juridica (paso 10, texto libre). */
+  legalEntityPurpose: 200,
+  /** Plazo de una personeria juridica (paso 10, solo digitos). */
+  legalEntityTerm: 4,
+  /** Detalle de un juicio o embargo (paso 11, texto libre). */
+  judicialDetail: 300,
+  /** Detalle de los cambios en la situacion patrimonial (paso 3, texto libre largo). */
+  patrimonialChangesDetail: 1000,
+  /** Detalle de una denuncia del cuestionario confidencial (paso 12, texto libre largo). */
+  confidentialDetail: 1000,
   /** Numero de cuenta o de titulo de ahorro (paso 6, texto libre). */
   accountNumber: 30,
   /** Descripcion de la situacion financiera (paso 3, texto libre largo). */

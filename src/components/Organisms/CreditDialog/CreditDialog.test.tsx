@@ -46,16 +46,24 @@ describe('validateCredit', () => {
     ).toBeUndefined();
   });
 
-  it('rejects amounts that are not only digits', () => {
+  it('requires the three amounts, accepting zero and a whole amount from older data', () => {
     const errors = validateCredit({
       ...VALID,
-      initialAmount: '1.5',
-      currentBalance: '2,000',
-      installment: '10a',
+      initialAmount: '',
+      currentBalance: '',
+      installment: '',
     });
-    expect(errors.initialAmount).toBe('Escriba solo números');
-    expect(errors.currentBalance).toBe('Escriba solo números');
-    expect(errors.installment).toBe('Escriba solo números');
+    expect(errors.initialAmount).toBe('El monto inicial es requerido');
+    expect(errors.currentBalance).toBe('El saldo actual es requerido');
+    expect(errors.installment).toBe('El monto de la cuota es requerido');
+    expect(
+      validateCredit({
+        ...VALID,
+        initialAmount: '0.00',
+        currentBalance: '3200000',
+        installment: '1234.56',
+      })
+    ).toEqual({});
   });
 
   it('asks for a valid date when what was typed is not a real date', () => {

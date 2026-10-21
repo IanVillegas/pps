@@ -166,14 +166,36 @@ describe('CurrentAccounts (paso 7)', () => {
       await screen.findByText('Ana Mora');
     });
 
-    it('only accepts digits in the balance', async () => {
+    it('formats the balance as it is typed: digits enter as cents, with commas', async () => {
       renderStep();
       await userEvent.click(
         screen.getByRole('button', { name: 'Agregar nuevo' })
       );
       const balance = screen.getByLabelText('Saldo actual *');
-      await userEvent.type(balance, '1a5b0');
-      expect(balance).toHaveValue('150');
+      expect(balance).toHaveAttribute('placeholder', '0,000.00');
+      await userEvent.type(balance, '1a2345b6');
+      expect(balance).toHaveValue('1,234.56');
+      await userEvent.type(balance, '{Backspace}');
+      expect(balance).toHaveValue('123.45');
+      await screen.findByText('Ana Mora');
+    });
+
+    it('asks for the currency above the balance and shows its icon in both', async () => {
+      renderStep();
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Agregar nuevo' })
+      );
+      const currency = screen.getByLabelText('Moneda *');
+      const balance = screen.getByLabelText('Saldo actual *');
+      expect(
+        currency.compareDocumentPosition(balance) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy();
+      expect(balance.parentElement?.querySelector('svg')).toBeFalsy();
+
+      await pick('Moneda *', 'Dólares');
+      expect(currency.querySelector('svg')).toBeInTheDocument();
+      expect(balance.parentElement?.querySelector('svg')).toBeInTheDocument();
       await screen.findByText('Ana Mora');
     });
 
@@ -185,11 +207,11 @@ describe('CurrentAccounts (paso 7)', () => {
         screen.getByRole('button', { name: 'Agregar nuevo' })
       );
       await pick('Entidad financiera *', 'Banco 1 (mock)');
-      await userEvent.type(screen.getByLabelText('Saldo actual *'), '300000');
       await pick('Moneda *', 'Colones');
+      await userEvent.type(screen.getByLabelText('Saldo actual *'), '30000000');
       await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
 
-      expect(await screen.findByText('300,000')).toBeInTheDocument();
+      expect(await screen.findByText('300,000.00')).toBeInTheDocument();
       expect(screen.getByTestId('count')).toHaveTextContent('1');
       expect(
         (await screen.findAllByText(TOAST_MESSAGES.saved.message)).length
@@ -198,7 +220,7 @@ describe('CurrentAccounts (paso 7)', () => {
         expect(mockedTotals.mock.calls.length).toBeGreaterThan(callsBefore)
       );
       expect(mockedTotals).toHaveBeenLastCalledWith([
-        expect.objectContaining({ balance: '300000', currency: 'colones' }),
+        expect.objectContaining({ balance: '300000.00', currency: 'colones' }),
       ]);
     });
 
@@ -221,14 +243,15 @@ describe('CurrentAccounts (paso 7)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: /Editar cuenta Banco 1/ })
       );
-      expect(screen.getByLabelText('Saldo actual *')).toHaveValue('500000');
+      // Un monto entero heredado se lee como unidades enteras con centavos.
+      expect(screen.getByLabelText('Saldo actual *')).toHaveValue('500,000.00');
 
       const balance = screen.getByLabelText('Saldo actual *');
       await userEvent.clear(balance);
-      await userEvent.type(balance, '800000');
+      await userEvent.type(balance, '80000000');
       await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
 
-      expect(await screen.findByText('800,000')).toBeInTheDocument();
+      expect(await screen.findByText('800,000.00')).toBeInTheDocument();
       expect(screen.queryByText('500,000')).not.toBeInTheDocument();
       expect(screen.getByTestId('count')).toHaveTextContent('1');
     });
@@ -237,6 +260,9 @@ describe('CurrentAccounts (paso 7)', () => {
       renderStep([BANCO, COOP]);
       await userEvent.click(
         screen.getByRole('button', { name: /Eliminar cuenta Cooperativa/ })
+      );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
       );
       expect(screen.queryByText('1,200')).not.toBeInTheDocument();
       expect(screen.getByText('500,000')).toBeInTheDocument();
