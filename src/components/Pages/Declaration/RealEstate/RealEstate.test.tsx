@@ -148,6 +148,7 @@ describe('RealEstate (paso 4)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar finca 987654321' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('San Rafael')).not.toBeInTheDocument();
     expect(screen.getByText('Guácima arriba')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

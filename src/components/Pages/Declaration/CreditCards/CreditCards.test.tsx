@@ -280,6 +280,7 @@ describe('CreditCards (paso 9)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar tarjeta 9876' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('9876')).not.toBeInTheDocument();
     expect(screen.getByText('1234')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

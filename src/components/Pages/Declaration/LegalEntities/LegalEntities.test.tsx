@@ -170,6 +170,7 @@ describe('LegalEntities (paso 10)', () => {
         name: 'Eliminar personería Servicios del Sol',
       })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('Servicios del Sol')).not.toBeInTheDocument();
     expect(screen.getByText('Inversiones Mora S.A.')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

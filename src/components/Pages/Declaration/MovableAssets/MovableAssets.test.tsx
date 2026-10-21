@@ -155,6 +155,7 @@ describe('MovableAssets (paso 5)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar placa B-001' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('B-001')).not.toBeInTheDocument();
     expect(screen.getByText('IAN123')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

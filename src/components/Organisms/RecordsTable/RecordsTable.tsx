@@ -1,6 +1,7 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
+import ConfirmDeleteDialog from '@/components/Organisms/ConfirmDeleteDialog/ConfirmDeleteDialog';
 import styles from './RecordsTable.module.scss';
 
 export interface RecordsTableColumn<T> {
@@ -21,6 +22,10 @@ interface RecordsTableProps<T extends { id: string }> {
   onAdd?: () => void;
   addLabel?: string;
   onEdit?: (row: T) => void;
+  /**
+   * Se llama solo despues de que la persona confirma en el modal «¿Está
+   * seguro(a) que desea eliminar este registro del sistema?» (DEC-002F).
+   */
   onDelete?: (row: T) => void;
   emptyText?: string;
 }
@@ -33,6 +38,8 @@ interface RecordsTableProps<T extends { id: string }> {
  * una no reacomode el estado de las demas.
  *
  * Una tabla vacia NO es un error (D-16): muestra `emptyText` y deja agregar.
+ * Eliminar siempre pide confirmacion (Figma, nodo 43294:2166): el icono de
+ * eliminar abre el modal y `onDelete` solo se llama con «Sí, eliminar».
  */
 const RecordsTable = <T extends { id: string }>({
   caption,
@@ -46,6 +53,9 @@ const RecordsTable = <T extends { id: string }>({
   onDelete,
   emptyText = 'No existen registros',
 }: RecordsTableProps<T>) => {
+  // Fila que espera confirmacion para eliminarse; el modal se muestra mientras
+  // haya una.
+  const [pendingDelete, setPendingDelete] = useState<T | null>(null);
   const hasActions = Boolean(onEdit || onDelete);
   const columnCount = columns.length + (hasActions ? 1 : 0);
 
@@ -124,7 +134,7 @@ const RecordsTable = <T extends { id: string }>({
                           <button
                             type="button"
                             aria-label={`Eliminar ${label}`}
-                            onClick={() => onDelete(row)}
+                            onClick={() => setPendingDelete(row)}
                           >
                             <i
                               className="ri-delete-bin-line"
@@ -141,6 +151,16 @@ const RecordsTable = <T extends { id: string }>({
           </tbody>
         </table>
       </div>
+      {onDelete && (
+        <ConfirmDeleteDialog
+          open={pendingDelete !== null}
+          onClose={() => setPendingDelete(null)}
+          onConfirm={() => {
+            if (pendingDelete) onDelete(pendingDelete);
+            setPendingDelete(null);
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -240,3 +240,4 @@ describe('Savings (paso 6)', () => {
     ).toBeInTheDocument();
   });
 });
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));

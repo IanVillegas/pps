@@ -274,6 +274,7 @@ describe('Credits (paso 8)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Eliminar crédito OP-0002' })
     );
+    await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
     expect(screen.queryByText('OP-0002')).not.toBeInTheDocument();
     expect(screen.getByText('OP-0001')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');

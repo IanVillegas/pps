@@ -261,3 +261,6 @@ describe('CurrentAccounts (paso 7)', () => {
     });
   });
 });
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
+      );

@@ -236,6 +236,9 @@ describe('IncomeExpenses (paso 3)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: 'Eliminar ingreso Comisiones' })
       );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
+      );
       expect(screen.queryByText('80,000')).not.toBeInTheDocument();
       expect(screen.getByText('350,000')).toBeInTheDocument();
       expect(screen.getByTestId('incomes')).toHaveTextContent('1');
@@ -326,6 +329,9 @@ describe('IncomeExpenses (paso 3)', () => {
         screen.getByRole('button', {
           name: 'Eliminar egreso Cuotas de créditos',
         })
+      );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Sí, eliminar' })
       );
       expect(screen.queryByText('150,000')).not.toBeInTheDocument();
       expect(draft().expenses).toHaveLength(1);

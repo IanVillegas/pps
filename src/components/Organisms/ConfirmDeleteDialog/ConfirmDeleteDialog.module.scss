@@ -1,0 +1,22 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Nodo Figma 43294:2166: icono de alerta rojo (#D23D3D) de 60px y la pregunta
+// en Poppins Regular 16px, centrada, gris-500.
+.confirm {
+  &__icon {
+    font-size: 60px;
+    line-height: 1;
+    color: gm.$error;
+  }
+
+  &__description {
+    max-width: 473px;
+    margin: 0 auto;
+    font-family: var(--font-poppins), sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    color: gm.$gray-500;
+  }
+}
