@@ -1,7 +1,7 @@
 # Bienes muebles
 
-Estado: paso 5 implementado con registros locales. Revisión: 14 de octubre de 2026.
-Código: `343c313c503bd25c652236b319c6e3874efeb8d4`. Seguimiento: DEC-011; documentación: DOC-007.
+Estado: paso 5 implementado con registros locales. Revisión: 21 de octubre de 2026 (campos del 14 de octubre; formato de montos y eliminación, del 21).
+Código: `343c313c503bd25c652236b319c6e3874efeb8d4` para los campos; `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2` para el formato de montos y la eliminación. Seguimiento: DEC-011; documentación: DOC-007.
 
 ## Propósito y captura
 
@@ -14,7 +14,7 @@ Código: `343c313c503bd25c652236b319c6e3874efeb8d4`. Seguimiento: DEC-011; docum
 | Descripción | `description` | Texto, 200 caracteres; ayuda contextual «Modelo del bien mueble». |
 | Número de placa | `plate` | Texto, 30 caracteres; sin patrón ni comprobación de unicidad. |
 | Año | `year` | Solo dígitos, hasta cuatro caracteres. Sin mínimo, máximo ni exigencia de cuatro dígitos. |
-| Valor de mercado | `marketValue` | Solo dígitos, 15 caracteres; sin selector de moneda. |
+| Valor de mercado | `marketValue` | Obligatorio. Se escribe con el formato de [montos y moneda](montos-y-moneda.md) (centavos, comas y dos decimales) y se guarda como texto decimal; sin ícono porque el paso no tiene selector de moneda. |
 | Observación | `observation` | Texto de varias líneas, 500 caracteres. |
 
 Los textos obligatorios rechazan valores formados solo por espacios y se guardan sin espacios externos. No se detectan duplicados. Aplican las [operaciones comunes](registros-patrimoniales.md); el borrador conserva filas bajo `items` y no existe total de bienes.

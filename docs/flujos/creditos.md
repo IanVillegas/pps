@@ -1,21 +1,21 @@
 # Créditos que posee
 
-Estado: paso 8 implementado con totales simulados. Revisión: 14 de octubre de 2026.
-Código: `343c313c503bd25c652236b319c6e3874efeb8d4`. Seguimiento: DEC-014; documentación: DOC-010.
+Estado: paso 8 implementado con totales simulados. Revisión: 21 de octubre de 2026 (campos del 14 de octubre; formato de montos y eliminación, del 21).
+Código: `343c313c503bd25c652236b319c6e3874efeb8d4` para los campos; `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2` para el formato de montos y la eliminación. Seguimiento: DEC-014; documentación: DOC-010.
 
 ## Propósito y captura
 
-`/mi-declaracion/8` presenta los créditos declarados y sus saldos y cuotas por moneda. El diálogo «Créditos», tamaño `lg`, exige ocho campos.
+`/mi-declaracion/8` presenta los créditos declarados y sus saldos y cuotas por moneda. El diálogo «Créditos», tamaño `lg`, exige ocho campos. Su orden es entidad y tipo de préstamo; **moneda** y número de préstamo; los tres montos; y la fecha de conclusión: la moneda va antes de los montos porque decide su ícono.
 
 | Campo del diálogo | Clave | Regla vigente |
 | --- | --- | --- |
 | Entidad financiera | `entity` | Selección de catálogo de demostración. |
 | Tipo de préstamo | `loanType` | Texto obligatorio, hasta 60 caracteres. |
-| Monto inicial | `initialAmount` | Solo dígitos, hasta 15 caracteres. |
-| Saldo actual | `currentBalance` | Solo dígitos, hasta 15 caracteres. |
-| Monto cuota | `installment` | Solo dígitos, hasta 15 caracteres. |
+| Monto inicial | `initialAmount` | Formato de [montos y moneda](montos-y-moneda.md): centavos, comas y dos decimales, con el ícono de la moneda elegida; texto decimal. |
+| Saldo actual | `currentBalance` | Igual que el monto inicial. |
+| Monto cuota | `installment` | Igual que el monto inicial. |
 | Número de préstamo | `loanNumber` | Texto obligatorio, hasta 30 caracteres; admite letras y símbolos. |
-| Moneda | `currency` | Colones o dólares del catálogo actual. |
+| Moneda | `currency` | Colones o dólares, con su ícono en el selector; se elige antes que los montos. |
 | Fecha de conclusión | `endDate` | Fecha real y obligatoria; sin mínimo ni máximo. |
 
 Los textos libres rechazan contenido formado solo por espacios y se guardan sin espacios externos. El selector distingue fecha inválida de vacía, presenta `DD/MM/AAAA` y conserva `YYYY-MM-DD`. Puede registrar fechas futuras o pasadas. La validación utiliza la señal del selector; requiere revisar datos de fecha arbitrarios al integrar una API.

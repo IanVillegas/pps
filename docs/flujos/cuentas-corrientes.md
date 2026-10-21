@@ -1,7 +1,7 @@
 # Cuentas corrientes
 
-Estado: paso 7 implementado con cuentas y totales simulados. Revisión: 14 de octubre de 2026.
-Código: `343c313c503bd25c652236b319c6e3874efeb8d4`. Seguimiento: DEC-013; documentación: DOC-009.
+Estado: paso 7 implementado con cuentas y totales simulados. Revisión: 21 de octubre de 2026 (campos del 14 de octubre; formato de montos y eliminación, del 21).
+Código: `343c313c503bd25c652236b319c6e3874efeb8d4` para los campos; `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2` para el formato de montos y la eliminación. Seguimiento: DEC-013; documentación: DOC-009.
 
 ## Propósito y secciones
 
@@ -11,7 +11,7 @@ La precarga utiliza una cuenta sintética definida en `CurrentAccountsService`, 
 
 ## Captura y validación
 
-El diálogo «Datos económicos» exige entidad financiera, saldo actual y moneda. Entidad y moneda utilizan catálogos de demostración. El saldo admite solo dígitos y hasta 15 caracteres. No se solicita número de cuenta ni titular en los registros agregados y no se detectan duplicados por entidad.
+El diálogo «Datos económicos» exige entidad financiera, saldo actual y moneda. Entidad y moneda utilizan catálogos de demostración. El orden del diálogo es entidad, moneda y saldo actual: la moneda va antes porque decide el ícono del saldo. El saldo usa el formato de [montos y moneda](montos-y-moneda.md) (centavos, comas y dos decimales, hasta 15 dígitos con los centavos) y se guarda como texto decimal. No se solicita número de cuenta ni titular en los registros agregados y no se detectan duplicados por entidad.
 
 Aplican las [operaciones comunes](registros-patrimoniales.md) a la segunda tabla. Los registros se conservan bajo `accounts` dentro de los valores del paso 7, separados de los del paso 6. La precarga no ofrece alta, edición ni retiro desde la pantalla.
 

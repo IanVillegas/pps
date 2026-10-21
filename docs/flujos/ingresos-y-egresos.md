@@ -1,7 +1,7 @@
 # Ingresos y egresos
 
 Estado: paso 3 implementado con planilla y resumen financiero simulados.
-Revisión: 14 de octubre de 2026. Código de referencia: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`.
+Revisión: 21 de octubre de 2026 (estructura del 14 de octubre; «Otros detalles», formato de montos y eliminación, del 21). Código de referencia: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d` y `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`.
 Seguimiento local: DEC-009A, DEC-009C y DEC-009D.
 
 ## Propósito y estructura
@@ -14,12 +14,12 @@ Planilla muestra salario bruto y neto de solo lectura, recibidos del servicio de
 
 | Formulario | Campos y validación vigente |
 | --- | --- |
-| Ingreso adicional | Tipo, monto y justificación obligatorios. Tipo desde catálogo de demostración; monto solo dígitos, máximo 15 caracteres; justificación hasta 500 caracteres, sin aceptar solo espacios. |
-| Egreso mensual | Tipo y monto obligatorios. Tipo desde catálogo de demostración; monto solo dígitos, máximo 15 caracteres. No incluye justificación ni adjuntos. |
+| Ingreso adicional | Tipo, monto y justificación obligatorios. Tipo desde catálogo de demostración; monto con el formato de [montos y moneda](montos-y-moneda.md); justificación hasta 500 caracteres, sin aceptar solo espacios. |
+| Egreso mensual | Tipo y monto obligatorios. Tipo desde catálogo de demostración; monto con el formato de [montos y moneda](montos-y-moneda.md). No incluye justificación ni adjuntos. |
 
-Los controles eliminan caracteres no numéricos al escribir montos. Se acepta cero; no hay captura de decimales, signos negativos, separadores ni selector de moneda. Los máximos y formatos son provisionales. La función de validación comprueba presencia del tipo, sin comprobar por sí sola pertenencia al catálogo.
+Los montos se escriben con el formato estándar (dígitos que entran como centavos, comas y dos decimales; hasta 15 dígitos con los centavos) y se guardan como texto decimal. Se acepta cero. Llevan el ícono del colón porque los totales de este paso se muestran en colones, aunque los diálogos no tienen selector de moneda; esa suposición se registra para confirmar. Los máximos son provisionales. La función de validación comprueba presencia del tipo, sin comprobar por sí sola pertenencia al catálogo.
 
-Los diálogos mantienen cambios locales hasta «Agregar» o «Guardar». Cancelar, cerrar o Escape conservan la fila original. Guardar genera un identificador local al crear o conserva el existente al editar; muestra una notificación y cierra el diálogo. Eliminar retira inmediatamente el registro, sin confirmación ni deshacer. Estas operaciones actualizan el borrador, sin persistencia en servidor.
+Los diálogos mantienen cambios locales hasta «Agregar» o «Guardar». Cancelar, cerrar o Escape conservan la fila original. Guardar genera un identificador local al crear o conserva el existente al editar; muestra una notificación y cierra el diálogo. Eliminar abre un modal de confirmación («¿Está seguro(a) que desea eliminar este registro del sistema?») y solo retira el registro con «Sí, eliminar»; no hay deshacer. Estas operaciones actualizan el borrador, sin persistencia en servidor.
 
 La tabla de ingresos muestra tipo, monto y cantidad de archivos. La justificación se consulta al editar. Los adjuntos no son obligatorios en la validación actual, aunque el texto solicita documentación de respaldo; si hay archivos seleccionados, todos deben terminar correctamente antes de guardar. Consultar [adjuntos](adjuntos-de-ingresos.md).
 
@@ -32,8 +32,9 @@ El diálogo de ingresos presenta instrucciones sobre informar a la jefatura y ac
 | Cambios en situación patrimonial | Sí o no; respuesta obligatoria. |
 | Calificación de situación financiera | Estable, difícil o grave; respuesta obligatoria. |
 | Descripción y aclaraciones | Opcional, hasta 1000 caracteres. No cambia su obligatoriedad según las respuestas. |
+| Detalle de los cambios patrimoniales | Opcional, hasta 1000 caracteres. El campo está siempre visible, pero **solo se habilita con la respuesta «Si»**; con «No» (o sin responder) queda deshabilitado y vacío. Su etiqueta es provisional. |
 
-Las respuestas y descripción actualizan el borrador al cambiar. «Continuar» exige presencia de ambas respuestas, sin exigir filas ni descripción. La función del paso no verifica pertenencia a las opciones ni bloquea por falta de resumen financiero. Las reglas institucionales definitivas permanecen pendientes.
+La sección se presenta en este orden: las tres cifras de resumen, la calificación de la situación financiera, la descripción y, al final, la pregunta sobre cambios patrimoniales con sus opciones «Si» y «No» debajo de la pregunta. Las respuestas y descripciones actualizan el borrador al cambiar. Al responder «No» se descarta el detalle de los cambios del borrador, para que no quede un texto que contradiga la respuesta. «Continuar» exige presencia de ambas respuestas, sin exigir filas ni descripciones. La función del paso no verifica pertenencia a las opciones ni bloquea por falta de resumen financiero. Las reglas institucionales definitivas permanecen pendientes.
 
 ## Resumen financiero
 

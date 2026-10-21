@@ -22,7 +22,7 @@ Los cambios se incorporan al borrador únicamente después de guardar un formula
 | Género | Selección obligatoria de la lista de demostración. |
 | Fecha de nacimiento | Obligatoria, debe ser una fecha válida y no futura. El control presenta `DD/MM/AAAA` y guarda `YYYY-MM-DD`. |
 
-El rango de edad y los máximos de caracteres son provisionales. Edad y fecha se capturan por separado: no se calcula la edad ni se comprueba su correspondencia con la fecha de nacimiento. Las listas de parentesco y género no representan catálogos institucionales confirmados.
+El rango de edad y los máximos de caracteres son provisionales. Edad y fecha se capturan por separado: no se calcula la edad ni se comprueba su correspondencia con la fecha de nacimiento (confirmado por el equipo interno el 21 de octubre de 2026: no existe esa validación). Las listas de parentesco y género no representan catálogos institucionales confirmados.
 
 El control de fecha distingue una escritura incompleta o imposible de un campo vacío y comunica un error específico. El límite superior utiliza la fecha actual local del navegador. La función de validación consume la señal de fecha inválida del selector; no constituye por sí sola una validación completa de fechas arbitrarias recibidas desde una API.
 
@@ -36,7 +36,7 @@ Al editar, la fila actual se excluye de la comparación. La normalización solo 
 | --- | --- |
 | Agregar | Genera un identificador local estable, agrega la fila y muestra una notificación de guardado. |
 | Editar | Reemplaza los datos de la fila, conserva su identificador y muestra una notificación de guardado. |
-| Eliminar | Retira inmediatamente la fila por identificador y muestra una notificación de retiro. No pide confirmación ni ofrece deshacer. |
+| Eliminar | Abre un modal de confirmación («¿Está seguro(a) que desea eliminar este registro del sistema?»); solo con «Sí, eliminar» retira la fila por identificador y muestra una notificación de retiro. No ofrece deshacer. |
 | Cancelar o cerrar | Descarta la edición del diálogo y conserva los registros anteriores. |
 
 Las etiquetas de parentesco y género se resuelven a partir del catálogo; si no se encuentra una opción, se muestra el valor almacenado. La tabla formatea las fechas como día, mes y año. Las notificaciones acreditan cambios locales, no persistencia institucional; la duración del borrador se describe en [declaración y borrador](declaracion-y-borrador.md).
@@ -58,6 +58,6 @@ La tabla ofrece nombre accesible y acciones identificadas por el nombre del fami
 | `src/utils/dates.ts` | Fecha local y presentación de fechas. |
 | `src/components/Organisms/RecordsTable/RecordsTable.tsx` | Presentación de tabla y acciones. |
 
-Confirmar rango de edad, relación edad-fecha, catálogos, criterio de duplicados y política de retiro de registros. La integración requerirá acordar identificadores de servidor y validaciones de datos recibidos. La tabla vacía y la ausencia de confirmación al eliminar son comportamientos vigentes, no conclusiones sobre las reglas finales.
+Confirmar rango de edad, catálogos, criterio de duplicados y política de retiro de registros. La integración requerirá acordar identificadores de servidor y validaciones de datos recibidos. La tabla vacía y la ausencia de confirmación al eliminar son comportamientos vigentes, no conclusiones sobre las reglas finales.
 
 El diálogo utiliza «Guardar» para edición, mientras el historial de diseño identifica principalmente el alta. No se hizo nueva comparación con Figma. Evidencia actual en [validación y calidad](../06-validacion-y-calidad.md).
