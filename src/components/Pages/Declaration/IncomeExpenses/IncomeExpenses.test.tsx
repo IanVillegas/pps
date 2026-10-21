@@ -393,6 +393,81 @@ describe('IncomeExpenses (paso 3)', () => {
       await screen.findByText('Salario bruto');
     });
 
+    it('lays the questions out in the order of Figma: situation, description, then patrimonial changes', async () => {
+      renderValues({});
+      const order = [
+        '¿Cómo califica su situación financiera?',
+        'Agregue una descripción detallada',
+        '¿Existen cambios en el periodo actual en su situación patrimonial?',
+      ].map(text => screen.getByText(new RegExp(text.replace(/[?¿]/g, '\$&'))));
+      order.slice(1).forEach((node, index) => {
+        expect(
+          order[index].compareDocumentPosition(node) &
+            Node.DOCUMENT_POSITION_FOLLOWING
+        ).toBeTruthy();
+      });
+      await screen.findByText('Salario bruto');
+    });
+
+    it('shows the detail of the patrimonial changes only while the answer is Sí', async () => {
+      renderValues({});
+      const detail = () =>
+        screen.queryByLabelText(
+          'Detalle los cambios en su situación patrimonial'
+        );
+      expect(detail()).not.toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      expect(detail()).toBeInTheDocument();
+      await userEvent.type(detail() as HTMLElement, 'Heredé una propiedad');
+      expect(draft()).toMatchObject({
+        patrimonialChanges: 'si',
+        patrimonialChangesDetail: 'Heredé una propiedad',
+      });
+
+      await userEvent.click(screen.getByRole('radio', { name: 'No' }));
+      expect(detail()).not.toBeInTheDocument();
+      await screen.findByText('Salario bruto');
+    });
+
+    it('drops the detail from the draft when the answer goes back to No, keeping the rest', async () => {
+      renderValues({});
+      await userEvent.click(screen.getByRole('radio', { name: 'Difícil' }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      await userEvent.type(
+        screen.getByLabelText(
+          'Detalle los cambios en su situación patrimonial'
+        ),
+        'Texto'
+      );
+      await userEvent.click(screen.getByRole('radio', { name: 'No' }));
+
+      const stored = draft();
+      expect(stored).toMatchObject({
+        patrimonialChanges: 'no',
+        financialSituation: 'dificil',
+      });
+      expect(stored).not.toHaveProperty('patrimonialChangesDetail');
+      await screen.findByText('Salario bruto');
+    });
+
+    it('starts the detail empty when the answer is turned to Sí again', async () => {
+      renderValues({});
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      await userEvent.type(
+        screen.getByLabelText(
+          'Detalle los cambios en su situación patrimonial'
+        ),
+        'Texto'
+      );
+      await userEvent.click(screen.getByRole('radio', { name: 'No' }));
+      await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
+      expect(
+        screen.getByLabelText('Detalle los cambios en su situación patrimonial')
+      ).toHaveValue('');
+      await screen.findByText('Salario bruto');
+    });
+
     it('shows the errors the wizard hands over for the two questions', async () => {
       renderValues(
         {},
@@ -416,6 +491,15 @@ describe('validateIncomeExpenses', () => {
       'financialSituation',
       'patrimonialChanges',
     ]);
+  });
+
+  it('never requires the detail of the patrimonial changes, even when the answer is Sí', () => {
+    expect(
+      validateIncomeExpenses({
+        patrimonialChanges: 'si',
+        financialSituation: 'grave',
+      })
+    ).toEqual({});
   });
 
   it('accepts a step with both answers and empty tables', () => {

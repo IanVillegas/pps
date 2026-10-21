@@ -237,44 +237,32 @@ const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
       </section>
 
       <section className={styles.incomeExpenses__card}>
-        <div className={styles.incomeExpenses__details}>
-          <div>
-            <h3 className={styles.incomeExpenses__heading}>Otros detalles</h3>
-            <dl className={styles.incomeExpenses__figures}>
-              <div>
-                <dt>Saldo mensual disponible</dt>
-                <dd>
-                  {summary ? formatCurrency(summary.monthlyBalance) : NO_FIGURE}
-                </dd>
-              </div>
-              <div>
-                <dt>Relación gasto - ingreso</dt>
-                <dd>
-                  {summary
-                    ? formatPercent(summary.expenseToIncomeRatio)
-                    : NO_FIGURE}
-                </dd>
-              </div>
-              <div>
-                <dt>Relación cuota créditos - ingreso</dt>
-                <dd>
-                  {summary
-                    ? formatPercent(summary.creditPaymentToIncomeRatio)
-                    : NO_FIGURE}
-                </dd>
-              </div>
-            </dl>
-          </div>
-          <RadioGroup
-            compact
-            legend="¿Existen cambios en el periodo actual en su situación patrimonial?"
-            options={PATRIMONIAL_CHANGES_OPTIONS}
-            value={data.patrimonialChanges}
-            errors={errors.patrimonialChanges}
-            onChange={value =>
-              patch({ patrimonialChanges: value as PatrimonialChanges })
-            }
-          />
+        <div>
+          <h3 className={styles.incomeExpenses__heading}>Otros detalles</h3>
+          <dl className={styles.incomeExpenses__figures}>
+            <div>
+              <dt>Saldo mensual disponible</dt>
+              <dd>
+                {summary ? formatCurrency(summary.monthlyBalance) : NO_FIGURE}
+              </dd>
+            </div>
+            <div>
+              <dt>Relación gasto - ingreso</dt>
+              <dd>
+                {summary
+                  ? formatPercent(summary.expenseToIncomeRatio)
+                  : NO_FIGURE}
+              </dd>
+            </div>
+            <div>
+              <dt>Relación cuota créditos - ingreso</dt>
+              <dd>
+                {summary
+                  ? formatPercent(summary.creditPaymentToIncomeRatio)
+                  : NO_FIGURE}
+              </dd>
+            </div>
+          </dl>
         </div>
         <RadioGroup
           legend="¿Cómo califica su situación financiera?"
@@ -292,6 +280,34 @@ const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
           value={data.situationDetail ?? ''}
           onChange={event => patch({ situationDetail: event.target.value })}
         />
+        <RadioGroup
+          legend="¿Existen cambios en el periodo actual en su situación patrimonial?"
+          options={PATRIMONIAL_CHANGES_OPTIONS}
+          value={data.patrimonialChanges}
+          errors={errors.patrimonialChanges}
+          onChange={value => {
+            // Con «No» el detalle se descarta: no debe quedar un texto que
+            // contradiga la respuesta.
+            if (value === 'no') {
+              const next: StepValues = { ...values, patrimonialChanges: value };
+              delete next.patrimonialChangesDetail;
+              onChange(next);
+            } else {
+              patch({ patrimonialChanges: value as PatrimonialChanges });
+            }
+          }}
+        />
+        {data.patrimonialChanges === 'si' && (
+          <Textarea
+            label="Detalle los cambios en su situación patrimonial"
+            placeholder="Escribe aquí"
+            maxLength={FIELD_MAX_LENGTH.patrimonialChangesDetail}
+            value={data.patrimonialChangesDetail ?? ''}
+            onChange={event =>
+              patch({ patrimonialChangesDetail: event.target.value })
+            }
+          />
+        )}
         {actions}
       </section>
 

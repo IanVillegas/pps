@@ -2,7 +2,7 @@
 
 // Medidas del nodo Figma 43121:5718 ("Radio-NEW"): circulo de 24px, 12px
 // hasta la etiqueta y 32px entre opciones; pregunta en Poppins Regular 16px
-// gris-500, etiquetas en Poppins Medium 16px (Si/No: Poppins Light 13px).
+// gris-500, etiquetas en Poppins Medium 16px.
 .radioGroup {
   display: flex;
   flex-direction: column;
@@ -74,11 +74,6 @@
     font-size: 16px;
     font-weight: 500;
     color: gm.$gray-500;
-
-    &--compact {
-      font-size: 13px;
-      font-weight: 300;
-    }
   }
 
   &__errors {

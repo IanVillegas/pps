@@ -51,19 +51,6 @@
     }
   }
 
-  // Dos columnas: cifras a la izquierda, pregunta Si/No a la derecha (Figma,
-  // nodos 43121:5728 y 43121:5711).
-  &__details {
-    display: grid;
-    grid-template-columns: minmax(0, 328px) minmax(0, 420px);
-    justify-content: space-between;
-    gap: 24px 48px;
-
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
   &__heading {
     margin: 0 0 8px;
     font-family: var(--font-worksans), sans-serif;
