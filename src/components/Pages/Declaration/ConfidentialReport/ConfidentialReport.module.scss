@@ -9,9 +9,20 @@
 .confidential {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-worksans), sans-serif;
   font-size: 18px;
   color: gm.$gray-500;
+
+  // El CSS global fija Poppins en `p` y `span`: la fuente Work Sans de Figma
+  // se declara en cada texto de este paso, no solo en el contenedor. Se evita
+  // un selector generico para no alcanzar el «No» y el «Sí» del interruptor,
+  // que van en Poppins.
+  &__notice,
+  &__question,
+  &__intro,
+  &__required,
+  &__instruction {
+    font-family: var(--font-worksans), sans-serif;
+  }
 
   &__notice {
     margin: 0 0 32px;
@@ -53,10 +64,8 @@
     max-width: 678px;
   }
 
-  // El asterisco de «obligatorio» va en SemiBold, como en Figma. El CSS
-  // global fija Poppins en span: aquí se hereda Work Sans.
+  // El asterisco de «obligatorio» va en SemiBold, como en Figma.
   &__required {
-    font-family: inherit;
     font-weight: 600;
   }
 

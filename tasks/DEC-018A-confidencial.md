@@ -1,6 +1,6 @@
 # DEC-018A Cuestionario confidencial (paso 12)
 
-Implementada el 2026-10-20. La revisión visual en navegador quedó pendiente (ver Validación).
+Implementada y validada el 2026-10-20; revisión visual con capturas el 2026-10-21.
 
 ## Alcance
 
@@ -30,7 +30,8 @@ El paso 12 de Figma (nodos 43121:1459, todo en «No», y 43121:1124, con la preg
 ## Validación
 
 - `check-types`, `lint` y 353 pruebas: OK (18 nuevas: 12 del servicio — estado inicial, abrir y apagar respuestas, detalle ignorado sin «Sí», inmutabilidad y suscripciones, borrado al cerrar sesión, **no escribe nunca en el borrador**, el borrador no la altera, el payload lista las ocho preguntas, recorta y solo incluye el detalle de los «sí», y no contiene nada patrimonial— y 6 del paso — aviso y ocho preguntas en «No», numeración, la indicación y el campo solo en «Sí», conserva y descarta el detalle, se conserva al salir y volver, **no aparece en el borrador**—). Se actualizó la prueba del wizard: en el último paso «Regresar» sigue activo y «Terminar» está deshabilitado.
-- **V3 en navegador: pendiente.** Al terminar, el panel del navegador quedó oculto y la página dejó de responder a los comandos, por lo que no se hizo la comparación visual con Figma ni se comprobó en pantalla. Debe revisarse: medidas del aviso y las preguntas (Work Sans 18 px justificado), sangría de las siete preguntas, posición del interruptor, color de la indicación y alto del campo.
+- V3 en navegador (sesión local de prueba), primero **por el DOM** porque el panel del navegador estaba oculto y no permitía capturas: Tras reiniciar el servidor de vista previa: el paso abre con 8 interruptores en «No», sin campos y con «Terminar» deshabilitado; al responder «Sí» a la pregunta 1 aparece la indicación en rojo (#D23D3D, 18 px, SemiBold) y un campo de 698 × 79 px; las siete preguntas sobre compañeros van sangradas 20 px y la primera no; el aviso y las preguntas van justificados de 18 px; al salir al paso 11 y volver, la pregunta 1 sigue en «Sí» con su texto; al volver a «No» el campo desaparece. **Corrección hallada así**: las preguntas se pintaban en Poppins porque el CSS global fija Poppins en `p` y `span`; ahora cada texto del paso declara Work Sans (el «No»/«Sí» del interruptor sigue en Poppins 12 px). Los únicos errores de consola son archivos de recarga en caliente del servidor de desarrollo.
+- **Revisión visual con capturas (2026-10-21)**, con el panel visible y un viewport de 1100 × 640: el paso coincide con Figma en las tres zonas. Aviso en negrita justificado y pregunta 1 con su interruptor a la derecha; encabezado «¿Conoce usted si algún compañero(a)...?» y preguntas 1 a 7 sangradas y separadas por líneas finas, con el asterisco al final del texto; con la pregunta 1 en «Sí», la indicación en rojo justificada y el campo debajo, del ancho del texto; y, al final, «Regresar» activo y «Terminar» deshabilitado. Diferencias menores: el campo es más alto que el de Figma (aceptado, D-24) y no se midió píxel a píxel contra un viewport de 1366 px.
 
 ## Diferencias y pendientes contra Figma
 
