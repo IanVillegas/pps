@@ -2,7 +2,7 @@
 
 Implementada y validada el 2026-10-20.
 
-> **Actualización 2026-10-22**: «Plazo» es un **número** (en las capturas del sistema original se ve, por ejemplo, 3): el campo pasa a aceptar solo dígitos (hasta 4); su unidad sigue sin definirse (D-21, resuelta en parte). Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
+> **Actualización 2026-10-21**: «Plazo» es un **número** (en las capturas del sistema original se ve, por ejemplo, 3): el campo pasa a aceptar solo dígitos (hasta 4); su unidad sigue sin definirse (D-21, resuelta en parte). Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
 
 ## Alcance
 

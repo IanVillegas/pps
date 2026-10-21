@@ -1,6 +1,6 @@
 # Contrato de API del frontend de la Declaración Patrimonial
 
-Estado: **propuesta del frontend, sin backend que la implemente** (D-08). Revisión: 22 de octubre de 2026. Primera entrega de DEC-019A (plan B: contrato escrito ahora; cliente único con interruptor mock/real y catálogos asíncronos, la semana del 26 de octubre).
+Estado: **propuesta del frontend, sin backend que la implemente** (D-08). Revisión: 21 de octubre de 2026. Primera entrega de DEC-019A (plan B: contrato escrito ahora; cliente único con interruptor mock/real y catálogos asíncronos, la semana del 26 de octubre).
 
 Este documento describe lo que el frontend necesita del backend, tomado del código actual (`src/services`, `src/types`) y de las decisiones registradas en [preparación técnica](preparacion-tecnica-visual.md). Quien implemente la API puede ajustarlo; cualquier cambio se refleja en un único adaptador del frontend, sin tocar las pantallas. Lo que no está confirmado por el negocio se marca **(por confirmar)**.
 

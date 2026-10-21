@@ -1,4 +1,4 @@
-# Ajustes sugeridos por Oldemar (2026-10-21 y 2026-10-22)
+# Ajustes sugeridos por Oldemar (2026-10-21 y 2026-10-21)
 
 Cinco cambios indicados por el usuario, todos con su registro de validación. Los tres primeros son visuales sobre pantallas ya hechas; el último es una respuesta a una duda.
 
@@ -19,7 +19,7 @@ Figma: nodo 43294:2166, «Modal confirmacion eliminacion» (640 px).
 Figma: nodo 43121:5334 (nueva versión).
 
 - **Nueva disposición**, de arriba hacia abajo: las tres cifras (saldo mensual disponible y las dos razones), «¿Cómo califica su situación financiera?» con sus opciones, la descripción detallada y, al final, «¿Existen cambios en el periodo actual en su situación patrimonial?» con «Si»/«No». Antes esa pregunta iba a la derecha de las cifras, en una letra más pequeña; ahora va debajo y con el tamaño normal de las demás (se eliminó la opción `compact` de `RadioGroup`, que ya no usa nadie).
-- **Campo nuevo**: un `Textarea` «Detalle los cambios en su situación patrimonial», opcional (sin asterisco). **Siempre visible**, pero solo se **habilita con la respuesta «Si»**: con «No» (o sin responder) queda deshabilitado y vacío (decisión del usuario, 2026-10-22, D-27). Al volver a «No» se **descarta del borrador** (no queda un texto que contradiga la respuesta). Se guarda bajo `patrimonialChangesDetail` y nunca bloquea el avance. La etiqueta sigue siendo provisional. El `Textarea` compartido gana el estilo `:disabled` (fondo gris, texto atenuado; marcado «Modificado para DecPat»).
+- **Campo nuevo**: un `Textarea` «Detalle los cambios en su situación patrimonial», opcional (sin asterisco). **Siempre visible**, pero solo se **habilita con la respuesta «Si»**: con «No» (o sin responder) queda deshabilitado y vacío (decisión del usuario, 2026-10-21, D-27). Al volver a «No» se **descarta del borrador** (no queda un texto que contradiga la respuesta). Se guarda bajo `patrimonialChangesDetail` y nunca bloquea el avance. La etiqueta sigue siendo provisional. El `Textarea` compartido gana el estilo `:disabled` (fondo gris, texto atenuado; marcado «Modificado para DecPat»).
 
 ## 2.2 y 2.3 Formato de montos y orden moneda → monto (pasos 6 y 7, y luego todos los demás)
 
@@ -33,7 +33,7 @@ Cambio de Oldemar: el monto se formatea **mientras se escribe** y es el estánda
 - **Extensión compartida**: `InputText` (sad-aml-shared) gana la propiedad opcional `startAdornment`, un icono dentro del campo al inicio (marcada «Modificado para DecPat», como la del tooltip).
 - Los totales por moneda de créditos y tarjetas (`CurrencyTotals`) ahora usan el mismo `CurrencyIcon` de 20 px de Figma en lugar del círculo rojo con el símbolo.
 
-## Extensión a todos los montos (D-26 resuelta, 2026-10-22)
+## Extensión a todos los montos (D-26 resuelta, 2026-10-21)
 
 El usuario confirmó que el formato **aplica a todo campo que pida un monto**, no solo a los pasos 6 y 7. Se convirtieron a `MoneyInput`:
 
@@ -49,7 +49,7 @@ El usuario confirmó que el formato **aplica a todo campo que pida un monto**, n
 
 `MoneyInput` acepta `currency={null}` para los montos que no tienen una moneda concreta: no dibuja el icono ni reserva su espacio. En todos, el valor se guarda como texto decimal con dos decimales y los montos enteros anteriores se leen como unidades enteras; las validaciones «Escriba solo números» desaparecen porque el campo ya no admite otra cosa.
 
-## Otras respuestas del usuario (2026-10-22)
+## Otras respuestas del usuario (2026-10-21)
 
 - **D-20, «Periodo» de la tarjeta**: es el **año**. Revisando las capturas del sistema original, solo muestra y pide el año, no una fecha completa. El campo ahora es numérico de cuatro dígitos (placeholder `AAAA`), con el error «Escriba el año con 4 dígitos»; no se inventa un rango de años.
 - **D-21, «Plazo» de la personería**: es un **número** (en las capturas originales se ve, por ejemplo, un 3). El campo pasa a ser solo dígitos (hasta 4); su unidad (años, meses…) no está definida y no se escribe. Sigue sin definirse un formato para la cédula jurídica (texto libre).
