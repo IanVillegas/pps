@@ -1,15 +1,15 @@
 'use client';
 
 import { useRef, useState, type FormEvent } from 'react';
-import { Button, ButtonColor, InputText } from '@/components/Atoms';
-import { Dropdown } from '@/components/Molecules';
+import { Button, ButtonColor } from '@/components/Atoms';
+import { Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { EXPENSE_TYPE_OPTIONS } from '@/services/CatalogService';
 import type {
   ExpenseItem,
   ExpenseItemData,
 } from '@/types/IncomeExpenses.types';
-import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './ExpenseDialog.module.scss';
 
 const FORM_ID = 'expense-form';
@@ -30,10 +30,9 @@ const EMPTY: ExpenseItemData = { type: '', amount: '' };
 export const validateExpenseItem = (values: ExpenseItemData): ExpenseErrors => {
   const errors: ExpenseErrors = {};
   if (!values.type) errors.type = 'El tipo de egreso es requerido';
-  if (!values.amount.trim()) {
+  // Con MoneyInput solo puede faltar escribir el monto (0.00 es valido).
+  if (amountToCents(values.amount) === null) {
     errors.amount = 'El monto es requerido';
-  } else if (!/^\d+$/.test(values.amount)) {
-    errors.amount = 'Escriba solo números';
   }
   return errors;
 };
@@ -118,16 +117,12 @@ const ExpenseForm = ({ item, onSave }: ExpenseFormProps) => {
         errors={errors.type}
         onChange={value => update({ type: value })}
       />
-      <InputText
+      <MoneyInput
         label="Monto *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
+        currency="colones"
         value={state.amount}
         errors={errors.amount}
-        onChange={event =>
-          update({ amount: event.target.value.replace(/\D/g, '') })
-        }
+        onChange={value => update({ amount: value })}
       />
     </form>
   );

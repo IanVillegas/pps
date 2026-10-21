@@ -4,7 +4,7 @@ const VALID = {
   name: 'Inversiones Mora S.A.',
   legalId: '3-101-123456',
   purpose: 'Alquiler de locales comerciales',
-  term: '99 años',
+  term: '99',
 };
 
 describe('validateLegalEntity', () => {
@@ -37,12 +37,12 @@ describe('validateLegalEntity', () => {
     expect(Object.keys(errors)).toHaveLength(4);
   });
 
-  it('does not impose a format on the legal id or the term', () => {
+  it('does not impose a format on the legal id', () => {
     expect(
       validateLegalEntity({
         ...VALID,
         legalId: 'ABC-77',
-        term: 'Indefinido',
+        term: '5',
       })
     ).toEqual({});
   });

@@ -30,9 +30,15 @@ describe('validateIncomeItem', () => {
     ).toBe('La justificación es requerida');
   });
 
-  it('rejects an amount that is not only digits', () => {
-    expect(validateIncomeItem({ ...VALID, amount: '12a' }).amount).toBe(
-      'Escriba solo números'
+  it('requires the amount, but accepts zero and a whole amount from older data', () => {
+    expect(validateIncomeItem({ ...VALID, amount: '' }).amount).toBe(
+      'El monto es requerido'
     );
+    expect(
+      validateIncomeItem({ ...VALID, amount: '0.00' }).amount
+    ).toBeUndefined();
+    expect(
+      validateIncomeItem({ ...VALID, amount: '350000' }).amount
+    ).toBeUndefined();
   });
 });

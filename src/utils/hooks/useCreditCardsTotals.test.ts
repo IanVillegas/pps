@@ -16,7 +16,7 @@ const NONE: CreditCardItem[] = [];
 const ONE: CreditCardItem[] = [
   {
     id: 'a',
-    period: 'Mensual',
+    period: '2026',
     entity: 'banco-1',
     currency: 'colones',
     expiryDate: '2030-01-01',

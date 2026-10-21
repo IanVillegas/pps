@@ -2,7 +2,7 @@
 
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
-import { Dropdown } from '@/components/Molecules';
+import { Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import { REAL_ESTATE_DESTINATION_OPTIONS } from '@/services/CatalogService';
 import type {
@@ -10,10 +10,10 @@ import type {
   RealEstateItemData,
 } from '@/types/RealEstate.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './RealEstateDialog.module.scss';
 
 const FORM_ID = 'real-estate-form';
-const MAX_VALUE_DIGITS = FIELD_MAX_LENGTH.amount;
 
 const DESTINATIONS = REAL_ESTATE_DESTINATION_OPTIONS.map(option => ({
   value: option.value,
@@ -44,10 +44,9 @@ export const validateRealEstateItem = (
   if (!values.location.trim()) {
     errors.location = 'La ubicación es requerida';
   }
-  if (!values.marketValue.trim()) {
+  // Con MoneyInput solo puede faltar escribir el monto (0.00 es valido).
+  if (amountToCents(values.marketValue) === null) {
     errors.marketValue = 'El valor de mercado es requerido';
-  } else if (!/^\d+$/.test(values.marketValue)) {
-    errors.marketValue = 'Escriba solo números';
   }
   if (!values.destination) errors.destination = 'El destino es requerido';
   if (!values.acquisitionForm.trim()) {
@@ -128,16 +127,12 @@ const RealEstateForm = ({ item, onSave }: RealEstateFormProps) => {
         errors={errors.location}
         onChange={event => update({ location: event.target.value })}
       />
-      <InputText
+      <MoneyInput
         label="Valor de mercado *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={MAX_VALUE_DIGITS}
+        currency={null}
         value={state.marketValue}
         errors={errors.marketValue}
-        onChange={event =>
-          update({ marketValue: event.target.value.replace(/\D/g, '') })
-        }
+        onChange={value => update({ marketValue: value })}
       />
       <Dropdown
         label="Destino *"

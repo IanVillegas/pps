@@ -2,10 +2,12 @@
 
 import { useId } from 'react';
 import { InputText, Switch } from '@/components/Atoms';
+import { MoneyInput } from '@/components/Molecules';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type { StepErrors, StepValues } from '@/types/Declaration.types';
 import type { JudicialValues } from '@/types/JudicialData.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './JudicialData.module.scss';
 
 /**
@@ -23,11 +25,9 @@ export const validateJudicialData = (stepValues: StepValues): StepErrors => {
   if (!values.alimonyTo?.trim()) {
     errors.alimonyTo = 'Indique a quién paga la pensión alimenticia';
   }
-  const amount = values.alimonyAmount ?? '';
-  if (!amount.trim()) {
+  // Con MoneyInput solo puede faltar escribir el monto (0.00 es valido).
+  if (amountToCents(values.alimonyAmount ?? '') === null) {
     errors.alimonyAmount = 'El monto que cancela por mes es requerido';
-  } else if (!/^\d+$/.test(amount)) {
-    errors.alimonyAmount = 'Escriba solo números';
   }
   return errors;
 };
@@ -146,16 +146,13 @@ const JudicialData = ({ values, errors, onChange }: StepProps) => {
               errors={errors.alimonyTo}
               onChange={event => setField('alimonyTo', event.target.value)}
             />
-            <InputText
+            {/* Figma no dice la moneda de la pension (D-23): sin icono. */}
+            <MoneyInput
               label="Monto que cancela por mes *"
-              placeholder="Escribe aquí"
-              inputMode="numeric"
-              maxLength={FIELD_MAX_LENGTH.amount}
+              currency={null}
               value={judicial.alimonyAmount ?? ''}
               errors={errors.alimonyAmount}
-              onChange={event =>
-                setField('alimonyAmount', event.target.value.replace(/\D/g, ''))
-              }
+              onChange={value => setField('alimonyAmount', value)}
             />
           </div>
         )}

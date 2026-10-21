@@ -215,7 +215,8 @@ describe('IncomeExpenses (paso 3)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: 'Editar ingreso Alquileres' })
       );
-      expect(screen.getByLabelText('Monto *')).toHaveValue('350000');
+      // Un monto entero anterior se lee como unidades enteras con centavos.
+      expect(screen.getByLabelText('Monto *')).toHaveValue('350,000.00');
       expect(screen.getByLabelText('Justificación *')).toHaveValue(
         'Apartamento'
       );
@@ -223,10 +224,10 @@ describe('IncomeExpenses (paso 3)', () => {
 
       const amount = screen.getByLabelText('Monto *');
       await userEvent.clear(amount);
-      await userEvent.type(amount, '400000');
+      await userEvent.type(amount, '40000000');
       await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
 
-      expect(await screen.findByText('400,000')).toBeInTheDocument();
+      expect(await screen.findByText('400,000.00')).toBeInTheDocument();
       expect(screen.getByText('1 archivo(s)')).toBeInTheDocument();
       expect(screen.getByTestId('incomes')).toHaveTextContent('1');
     });
@@ -299,14 +300,14 @@ describe('IncomeExpenses (paso 3)', () => {
       await userEvent.click(
         await screen.findByRole('option', { name: 'Vivienda' })
       );
-      await userEvent.type(screen.getByLabelText('Monto *'), '200000');
+      await userEvent.type(screen.getByLabelText('Monto *'), '20000000');
       await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
 
-      expect(await screen.findByText('200,000')).toBeInTheDocument();
+      expect(await screen.findByText('200,000.00')).toBeInTheDocument();
       expect(draft().expenses).toHaveLength(1);
       expect(draft().expenses?.[0]).toMatchObject({
         type: 'vivienda',
-        amount: '200000',
+        amount: '200000.00',
       });
       expect(
         (await screen.findAllByText(TOAST_MESSAGES.saved.message)).length
@@ -318,12 +319,12 @@ describe('IncomeExpenses (paso 3)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: 'Editar egreso Transporte' })
       );
-      expect(screen.getByLabelText('Monto *')).toHaveValue('90000');
+      expect(screen.getByLabelText('Monto *')).toHaveValue('90,000.00');
       const amount = screen.getByLabelText('Monto *');
       await userEvent.clear(amount);
-      await userEvent.type(amount, '95000');
+      await userEvent.type(amount, '9500000');
       await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
-      expect(await screen.findByText('95,000')).toBeInTheDocument();
+      expect(await screen.findByText('95,000.00')).toBeInTheDocument();
 
       await userEvent.click(
         screen.getByRole('button', {
@@ -373,7 +374,9 @@ describe('IncomeExpenses (paso 3)', () => {
       );
       expect(mockedFetch).toHaveBeenLastCalledWith({
         additionalIncomes: [],
-        expenses: [expect.objectContaining({ type: 'vivienda', amount: '5' })],
+        expenses: [
+          expect.objectContaining({ type: 'vivienda', amount: '0.05' }),
+        ],
       });
     });
 
@@ -409,24 +412,26 @@ describe('IncomeExpenses (paso 3)', () => {
       await screen.findByText('Salario bruto');
     });
 
-    it('shows the detail of the patrimonial changes only while the answer is Sí', async () => {
+    it('keeps the detail of the patrimonial changes visible but enabled only while the answer is Sí (D-27)', async () => {
       renderValues({});
       const detail = () =>
-        screen.queryByLabelText(
+        screen.getByLabelText(
           'Detalle los cambios en su situación patrimonial'
         );
-      expect(detail()).not.toBeInTheDocument();
+      // Sin responder: visible y deshabilitado.
+      expect(detail()).toBeDisabled();
 
       await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
-      expect(detail()).toBeInTheDocument();
-      await userEvent.type(detail() as HTMLElement, 'Heredé una propiedad');
+      expect(detail()).toBeEnabled();
+      await userEvent.type(detail(), 'Heredé una propiedad');
       expect(draft()).toMatchObject({
         patrimonialChanges: 'si',
         patrimonialChangesDetail: 'Heredé una propiedad',
       });
 
       await userEvent.click(screen.getByRole('radio', { name: 'No' }));
-      expect(detail()).not.toBeInTheDocument();
+      expect(detail()).toBeDisabled();
+      expect(detail()).toHaveValue('');
       await screen.findByText('Salario bruto');
     });
 

@@ -61,6 +61,14 @@
     &::placeholder {
       color: variables.$gray-300;
     }
+
+    // !Modificado para DecPat (2026-10-22): campo deshabilitado (el detalle de
+    // los cambios patrimoniales con la respuesta «No»).
+    &:disabled {
+      background: variables.$gray-100;
+      color: variables.$gray-300;
+      cursor: not-allowed;
+    }
   }
 
   &__alerts {

@@ -11,14 +11,14 @@ const MORA: LegalEntityItem = {
   name: 'Inversiones Mora S.A.',
   legalId: '3-101-123456',
   purpose: 'Alquiler de locales',
-  term: '99 años',
+  term: '99',
 };
 const SOL: LegalEntityItem = {
   id: 'b',
   name: 'Servicios del Sol',
   legalId: '3-102-654321',
   purpose: 'Consultoría',
-  term: 'Indefinido',
+  term: '5',
 };
 
 // El paso guarda sus valores en el borrador del wizard; aqui un estado local
@@ -64,7 +64,7 @@ describe('LegalEntities (paso 10)', () => {
     const row = screen.getByRole('row', { name: /Inversiones Mora/ });
     expect(within(row).getByText('3-101-123456')).toBeInTheDocument();
     expect(within(row).getByText('Alquiler de locales')).toBeInTheDocument();
-    expect(within(row).getByText('99 años')).toBeInTheDocument();
+    expect(within(row).getByText('99')).toBeInTheDocument();
     expect(screen.getByText('Servicios del Sol')).toBeInTheDocument();
   });
 
@@ -114,7 +114,7 @@ describe('LegalEntities (paso 10)', () => {
       '3-101-999999'
     );
     await userEvent.type(screen.getByLabelText('Objetivo *'), 'Comercio');
-    await userEvent.type(screen.getByLabelText('Plazo *'), '50 años');
+    await userEvent.type(screen.getByLabelText('Plazo *'), '5a0');
     await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
 
     expect(await screen.findByText('Nueva S.A.')).toBeInTheDocument();
@@ -151,15 +151,15 @@ describe('LegalEntities (paso 10)', () => {
     expect(screen.getByLabelText('Cédula jurídica *')).toHaveValue(
       '3-101-123456'
     );
-    expect(screen.getByLabelText('Plazo *')).toHaveValue('99 años');
+    expect(screen.getByLabelText('Plazo *')).toHaveValue('99');
 
     const term = screen.getByLabelText('Plazo *');
     await userEvent.clear(term);
-    await userEvent.type(term, 'Indefinido');
+    await userEvent.type(term, '30');
     await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
 
-    expect(await screen.findByText('Indefinido')).toBeInTheDocument();
-    expect(screen.queryByText('99 años')).not.toBeInTheDocument();
+    expect(await screen.findByText('30')).toBeInTheDocument();
+    expect(screen.queryByText('99')).not.toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
   });
 

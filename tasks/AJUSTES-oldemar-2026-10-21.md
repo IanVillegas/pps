@@ -1,4 +1,4 @@
-# Ajustes sugeridos por Oldemar (2026-10-21)
+# Ajustes sugeridos por Oldemar (2026-10-21 y 2026-10-22)
 
 Cinco cambios indicados por el usuario, todos con su registro de validación. Los tres primeros son visuales sobre pantallas ya hechas; el último es una respuesta a una duda.
 
@@ -19,9 +19,9 @@ Figma: nodo 43294:2166, «Modal confirmacion eliminacion» (640 px).
 Figma: nodo 43121:5334 (nueva versión).
 
 - **Nueva disposición**, de arriba hacia abajo: las tres cifras (saldo mensual disponible y las dos razones), «¿Cómo califica su situación financiera?» con sus opciones, la descripción detallada y, al final, «¿Existen cambios en el periodo actual en su situación patrimonial?» con «Si»/«No». Antes esa pregunta iba a la derecha de las cifras, en una letra más pequeña; ahora va debajo y con el tamaño normal de las demás (se eliminó la opción `compact` de `RadioGroup`, que ya no usa nadie).
-- **Campo nuevo**: un `Textarea` «Detalle los cambios en su situación patrimonial» que aparece **solo cuando la respuesta es «Si»** y es opcional (sin asterisco). Se guarda bajo `patrimonialChangesDetail`. Al volver a «No» se **descarta del borrador** (no queda un texto que contradiga la respuesta) y al volver a «Si» parte vacío. Nunca bloquea el avance.
+- **Campo nuevo**: un `Textarea` «Detalle los cambios en su situación patrimonial», opcional (sin asterisco). **Siempre visible**, pero solo se **habilita con la respuesta «Si»**: con «No» (o sin responder) queda deshabilitado y vacío (decisión del usuario, 2026-10-22, D-27). Al volver a «No» se **descarta del borrador** (no queda un texto que contradiga la respuesta). Se guarda bajo `patrimonialChangesDetail` y nunca bloquea el avance. La etiqueta sigue siendo provisional. El `Textarea` compartido gana el estilo `:disabled` (fondo gris, texto atenuado; marcado «Modificado para DecPat»).
 
-## 2.2 y 2.3 Pasos 6 y 7: formato de montos y orden moneda → monto
+## 2.2 y 2.3 Formato de montos y orden moneda → monto (pasos 6 y 7, y luego todos los demás)
 
 Cambio de Oldemar: el monto se formatea **mientras se escribe** y es el estándar de Grupo Mutual.
 
@@ -33,12 +33,34 @@ Cambio de Oldemar: el monto se formatea **mientras se escribe** y es el estánda
 - **Extensión compartida**: `InputText` (sad-aml-shared) gana la propiedad opcional `startAdornment`, un icono dentro del campo al inicio (marcada «Modificado para DecPat», como la del tooltip).
 - Los totales por moneda de créditos y tarjetas (`CurrencyTotals`) ahora usan el mismo `CurrencyIcon` de 20 px de Figma en lugar del círculo rojo con el símbolo.
 
-## Dudas abiertas
+## Extensión a todos los montos (D-26 resuelta, 2026-10-22)
 
-- **D-26 (alcance del formato de montos)**: se aplicó solo a los pasos 6 y 7, como se pidió. Los demás montos (ingresos y egresos del paso 3, valor de inmuebles y de muebles, créditos, tarjetas y el monto mensual de pensión) siguen escribiéndose como números enteros, con «Moneda» después del monto donde aplica. Falta confirmar si se extiende a todos para que el estándar sea uno solo.
-- **D-27 («Otros detalles»)**: Figma no dibuja el campo nuevo, solo deja el espacio bajo «Si/No». Se interpretó «se habilita solo si indica que sí» como **aparece solo con «Si»**; si debe verse siempre y estar deshabilitado con «No», hay que cambiarlo. Su etiqueta («Detalle los cambios en su situación patrimonial») es provisional.
+El usuario confirmó que el formato **aplica a todo campo que pida un monto**, no solo a los pasos 6 y 7. Se convirtieron a `MoneyInput`:
+
+| Pantalla | Campos | Moneda del icono |
+| --- | --- | --- |
+| Paso 3, ingresos adicionales y egresos | Monto | Colones (los totales del mismo paso se muestran en ₡; los modales no tienen selector de moneda). |
+| Paso 4, inmuebles | Valor de mercado | Sin icono (el paso no tiene moneda; ver «Moneda sin definir»). |
+| Paso 5, muebles | Valor de mercado | Sin icono. |
+| Paso 8, créditos | Monto inicial, Saldo actual, Monto cuota | La que se elija en «Moneda», que ahora va **antes** de los montos (Entidad → Tipo; **Moneda** → Número de préstamo; montos → Fecha). |
+| Paso 9, tarjetas | Límite de tarjeta | La de la tarjeta («Moneda»). |
+| Paso 9, tarjetas | Saldo y Cuota en colones / en dólares | Siempre ₡ en las de colones y $ en las de dólares. |
+| Paso 11, datos judiciales | Monto que cancela por mes | Sin icono. |
+
+`MoneyInput` acepta `currency={null}` para los montos que no tienen una moneda concreta: no dibuja el icono ni reserva su espacio. En todos, el valor se guarda como texto decimal con dos decimales y los montos enteros anteriores se leen como unidades enteras; las validaciones «Escriba solo números» desaparecen porque el campo ya no admite otra cosa.
+
+## Otras respuestas del usuario (2026-10-22)
+
+- **D-20, «Periodo» de la tarjeta**: es el **año**. Revisando las capturas del sistema original, solo muestra y pide el año, no una fecha completa. El campo ahora es numérico de cuatro dígitos (placeholder `AAAA`), con el error «Escriba el año con 4 dígitos»; no se inventa un rango de años.
+- **D-21, «Plazo» de la personería**: es un **número** (en las capturas originales se ve, por ejemplo, un 3). El campo pasa a ser solo dígitos (hasta 4); su unidad (años, meses…) no está definida y no se escribe. Sigue sin definirse un formato para la cédula jurídica (texto libre).
+- **D-19, edad contra fecha de nacimiento**: **no** hay esa validación; queda como está (ambos campos se guardan por separado).
+- **D-23, datos judiciales**: el usuario pidió identificar el paso: es el **paso 11, «Datos judiciales»** (nodos Figma 43121:1791 y 43121:2088). Siguen abiertas dos dudas: qué se escribe en el campo de detalle de juicios penales, civiles y embargos, y la moneda del «Monto que cancela por mes».
+
+## Moneda sin definir
+
+Los montos que no tienen selector de moneda (inmuebles, muebles y la pensión) se formatean igual pero **sin icono**, porque no hay una moneda definida para ellos. Si deben ser colones, o llevar un selector de moneda como en créditos y tarjetas, hay que indicarlo.
 
 ## Validación
 
-- Tipos, lint y 407 pruebas: OK (35 más que las 372 anteriores: pruebas del modal de eliminar en `RecordsTable` y de los diez pasos que eliminan; del orden y campo condicional de «Otros detalles»; de `MoneyInput`, de las utilidades de monto y de los modales de ahorro y cuentas corrientes, que ahora cubren digitación por centavos, borrar, tope de 15 dígitos, placeholder, icono, orden moneda → monto y datos anteriores).
+- Tipos, lint y 409 pruebas: OK (37 más que las 372 anteriores: pruebas del modal de eliminar en `RecordsTable` y de los diez pasos que eliminan; del orden y campo condicional de «Otros detalles»; de `MoneyInput`, de las utilidades de monto y de los modales de ahorro y cuentas corrientes, que ahora cubren digitación por centavos, borrar, tope de 15 dígitos, placeholder, icono, orden moneda → monto y datos anteriores).
 - V3 en navegador (sesión local de prueba): el modal de ahorro muestra Moneda sobre Monto; las opciones de moneda llevan su icono; al elegir Colones el icono aparece en el selector y al inicio del monto, y escribir `12345600` muestra `123,456.00`; la cuenta guardada aparece en la tabla con `123,456.00`; el icono de eliminar abre el modal de confirmación con el aspecto de Figma y «Sí, eliminar» retira la fila. «Otros detalles» se comprobó por el DOM (orden correcto y campo de detalle con «Si»); la captura de ese tramo salió en negro y no se pudo mostrar.

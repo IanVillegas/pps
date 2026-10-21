@@ -2,7 +2,7 @@ import { validateCreditCard } from './CreditCardDialog';
 import type { CreditCardItemData } from '@/types/CreditCard.types';
 
 const VALID: CreditCardItemData = {
-  period: 'Mensual',
+  period: '2026',
   entity: 'grupo-mutual',
   currency: 'colones',
   expiryDate: '2028-05-20',
@@ -46,6 +46,27 @@ describe('validateCreditCard', () => {
     expect(validateCreditCard(VALID)).toEqual({});
   });
 
+  it('takes the period as a year: four digits, with no range', () => {
+    expect(
+      validateCreditCard({ ...VALID, period: '2026' }).period
+    ).toBeUndefined();
+    expect(
+      validateCreditCard({ ...VALID, period: '1990' }).period
+    ).toBeUndefined();
+    expect(
+      validateCreditCard({ ...VALID, period: '2099' }).period
+    ).toBeUndefined();
+    expect(validateCreditCard({ ...VALID, period: '' }).period).toBe(
+      'El periodo es requerido'
+    );
+    expect(validateCreditCard({ ...VALID, period: '26' }).period).toBe(
+      'Escriba el año con 4 dígitos'
+    );
+    expect(validateCreditCard({ ...VALID, period: 'Mensual' }).period).toBe(
+      'Escriba el año con 4 dígitos'
+    );
+  });
+
   it('asks for exactly four digits in the operation number', () => {
     expect(validateCreditCard({ ...VALID, lastFour: '123' }).lastFour).toBe(
       'Escriba los 4 últimos dígitos'
@@ -55,16 +76,24 @@ describe('validateCreditCard', () => {
     );
   });
 
-  it('rejects amounts that are not only digits', () => {
+  it('requires every amount, accepting zero and a whole amount from older data', () => {
     const errors = validateCreditCard({
       ...VALID,
-      limit: '1.5',
-      balanceColones: '2,000',
-      installmentDollars: '10a',
+      limit: '',
+      balanceColones: '',
+      installmentDollars: '',
     });
-    expect(errors.limit).toBe('Escriba solo números');
-    expect(errors.balanceColones).toBe('Escriba solo números');
-    expect(errors.installmentDollars).toBe('Escriba solo números');
+    expect(errors.limit).toBe('El límite de la tarjeta es requerido');
+    expect(errors.balanceColones).toBe('El saldo en colones es requerido');
+    expect(errors.installmentDollars).toBe('La cuota en dólares es requerida');
+    expect(
+      validateCreditCard({
+        ...VALID,
+        limit: '0.00',
+        balanceColones: '350000',
+        balanceDollars: '1234.56',
+      })
+    ).toEqual({});
   });
 
   it('asks for a valid date when what was typed is not a real date', () => {

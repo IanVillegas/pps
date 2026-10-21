@@ -13,10 +13,12 @@ import {
 interface MoneyInputProps {
   label: string;
   /**
-   * Moneda elegida en el selector ('colones' o 'dolares'): decide el icono
-   * que va al inicio del campo. Sin moneda todavia no se dibuja ninguno.
+   * Moneda del monto ('colones' o 'dolares'): decide el icono que va al
+   * inicio del campo. `undefined` = todavia no se elige en el selector (el
+   * espacio del icono queda reservado); `null` = a este monto no le aplica una
+   * moneda concreta (ni icono ni espacio).
    */
-  currency?: string;
+  currency?: string | null;
   /** Monto guardado con dos decimales («1234.56»), o '' mientras no se escribe. */
   value: string;
   onChange: (value: string) => void;
@@ -72,9 +74,13 @@ const MoneyInput = ({
       autoComplete="off"
       value={display}
       errors={errors}
-      // Siempre se pasa el adorno (vacio mientras no hay moneda): asi el campo
-      // no cambia de estructura al elegir la moneda y el texto no «salta».
-      startAdornment={<CurrencyIcon currency={currency ?? ''} />}
+      // Mientras se espera la moneda se pasa el adorno vacio: asi el campo no
+      // cambia de estructura al elegirla y el texto no «salta».
+      startAdornment={
+        currency === null ? undefined : (
+          <CurrencyIcon currency={currency ?? ''} />
+        )
+      }
       onChange={handleChange}
     />
   );

@@ -8,7 +8,7 @@ export interface LegalEntityItem {
   legalId: string;
   /** "Objetivo" de la personeria: texto libre. */
   purpose: string;
-  /** "Plazo": texto libre; Figma no dice si es una duracion o una fecha. */
+  /** "Plazo": un numero (en el sistema original se ve, por ejemplo, 3); la unidad no esta definida. */
   term: string;
 }
 

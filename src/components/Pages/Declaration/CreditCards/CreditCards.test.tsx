@@ -22,7 +22,7 @@ const TOTALS: CreditCardsTotals = {
 
 const COLONES_CARD: CreditCardItem = {
   id: 'a',
-  period: 'Mensual',
+  period: '2026',
   entity: 'grupo-mutual',
   currency: 'colones',
   expiryDate: '2028-05-20',
@@ -35,7 +35,7 @@ const COLONES_CARD: CreditCardItem = {
 };
 const DOLLARS_CARD: CreditCardItem = {
   id: 'b',
-  period: 'Anual',
+  period: '2025',
   entity: 'banco-1',
   currency: 'dolares',
   expiryDate: '2029-01-05',
@@ -89,7 +89,7 @@ describe('CreditCards (paso 9)', () => {
   it('shows each card with formatted amounts, readable catalogs and date', async () => {
     renderCards([COLONES_CARD, DOLLARS_CARD]);
     const row = screen.getByRole('row', { name: /1234/ });
-    expect(within(row).getByText('Mensual')).toBeInTheDocument();
+    expect(within(row).getByText('2026')).toBeInTheDocument();
     expect(within(row).getByText('Grupo Mutual')).toBeInTheDocument();
     expect(within(row).getByText('20/05/2028')).toBeInTheDocument();
     expect(within(row).getByText('2,000,000')).toBeInTheDocument();
@@ -177,17 +177,43 @@ describe('CreditCards (paso 9)', () => {
     await settle();
   });
 
-  it('only accepts digits in the amounts and at most four in the operation number', async () => {
+  it('takes only the year with four digits as the period, and at most four digits in the operation number', async () => {
+    renderCards();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Agregar nuevo' })
+    );
+    const period = screen.getByLabelText('Periodo *');
+    expect(period).toHaveAttribute('placeholder', 'AAAA');
+    await userEvent.type(period, '20a263');
+    expect(period).toHaveValue('2026');
+    const lastFour = screen.getByLabelText('Últimos 4 # de operación *');
+    await userEvent.type(lastFour, '12a3456');
+    expect(lastFour).toHaveValue('1234');
+    await settle();
+  });
+
+  it('formats the five amounts as they are typed, each with its own currency icon', async () => {
     renderCards();
     await userEvent.click(
       screen.getByRole('button', { name: 'Agregar nuevo' })
     );
     const limit = screen.getByLabelText('Límite de tarjeta *');
     await userEvent.type(limit, '1a5b0');
-    expect(limit).toHaveValue('150');
-    const lastFour = screen.getByLabelText('Últimos 4 # de operación *');
-    await userEvent.type(lastFour, '12a3456');
-    expect(lastFour).toHaveValue('1234');
+    expect(limit).toHaveValue('1.50');
+    const icon = (label: string) =>
+      screen.getByLabelText(label).parentElement?.querySelector('svg');
+
+    // El límite sigue a la moneda de la tarjeta; las columnas de colones y de
+    // dólares llevan siempre la suya.
+    expect(icon('Límite de tarjeta *')).toBeFalsy();
+    await pick('Moneda *', 'Dólares');
+    const dollar = icon('Límite de tarjeta *')?.innerHTML;
+    expect(dollar).toBeTruthy();
+    expect(icon('Saldo colones *')).toBeInTheDocument();
+    expect(icon('Cuota colones *')).toBeInTheDocument();
+    expect(icon('Saldo dólares *')?.innerHTML).toBe(dollar);
+    expect(icon('Cuota dólares *')?.innerHTML).toBe(dollar);
+    expect(icon('Saldo colones *')?.innerHTML).not.toBe(dollar);
     await settle();
   });
 
@@ -199,11 +225,11 @@ describe('CreditCards (paso 9)', () => {
       screen.getByRole('button', { name: 'Agregar nuevo' })
     );
     await pick('Entidad financiera *', 'Grupo Mutual');
-    await userEvent.type(screen.getByLabelText('Periodo *'), 'Mensual');
+    await userEvent.type(screen.getByLabelText('Periodo *'), '2026');
     await pick('Moneda *', 'Colones');
     await userEvent.type(
       screen.getByLabelText('Límite de tarjeta *'),
-      '900000'
+      '90000000'
     );
     await userEvent.type(
       screen.getByLabelText('Fecha de vencimiento *'),
@@ -213,13 +239,13 @@ describe('CreditCards (paso 9)', () => {
       screen.getByLabelText('Últimos 4 # de operación *'),
       '4321'
     );
-    await userEvent.type(screen.getByLabelText('Saldo colones *'), '120000');
-    await userEvent.type(screen.getByLabelText('Cuota colones *'), '15000');
+    await userEvent.type(screen.getByLabelText('Saldo colones *'), '12000000');
+    await userEvent.type(screen.getByLabelText('Cuota colones *'), '1500000');
     await userEvent.type(screen.getByLabelText('Saldo dólares *'), '0');
     await userEvent.type(screen.getByLabelText('Cuota dólares *'), '0');
     await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
 
-    expect(await screen.findByText('120,000')).toBeInTheDocument();
+    expect(await screen.findByText('120,000.00')).toBeInTheDocument();
     expect(screen.getByText('20/05/2040')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
     expect(
@@ -230,10 +256,10 @@ describe('CreditCards (paso 9)', () => {
     );
     expect(mockedFetch).toHaveBeenLastCalledWith([
       expect.objectContaining({
-        balanceColones: '120000',
-        installmentColones: '15000',
-        balanceDollars: '0',
-        installmentDollars: '0',
+        balanceColones: '120000.00',
+        installmentColones: '15000.00',
+        balanceDollars: '0.00',
+        installmentDollars: '0.00',
       }),
     ]);
   });
@@ -245,11 +271,11 @@ describe('CreditCards (paso 9)', () => {
     );
     const period = screen.getByLabelText('Periodo *');
     await userEvent.clear(period);
-    await userEvent.type(period, 'Otro periodo');
+    await userEvent.type(period, '2024');
     await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
 
-    expect(screen.getByText('Mensual')).toBeInTheDocument();
-    expect(screen.queryByText('Otro periodo')).not.toBeInTheDocument();
+    expect(screen.getByText('2026')).toBeInTheDocument();
+    expect(screen.queryByText('2024')).not.toBeInTheDocument();
     await settle();
   });
 
@@ -258,18 +284,19 @@ describe('CreditCards (paso 9)', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Editar tarjeta 1234' })
     );
-    expect(screen.getByLabelText('Periodo *')).toHaveValue('Mensual');
-    expect(screen.getByLabelText('Saldo colones *')).toHaveValue('350000');
+    expect(screen.getByLabelText('Periodo *')).toHaveValue('2026');
+    // Un monto entero anterior se lee como unidades enteras con centavos.
+    expect(screen.getByLabelText('Saldo colones *')).toHaveValue('350,000.00');
     expect(screen.getByLabelText('Fecha de vencimiento *')).toHaveValue(
       '20/05/2028'
     );
 
     const balance = screen.getByLabelText('Saldo colones *');
     await userEvent.clear(balance);
-    await userEvent.type(balance, '300000');
+    await userEvent.type(balance, '30000000');
     await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
 
-    expect(await screen.findByText('300,000')).toBeInTheDocument();
+    expect(await screen.findByText('300,000.00')).toBeInTheDocument();
     expect(screen.queryByText('350,000')).not.toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
     await settle();

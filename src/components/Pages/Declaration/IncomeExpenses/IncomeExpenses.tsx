@@ -297,17 +297,18 @@ const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
             }
           }}
         />
-        {data.patrimonialChanges === 'si' && (
-          <Textarea
-            label="Detalle los cambios en su situación patrimonial"
-            placeholder="Escribe aquí"
-            maxLength={FIELD_MAX_LENGTH.patrimonialChangesDetail}
-            value={data.patrimonialChangesDetail ?? ''}
-            onChange={event =>
-              patch({ patrimonialChangesDetail: event.target.value })
-            }
-          />
-        )}
+        {/* Siempre visible: solo se puede escribir con la respuesta «Si» y
+            queda deshabilitado (y vacio) con «No» o sin responder. */}
+        <Textarea
+          label="Detalle los cambios en su situación patrimonial"
+          placeholder="Escribe aquí"
+          maxLength={FIELD_MAX_LENGTH.patrimonialChangesDetail}
+          disabled={data.patrimonialChanges !== 'si'}
+          value={data.patrimonialChangesDetail ?? ''}
+          onChange={event =>
+            patch({ patrimonialChangesDetail: event.target.value })
+          }
+        />
         {actions}
       </section>
 

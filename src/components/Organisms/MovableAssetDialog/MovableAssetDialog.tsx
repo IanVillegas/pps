@@ -2,7 +2,7 @@
 
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText, Textarea } from '@/components/Atoms';
-import { Dropdown } from '@/components/Molecules';
+import { Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import Tooltip from '@/sad-aml-shared/components/Atoms/Tooltip/Tooltip';
 import {
@@ -14,6 +14,7 @@ import type {
   MovableAssetItemData,
 } from '@/types/MovableAsset.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './MovableAssetDialog.module.scss';
 
 const FORM_ID = 'movable-asset-form';
@@ -57,10 +58,9 @@ export const validateMovableAssetItem = (
     errors.year = 'Escriba solo números';
   }
 
-  if (!values.marketValue.trim()) {
+  // Con MoneyInput solo puede faltar escribir el monto (0.00 es valido).
+  if (amountToCents(values.marketValue) === null) {
     errors.marketValue = 'El valor de mercado es requerido';
-  } else if (!/^\d+$/.test(values.marketValue)) {
-    errors.marketValue = 'Escriba solo números';
   }
 
   if (!values.description.trim()) {
@@ -185,16 +185,12 @@ const MovableAssetForm = ({ item, onSave }: MovableAssetFormProps) => {
           update({ year: event.target.value.replace(/\D/g, '') })
         }
       />
-      <InputText
+      <MoneyInput
         label="Valor de mercado *"
-        placeholder="Escribe aquí"
-        inputMode="numeric"
-        maxLength={FIELD_MAX_LENGTH.amount}
+        currency={null}
         value={state.marketValue}
         errors={errors.marketValue}
-        onChange={event =>
-          update({ marketValue: event.target.value.replace(/\D/g, '') })
-        }
+        onChange={value => update({ marketValue: value })}
       />
       <div className={styles.movableAsset__full}>
         <Textarea

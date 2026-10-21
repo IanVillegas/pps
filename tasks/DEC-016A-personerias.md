@@ -2,6 +2,8 @@
 
 Implementada y validada el 2026-10-20.
 
+> **Actualización 2026-10-22**: «Plazo» es un **número** (en las capturas del sistema original se ve, por ejemplo, 3): el campo pasa a aceptar solo dígitos (hasta 4); su unidad sigue sin definirse (D-21, resuelta en parte). Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
+
 ## Alcance
 
 El paso 10 de Figma (nodo 43121:2464, «Personería jurídica») dibuja dos bloques en una misma tarjeta: «Si posee usted alguna personería jurídica, por favor especifique.» y «Si usted forma parte en alguna sociedad, por favor especifique.». Esta tarea implementa **solo el primero**; el bloque de sociedades (modal con cargo y campos condicionales, nodo 43121:2392) es DEC-016B y se agregará debajo en la misma pantalla. DEC-016B **queda en pausa (D-22)**: el usuario solicitó al negocio la lista de datos que maneja la tabla de sociedades y se retoma cuando la reciba.

@@ -2,6 +2,8 @@
 
 Implementada y validada el 2026-10-20.
 
+> **Actualización 2026-10-22**: «Periodo» es el **año** (el usuario lo confirmó con las capturas del sistema original): campo numérico de cuatro dígitos, sin rango (D-20 resuelta). Los montos se formatean al escribir (centavos, comas, dos decimales) con el icono de la moneda: el límite sigue a la moneda de la tarjeta y las columnas de colones y de dólares llevan siempre la suya. Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
+
 ## Implementación
 
 - **Paso** `src/components/Pages/Declaration/CreditCards/CreditCards.tsx` (nodo Figma 43121:2819, «Tarjetas de crédito»), registrado como paso 9 en `stepDefinitions.tsx`, **sin `validate`**: la tabla puede quedar vacía y aun así continuar (D-16).

@@ -128,13 +128,18 @@ const LegalEntityForm = ({ item, onSave }: LegalEntityFormProps) => {
         errors={errors.purpose}
         onChange={event => update({ purpose: event.target.value })}
       />
+      {/* «Plazo» es un numero (en el sistema original se ve, por ejemplo, 3);
+          su unidad no esta definida, asi que solo se piden digitos. */}
       <InputText
         label="Plazo *"
         placeholder="Escribe aquí"
+        inputMode="numeric"
         maxLength={FIELD_MAX_LENGTH.legalEntityTerm}
         value={state.term}
         errors={errors.term}
-        onChange={event => update({ term: event.target.value })}
+        onChange={event =>
+          update({ term: event.target.value.replace(/\D/g, '') })
+        }
       />
     </form>
   );

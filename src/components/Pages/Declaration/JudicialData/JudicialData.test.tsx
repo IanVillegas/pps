@@ -63,7 +63,7 @@ describe('validateJudicialData', () => {
       })
     ).toEqual({
       alimonyTo: 'Indique a quién paga la pensión alimenticia',
-      alimonyAmount: 'Escriba solo números',
+      alimonyAmount: 'El monto que cancela por mes es requerido',
     });
   });
 
@@ -116,12 +116,17 @@ describe('JudicialData (paso 11)', () => {
     ).toBeInTheDocument();
   });
 
-  it('only accepts digits in the monthly amount', async () => {
+  it('formats the monthly amount as it is typed, with no currency icon (D-23)', async () => {
     render(<Harness />);
     await userEvent.click(screen.getByRole('switch', { name: ALIMONY }));
     const amount = screen.getByLabelText('Monto que cancela por mes *');
+    expect(amount).toHaveAttribute('placeholder', '0,000.00');
     await userEvent.type(amount, '1a5b0');
-    expect(amount).toHaveValue('150');
+    expect(amount).toHaveValue('1.50');
+    await userEvent.type(amount, '0000');
+    expect(amount).toHaveValue('15,000.00');
+    expect(amount.parentElement?.querySelector('svg')).toBeNull();
+    expect(stored()).toMatchObject({ alimonyAmount: '15000.00' });
   });
 
   it('drops the detail from the draft when a question goes back to No', async () => {

@@ -2,18 +2,15 @@
 
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
-import { Dropdown } from '@/components/Molecules';
+import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import DatePicker from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker';
-import {
-  CURRENCY_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-} from '@/services/CatalogService';
+import { FINANCIAL_ENTITY_OPTIONS } from '@/services/CatalogService';
 import type {
   CreditCardItem,
   CreditCardItemData,
 } from '@/types/CreditCard.types';
-import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
+import { amountToCents } from '@/utils/money';
 import styles from './CreditCardDialog.module.scss';
 
 const FORM_ID = 'credit-card-form';
@@ -22,7 +19,6 @@ const toOptions = (options: { value: string; label: string }[]) =>
   options.map(option => ({ value: option.value, element: option.label }));
 
 const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
-const CURRENCIES = toOptions(CURRENCY_OPTIONS);
 
 type CreditCardErrors = Partial<Record<keyof CreditCardItemData, string>>;
 
@@ -45,11 +41,9 @@ const EMPTY: FormState = {
   expiryDateInvalid: false,
 };
 
-const digitsError = (value: string, requiredMessage: string) => {
-  if (!value.trim()) return requiredMessage;
-  if (!/^\d+$/.test(value)) return 'Escriba solo números';
-  return undefined;
-};
+// Con MoneyInput solo puede faltar escribir el monto (0.00 es valido).
+const amountError = (value: string, requiredMessage: string) =>
+  amountToCents(value) === null ? requiredMessage : undefined;
 
 /**
  * Valida el formulario de una tarjeta. Los diez campos son obligatorios
@@ -61,7 +55,14 @@ export const validateCreditCard = (
   values: CreditCardItemData & { expiryDateInvalid?: boolean }
 ): CreditCardErrors => {
   const errors: CreditCardErrors = {};
-  if (!values.period.trim()) errors.period = 'El periodo es requerido';
+  // «Periodo» es el año: Figma lo dibuja como un campo de texto, pero el
+  // sistema original solo muestra y pide el año (no una fecha completa). Solo
+  // se exigen cuatro digitos; no se inventa un rango de años.
+  if (!values.period) {
+    errors.period = 'El periodo es requerido';
+  } else if (!/^\d{4}$/.test(values.period)) {
+    errors.period = 'Escriba el año con 4 dígitos';
+  }
   if (!values.entity) errors.entity = 'La entidad financiera es requerida';
   if (!values.currency) errors.currency = 'La moneda es requerida';
   if (values.expiryDateInvalid) {
@@ -69,7 +70,7 @@ export const validateCreditCard = (
   } else if (!values.expiryDate) {
     errors.expiryDate = 'La fecha de vencimiento es requerida';
   }
-  const limit = digitsError(
+  const limit = amountError(
     values.limit,
     'El límite de la tarjeta es requerido'
   );
@@ -86,7 +87,7 @@ export const validateCreditCard = (
     ['installmentDollars', 'La cuota en dólares es requerida'],
   ] as const;
   amounts.forEach(([field, requiredMessage]) => {
-    const error = digitsError(values[field], requiredMessage);
+    const error = amountError(values[field], requiredMessage);
     if (error) errors[field] = error;
   });
   return errors;
@@ -149,23 +150,6 @@ const CreditCardForm = ({ item, onSave }: CreditCardFormProps) => {
 
   const digitsOnly = (value: string) => value.replace(/\D/g, '');
 
-  type AmountField =
-    | 'limit'
-    | 'balanceColones'
-    | 'installmentColones'
-    | 'balanceDollars'
-    | 'installmentDollars';
-
-  const amountProps = (field: AmountField) => ({
-    placeholder: 'Escribe aquí',
-    inputMode: 'numeric' as const,
-    maxLength: FIELD_MAX_LENGTH.amount,
-    value: state[field],
-    errors: errors[field],
-    onChange: (event: { target: { value: string } }) =>
-      update({ [field]: digitsOnly(event.target.value) }),
-  });
-
   return (
     <form
       id={FORM_ID}
@@ -184,21 +168,27 @@ const CreditCardForm = ({ item, onSave }: CreditCardFormProps) => {
       />
       <InputText
         label="Periodo *"
-        placeholder="Escribe aquí"
-        maxLength={FIELD_MAX_LENGTH.cardPeriod}
+        placeholder="AAAA"
+        inputMode="numeric"
+        maxLength={4}
         value={state.period}
         errors={errors.period}
-        onChange={event => update({ period: event.target.value })}
+        onChange={event => update({ period: digitsOnly(event.target.value) })}
       />
-      <Dropdown
+      <CurrencySelect
         label="Moneda *"
-        placeholder="Selecciona"
-        options={CURRENCIES}
         value={state.currency || undefined}
         errors={errors.currency}
         onChange={value => update({ currency: value })}
       />
-      <InputText label="Límite de tarjeta *" {...amountProps('limit')} />
+      {/* El límite va en la moneda de la tarjeta. */}
+      <MoneyInput
+        label="Límite de tarjeta *"
+        currency={state.currency}
+        value={state.limit}
+        errors={errors.limit}
+        onChange={value => update({ limit: value })}
+      />
       <DatePicker
         label="Fecha de vencimiento *"
         placeholder="DD/MM/AAAA"
@@ -228,15 +218,34 @@ const CreditCardForm = ({ item, onSave }: CreditCardFormProps) => {
         errors={errors.lastFour}
         onChange={event => update({ lastFour: digitsOnly(event.target.value) })}
       />
-      <InputText label="Saldo colones *" {...amountProps('balanceColones')} />
-      <InputText
-        label="Cuota colones *"
-        {...amountProps('installmentColones')}
+      {/* Las columnas de colones y de dólares llevan siempre su propia moneda. */}
+      <MoneyInput
+        label="Saldo colones *"
+        currency="colones"
+        value={state.balanceColones}
+        errors={errors.balanceColones}
+        onChange={value => update({ balanceColones: value })}
       />
-      <InputText label="Saldo dólares *" {...amountProps('balanceDollars')} />
-      <InputText
+      <MoneyInput
+        label="Cuota colones *"
+        currency="colones"
+        value={state.installmentColones}
+        errors={errors.installmentColones}
+        onChange={value => update({ installmentColones: value })}
+      />
+      <MoneyInput
+        label="Saldo dólares *"
+        currency="dolares"
+        value={state.balanceDollars}
+        errors={errors.balanceDollars}
+        onChange={value => update({ balanceDollars: value })}
+      />
+      <MoneyInput
         label="Cuota dólares *"
-        {...amountProps('installmentDollars')}
+        currency="dolares"
+        value={state.installmentDollars}
+        errors={errors.installmentDollars}
+        onChange={value => update({ installmentDollars: value })}
       />
     </form>
   );

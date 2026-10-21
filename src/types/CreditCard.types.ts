@@ -2,7 +2,7 @@
 export interface CreditCardItem {
   /** Identificador estable de la fila (no depende de su posicion). */
   id: string;
-  /** "Periodo": texto libre (Figma lo dibuja como campo de texto, ver DEC-015). */
+  /** "Periodo": el año, con cuatro digitos (el sistema original solo pide el año). */
   period: string;
   /** Valor del catalogo de entidad financiera (D-09: sintetico). */
   entity: string;
