@@ -2,6 +2,8 @@
 
 Implementada y validada el 2026-10-13.
 
+> **Actualización 2026-10-21 (ajustes de Oldemar)**: «Moneda» va ahora antes que «Saldo actual», y el saldo se formatea al escribir (centavos, comas y dos decimales, icono de la moneda). Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
+
 ## D-15 resuelta por el usuario
 
 El borde rojo exterior que Figma dibuja en el paso 7 (y los bordes rojos o amarillos que aparezcan en otras pantallas) son **anotaciones del propio usuario**, cosas que tenía que preguntar; **no son parte del diseño visual** y no se replican. Queda cerrada D-15.

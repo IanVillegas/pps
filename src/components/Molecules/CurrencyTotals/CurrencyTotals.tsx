@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import CurrencyIcon from '@/components/Atoms/CurrencyIcon/CurrencyIcon';
 import { formatCurrency } from '@/utils/money';
 import styles from './CurrencyTotals.module.scss';
 
@@ -34,8 +35,8 @@ interface CurrencyColumnProps {
 
 const CurrencyColumn = ({ title, symbol, figures }: CurrencyColumnProps) => (
   <div className={styles.currencyTotals__currency}>
-    <span className={styles.currencyTotals__icon} aria-hidden="true">
-      {symbol}
+    <span className={styles.currencyTotals__icon}>
+      <CurrencyIcon currency={symbol === '₡' ? 'colones' : 'dolares'} />
     </span>
     <div>
       <h4 className={styles.currencyTotals__currencyTitle}>{title}</h4>

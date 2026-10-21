@@ -6,3 +6,5 @@ export { default as DeclarationStepper } from './DeclarationStepper/DeclarationS
 export { default as FileUpload } from './FileUpload/FileUpload';
 export { default as RadioGroup } from './RadioGroup/RadioGroup';
 export { default as CurrencyTotals } from './CurrencyTotals/CurrencyTotals';
+export { default as MoneyInput } from './MoneyInput/MoneyInput';
+export { default as CurrencySelect } from './CurrencySelect/CurrencySelect';

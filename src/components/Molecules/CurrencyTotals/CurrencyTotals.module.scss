@@ -25,23 +25,13 @@
   &__currency {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
+    gap: 17px;
   }
 
+  // Icono de moneda de Figma (20px, rojo) a la izquierda del titulo.
   &__icon {
     display: inline-flex;
     flex: none;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: gm.$red-2026;
-    // El CSS global fija Poppins en span: aqui va Work Sans.
-    font-family: var(--font-worksans), sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: #fff;
   }
 
   &__currencyTitle {

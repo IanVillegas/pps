@@ -10,3 +10,4 @@ export { default as Checkbox } from '@/sad-aml-shared/components/Atoms/Checkbox/
 export { default as Tooltip } from '@/sad-aml-shared/components/Atoms/Tooltip/Tooltip';
 export { default as Textarea } from '@/sad-aml-shared/components/Atoms/Textarea/Textarea';
 export { default as Switch } from './Switch/Switch';
+export { default as CurrencyIcon } from './CurrencyIcon/CurrencyIcon';

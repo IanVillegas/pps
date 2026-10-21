@@ -2,6 +2,8 @@
 
 Implementada y validada el 2026-10-13.
 
+> **Actualización 2026-10-21 (ajustes de Oldemar)**: el modal ya no pide «solo dígitos»: la moneda va antes que el monto, el monto se formatea al escribir (centavos, comas y dos decimales, icono de la moneda) y la tabla muestra dos decimales. Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
+
 ## Implementación
 
 - **Paso** `src/components/Pages/Declaration/Savings/Savings.tsx` (nodo Figma 43121:4102), registrado como paso 6 en `stepDefinitions.tsx`, **sin `validate`**: la tabla puede quedar vacía y aun así continuar (D-16), mismo criterio que Familia, Inmuebles y Muebles. Tabla con `RecordsTable` y el título de Figma «Indique las cuentas de ahorros en las cuales usted puede hacer movimientos»; columnas Número de cuenta/título, Nombre de dueño de la cuenta, Parentesco con dueño de la cuenta, Monto, Moneda, Entidad y Acciones.
