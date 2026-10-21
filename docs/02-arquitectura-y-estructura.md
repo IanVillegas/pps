@@ -1,6 +1,6 @@
 # Arquitectura y estructura
 
-Estado: base técnica revisada. Revisión: 14 de octubre de 2026.
+Estado: base técnica revisada. Revisión: 21 de octubre de 2026.
 
 El frontend utiliza Next.js 15.4.4, React 19.1 y TypeScript 5.8.3, según `package.json`. Los estilos utilizan Sass y módulos SCSS. Jest y React Testing Library permiten verificar comportamiento de componentes y servicios. La presencia de una dependencia instalada no implica que todas las pantallas la utilicen.
 
@@ -21,6 +21,8 @@ El frontend utiliza Next.js 15.4.4, React 19.1 y TypeScript 5.8.3, según `packa
 `DeclarationService` conserva el borrador en memoria y notifica cambios a sus suscriptores. `SessionService` mantiene una sesión de demostración y elimina el borrador al cerrar sesión. Una recarga pierde ambos estados. El borrador patrimonial no se almacena en `localStorage`; `AuthService` utiliza ese almacenamiento para recordar el nombre de usuario.
 
 Los servicios de totales representan respuestas simuladas del backend. La integración real requiere acordar contratos, errores y persistencia; su sustitución puede exigir ajustes en tipos, hooks y pruebas, además del servicio.
+
+`ConfidentialReportService` y `FinalizationService` mantienen estados propios, separados del borrador: las respuestas del cuestionario confidencial no se almacenan con la declaración patrimonial, y el guardado del juramento tiene sus propios estados. Ambos se borran al cerrar sesión. El [contrato de API](08-contrato-api.md) describe qué pasará a pedirse a un backend y cómo se reemplazarán estos servicios.
 
 ## Ejecución local
 

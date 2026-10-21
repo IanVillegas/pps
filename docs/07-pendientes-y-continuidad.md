@@ -1,10 +1,10 @@
 # Pendientes y continuidad
 
-Estado: recomendaciones iniciales para transferencia. Revisión: 14 de octubre de 2026.
+Estado: recomendaciones iniciales para transferencia. Revisión: 21 de octubre de 2026.
 
 | Prioridad propuesta | Trabajo | Criterio de cierre |
 | --- | --- | --- |
-| Alta | Completar pasos 10 a 12 y envío final | Contenido, reglas, estados y validaciones acordados e implementados. |
+| Alta | Completar la tabla de sociedades del paso 10 y el modal posterior al guardado | Información de la tabla y diseño del modal disponibles, implementados y validados. |
 | Alta | Integrar autenticación, persistencia y servicios reales | Contratos confirmados y escenarios de éxito y error verificados. |
 | Alta | Confirmar catálogos, cálculos y reglas de negocio | Sustitución de datos sintéticos y supuestos aprobada por el equipo. |
 | Alta | Comparar copia local y proyecto institucional | Registro de archivos transferidos, diferencias y validaciones en destino. |
@@ -33,7 +33,7 @@ Detalles en [acceso](flujos/acceso-al-sistema.md) y [navegación](flujos/navegac
 Revisión del 14 de octubre de 2026, referencia `875867890e6e48ce97668b7a0019cc8255a8f3a6`:
 
 - Acordar persistencia, recuperación, asociación al usuario y tratamiento de fallos o conflictos de guardado.
-- Definir validación global y envío final: el último paso tiene «Continuar» deshabilitado y no existe envío en el contenedor actual.
+- Definir validación global y envío final: «Terminar» abre el juramento y lo guarda con un servicio simulado; falta el envío institucional y una validación conjunta de las doce secciones.
 - Confirmar periodicidad y texto de introducción; cerrar el diálogo no representa aceptación formal.
 - Definir si se requiere seguimiento de completitud; el indicador actual solo marca la sección visitada.
 - Verificar rutas inválidas mediante pruebas específicas de la página: la lectura confirma su redirección, pero las pruebas seleccionadas del contenedor no ejercitan esa ruta.
@@ -47,8 +47,8 @@ Revisión del 14 de octubre de 2026, referencia `bda881c3316f635e2c0579c040b2dca
 
 - Confirmar formatos y límites de datos generales; actualmente se exige presencia y la sugerencia de teclado numérico no restringe caracteres.
 - Definir precarga institucional y campos editables; sustituir catálogos de demostración por contratos confirmados.
-- Confirmar rango de edad de familiares y si debe calcularse o contrastarse con la fecha de nacimiento.
-- Acordar criterio de duplicados y política de eliminación, actualmente inmediata y sin deshacer.
+- Confirmar el rango de edad de familiares. El equipo interno confirmó (21 de octubre de 2026) que **no** existe una validación entre la edad y la fecha de nacimiento: se capturan por separado.
+- Acordar criterio de duplicados y política de eliminación, que hoy pide confirmación y no ofrece deshacer.
 - Validar datos procedentes de API, incluyendo fechas y pertenencia a catálogos; las reglas actuales están orientadas a captura en interfaz.
 
 Detalles en [datos generales](flujos/datos-generales.md) y [núcleo familiar](flujos/nucleo-familiar.md).
@@ -79,13 +79,13 @@ Revisión: 14 de octubre de 2026, código `343c313c503bd25c652236b319c6e3874efeb
 | Créditos | Fechas, relaciones entre importes, duplicados y relación con cuotas declaradas como egresos. |
 | Común | Persistencia, identificadores de servidor, validación de catálogos, límites y tratamiento de totales desactualizados. |
 
-Las páginas específicas conservan sus diferencias históricas contra diseño. La revisión visual actual y la corrección del aviso del selector compartido siguen pendientes. Los pasos 10 a 12 no tienen contenido registrado al corte; no se documentan como funcionalidades terminadas.
+Las páginas específicas conservan sus diferencias históricas contra diseño. La revisión visual actual y la corrección del aviso del selector compartido siguen pendientes.
 
 ## Pendientes de tarjetas de crédito
 
 Revisión: 20 de octubre de 2026, código `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`.
 
-- Confirmar qué representa «Periodo»: hoy es texto libre obligatorio, pero el diseño muestra un valor con forma de fecha en la tabla de ejemplo. Si es una fecha o un catálogo hay que cambiar el campo del diálogo y la columna de la tabla.
+- Confirmar si el periodo de la tarjeta (el año, con cuatro dígitos) debe limitarse a un rango de años; hoy no se limita.
 - Confirmar si «Últimos 4 # de operación» identifica la tarjeta o una operación y si debe evitarse su repetición.
 - Acordar reglas de saldo frente a límite, vencimiento, duplicados, moneda de cada columna, catálogos y precisión.
 - Decidir si la tabla de once columnas debe ajustarse sin desplazamiento horizontal en 1280 px, como la dibuja el diseño, y completar la revisión en tablet.
@@ -93,6 +93,50 @@ Revisión: 20 de octubre de 2026, código `779fd7ad2b39796d3d2466f0ddb9ac44298f9
 - Cuando exista la API real, unificar los hooks `useSavingsTotals`, `useCreditsTotals` y `useCreditCardsTotals` en uno genérico: hoy repiten la misma lógica de solicitud y descarte de respuestas anteriores.
 
 Detalle en [tarjetas de crédito](flujos/tarjetas-de-credito.md).
+
+## Pendientes de los pasos 10 a 12
+
+Revisión: 21 de octubre de 2026, código `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`.
+
+| Bloque | Confirmaciones necesarias |
+| --- | --- |
+| Personería jurídica | Formato de la cédula jurídica, unidad del plazo (hoy solo un número), criterio de duplicados. |
+| Sociedades (paso 10) | **No implementada**: qué datos maneja la tabla (cargo, tipo de sociedad, porcentaje, dietas, tipo de poder, límite de suma), catálogos y reglas por cargo; el modal de Figma mide 750 px. |
+| Datos judiciales | Qué debe escribirse en el detalle de juicios y embargos, si es obligatorio y su longitud; moneda del monto de la pensión. |
+| Cuestionario confidencial | Receptor, canal, permisos, momento del envío y acuse (hoy no se envía nada). |
+| Juramento y cierre | Modal posterior al guardado (falta su diseño), evidencia de aceptación, versión del texto, secuencia de finalización y si la declaración queda en solo lectura. |
+
+Detalles en [personería jurídica](flujos/personeria-juridica.md), [datos judiciales](flujos/datos-judiciales.md), [cuestionario confidencial](flujos/cuestionario-confidencial.md) y [juramento y cierre](flujos/juramento-y-cierre.md).
+
+## Pendientes de montos y moneda
+
+- Confirmar la moneda de los montos que no tienen selector: ingresos y egresos (hoy se muestran con el ícono del colón por los totales del paso), inmuebles, muebles y la pensión alimenticia (sin ícono). Si alguno necesita selector de moneda, es un cambio local a su diálogo.
+- Confirmar reglas de redondeo y precisión (D-10). El frontend guarda los montos como texto decimal con dos decimales.
+- Trasladar al repositorio compartido las dos modificaciones de `sad-aml-shared` (`startAdornment` en `InputText` y estilo `disabled` en `Textarea`).
+
+Detalles en [montos y moneda](flujos/montos-y-moneda.md).
+
+## Deuda técnica de integración
+
+El sistema no se conecta a un backend en este alcance, pero debe quedar preparado: integrar una API debe significar implementar un adaptador, no modificar las pantallas. El [contrato de API](08-contrato-api.md) es la propuesta del frontend. **Criterio de cierre de la preparación:** existen, están probados y documentados el cliente único con interruptor entre datos simulados y reales, los catálogos pedidos de forma asíncrona, los servicios con las firmas del contrato y el guardado por acción dentro del adaptador. No depende de que exista un backend ni de resolver la lista siguiente, y no incluye soporte para casos que el contrato no fija (versionado, reintentos, formato de errores del servidor).
+
+La siguiente deuda permanece abierta por falta de información; cada punto se cierra cuando se tenga el dato.
+
+| Deuda | Información que falta | Quién la tiene | Qué toca en el código | Referencia |
+| --- | --- | --- | --- | --- |
+| Autenticación, sesión, bloqueo y vencimiento | Contrato de acceso, política de intentos, duración de la sesión | Backend y seguridad | `AuthService`, `SessionService` | Contrato, sección 3 |
+| Versionado y concurrencia de registros | Estrategia (versión, ETag u otra) | Backend | Adaptador de guardado por acción | Contrato, sección 2 |
+| Datos precargados | Planilla, cuentas de Grupo Mutual y, tal vez, datos personales; cuáles son de solo lectura | Backend y Talento Humano | `FinancialSummaryService`, `CurrentAccountsService`, paso 1 | Contrato, secciones 5 y 6 |
+| Catálogos oficiales | Listas reales y tratamiento de valores retirados | Negocio y backend | `CatalogService` | Contrato, sección 4 |
+| Fórmulas y redondeo de los totales | Fórmulas oficiales, redondeo, denominador cero, tratamiento de la planilla | Negocio y backend | Servicios de totales | Contrato, sección 6 |
+| Moneda de montos sin selector | Moneda de ingresos y egresos, inmuebles, muebles y pensión | Negocio | `MoneyInput` con `currency={null}` en inmuebles, muebles y pensión | [Montos y moneda](flujos/montos-y-moneda.md) |
+| Reglas de validación del servidor | Duplicados, rangos de fechas, formato de cédulas, unidad del plazo, límites reales de campos | Negocio y backend | `fieldLimits.ts`, validaciones de los diálogos | Contrato, sección 9 |
+| Cuestionario confidencial | Receptor, canal, permisos, momento del envío y acuse | Negocio y backend | `ConfidentialReportService` | Contrato, sección 8.1 |
+| Juramento y finalización | Texto y versión, evidencia de aceptación, secuencia, qué ocurre tras guardar | Negocio y backend | `FinalizationService`, `Completion` | Contrato, sección 8.2 |
+| Tabla de sociedades (paso 10) | Datos que maneja la tabla | Negocio | Tarea DEC-016B, sin implementar | [Personería jurídica](flujos/personeria-juridica.md) |
+| Modal posterior al guardado | Referencia visual en Figma | Diseño | `Completion`, estado `done` | [Juramento y cierre](flujos/juramento-y-cierre.md) |
+| Adjuntos reales | Límite de cantidad por ingreso, limpieza de adjuntos huérfanos, acceso | Backend | `AttachmentService`, `useAttachments` | Contrato, sección 7 |
+| Contenido de los detalles judiciales | Qué se escribe en el detalle de juicios y embargos | Negocio | `JudicialData` | [Datos judiciales](flujos/datos-judiciales.md) |
 
 ## Transferencia recomendada
 

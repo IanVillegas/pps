@@ -1,6 +1,6 @@
 # Guía de componentes
 
-Estado: inventario inicial; las fichas detalladas se ampliarán con el desarrollo. Revisión: 14 de octubre de 2026.
+Estado: inventario inicial; las fichas detalladas se ampliarán con el desarrollo. Revisión: 21 de octubre de 2026.
 
 Los componentes genéricos reutilizables se mantienen en `sad-aml-shared`. Las composiciones específicas del flujo patrimonial se mantienen en DecPat. Los índices de Atoms y Molecules permiten importar varios componentes compartidos desde una ubicación estable.
 
@@ -9,13 +9,17 @@ Los componentes genéricos reutilizables se mantienen en `sad-aml-shared`. Las c
 | Button | `src/sad-aml-shared/components/Atoms/Button` | Acciones; contempla color, tamaño, estado deshabilitado y carga. |
 | InputText | `src/sad-aml-shared/components/Atoms/InputText` | Entrada de texto con etiqueta y estados de error. |
 | Checkbox, Tooltip, Textarea | `src/sad-aml-shared/components/Atoms` | Selección, ayuda contextual y texto de varias líneas. |
+| Switch | `src/components/Atoms/Switch` | Interruptor Sí/No (`role="switch"`); provisional porque shared no tiene uno. Se usa en datos judiciales y en el cuestionario confidencial. |
+| CurrencyIcon | `src/components/Atoms/CurrencyIcon` | Ícono del colón o del dólar de Figma; decorativo. |
 | Dropdown | `src/sad-aml-shared/components/Molecules/Dropdown` | Selección de opciones de catálogo. |
 | Modal | `src/sad-aml-shared/components/Organisms/Modal` | Base de los diálogos. |
 | AppDialog | `src/components/Organisms/AppDialog` | Composición estándar de diálogos de DecPat. |
 | RecordsTable | `src/components/Organisms/RecordsTable` | Presentación y acciones de registros. |
+| ConfirmDeleteDialog | `src/components/Organisms/ConfirmDeleteDialog` | Modal de confirmación para eliminar un registro; lo muestra `RecordsTable`. |
 | NotificationProvider | `src/components/Organisms/Notification` | Contexto de notificaciones y mensajes de resultado. |
 | DeclarationStepper | `src/components/Molecules/DeclarationStepper` | Navegación visual de la declaración. |
 | FileUpload, RadioGroup | `src/components/Molecules` | Adjuntos y selección única; revisar su posible reutilización al ampliar la biblioteca. |
+| MoneyInput, CurrencySelect, CurrencyTotals | `src/components/Molecules` | Campo de monto con formato estándar, selector de moneda con íconos y totales por moneda. Ver [montos y moneda](flujos/montos-y-moneda.md). |
 
 Este inventario describe la ubicación existente. No afirma que todo componente local sea necesariamente específico del dominio: la clasificación de componentes genéricos existentes debe revisarse antes de ampliar sus funcionalidades.
 
@@ -48,6 +52,8 @@ Referencia revisada: `875867890e6e48ce97668b7a0019cc8255a8f3a6`, 14 de octubre d
 | `component` | Contenido que recibe valores, errores y un callback para reemplazar los valores del paso. Si falta, se muestra un mensaje de contenido pendiente. |
 | `validate` | Devuelve mensajes por campo. Si falta o devuelve un objeto vacío, el contenedor permite continuar. |
 | `cards` | Si es verdadero, el contenido coloca las acciones recibidas dentro de sus tarjetas. |
+| `ownActions` | Si es verdadero, el contenido recibe los botones del contenedor en `actions` y decide si y dónde mostrarlos; el contenedor sigue dibujando la tarjeta. Lo usa el último paso. |
+| `onFinish` | Acción de «Continuar» en el último paso, que no tiene siguiente. Sin ella, el botón del último paso permanece deshabilitado. |
 
 Los cambios enviados por el contenido deben incluir todos los valores del paso que se necesiten conservar. La navegación mediante el indicador no ejecuta `validate`. Detalle del comportamiento y archivos en [declaración y borrador](flujos/declaracion-y-borrador.md).
 
@@ -78,6 +84,7 @@ Revisión: 14 de octubre de 2026, código `343c313c503bd25c652236b319c6e3874efeb
 | `SavingsDialog` | Cuenta de ahorro: `SavingsAccountItemData`; campos en [ahorro](flujos/cuentas-de-ahorro.md). |
 | `CurrentAccountDialog` | Monto agregado: `CurrentAccountItemData`; campos en [cuentas corrientes](flujos/cuentas-corrientes.md). |
 | `CreditDialog` | Préstamo: `CreditItemData`; campos en [créditos](flujos/creditos.md). |
+| `LegalEntityDialog` | Personería jurídica: `LegalEntityItemData`; campos en [personería jurídica](flujos/personeria-juridica.md). |
 | `CreditCardDialog` | Tarjeta: `CreditCardItemData`; campos en [tarjetas de crédito](flujos/tarjetas-de-credito.md). Código revisado: `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`. |
 
 Todos reciben `open`, `item` opcional, `onSave` y `onClose`; el consumidor administra las filas y sus identificadores. Los tipos viven en `src/types`. Son composiciones de dominio: sus reglas no deben trasladarse sin revisión a formularios genéricos. Los controles base proceden de shared y la tabla de `RecordsTable`.
@@ -91,6 +98,18 @@ Referencia revisada: `779fd7ad2b39796d3d2466f0ddb9ac44298f9193`, 20 de octubre d
 `CurrencyTotals`, ubicado en `src/components/Molecules/CurrencyTotals` y exportado desde `@/components/Molecules`, presenta dos columnas (colones y dólares), cada una con su icono, la suma de saldos y la sumatoria de cuotas mensuales. Reciben las propiedades `heading` (título de la sección), `colonesTitle`, `dolaresTitle` y `totals`, con la forma `{ colones: { balance, installments }, dolares: { balance, installments } }`. Mientras `totals` no existe cada cifra muestra «—». El componente solo presenta lo que entrega el servicio: no suma ni convierte.
 
 Lo utilizan los pasos de [créditos](flujos/creditos.md) y [tarjetas de crédito](flujos/tarjetas-de-credito.md). Los totales de [ahorro](flujos/cuentas-de-ahorro.md) y [cuentas corrientes](flujos/cuentas-corrientes.md) tienen otra estructura (un saldo por moneda, sin cuotas) y mantienen su propia presentación.
+
+## Componentes agregados con los pasos 9 a 12 y los ajustes de octubre
+
+Referencia revisada: `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`, 21 de octubre de 2026.
+
+- **`ConfirmDeleteDialog`** recibe `open`, `onConfirm` y `onClose`. Se compone con `AppDialog` (tamaño `md`): ícono de alerta, la pregunta de confirmación y «Cancelar» / «Sí, eliminar». `RecordsTable` lo monta cuando se le entrega `onDelete` y llama a ese callback solo al confirmar; el resto de las pantallas no necesita cambios.
+- **`MoneyInput`** recibe `label`, `value` (texto decimal con dos decimales o vacío), `onChange`, `errors`, `id` y `currency`. `currency` es `'colones'` o `'dolares'` para mostrar su ícono, `undefined` mientras se espera la selección (reserva el espacio) y `null` cuando el monto no tiene moneda (sin ícono ni espacio). Los detalles de entrada están en [montos y moneda](flujos/montos-y-moneda.md).
+- **`CurrencySelect`** recibe `label`, `value`, `onChange`, `errors` e `id`, y se coloca antes del campo de monto. Cada opción lleva su ícono, también la elegida; para ello inserta el texto dentro de `Select.ItemText`, porque `Dropdown` solo lo hace por sí mismo con opciones de texto plano.
+- **`Switch`** recibe `checked`, `onChange` y un nombre accesible (`aria-labelledby` o `aria-label`); los textos «No» y «Sí» son opcionales y visuales.
+- **`CurrencyTotals`** presenta los totales por moneda de créditos y tarjetas con el mismo `CurrencyIcon`.
+- **Cambios en `sad-aml-shared`** marcados como modificaciones para DecPat: `InputText` admite `startAdornment` (ícono decorativo dentro del campo, al inicio) y `Textarea` tiene estilo para `disabled`. Debe revisarse su traslado al repositorio compartido.
+- `RadioGroup` ya no tiene la opción `compact`, que dejó de usarse con el nuevo orden de «Otros detalles».
 
 ## Fichas restantes
 

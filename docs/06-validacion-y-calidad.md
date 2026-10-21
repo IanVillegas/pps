@@ -1,6 +1,6 @@
 # Validación y calidad
 
-Estado: evidencia histórica identificada; revisión documental inicial. Revisión: 14 de octubre de 2026.
+Estado: evidencia histórica identificada y ejecución actual sobre la rama documentacion. Revisión: 21 de octubre de 2026.
 
 El proyecto dispone de pruebas de componentes, servicios y hooks. Las pruebas alojadas bajo `src/sad-aml-shared` están excluidas de Jest según el README; algunos componentes compartidos se prueban desde DecPat. No asumir cobertura completa de la biblioteca.
 
@@ -103,3 +103,21 @@ Resultado: sin errores de lint ni de tipos; 49 suites y 306 pruebas satisfactori
 Revisión en navegador (servidor local, sesión de demostración): la pantalla y el diálogo se compararon con el diseño; se agregó una tarjeta en colones con límite 2,000,000, saldo 350,000, cuota 25,000, saldo y cuota en dólares 100 y 10, vencimiento 20/05/2028 y operación 1234. Se mostró la notificación de guardado y los totales pasaron de ₡ 0.00 y $ 0.00 a ₡ 350,000.00 y ₡ 25,000.00 en colones, y $ 100.00 y $ 10.00 en dólares. La consola no registró errores.
 
 Persiste el aviso de Radix «Select is changing from uncontrolled to controlled» en las pruebas con listas desplegables; no impide su éxito. No se ejecutó build ni revisión en tablet, no se repitió la comparación con Figma después de la verificación inicial y las pruebas no acreditan reglas institucionales, integración con servicios reales ni accesibilidad completa.
+
+## Pasos 10 a 12, ajustes de octubre y contrato — DOC-012 a DOC-017
+
+Fecha: 21 de octubre de 2026. Código revisado: `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2` (rama `main`), incorporado a la rama `documentacion` mediante un merge. Cambios exclusivamente documentales en esta rama.
+
+Se ejecutó sobre la rama `documentacion` ya con `main` incorporado:
+
+```text
+npx tsc --noEmit
+npx eslint src
+npx jest --runInBand
+```
+
+Resultado actual: sin errores de tipos ni de lint; **59 suites y 409 pruebas satisfactorias**. Incluyen las pruebas de los pasos 9 a 12 y de los ajustes: personerías, datos judiciales y el interruptor; el cuestionario confidencial (respuestas fuera del borrador, payload sin datos patrimoniales, borrado al cerrar sesión); el estado y el guardado del juramento (éxito solo tras la respuesta, envío repetido, error con reintento); el modal de confirmación al eliminar en las diez tablas; `MoneyInput`, `CurrencySelect` y las utilidades de monto; y el orden y el campo condicional de «Otros detalles».
+
+Evidencia de revisión en navegador, registrada en los documentos de seguimiento al cerrar cada tarea (resultados históricos, no reejecutados): personerías (pantalla, modal, alta con envío por Enter); datos judiciales (comprobación por el DOM, estilos y bloqueo del avance); cuestionario confidencial y juramento (capturas del 21 de octubre en una ventana reducida); modal de eliminar y modal de ahorro con montos formateados (capturas). «Otros detalles» se comprobó por el DOM, sin captura.
+
+Limitaciones: no se ejecutó compilación de producción ni revisión en tablet; varias revisiones visuales se hicieron en una ventana reducida y no contra el diseño píxel a píxel; las pruebas muestran todavía el aviso del selector compartido (transición de no controlado a controlado). Los resultados no acreditan integración con servicios institucionales ni accesibilidad completa. No se modificó código de aplicación en esta tarea.
