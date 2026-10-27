@@ -123,3 +123,15 @@ export const FINANCIAL_ENTITY_OPTIONS: CatalogOption[] = [
   { value: 'cooperativa', label: 'Cooperativa (mock)' },
   { value: 'otra', label: 'Otra' },
 ];
+
+// Tipo de sociedad del paso 10 (D-28). Lista PROVISIONAL hasta que el negocio
+// entregue el catalogo real: «Sociedad anonima» es el unico valor que muestra
+// el sistema original; el otro es solo para que el select tenga mas de una
+// opcion. Reemplazar aqui sin tocar el modal.
+export const SOCIETY_TYPE_OPTIONS: CatalogOption[] = [
+  { value: 'sociedad-anonima', label: 'Sociedad anónima' },
+  {
+    value: 'sociedad-responsabilidad-limitada',
+    label: 'Sociedad de responsabilidad limitada',
+  },
+];

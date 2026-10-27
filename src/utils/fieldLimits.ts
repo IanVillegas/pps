@@ -33,6 +33,12 @@ export const FIELD_MAX_LENGTH = {
   legalEntityPurpose: 200,
   /** Plazo de una personeria juridica (paso 10, solo digitos). */
   legalEntityTerm: 4,
+  /** Cargo en una sociedad (paso 10, texto libre). */
+  societyRole: 60,
+  /** Porcentaje de acciones de una sociedad (paso 10, digitos y punto decimal). */
+  sharePercent: 6,
+  /** Tipo de poder del apoderado de una sociedad (paso 10, texto libre). */
+  powerType: 60,
   /** Detalle de un juicio o embargo (paso 11, texto libre). */
   judicialDetail: 300,
   /** Detalle de los cambios en la situacion patrimonial (paso 3, texto libre largo). */

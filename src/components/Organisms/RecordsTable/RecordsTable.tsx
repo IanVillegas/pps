@@ -21,6 +21,17 @@ interface RecordsTableProps<T extends { id: string }> {
   getRowLabel: (row: T) => string;
   onAdd?: () => void;
   addLabel?: string;
+  /**
+   * Nombre accesible del boton de agregar cuando la pantalla tiene varias
+   * tablas y «Agregar nuevo» solo no dice a cual pertenece.
+   */
+  addAriaLabel?: string;
+  /**
+   * Version compacta para tablas con muchas columnas: letra y espacios mas
+   * chicos y texto que se parte en varias lineas, para evitar el scroll
+   * horizontal en pantallas de portatil.
+   */
+  dense?: boolean;
   onEdit?: (row: T) => void;
   /**
    * Se llama solo despues de que la persona confirma en el modal «¿Está
@@ -49,6 +60,8 @@ const RecordsTable = <T extends { id: string }>({
   getRowLabel,
   onAdd,
   addLabel = 'Agregar nuevo',
+  addAriaLabel,
+  dense = false,
   onEdit,
   onDelete,
   emptyText = 'No existen registros',
@@ -68,6 +81,7 @@ const RecordsTable = <T extends { id: string }>({
             <button
               type="button"
               className={styles.records__add}
+              aria-label={addAriaLabel}
               onClick={onAdd}
             >
               <i className="ri-add-line" aria-hidden="true" />
@@ -85,7 +99,9 @@ const RecordsTable = <T extends { id: string }>({
         aria-label={caption}
         tabIndex={0}
       >
-        <table className={styles.records__table}>
+        <table
+          className={`${styles.records__table} ${dense ? styles['records__table--dense'] : ''}`}
+        >
           <caption className={styles.records__caption}>{caption}</caption>
           <thead>
             <tr>
