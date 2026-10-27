@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AppShell from './AppShell';
 import {
@@ -8,7 +8,12 @@ import {
   subscribeSession,
 } from '@/services/SessionService';
 
-jest.mock('next/navigation', () => ({ usePathname: () => '/inicio' }));
+let mockPathname = '/inicio';
+jest.mock('next/navigation', () => ({ usePathname: () => mockPathname }));
+
+beforeEach(() => {
+  mockPathname = '/inicio';
+});
 
 // jest.setup.ts registra un `matchMedia` que siempre devuelve
 // matches:false; estas pruebas lo sobreescriben para simular tablet.
@@ -143,4 +148,41 @@ it('ends the mock session without erasing the remembered username', () => {
   expect(window.localStorage.getItem('decpat.rememberedUsername')).toBe('demo');
   unsubscribe();
   window.localStorage.clear();
+});
+
+describe('migas de pan (Figma, nodo 43121:6538)', () => {
+  const renderShell = () =>
+    render(
+      <AppShell
+        user={{ username: 'demo', displayName: 'Prueba' }}
+        onLogout={jest.fn()}
+      >
+        <p>Contenido</p>
+      </AppShell>
+    );
+
+  it('are not shown on the home screen', () => {
+    renderShell();
+    expect(screen.queryByText('Regresar')).not.toBeInTheDocument();
+  });
+
+  it('show "Regresar" and "Inicio / Mi declaración" inside the declaration', () => {
+    mockPathname = '/mi-declaracion/3';
+    renderShell();
+    const trail = within(screen.getByText('Regresar').closest('nav')!);
+    // «Regresar» lleva a la miga anterior y «Inicio» enlaza a la misma pantalla.
+    expect(trail.getByRole('link', { name: /Regresar/ })).toHaveAttribute(
+      'href',
+      '/inicio'
+    );
+    expect(trail.getByRole('link', { name: 'Inicio' })).toHaveAttribute(
+      'href',
+      '/inicio'
+    );
+    // «Mi declaración» es la pantalla actual: texto, no enlace.
+    expect(trail.getByText('Mi declaración')).toBeInTheDocument();
+    expect(
+      trail.queryByRole('link', { name: 'Mi declaración' })
+    ).not.toBeInTheDocument();
+  });
 });

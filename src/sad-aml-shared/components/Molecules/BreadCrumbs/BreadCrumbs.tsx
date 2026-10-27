@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import styles from './BreadCrumbs.module.scss';
 import { EnumBreadCrumbs } from '@/sad-aml-shared/utils/Enums/EnumBreadCrumbs';
 
@@ -41,8 +40,11 @@ const BreadCrumbs = ({ items, goBackUrl }: BreadcrumbsProps) => {
       );
     }
     if (items.length === 1) {
+      // !Modificado para DecPat (2026-10-27): `next/router` (Pages Router)
+      // no existe en el App Router y ademas se llamaba como hook dentro de
+      // una condicion; con una sola miga se vuelve a la raiz.
       return (
-        <a href={useRouter().basePath} className={styles.backLink}>
+        <a href="/" className={styles.backLink}>
           <span className={styles.backLink__icons}>
             <i className="ri-arrow-left-s-line"></i>
             <i className="ri-arrow-left-s-line"></i>
