@@ -6,16 +6,14 @@ import { RadioGroup } from '@/components/Molecules';
 import RecordsTable, {
   type RecordsTableColumn,
 } from '@/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
 import ExpenseDialog from '@/components/Organisms/ExpenseDialog/ExpenseDialog';
 import IncomeDialog from '@/components/Organisms/IncomeDialog/IncomeDialog';
 import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import {
-  EXPENSE_TYPE_OPTIONS,
-  INCOME_TYPE_OPTIONS,
-} from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type { StepErrors, StepValues } from '@/types/Declaration.types';
 import type {
@@ -29,6 +27,7 @@ import type {
 } from '@/types/IncomeExpenses.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
 import { createId } from '@/utils/ids';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 import { useFinancialSummary } from '@/utils/hooks/useFinancialSummary';
 import { formatAmount, formatCurrency, formatPercent } from '@/utils/money';
 import styles from './IncomeExpenses.module.scss';
@@ -37,6 +36,9 @@ import styles from './IncomeExpenses.module.scss';
 // pedido del resumen en useFinancialSummary.
 const NO_INCOMES: IncomeItem[] = [];
 const NO_EXPENSES: ExpenseItem[] = [];
+
+// Respuesta por defecto de «¿Existen cambios...?» (D-27): sin cambios.
+const DEFAULT_PATRIMONIAL_CHANGES: PatrimonialChanges = 'no';
 
 const PATRIMONIAL_CHANGES_OPTIONS = [
   { value: 'si', label: 'Si' },
@@ -49,18 +51,14 @@ const FINANCIAL_SITUATION_OPTIONS = [
 ];
 
 /**
- * Valida el paso 3. Las tablas pueden quedar vacias (D-16); lo que se exige
- * son las dos preguntas de «Otros detalles». La descripcion no lleva
- * asterisco en Figma («cualquier aclaracion que estime conveniente»), asi
- * que es opcional.
+ * Valida el paso 3. Las tablas pueden quedar vacias (D-16); lo unico que se
+ * exige es cómo califica su situacion financiera. «¿Existen cambios...?»
+ * parte en «No» (D-27), asi que siempre tiene respuesta. La descripcion y el
+ * detalle de los cambios son opcionales: no llevan asterisco en Figma.
  */
 export const validateIncomeExpenses = (stepValues: StepValues): StepErrors => {
   const values = stepValues as IncomeExpensesValues;
   const errors: StepErrors = {};
-  if (!values.patrimonialChanges) {
-    errors.patrimonialChanges =
-      'Indique si existen cambios en su situación patrimonial';
-  }
   if (!values.financialSituation) {
     errors.financialSituation =
       'Seleccione cómo califica su situación financiera';
@@ -79,11 +77,9 @@ const PAYROLL_COLUMNS: RecordsTableColumn<PayrollRow>[] = [
   { key: 'amount', header: 'Monto', render: row => formatAmount(row.amount) },
 ];
 
-const incomeTypeLabel = (value: string) =>
-  INCOME_TYPE_OPTIONS.find(option => option.value === value)?.label ?? value;
+const incomeTypeLabel = (value: string) => catalogLabel('incomeTypes', value);
 
-const expenseTypeLabel = (value: string) =>
-  EXPENSE_TYPE_OPTIONS.find(option => option.value === value)?.label ?? value;
+const expenseTypeLabel = (value: string) => catalogLabel('expenseTypes', value);
 
 const INCOME_COLUMNS: RecordsTableColumn<IncomeItem>[] = [
   { key: 'type', header: 'Tipo', render: row => incomeTypeLabel(row.type) },
@@ -112,11 +108,15 @@ interface DialogState<T> {
  * alta/edicion/retiro se guarda en el borrador al instante (D-11).
  */
 const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
+  // Vuelve a dibujar las tablas cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const data = values as IncomeExpensesValues;
+  const patrimonialChanges =
+    data.patrimonialChanges ?? DEFAULT_PATRIMONIAL_CHANGES;
   const incomes = data.additionalIncomes ?? NO_INCOMES;
   const expenses = data.expenses ?? NO_EXPENSES;
-  const { summary, status } = useFinancialSummary(incomes, expenses);
+  const { summary, status, retry } = useFinancialSummary(incomes, expenses);
   const [incomeDialog, setIncomeDialog] = useState<DialogState<IncomeItem>>({
     open: false,
   });
@@ -130,6 +130,16 @@ const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
 
   const patch = (changes: Partial<IncomeExpensesValues>) =>
     onChange({ ...values, ...changes });
+
+  // La respuesta por defecto («No») tambien se guarda en el borrador, para que
+  // lo que se envie coincida con lo que se ve y no quede el campo vacio.
+  const hasChangesAnswer = data.patrimonialChanges !== undefined;
+  useEffect(() => {
+    if (!hasChangesAnswer) {
+      onChange({ ...values, patrimonialChanges: DEFAULT_PATRIMONIAL_CHANGES });
+    }
+    // Solo al entrar al paso: despues la respuesta la cambia la persona.
+  }, []);
 
   // Cierran sin tocar el `item` para que el modal no cambie de contenido
   // mientras se anima el cierre.
@@ -228,6 +238,12 @@ const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
           onEdit={expense => setExpenseDialog({ open: true, item: expense })}
           onDelete={handleDeleteExpense}
         />
+        {status === 'error' && (
+          <RetryNotice
+            message="No se pudieron cargar las cifras. Revise su conexión e inténtelo de nuevo."
+            onRetry={retry}
+          />
+        )}
         <p className={styles.incomeExpenses__total}>
           <span>Total de egresos</span>
           <strong>
@@ -283,7 +299,7 @@ const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
         <RadioGroup
           legend="¿Existen cambios en el periodo actual en su situación patrimonial?"
           options={PATRIMONIAL_CHANGES_OPTIONS}
-          value={data.patrimonialChanges}
+          value={patrimonialChanges}
           errors={errors.patrimonialChanges}
           onChange={value => {
             // Con «No» el detalle se descarta: no debe quedar un texto que
@@ -297,18 +313,19 @@ const IncomeExpenses = ({ values, errors, onChange, actions }: StepProps) => {
             }
           }}
         />
-        {/* Siempre visible: solo se puede escribir con la respuesta «Si» y
-            queda deshabilitado (y vacio) con «No» o sin responder. */}
-        <Textarea
-          label="Detalle los cambios en su situación patrimonial"
-          placeholder="Escribe aquí"
-          maxLength={FIELD_MAX_LENGTH.patrimonialChangesDetail}
-          disabled={data.patrimonialChanges !== 'si'}
-          value={data.patrimonialChangesDetail ?? ''}
-          onChange={event =>
-            patch({ patrimonialChangesDetail: event.target.value })
-          }
-        />
+        {/* El detalle solo aparece con la respuesta «Si» (D-27); con «No» se
+            oculta y se descarta. */}
+        {patrimonialChanges === 'si' && (
+          <Textarea
+            label="Detalle los cambios en su situación patrimonial"
+            placeholder="Escribe aquí"
+            maxLength={FIELD_MAX_LENGTH.patrimonialChangesDetail}
+            value={data.patrimonialChangesDetail ?? ''}
+            onChange={event =>
+              patch({ patrimonialChangesDetail: event.target.value })
+            }
+          />
+        )}
         {actions}
       </section>
 

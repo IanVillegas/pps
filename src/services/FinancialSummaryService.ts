@@ -1,3 +1,4 @@
+// [SIMULADO] Planilla y cifras del paso 3 calculadas en el navegador (provisional). Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 import type {
   ExpenseItem,
   FinancialSummary,

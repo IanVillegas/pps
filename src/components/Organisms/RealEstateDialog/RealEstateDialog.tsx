@@ -4,7 +4,8 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
-import { REAL_ESTATE_DESTINATION_OPTIONS } from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   RealEstateItem,
   RealEstateItemData,
@@ -14,11 +15,6 @@ import { amountToCents } from '@/utils/money';
 import styles from './RealEstateDialog.module.scss';
 
 const FORM_ID = 'real-estate-form';
-
-const DESTINATIONS = REAL_ESTATE_DESTINATION_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
 
 type RealEstateErrors = Partial<Record<keyof RealEstateItemData, string>>;
 
@@ -64,6 +60,7 @@ interface RealEstateFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const RealEstateForm = ({ item, onSave }: RealEstateFormProps) => {
+  const destinations = toDropdownOptions(useCatalog('realEstateDestinations'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<RealEstateItemData>(item ?? EMPTY);
   const [errors, setErrors] = useState<RealEstateErrors>({});
@@ -137,7 +134,7 @@ const RealEstateForm = ({ item, onSave }: RealEstateFormProps) => {
       <Dropdown
         label="Destino *"
         placeholder="Selecciona"
-        options={DESTINATIONS}
+        options={destinations}
         value={state.destination || undefined}
         errors={errors.destination}
         onChange={value => update({ destination: value })}

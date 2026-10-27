@@ -5,7 +5,8 @@ import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import DatePicker from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker';
-import { FINANCIAL_ENTITY_OPTIONS } from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   CreditCardItem,
   CreditCardItemData,
@@ -14,11 +15,6 @@ import { amountToCents } from '@/utils/money';
 import styles from './CreditCardDialog.module.scss';
 
 const FORM_ID = 'credit-card-form';
-
-const toOptions = (options: { value: string; label: string }[]) =>
-  options.map(option => ({ value: option.value, element: option.label }));
-
-const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
 
 type CreditCardErrors = Partial<Record<keyof CreditCardItemData, string>>;
 
@@ -102,6 +98,7 @@ interface CreditCardFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const CreditCardForm = ({ item, onSave }: CreditCardFormProps) => {
+  const entities = toDropdownOptions(useCatalog('financialEntities'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<FormState>(
     item ? { ...item, expiryDateInvalid: false } : EMPTY
@@ -161,7 +158,7 @@ const CreditCardForm = ({ item, onSave }: CreditCardFormProps) => {
       <Dropdown
         label="Entidad financiera *"
         placeholder="Selecciona"
-        options={ENTITIES}
+        options={entities}
         value={state.entity || undefined}
         errors={errors.entity}
         onChange={value => update({ entity: value })}

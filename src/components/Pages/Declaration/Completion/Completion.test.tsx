@@ -6,7 +6,11 @@ import {
   TOAST_MESSAGES,
 } from '@/components/Organisms/Notification/NotificationProvider';
 import { clearConfidentialAnswers } from '@/services/ConfidentialReportService';
-import { acknowledgeIntro, clearDraft } from '@/services/DeclarationService';
+import {
+  acknowledgeIntro,
+  clearDraft,
+  saveStepValues,
+} from '@/services/DeclarationService';
 import {
   clearFinalization,
   getFinalizationStatus,
@@ -14,7 +18,9 @@ import {
 import { endSession, startMockSession } from '@/services/SessionService';
 
 const push = jest.fn();
-jest.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push, replace: jest.fn() }),
+}));
 
 // Paso 12 real, con las definiciones reales del wizard.
 const setup = () =>
@@ -43,6 +49,20 @@ beforeEach(() => {
   push.mockClear();
   clearDraft();
   acknowledgeIntro();
+  // El paso 12 solo se ve con los datos personales (paso 1) completos.
+  saveStepValues(1, {
+    fullName: 'Ana Mora',
+    idNumber: '1-1111-1111',
+    age: '30',
+    maritalStatus: 'soltero',
+    lastAcademicDegree: 'Licenciatura',
+    career: 'Administración',
+    homePhone: '22222222',
+    agency: 'agencia-1',
+    cellPhone: '88888888',
+    office: 'Oficina central',
+    address: 'San José',
+  });
   clearConfidentialAnswers();
   clearFinalization();
 });

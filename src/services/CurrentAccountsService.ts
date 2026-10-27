@@ -1,3 +1,4 @@
+// [SIMULADO] Cuentas de Grupo Mutual y saldos de ejemplo (provisional). Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 import type {
   CurrentAccountItem,
   CurrentAccountTotals,

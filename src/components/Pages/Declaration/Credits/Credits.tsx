@@ -4,17 +4,14 @@ import { useEffect, useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
 } from '@/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
 import { CurrencyTotals } from '@/components/Molecules';
 import CreditDialog from '@/components/Organisms/CreditDialog/CreditDialog';
 import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import {
-  CURRENCY_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-  type CatalogOption,
-} from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
   CreditItem,
@@ -25,20 +22,18 @@ import { formatIsoDate } from '@/utils/dates';
 import { createId } from '@/utils/ids';
 import { useCreditsTotals } from '@/utils/hooks/useCreditsTotals';
 import { formatAmount } from '@/utils/money';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './Credits.module.scss';
 
 // Referencia estable: un `[]` nuevo en cada render dispararia de nuevo el
 // pedido de totales en useCreditsTotals.
 const NO_CREDITS: CreditItem[] = [];
 
-const labelOf = (options: CatalogOption[], value: string) =>
-  options.find(option => option.value === value)?.label ?? value;
-
 const COLUMNS: RecordsTableColumn<CreditItem>[] = [
   {
     key: 'entity',
     header: 'Entidad',
-    render: row => labelOf(FINANCIAL_ENTITY_OPTIONS, row.entity),
+    render: row => catalogLabel('financialEntities', row.entity),
   },
   {
     key: 'initialAmount',
@@ -48,7 +43,7 @@ const COLUMNS: RecordsTableColumn<CreditItem>[] = [
   {
     key: 'currency',
     header: 'Moneda',
-    render: row => labelOf(CURRENCY_OPTIONS, row.currency),
+    render: row => catalogLabel('currencies', row.currency),
   },
   { key: 'loanType', header: 'Tipo de crédito', render: row => row.loanType },
   {
@@ -83,9 +78,11 @@ interface DialogState {
  * backend (D-10, ver CreditsTotalsService).
  */
 const Credits = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const credits = (values as CreditsValues).credits ?? NO_CREDITS;
-  const { totals, status } = useCreditsTotals(credits);
+  const { totals, status, retry } = useCreditsTotals(credits);
   const [dialog, setDialog] = useState<DialogState>({ open: false });
 
   const hasError = status === 'error';
@@ -130,6 +127,12 @@ const Credits = ({ values, onChange }: StepProps) => {
         onEdit={credit => setDialog({ open: true, item: credit })}
         onDelete={handleDelete}
       />
+      {hasError && (
+        <RetryNotice
+          message="No se pudieron cargar las cifras. Revise su conexión e inténtelo de nuevo."
+          onRetry={retry}
+        />
+      )}
       <CurrencyTotals
         heading="Saldo actual de créditos"
         colonesTitle="Saldo total de créditos en colones"

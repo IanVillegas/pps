@@ -104,6 +104,18 @@ describe('Savings (paso 6)', () => {
     ).toBeInTheDocument();
   });
 
+  it('offers to retry when the totals fail and recovers on the second try', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('fail'));
+    renderSavings();
+    const notice = await screen.findByRole('alert');
+    expect(notice).toHaveTextContent(/No se pudieron cargar las cifras/);
+
+    mockedFetch.mockResolvedValue(TOTALS);
+    await userEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
+    expect(await screen.findByText('₡ 1,897.45')).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
   it('opens the empty modal with its six fields', async () => {
     renderSavings();
     await userEvent.click(

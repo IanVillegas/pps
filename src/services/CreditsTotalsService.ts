@@ -1,3 +1,4 @@
+// [SIMULADO] Totales de creditos calculados en el navegador (provisional). Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 import type {
   CreditCurrencyTotals,
   CreditItem,

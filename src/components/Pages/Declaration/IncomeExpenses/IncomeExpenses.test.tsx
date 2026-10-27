@@ -412,26 +412,28 @@ describe('IncomeExpenses (paso 3)', () => {
       await screen.findByText('Salario bruto');
     });
 
-    it('keeps the detail of the patrimonial changes visible but enabled only while the answer is Sí (D-27)', async () => {
+    it('starts on No without the detail and shows it only while the answer is Sí (D-27)', async () => {
       renderValues({});
       const detail = () =>
-        screen.getByLabelText(
+        screen.queryByLabelText(
           'Detalle los cambios en su situación patrimonial'
         );
-      // Sin responder: visible y deshabilitado.
-      expect(detail()).toBeDisabled();
+      // Por defecto: «No» elegido y sin campo de detalle.
+      expect(screen.getByRole('radio', { name: 'No' })).toBeChecked();
+      expect(detail()).not.toBeInTheDocument();
+      // La respuesta por defecto tambien queda en el borrador.
+      expect(draft()).toMatchObject({ patrimonialChanges: 'no' });
 
       await userEvent.click(screen.getByRole('radio', { name: 'Si' }));
-      expect(detail()).toBeEnabled();
-      await userEvent.type(detail(), 'Heredé una propiedad');
+      expect(detail()).toBeInTheDocument();
+      await userEvent.type(detail()!, 'Heredé una propiedad');
       expect(draft()).toMatchObject({
         patrimonialChanges: 'si',
         patrimonialChangesDetail: 'Heredé una propiedad',
       });
 
       await userEvent.click(screen.getByRole('radio', { name: 'No' }));
-      expect(detail()).toBeDisabled();
-      expect(detail()).toHaveValue('');
+      expect(detail()).not.toBeInTheDocument();
       await screen.findByText('Salario bruto');
     });
 
@@ -473,17 +475,8 @@ describe('IncomeExpenses (paso 3)', () => {
       await screen.findByText('Salario bruto');
     });
 
-    it('shows the errors the wizard hands over for the two questions', async () => {
-      renderValues(
-        {},
-        {
-          patrimonialChanges: 'Indique si existen cambios',
-          financialSituation: 'Seleccione una opción',
-        }
-      );
-      expect(
-        screen.getByText('Indique si existen cambios')
-      ).toBeInTheDocument();
+    it('shows the error the wizard hands over for the financial situation', async () => {
+      renderValues({}, { financialSituation: 'Seleccione una opción' });
       expect(screen.getByText('Seleccione una opción')).toBeInTheDocument();
       await screen.findByText('Salario bruto');
     });
@@ -491,10 +484,9 @@ describe('IncomeExpenses (paso 3)', () => {
 });
 
 describe('validateIncomeExpenses', () => {
-  it('requires the two questions but never the tables or the description (D-16)', () => {
+  it('only requires the financial situation: the changes question starts on No and the tables and description are optional (D-16, D-27)', () => {
     expect(Object.keys(validateIncomeExpenses({})).sort()).toEqual([
       'financialSituation',
-      'patrimonialChanges',
     ]);
   });
 

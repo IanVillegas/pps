@@ -5,10 +5,8 @@ import { Button, ButtonColor, InputText, Textarea } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
 import Tooltip from '@/sad-aml-shared/components/Atoms/Tooltip/Tooltip';
-import {
-  MOVABLE_ASSET_BRAND_OPTIONS,
-  MOVABLE_ASSET_TYPE_OPTIONS,
-} from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   MovableAssetItem,
   MovableAssetItemData,
@@ -18,15 +16,6 @@ import { amountToCents } from '@/utils/money';
 import styles from './MovableAssetDialog.module.scss';
 
 const FORM_ID = 'movable-asset-form';
-
-const TYPES = MOVABLE_ASSET_TYPE_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
-const BRANDS = MOVABLE_ASSET_BRAND_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
 
 type MovableAssetErrors = Partial<Record<keyof MovableAssetItemData, string>>;
 
@@ -81,6 +70,8 @@ interface MovableAssetFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const MovableAssetForm = ({ item, onSave }: MovableAssetFormProps) => {
+  const types = toDropdownOptions(useCatalog('movableAssetTypes'));
+  const brands = toDropdownOptions(useCatalog('movableAssetBrands'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<MovableAssetItemData>(item ?? EMPTY);
   const [errors, setErrors] = useState<MovableAssetErrors>({});
@@ -133,7 +124,7 @@ const MovableAssetForm = ({ item, onSave }: MovableAssetFormProps) => {
       <Dropdown
         label="Tipo de bien mueble *"
         placeholder="Selecciona"
-        options={TYPES}
+        options={types}
         value={state.type || undefined}
         errors={errors.type}
         onChange={value => update({ type: value })}
@@ -141,7 +132,7 @@ const MovableAssetForm = ({ item, onSave }: MovableAssetFormProps) => {
       <Dropdown
         label="Marca del bien mueble *"
         placeholder="Selecciona"
-        options={BRANDS}
+        options={brands}
         value={state.brand || undefined}
         errors={errors.brand}
         onChange={value => update({ brand: value })}

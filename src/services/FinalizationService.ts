@@ -1,3 +1,4 @@
+// [SIMULADO] Guardado final (juramento) simulado con espera de 800 ms. Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 // Estado de la finalizacion de la declaracion (paso 12, juramento), en
 // memoria y SEPARADO del borrador y del cuestionario confidencial. SIMULACION
 // del envio final: no hay contrato de backend ni respuesta real todavia

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
 import RecordsTable, {
   type RecordsTableColumn,
 } from '@/components/Organisms/RecordsTable/RecordsTable';
@@ -9,12 +10,7 @@ import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import {
-  ACCOUNT_RELATIONSHIP_OPTIONS,
-  CURRENCY_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-  type CatalogOption,
-} from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
   SavingsAccountItem,
@@ -24,14 +20,12 @@ import type {
 import { createId } from '@/utils/ids';
 import { useSavingsTotals } from '@/utils/hooks/useSavingsTotals';
 import { formatAmount, formatCurrency } from '@/utils/money';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './Savings.module.scss';
 
 // Referencia estable: un `[]` nuevo en cada render dispararia de nuevo el
 // pedido de saldos en useSavingsTotals.
 const NO_ACCOUNTS: SavingsAccountItem[] = [];
-
-const labelOf = (options: CatalogOption[], value: string) =>
-  options.find(option => option.value === value)?.label ?? value;
 
 const COLUMNS: RecordsTableColumn<SavingsAccountItem>[] = [
   {
@@ -47,18 +41,18 @@ const COLUMNS: RecordsTableColumn<SavingsAccountItem>[] = [
   {
     key: 'relationship',
     header: 'Parentesco con dueño de la cuenta',
-    render: row => labelOf(ACCOUNT_RELATIONSHIP_OPTIONS, row.relationship),
+    render: row => catalogLabel('accountRelationships', row.relationship),
   },
   { key: 'amount', header: 'Monto', render: row => formatAmount(row.amount) },
   {
     key: 'currency',
     header: 'Moneda',
-    render: row => labelOf(CURRENCY_OPTIONS, row.currency),
+    render: row => catalogLabel('currencies', row.currency),
   },
   {
     key: 'entity',
     header: 'Entidad',
-    render: row => labelOf(FINANCIAL_ENTITY_OPTIONS, row.entity),
+    render: row => catalogLabel('financialEntities', row.entity),
   },
 ];
 
@@ -75,9 +69,11 @@ interface DialogState {
  * los entrega el backend (D-10, ver SavingsTotalsService).
  */
 const Savings = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const accounts = (values as SavingsValues).accounts ?? NO_ACCOUNTS;
-  const { totals, status } = useSavingsTotals(accounts);
+  const { totals, status, retry } = useSavingsTotals(accounts);
   const [dialog, setDialog] = useState<DialogState>({ open: false });
 
   useEffect(() => {
@@ -124,6 +120,12 @@ const Savings = ({ values, onChange }: StepProps) => {
         onEdit={account => setDialog({ open: true, item: account })}
         onDelete={handleDelete}
       />
+      {status === 'error' && (
+        <RetryNotice
+          message="No se pudieron cargar las cifras. Revise su conexión e inténtelo de nuevo."
+          onRetry={retry}
+        />
+      )}
       <section aria-labelledby="savings-totals-heading">
         <h3 id="savings-totals-heading" className={styles.savings__heading}>
           Saldos cuentas de ahorro

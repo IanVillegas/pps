@@ -4,7 +4,8 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor } from '@/components/Atoms';
 import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
-import { FINANCIAL_ENTITY_OPTIONS } from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   CurrentAccountItem,
   CurrentAccountItemData,
@@ -13,11 +14,6 @@ import { amountToCents } from '@/utils/money';
 import styles from './CurrentAccountDialog.module.scss';
 
 const FORM_ID = 'current-account-form';
-
-const toOptions = (options: { value: string; label: string }[]) =>
-  options.map(option => ({ value: option.value, element: option.label }));
-
-const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
 
 type CurrentAccountErrors = Partial<
   Record<keyof CurrentAccountItemData, string>
@@ -51,6 +47,7 @@ interface CurrentAccountFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const CurrentAccountForm = ({ item, onSave }: CurrentAccountFormProps) => {
+  const entities = toDropdownOptions(useCatalog('financialEntities'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<CurrentAccountItemData>(
     item
@@ -99,7 +96,7 @@ const CurrentAccountForm = ({ item, onSave }: CurrentAccountFormProps) => {
       <Dropdown
         label="Entidad financiera *"
         placeholder="Selecciona"
-        options={ENTITIES}
+        options={entities}
         value={state.entity || undefined}
         errors={errors.entity}
         onChange={value => update({ entity: value })}

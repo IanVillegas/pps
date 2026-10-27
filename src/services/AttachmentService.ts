@@ -1,3 +1,4 @@
+// [SIMULADO] Subida de adjuntos simulada. Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 // Adaptador simulado (DEC-009B), sin backend ni contrato de API (D-08). La
 // subida en si no existe: se resuelve con temporizadores, igual que
 // AuthService. Un archivo cuyo nombre contiene "error" (sin distinguir

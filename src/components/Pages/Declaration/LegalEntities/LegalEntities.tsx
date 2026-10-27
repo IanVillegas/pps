@@ -18,8 +18,9 @@ import type {
   SocietyItem,
   SocietyItemData,
 } from '@/types/LegalEntity.types';
-import { SOCIETY_TYPE_OPTIONS } from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import { createId } from '@/utils/ids';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 import { formatAmount } from '@/utils/money';
 import styles from './LegalEntities.module.scss';
 
@@ -34,17 +35,13 @@ const COLUMNS: RecordsTableColumn<LegalEntityItem>[] = [
   { key: 'term', header: 'Plazo', render: row => row.term },
 ];
 
-const SOCIETY_TYPE_LABELS = new Map(
-  SOCIETY_TYPE_OPTIONS.map(option => [option.value, option.label])
-);
-
 // Mismo orden que Figma (nodo 43306:2214).
 const SOCIETY_COLUMNS: RecordsTableColumn<SocietyItem>[] = [
   { key: 'name', header: 'Nombre', render: row => row.name },
   {
     key: 'societyType',
     header: 'Tipo de sociedad',
-    render: row => SOCIETY_TYPE_LABELS.get(row.societyType) ?? row.societyType,
+    render: row => catalogLabel('societyTypes', row.societyType),
   },
   { key: 'role', header: 'Cargo', render: row => row.role },
   { key: 'term', header: 'Plazo', render: row => row.term },
@@ -80,6 +77,8 @@ interface DialogState<T> {
  * al instante (D-11).
  */
 const LegalEntities = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const entities = (values as LegalEntitiesValues).legalEntities ?? NO_ENTITIES;
   const societies = (values as LegalEntitiesValues).societies ?? NO_SOCIETIES;

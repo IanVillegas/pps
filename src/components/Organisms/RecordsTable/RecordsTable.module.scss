@@ -83,7 +83,9 @@ $line: rgba(31, 31, 31, 0.1);
 
   &__table {
     width: 100%;
-    min-width: 560px;
+    // Cabe sin scroll en tablet (768 px: la tarjeta deja ~500 px); con mas
+    // columnas la tabla desplaza dentro de si misma.
+    min-width: 480px;
     border-collapse: collapse;
     font-family: var(--font-poppins), sans-serif;
     font-size: 14px;

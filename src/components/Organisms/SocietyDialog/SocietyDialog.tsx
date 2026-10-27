@@ -4,18 +4,14 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';
 import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
-import { SOCIETY_TYPE_OPTIONS } from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type { SocietyItem, SocietyItemData } from '@/types/LegalEntity.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
 import { amountToCents } from '@/utils/money';
 import styles from './SocietyDialog.module.scss';
 
 const FORM_ID = 'society-form';
-
-const SOCIETY_TYPES = SOCIETY_TYPE_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
 
 type SocietyErrors = Partial<Record<keyof SocietyItemData, string>>;
 
@@ -81,6 +77,7 @@ interface SocietyFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const SocietyForm = ({ item, onSave }: SocietyFormProps) => {
+  const society_types = toDropdownOptions(useCatalog('societyTypes'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<SocietyItemData>(
     item
@@ -165,7 +162,7 @@ const SocietyForm = ({ item, onSave }: SocietyFormProps) => {
       <Dropdown
         label="Tipo de sociedad *"
         placeholder="Selecciona"
-        options={SOCIETY_TYPES}
+        options={society_types}
         value={state.societyType || undefined}
         errors={errors.societyType}
         onChange={value => update({ societyType: value })}

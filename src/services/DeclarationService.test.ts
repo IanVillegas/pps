@@ -2,6 +2,7 @@ import {
   acknowledgeIntro,
   clearDraft,
   getDraft,
+  requestPersonalData,
   saveStepValues,
   subscribeDraft,
 } from './DeclarationService';
@@ -34,7 +35,18 @@ describe('DeclarationService', () => {
     startMockSession('demo');
     saveStepValues(1, { nombre: 'Ana' });
     acknowledgeIntro();
+    requestPersonalData();
     endSession();
-    expect(getDraft()).toEqual({ introAcknowledged: false, steps: {} });
+    expect(getDraft()).toEqual({
+      introAcknowledged: false,
+      steps: {},
+      personalDataRequests: 0,
+    });
+  });
+
+  it('counts each request to complete the personal data', () => {
+    requestPersonalData();
+    requestPersonalData();
+    expect(getDraft().personalDataRequests).toBe(2);
   });
 });

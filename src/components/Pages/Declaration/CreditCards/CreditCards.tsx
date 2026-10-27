@@ -5,16 +5,13 @@ import { CurrencyTotals } from '@/components/Molecules';
 import RecordsTable, {
   type RecordsTableColumn,
 } from '@/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
 import CreditCardDialog from '@/components/Organisms/CreditCardDialog/CreditCardDialog';
 import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import {
-  CURRENCY_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-  type CatalogOption,
-} from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
   CreditCardItem,
@@ -25,14 +22,12 @@ import { formatIsoDate } from '@/utils/dates';
 import { createId } from '@/utils/ids';
 import { useCreditCardsTotals } from '@/utils/hooks/useCreditCardsTotals';
 import { formatAmount } from '@/utils/money';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './CreditCards.module.scss';
 
 // Referencia estable: un `[]` nuevo en cada render dispararia de nuevo el
 // pedido de totales en useCreditCardsTotals.
 const NO_CARDS: CreditCardItem[] = [];
-
-const labelOf = (options: CatalogOption[], value: string) =>
-  options.find(option => option.value === value)?.label ?? value;
 
 // Mismo orden que Figma (nodo 43121:2819).
 const COLUMNS: RecordsTableColumn<CreditCardItem>[] = [
@@ -40,7 +35,7 @@ const COLUMNS: RecordsTableColumn<CreditCardItem>[] = [
   {
     key: 'entity',
     header: 'Entidad',
-    render: row => labelOf(FINANCIAL_ENTITY_OPTIONS, row.entity),
+    render: row => catalogLabel('financialEntities', row.entity),
   },
   {
     key: 'expiryDate',
@@ -55,7 +50,7 @@ const COLUMNS: RecordsTableColumn<CreditCardItem>[] = [
   {
     key: 'currency',
     header: 'Moneda',
-    render: row => labelOf(CURRENCY_OPTIONS, row.currency),
+    render: row => catalogLabel('currencies', row.currency),
   },
   {
     key: 'balanceColones',
@@ -99,9 +94,11 @@ interface DialogState {
  * entrega el backend (D-10, ver CreditCardsTotalsService).
  */
 const CreditCards = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const cards = (values as CreditCardsValues).cards ?? NO_CARDS;
-  const { totals, status } = useCreditCardsTotals(cards);
+  const { totals, status, retry } = useCreditCardsTotals(cards);
   const [dialog, setDialog] = useState<DialogState>({ open: false });
 
   const hasError = status === 'error';
@@ -144,6 +141,12 @@ const CreditCards = ({ values, onChange }: StepProps) => {
         onEdit={card => setDialog({ open: true, item: card })}
         onDelete={handleDelete}
       />
+      {status === 'error' && (
+        <RetryNotice
+          message="No se pudieron cargar las cifras. Revise su conexión e inténtelo de nuevo."
+          onRetry={retry}
+        />
+      )}
       <CurrencyTotals
         heading="Saldo de tarjetas de crédito"
         colonesTitle="Saldo total de tarjetas en colones"

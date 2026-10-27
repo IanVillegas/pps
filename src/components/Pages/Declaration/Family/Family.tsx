@@ -9,10 +9,7 @@ import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import {
-  GENDER_OPTIONS,
-  RELATIONSHIP_OPTIONS,
-} from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
   FamilyMember,
@@ -21,15 +18,13 @@ import type {
 } from '@/types/Family.types';
 import { formatIsoDate } from '@/utils/dates';
 import { createId } from '@/utils/ids';
-
-const labelOf = (options: { value: string; label: string }[], value: string) =>
-  options.find(option => option.value === value)?.label ?? value;
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 
 const COLUMNS: RecordsTableColumn<FamilyMember>[] = [
   {
     key: 'relationship',
     header: 'Parentesco',
-    render: row => labelOf(RELATIONSHIP_OPTIONS, row.relationship),
+    render: row => catalogLabel('relationships', row.relationship),
   },
   { key: 'fullName', header: 'Nombre', render: row => row.fullName },
   { key: 'age', header: 'Edad', render: row => row.age },
@@ -41,7 +36,7 @@ const COLUMNS: RecordsTableColumn<FamilyMember>[] = [
   {
     key: 'gender',
     header: 'Género',
-    render: row => labelOf(GENDER_OPTIONS, row.gender),
+    render: row => catalogLabel('genders', row.gender),
   },
 ];
 
@@ -57,6 +52,8 @@ interface DialogState {
  * validacion. Cada cambio se guarda en el borrador al instante.
  */
 const Family = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const members = (values as FamilyValues).members ?? [];
   const [dialog, setDialog] = useState<DialogState>({ open: false });

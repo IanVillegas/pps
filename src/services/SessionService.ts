@@ -1,3 +1,4 @@
+// [SIMULADO] Sesion de demostracion en memoria. Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 import type { SessionUser } from '@/types/Session.types';
 import { clearConfidentialAnswers } from '@/services/ConfidentialReportService';
 import { clearDraft } from '@/services/DeclarationService';

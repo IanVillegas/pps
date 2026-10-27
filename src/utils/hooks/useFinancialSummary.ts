@@ -25,14 +25,23 @@ interface FinancialSummaryState {
 export const useFinancialSummary = (
   additionalIncomes: IncomeItem[],
   expenses: ExpenseItem[]
-): FinancialSummaryState => {
+): FinancialSummaryState & { retry: () => void } => {
   const [state, setState] = useState<FinancialSummaryState>({
     summary: null,
     status: 'loading',
   });
 
+  // Cada reintento vuelve a pedir la cifra aunque los registros no cambien.
+  const [attempt, setAttempt] = useState(0);
+  const retry = () => setAttempt(count => count + 1);
+
   useEffect(() => {
     let current = true;
+    setState(previous =>
+      previous.status === 'error'
+        ? { ...previous, status: 'loading' }
+        : previous
+    );
     fetchFinancialSummary({ additionalIncomes, expenses })
       .then(summary => {
         if (current) setState({ summary, status: 'ready' });
@@ -43,7 +52,7 @@ export const useFinancialSummary = (
     return () => {
       current = false;
     };
-  }, [additionalIncomes, expenses]);
+  }, [additionalIncomes, expenses, attempt]);
 
-  return state;
+  return { ...state, retry };
 };
