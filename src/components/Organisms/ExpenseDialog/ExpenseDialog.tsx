@@ -3,14 +3,14 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { toDropdownOptions } from '@/services/CatalogService';
 import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   ExpenseItem,
   ExpenseItemData,
 } from '@/types/IncomeExpenses.types';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './ExpenseDialog.module.scss';
 
 const FORM_ID = 'expense-form';

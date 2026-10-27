@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
-import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import { CurrencyTotals } from '@/components/Molecules';
 import CreditDialog from '@/components/Organisms/CreditDialog/CreditDialog';
 import {
@@ -21,7 +21,7 @@ import type {
 import { formatIsoDate } from '@/utils/dates';
 import { createId } from '@/utils/ids';
 import { useCreditsTotals } from '@/utils/hooks/useCreditsTotals';
-import { formatAmount } from '@/utils/money';
+import { formatAmount } from '@/sad-aml-shared/utils/helpers/money';
 import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './Credits.module.scss';
 

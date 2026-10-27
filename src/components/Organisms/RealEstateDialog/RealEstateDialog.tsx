@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { toDropdownOptions } from '@/services/CatalogService';
 import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
@@ -11,7 +11,7 @@ import type {
   RealEstateItemData,
 } from '@/types/RealEstate.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './RealEstateDialog.module.scss';
 
 const FORM_ID = 'real-estate-form';

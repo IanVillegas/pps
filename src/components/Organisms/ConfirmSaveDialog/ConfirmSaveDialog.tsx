@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, ButtonColor } from '@/components/Atoms';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import styles from './ConfirmSaveDialog.module.scss';
 
 interface ConfirmSaveDialogProps {

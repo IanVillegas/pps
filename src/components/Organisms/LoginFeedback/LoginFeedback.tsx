@@ -1,6 +1,6 @@
 'use client';
 
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { Button, ButtonColor } from '@/components/Atoms';
 import styles from './LoginFeedback.module.scss';
 

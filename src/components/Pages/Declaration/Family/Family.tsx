@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
 import FamilyDialog from '@/components/Organisms/FamilyDialog/FamilyDialog';
 import {
   TOAST_MESSAGES,

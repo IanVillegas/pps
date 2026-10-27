@@ -2,7 +2,7 @@
 
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import type {
   LegalEntityItem,
   LegalEntityItemData,

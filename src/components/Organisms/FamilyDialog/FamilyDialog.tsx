@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import DatePicker from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker';
 import { toDropdownOptions } from '@/services/CatalogService';
 import { useCatalog } from '@/utils/hooks/useCatalog';

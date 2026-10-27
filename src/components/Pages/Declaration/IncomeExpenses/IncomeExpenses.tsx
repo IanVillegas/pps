@@ -5,8 +5,8 @@ import { Textarea } from '@/components/Atoms';
 import { RadioGroup } from '@/components/Molecules';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
-import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import ExpenseDialog from '@/components/Organisms/ExpenseDialog/ExpenseDialog';
 import IncomeDialog from '@/components/Organisms/IncomeDialog/IncomeDialog';
 import {
@@ -29,7 +29,11 @@ import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
 import { createId } from '@/utils/ids';
 import { useCatalogs } from '@/utils/hooks/useCatalog';
 import { useFinancialSummary } from '@/utils/hooks/useFinancialSummary';
-import { formatAmount, formatCurrency, formatPercent } from '@/utils/money';
+import {
+  formatAmount,
+  formatCurrency,
+  formatPercent,
+} from '@/sad-aml-shared/utils/helpers/money';
 import styles from './IncomeExpenses.module.scss';
 
 // Referencias estables: un `[]` nuevo en cada render dispararia de nuevo el

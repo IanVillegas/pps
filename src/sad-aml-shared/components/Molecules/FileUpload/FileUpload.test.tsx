@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FileUpload from './FileUpload';
-import type { AttachmentFile } from '@/types/Attachment.types';
+import type { AttachmentFile } from '@/sad-aml-shared/types/Attachment.types';
 
 const FILES: AttachmentFile[] = [
   { id: 'a', name: 'cedula.pdf', status: 'uploading', progress: 40 },

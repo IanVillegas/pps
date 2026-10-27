@@ -7,7 +7,7 @@ import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard
 import type { StepErrors, StepValues } from '@/types/Declaration.types';
 import type { JudicialValues } from '@/types/JudicialData.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './JudicialData.module.scss';
 
 /**

@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { toDropdownOptions } from '@/services/CatalogService';
 import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
@@ -11,7 +11,7 @@ import type {
   SavingsAccountItemData,
 } from '@/types/Savings.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './SavingsDialog.module.scss';
 
 const FORM_ID = 'savings-form';
@@ -63,6 +63,7 @@ interface SavingsFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
+  const currencies = useCatalog('currencies');
   const relationships = toDropdownOptions(useCatalog('accountRelationships'));
   const entities = toDropdownOptions(useCatalog('financialEntities'));
   const formRef = useRef<HTMLFormElement>(null);
@@ -131,6 +132,7 @@ const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
       />
       {/* Moneda antes que monto: la moneda elegida decide el icono del monto. */}
       <CurrencySelect
+        currencies={currencies}
         label="Moneda *"
         value={state.currency || undefined}
         errors={errors.currency}

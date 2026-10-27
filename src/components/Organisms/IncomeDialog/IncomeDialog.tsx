@@ -3,13 +3,13 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, Textarea } from '@/components/Atoms';
 import { Dropdown, FileUpload, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { toDropdownOptions } from '@/services/CatalogService';
 import { useCatalog } from '@/utils/hooks/useCatalog';
-import type { AttachmentFile } from '@/types/Attachment.types';
+import type { AttachmentFile } from '@/sad-aml-shared/types/Attachment.types';
 import type { IncomeItem, IncomeItemData } from '@/types/IncomeExpenses.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import { useAttachments } from '@/utils/hooks/useAttachments';
 import styles from './IncomeDialog.module.scss';
 

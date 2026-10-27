@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import ConfirmDeleteDialog from '@/components/Organisms/ConfirmDeleteDialog/ConfirmDeleteDialog';
+import ConfirmDeleteDialog from '@/sad-aml-shared/components/Organisms/ConfirmDeleteDialog/ConfirmDeleteDialog';
 import styles from './RecordsTable.module.scss';
 
 export interface RecordsTableColumn<T> {

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, ButtonColor } from '@/components/Atoms';
 import DeclarationStepper from '@/components/Molecules/DeclarationStepper/DeclarationStepper';
-import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import DeclarationIntroDialog from '@/components/Organisms/DeclarationIntroDialog/DeclarationIntroDialog';
 import { requestPersonalData } from '@/services/DeclarationService';
 import { useCatalogs } from '@/utils/hooks/useCatalog';

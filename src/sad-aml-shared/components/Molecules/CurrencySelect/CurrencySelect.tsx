@@ -2,12 +2,13 @@
 
 import * as Select from '@radix-ui/react-select';
 import Dropdown from '@/sad-aml-shared/components/Molecules/Dropdown/Dropdown';
-import CurrencyIcon from '@/components/Atoms/CurrencyIcon/CurrencyIcon';
-import { useCatalog } from '@/utils/hooks/useCatalog';
+import CurrencyIcon from '@/sad-aml-shared/components/Atoms/CurrencyIcon/CurrencyIcon';
 import styles from './CurrencySelect.module.scss';
 
 interface CurrencySelectProps {
   label: string;
+  /** Monedas disponibles (`value` 'colones' o 'dolares', `label` el texto). */
+  currencies: { value: string; label: string }[];
   /** Moneda elegida ('colones' o 'dolares'); undefined mientras no se elige. */
   value?: string;
   onChange: (value: string) => void;
@@ -39,23 +40,21 @@ const toOptions = (currencies: { value: string; label: string }[]) =>
  */
 const CurrencySelect = ({
   label,
+  currencies,
   value,
   onChange,
   errors,
   id,
-}: CurrencySelectProps) => {
-  const currencies = useCatalog('currencies');
-  return (
-    <Dropdown
-      id={id}
-      label={label}
-      placeholder="Selecciona"
-      options={toOptions(currencies)}
-      value={value}
-      errors={errors}
-      onChange={onChange}
-    />
-  );
-};
+}: CurrencySelectProps) => (
+  <Dropdown
+    id={id}
+    label={label}
+    placeholder="Selecciona"
+    options={toOptions(currencies)}
+    value={value}
+    errors={errors}
+    onChange={onChange}
+  />
+);
 
 export default CurrencySelect;

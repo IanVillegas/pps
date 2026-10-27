@@ -3,14 +3,14 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor } from '@/components/Atoms';
 import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { toDropdownOptions } from '@/services/CatalogService';
 import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   CurrentAccountItem,
   CurrentAccountItemData,
 } from '@/types/CurrentAccount.types';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './CurrentAccountDialog.module.scss';
 
 const FORM_ID = 'current-account-form';
@@ -47,6 +47,7 @@ interface CurrentAccountFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const CurrentAccountForm = ({ item, onSave }: CurrentAccountFormProps) => {
+  const currencies = useCatalog('currencies');
   const entities = toDropdownOptions(useCatalog('financialEntities'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<CurrentAccountItemData>(
@@ -103,6 +104,7 @@ const CurrentAccountForm = ({ item, onSave }: CurrentAccountFormProps) => {
       />
       {/* Moneda antes que saldo: la moneda elegida decide el icono del saldo. */}
       <CurrencySelect
+        currencies={currencies}
         label="Moneda *"
         value={state.currency || undefined}
         errors={errors.currency}

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
 import MovableAssetDialog from '@/components/Organisms/MovableAssetDialog/MovableAssetDialog';
 import {
   TOAST_MESSAGES,
@@ -16,7 +16,7 @@ import type {
   MovableAssetItemData,
   MovableAssetValues,
 } from '@/types/MovableAsset.types';
-import { formatAmount } from '@/utils/money';
+import { formatAmount } from '@/sad-aml-shared/utils/helpers/money';
 import { createId } from '@/utils/ids';
 import { useCatalogs } from '@/utils/hooks/useCatalog';
 

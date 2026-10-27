@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
-import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import CurrentAccountDialog from '@/components/Organisms/CurrentAccountDialog/CurrentAccountDialog';
 import {
   TOAST_MESSAGES,
@@ -20,7 +20,10 @@ import type {
 } from '@/types/CurrentAccount.types';
 import { createId } from '@/utils/ids';
 import { useCurrentAccounts } from '@/utils/hooks/useCurrentAccounts';
-import { formatAmount, formatCurrency } from '@/utils/money';
+import {
+  formatAmount,
+  formatCurrency,
+} from '@/sad-aml-shared/utils/helpers/money';
 import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './CurrentAccounts.module.scss';
 

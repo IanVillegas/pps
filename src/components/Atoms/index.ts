@@ -9,5 +9,5 @@ export { default as InputText } from '@/sad-aml-shared/components/Atoms/InputTex
 export { default as Checkbox } from '@/sad-aml-shared/components/Atoms/Checkbox/Checkbox';
 export { default as Tooltip } from '@/sad-aml-shared/components/Atoms/Tooltip/Tooltip';
 export { default as Textarea } from '@/sad-aml-shared/components/Atoms/Textarea/Textarea';
-export { default as Switch } from './Switch/Switch';
-export { default as CurrencyIcon } from './CurrencyIcon/CurrencyIcon';
+export { default as Switch } from '@/sad-aml-shared/components/Atoms/Switch/Switch';
+export { default as CurrencyIcon } from '@/sad-aml-shared/components/Atoms/CurrencyIcon/CurrencyIcon';

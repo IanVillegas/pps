@@ -1,14 +1,14 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
-import { InputText } from '@/components/Atoms';
-import CurrencyIcon from '@/components/Atoms/CurrencyIcon/CurrencyIcon';
+import InputText from '@/sad-aml-shared/components/Atoms/InputText/InputText';
+import CurrencyIcon from '@/sad-aml-shared/components/Atoms/CurrencyIcon/CurrencyIcon';
 import {
   amountToCents,
   centsToAmount,
   formatCents,
   MAX_AMOUNT_DIGITS,
-} from '@/utils/money';
+} from '@/sad-aml-shared/utils/helpers/money';
 
 interface MoneyInputProps {
   label: string;

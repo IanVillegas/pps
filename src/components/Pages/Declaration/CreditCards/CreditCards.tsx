@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { CurrencyTotals } from '@/components/Molecules';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
-import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import CreditCardDialog from '@/components/Organisms/CreditCardDialog/CreditCardDialog';
 import {
   TOAST_MESSAGES,
@@ -21,7 +21,7 @@ import type {
 import { formatIsoDate } from '@/utils/dates';
 import { createId } from '@/utils/ids';
 import { useCreditCardsTotals } from '@/utils/hooks/useCreditCardsTotals';
-import { formatAmount } from '@/utils/money';
+import { formatAmount } from '@/sad-aml-shared/utils/helpers/money';
 import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './CreditCards.module.scss';
 

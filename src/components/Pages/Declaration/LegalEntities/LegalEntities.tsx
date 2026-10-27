@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
 import LegalEntityDialog from '@/components/Organisms/LegalEntityDialog/LegalEntityDialog';
 import SocietyDialog from '@/components/Organisms/SocietyDialog/SocietyDialog';
 import {
@@ -21,7 +21,7 @@ import type {
 import { catalogLabel } from '@/services/CatalogService';
 import { createId } from '@/utils/ids';
 import { useCatalogs } from '@/utils/hooks/useCatalog';
-import { formatAmount } from '@/utils/money';
+import { formatAmount } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './LegalEntities.module.scss';
 
 const NO_ENTITIES: LegalEntityItem[] = [];

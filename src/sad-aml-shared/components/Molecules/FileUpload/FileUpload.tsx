@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useState, type ChangeEvent, type DragEvent } from 'react';
-import type { AttachmentFile } from '@/types/Attachment.types';
+import type { AttachmentFile } from '@/sad-aml-shared/types/Attachment.types';
 import styles from './FileUpload.module.scss';
 
 interface FileUploadProps {

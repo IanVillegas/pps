@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import RetryNotice from '@/components/Molecules/RetryNotice/RetryNotice';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
 import SavingsDialog from '@/components/Organisms/SavingsDialog/SavingsDialog';
 import {
   TOAST_MESSAGES,
@@ -19,7 +19,10 @@ import type {
 } from '@/types/Savings.types';
 import { createId } from '@/utils/ids';
 import { useSavingsTotals } from '@/utils/hooks/useSavingsTotals';
-import { formatAmount, formatCurrency } from '@/utils/money';
+import {
+  formatAmount,
+  formatCurrency,
+} from '@/sad-aml-shared/utils/helpers/money';
 import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './Savings.module.scss';
 
