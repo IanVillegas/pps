@@ -16,9 +16,10 @@ interface ConfirmSaveDialogProps {
  * Modal «Confirmación» del guardado final de la declaración (Figma, nodo
  * 43310:470704, «Modal final»): se muestra al elegir «Guardar» en el
  * juramento (paso 12) y avisa que los datos ya no podrán cambiarse. El texto
- * es el de Figma tal cual, incluidas sus faltas de tilde («podran», «sera») y
- * la mención a «Guardar definitivamente» aunque el botón se llame «Guardar»;
- * se confirmará con el negocio. Usa AppDialog tamaño `md` (640 px).
+ * es el de Figma, incluidas sus faltas de tilde («podran», «sera»), que se
+ * confirmarán con el negocio; la mención al botón se cambió de «Guardar
+ * definitivamente» a «Guardar» para que coincida con el botón. Usa AppDialog
+ * tamaño `md` (640 px).
  */
 const ConfirmSaveDialog = ({
   open,
