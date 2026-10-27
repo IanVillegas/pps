@@ -2,7 +2,7 @@
 
 Implementada y validada el 2026-10-13.
 
-> **Actualización 2026-10-22**: los tres montos se formatean al escribir (centavos, comas, dos decimales) con el icono de la moneda elegida, y «Moneda» va ahora antes de los montos. Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
+> **Actualización 2026-10-21**: los tres montos se formatean al escribir (centavos, comas, dos decimales) con el icono de la moneda elegida, y «Moneda» va ahora antes de los montos. Ver [AJUSTES-oldemar](AJUSTES-oldemar-2026-10-21.md).
 
 ## Implementación
 
