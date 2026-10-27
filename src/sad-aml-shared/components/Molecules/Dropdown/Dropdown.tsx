@@ -27,6 +27,25 @@ interface CustomDropdownProps {
   errors?: string;
 }
 
+// Una opcion: el texto (o el elemento que se pase) y, a la derecha, una marca
+// en la elegida. // !Modificado para DecPat (2026-10-27): rediseno de la lista.
+const renderOption = (element: DropdownOption) => (
+  <Select.Item
+    className={styles.customDropdown__option}
+    value={element.value.toString()}
+    key={element.value}
+  >
+    {isStringElement(element.element) ? (
+      <Select.ItemText>{element.element}</Select.ItemText>
+    ) : (
+      element.element
+    )}
+    <Select.ItemIndicator className={styles.customDropdown__check}>
+      <i className="ri-check-line" aria-hidden="true" />
+    </Select.ItemIndicator>
+  </Select.Item>
+);
+
 const Dropdown = forwardRef<HTMLButtonElement, CustomDropdownProps>(
   (
     {
@@ -100,101 +119,41 @@ const Dropdown = forwardRef<HTMLButtonElement, CustomDropdownProps>(
 
           <Select.Portal>
             <Select.Content
-              className={styles.customDropdown__select}
+              className={`${styles.customDropdown__select} ${
+                isShort ? styles['customDropdown__select--short'] : ''
+              }`}
               position="popper"
+              sideOffset={4}
+              collisionPadding={12}
             >
-              <div
-                className={`${
-                  isShort
-                    ? styles.customDropdown__heightScrollAreasShort
-                    : styles.customDropdown__heightScrollAreas
-                } ${styles.customDropdown__scrollAreaRoot}`}
-              >
-                <div className={styles.customDropdown__scrollAreaViewport}>
-                  <Select.Viewport asChild>
-                    <div>
-                      {options ? (
-                        <>
-                          {options.length > 0 ? (
-                            options.map(element => (
-                              <Select.Item
-                                className={styles.customDropdown__option}
-                                value={element.value}
-                                key={element.value}
-                              >
-                                {isStringElement(element.element) ? (
-                                  <Select.ItemText
-                                    style={{
-                                      display: 'none',
-                                    }}
-                                  >
-                                    {element.element}
-                                  </Select.ItemText>
-                                ) : (
-                                  element.element
-                                )}
-                              </Select.Item>
-                            ))
-                          ) : (
-                            <Select.Item
-                              disabled
-                              value={'0'}
-                              key="empty"
-                              className={`${styles.customDropdown__option} ${styles.emptyValue}`}
-                            >
-                              {labelNoRegister}
-                            </Select.Item>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          {multiOptions?.map(group => {
-                            return (
-                              <Select.Group key={group.label}>
-                                <Select.Label
-                                  className={styles.customDropdown__labelGroup}
-                                >
-                                  {group.label}
-                                </Select.Label>
-                                {group.options?.length > 0 ? (
-                                  group.options?.map(element => (
-                                    <Select.Item
-                                      className={styles.customDropdown__option}
-                                      value={element.value.toString()}
-                                      key={element.value}
-                                    >
-                                      {isStringElement(element.element) ? (
-                                        <Select.ItemText
-                                          style={{
-                                            display: 'none',
-                                          }}
-                                        >
-                                          {element.element}
-                                        </Select.ItemText>
-                                      ) : (
-                                        element.element
-                                      )}
-                                    </Select.Item>
-                                  ))
-                                ) : (
-                                  <Select.Item
-                                    value={'0'}
-                                    key="empty"
-                                    className={`${styles.customDropdown__option} ${styles.emptyValue}`}
-                                    disabled
-                                  >
-                                    {labelNoRegister}
-                                  </Select.Item>
-                                )}
-                              </Select.Group>
-                            );
-                          })}
-                        </>
-                      )}
+              <Select.Viewport className={styles.customDropdown__viewport}>
+                {options ? (
+                  options.length > 0 ? (
+                    options.map(element => renderOption(element))
+                  ) : (
+                    <div className={styles.customDropdown__empty}>
+                      {labelNoRegister}
                     </div>
-                  </Select.Viewport>
-                </div>
-              </div>
+                  )
+                ) : (
+                  multiOptions?.map(group => (
+                    <Select.Group key={group.label}>
+                      <Select.Label
+                        className={styles.customDropdown__labelGroup}
+                      >
+                        {group.label}
+                      </Select.Label>
+                      {group.options?.length > 0 ? (
+                        group.options.map(element => renderOption(element))
+                      ) : (
+                        <div className={styles.customDropdown__empty}>
+                          {labelNoRegister}
+                        </div>
+                      )}
+                    </Select.Group>
+                  ))
+                )}
+              </Select.Viewport>
             </Select.Content>
           </Select.Portal>
         </Select.Root>

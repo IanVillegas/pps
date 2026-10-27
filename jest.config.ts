@@ -12,7 +12,6 @@ const customJestConfig = {
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
-    'src/sad-aml-shared/',
   ],
   moduleNameMapper: {
     // Soporte para CSS Modules y alias

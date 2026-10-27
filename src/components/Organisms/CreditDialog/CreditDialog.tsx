@@ -3,20 +3,16 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import DatePicker from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker';
-import { FINANCIAL_ENTITY_OPTIONS } from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type { CreditItem, CreditItemData } from '@/types/Credit.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './CreditDialog.module.scss';
 
 const FORM_ID = 'credit-form';
-
-const toOptions = (options: { value: string; label: string }[]) =>
-  options.map(option => ({ value: option.value, element: option.label }));
-
-const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
 
 type CreditErrors = Partial<Record<keyof CreditItemData, string>>;
 
@@ -91,6 +87,8 @@ interface CreditFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const CreditForm = ({ item, onSave }: CreditFormProps) => {
+  const currencies = useCatalog('currencies');
+  const entities = toDropdownOptions(useCatalog('financialEntities'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<FormState>(
     item ? { ...item, endDateInvalid: false } : EMPTY
@@ -146,7 +144,7 @@ const CreditForm = ({ item, onSave }: CreditFormProps) => {
       <Dropdown
         label="Entidad financiera *"
         placeholder="Selecciona"
-        options={ENTITIES}
+        options={entities}
         value={state.entity || undefined}
         errors={errors.entity}
         onChange={value => update({ entity: value })}
@@ -161,6 +159,7 @@ const CreditForm = ({ item, onSave }: CreditFormProps) => {
       />
       {/* Moneda antes que los montos: la moneda elegida decide su icono. */}
       <CurrencySelect
+        currencies={currencies}
         label="Moneda *"
         value={state.currency || undefined}
         errors={errors.currency}

@@ -1,7 +1,8 @@
 'use client';
 
-import { Button, ButtonColor } from '@/components/Atoms';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import Button from '@/sad-aml-shared/components/Atoms/Button/Button';
+import { ColorEnum as ButtonColor } from '@/sad-aml-shared/types/enum/Color.enum';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import styles from './ConfirmDeleteDialog.module.scss';
 
 interface ConfirmDeleteDialogProps {

@@ -1,3 +1,4 @@
+// [SIMULADO] Acceso (login) simulado. Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 // Adaptador simulado (DEC-004), sin backend ni contrato de API (D-08).
 // error.demo, bloqueo.demo y conexion.demo permiten verificar los estados.
 // Los demas usuarios no vacios resuelven exito. No usar como autenticacion real.

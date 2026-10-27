@@ -1,3 +1,4 @@
+// [SIMULADO] Cuestionario confidencial en memoria (canal separado, D-12). Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 import {
   CONFIDENTIAL_QUESTION_IDS,
   type ConfidentialAnswers,

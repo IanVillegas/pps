@@ -3,25 +3,25 @@
 import { useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
 import RealEstateDialog from '@/components/Organisms/RealEstateDialog/RealEstateDialog';
 import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import { REAL_ESTATE_DESTINATION_OPTIONS } from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
   RealEstateItem,
   RealEstateItemData,
   RealEstateValues,
 } from '@/types/RealEstate.types';
-import { formatAmount } from '@/utils/money';
+import { formatAmount } from '@/sad-aml-shared/utils/helpers/money';
 import { createId } from '@/utils/ids';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 
 const destinationLabel = (value: string) =>
-  REAL_ESTATE_DESTINATION_OPTIONS.find(option => option.value === value)
-    ?.label ?? value;
+  catalogLabel('realEstateDestinations', value);
 
 const COLUMNS: RecordsTableColumn<RealEstateItem>[] = [
   {
@@ -59,6 +59,8 @@ interface DialogState {
  * cambio se guarda en el borrador al instante.
  */
 const RealEstate = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const properties = (values as RealEstateValues).properties ?? [];
   const [dialog, setDialog] = useState<DialogState>({ open: false });

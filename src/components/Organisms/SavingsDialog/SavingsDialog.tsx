@@ -3,26 +3,18 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { CurrencySelect, Dropdown, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
-import {
-  ACCOUNT_RELATIONSHIP_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-} from '@/services/CatalogService';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   SavingsAccountItem,
   SavingsAccountItemData,
 } from '@/types/Savings.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './SavingsDialog.module.scss';
 
 const FORM_ID = 'savings-form';
-
-const toOptions = (options: { value: string; label: string }[]) =>
-  options.map(option => ({ value: option.value, element: option.label }));
-
-const RELATIONSHIPS = toOptions(ACCOUNT_RELATIONSHIP_OPTIONS);
-const ENTITIES = toOptions(FINANCIAL_ENTITY_OPTIONS);
 
 type SavingsErrors = Partial<Record<keyof SavingsAccountItemData, string>>;
 
@@ -71,6 +63,9 @@ interface SavingsFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
+  const currencies = useCatalog('currencies');
+  const relationships = toDropdownOptions(useCatalog('accountRelationships'));
+  const entities = toDropdownOptions(useCatalog('financialEntities'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<SavingsAccountItemData>(item ?? EMPTY);
   const [errors, setErrors] = useState<SavingsErrors>({});
@@ -137,6 +132,7 @@ const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
       />
       {/* Moneda antes que monto: la moneda elegida decide el icono del monto. */}
       <CurrencySelect
+        currencies={currencies}
         label="Moneda *"
         value={state.currency || undefined}
         errors={errors.currency}
@@ -145,7 +141,7 @@ const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
       <Dropdown
         label="Relación con la cuenta *"
         placeholder="Selecciona"
-        options={RELATIONSHIPS}
+        options={relationships}
         value={state.relationship || undefined}
         errors={errors.relationship}
         onChange={value => update({ relationship: value })}
@@ -160,7 +156,7 @@ const SavingsForm = ({ item, onSave }: SavingsFormProps) => {
       <Dropdown
         label="Entidad financiera *"
         placeholder="Selecciona"
-        options={ENTITIES}
+        options={entities}
         value={state.entity || undefined}
         errors={errors.entity}
         onChange={value => update({ entity: value })}

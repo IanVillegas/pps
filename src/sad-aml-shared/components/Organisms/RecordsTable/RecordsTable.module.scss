@@ -83,7 +83,9 @@ $line: rgba(31, 31, 31, 0.1);
 
   &__table {
     width: 100%;
-    min-width: 560px;
+    // Cabe sin scroll en tablet (768 px: la tarjeta deja ~500 px); con mas
+    // columnas la tabla desplaza dentro de si misma.
+    min-width: 480px;
     border-collapse: collapse;
     font-family: var(--font-poppins), sans-serif;
     font-size: 14px;
@@ -103,6 +105,31 @@ $line: rgba(31, 31, 31, 0.1);
 
     tbody tr + tr td {
       border-top: 1px solid $line;
+    }
+  }
+
+  // Tablas con muchas columnas (sociedades, 9): letra y espacios mas chicos
+  // y el texto puede partirse en varias lineas, para que quepan completas en
+  // pantallas de portatil sin scroll horizontal.
+  &__table--dense {
+    min-width: 0;
+    font-size: 12px;
+
+    th,
+    td {
+      padding: 12px 8px 12px 0;
+      overflow-wrap: break-word;
+    }
+  }
+
+  &__table--dense &__actions {
+    button {
+      padding: 2px;
+      font-size: 18px;
+    }
+
+    button + button {
+      margin-left: 4px;
     }
   }
 

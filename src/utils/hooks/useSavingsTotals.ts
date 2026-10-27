@@ -19,14 +19,23 @@ interface SavingsTotalsState {
  */
 export const useSavingsTotals = (
   accounts: SavingsAccountItem[]
-): SavingsTotalsState => {
+): SavingsTotalsState & { retry: () => void } => {
   const [state, setState] = useState<SavingsTotalsState>({
     totals: null,
     status: 'loading',
   });
 
+  // Cada reintento vuelve a pedir la cifra aunque los registros no cambien.
+  const [attempt, setAttempt] = useState(0);
+  const retry = () => setAttempt(count => count + 1);
+
   useEffect(() => {
     let current = true;
+    setState(previous =>
+      previous.status === 'error'
+        ? { ...previous, status: 'loading' }
+        : previous
+    );
     fetchSavingsTotals(accounts)
       .then(totals => {
         if (current) setState({ totals, status: 'ready' });
@@ -37,7 +46,7 @@ export const useSavingsTotals = (
     return () => {
       current = false;
     };
-  }, [accounts]);
+  }, [accounts, attempt]);
 
-  return state;
+  return { ...state, retry };
 };

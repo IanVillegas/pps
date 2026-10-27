@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import DashboardLayout from '@/sad-aml-shared/components/Templates/DashboardLayout/DashboardLayout';
+import BreadCrumbs from '@/sad-aml-shared/components/Molecules/BreadCrumbs/BreadCrumbs';
 import Header from '@/sad-aml-shared/components/Organisms/Header/Header';
 import SideBar from '@/sad-aml-shared/components/Organisms/SideBar/SideBar';
 import { NotificationProvider } from '@/components/Organisms/Notification/NotificationProvider';
@@ -27,6 +28,13 @@ interface AppShellProps {
 // cualquier ancho, y solo se re-sincroniza con el breakpoint al cruzarlo
 // (no pelea con la eleccion manual del usuario dentro del mismo rango).
 const TABLET_BREAKPOINT = '(max-width: 1100px)';
+
+// Migas de la declaracion: «Inicio» enlaza y «Mi declaración» es la pantalla
+// actual. «Regresar» lleva a la miga anterior (Inicio).
+const DECLARATION_BREADCRUMBS = [
+  { id: 1, label: 'Inicio', href: '/inicio', active: true },
+  { id: 2, label: 'Mi declaración', href: '/mi-declaracion/1', active: false },
+];
 
 const AppShell = ({ user, onLogout, children }: AppShellProps) => {
   const pathname = usePathname();
@@ -103,7 +111,11 @@ const AppShell = ({ user, onLogout, children }: AppShellProps) => {
           />
         }
         header={
-          <Header clientName={user.displayName} handleLogout={onLogout} />
+          <Header clientName={user.displayName} handleLogout={onLogout}>
+            {/* Figma (nodo 43121:6538): «Regresar» y «Inicio / Mi declaración»
+                a la izquierda del encabezado, solo dentro de la declaración. */}
+            {inDeclaration && <BreadCrumbs items={DECLARATION_BREADCRUMBS} />}
+          </Header>
         }
       >
         {children}

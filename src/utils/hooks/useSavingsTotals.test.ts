@@ -76,4 +76,20 @@ describe('useSavingsTotals', () => {
     expect(result.current.status).toBe('error');
     expect(result.current.totals?.colones).toBe(7);
   });
+
+  it('asks again when retry is called, even if the accounts did not change', async () => {
+    mockedFetch.mockClear();
+    mockedFetch.mockRejectedValueOnce(new Error('fail'));
+    const { result } = renderHook(() => useSavingsTotals(NONE));
+    await act(async () => {});
+    expect(result.current.status).toBe('error');
+
+    mockedFetch.mockResolvedValueOnce(totals(9));
+    act(() => result.current.retry());
+    await act(async () => {});
+
+    expect(mockedFetch).toHaveBeenCalledTimes(2);
+    expect(result.current.status).toBe('ready');
+    expect(result.current.totals?.colones).toBe(9);
+  });
 });

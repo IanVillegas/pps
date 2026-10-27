@@ -22,14 +22,23 @@ interface CreditCardsTotalsState {
  */
 export const useCreditCardsTotals = (
   cards: CreditCardItem[]
-): CreditCardsTotalsState => {
+): CreditCardsTotalsState & { retry: () => void } => {
   const [state, setState] = useState<CreditCardsTotalsState>({
     totals: null,
     status: 'loading',
   });
 
+  // Cada reintento vuelve a pedir la cifra aunque los registros no cambien.
+  const [attempt, setAttempt] = useState(0);
+  const retry = () => setAttempt(count => count + 1);
+
   useEffect(() => {
     let current = true;
+    setState(previous =>
+      previous.status === 'error'
+        ? { ...previous, status: 'loading' }
+        : previous
+    );
     fetchCreditCardsTotals(cards)
       .then(totals => {
         if (current) setState({ totals, status: 'ready' });
@@ -40,7 +49,7 @@ export const useCreditCardsTotals = (
     return () => {
       current = false;
     };
-  }, [cards]);
+  }, [cards, attempt]);
 
-  return state;
+  return { ...state, retry };
 };

@@ -3,12 +3,10 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import DatePicker from '@/sad-aml-shared/components/Molecules/DatePicker/DatePicker';
-import {
-  GENDER_OPTIONS,
-  RELATIONSHIP_OPTIONS,
-} from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type { FamilyMember, FamilyMemberData } from '@/types/Family.types';
 import { isFutureIso, todayIso } from '@/utils/dates';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
@@ -18,15 +16,6 @@ const FORM_ID = 'family-member-form';
 // Rango simbolico de edad (sin contrato de backend, mismo criterio que
 // fieldLimits.ts).
 const MAX_AGE = 120;
-
-const RELATIONSHIPS = RELATIONSHIP_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
-const GENDERS = GENDER_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
 
 type FamilyErrors = Partial<Record<keyof FamilyMemberData, string>>;
 
@@ -109,6 +98,8 @@ interface FamilyFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera; al abrir de nuevo parte limpio o con la fila.
 const FamilyForm = ({ member, others, onSave }: FamilyFormProps) => {
+  const relationships = toDropdownOptions(useCatalog('relationships'));
+  const genders = toDropdownOptions(useCatalog('genders'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<FormState>(
     member ? { ...member, birthDateInvalid: false } : EMPTY
@@ -180,7 +171,7 @@ const FamilyForm = ({ member, others, onSave }: FamilyFormProps) => {
       <Dropdown
         label="Parentesco *"
         placeholder="Selecciona"
-        options={RELATIONSHIPS}
+        options={relationships}
         value={state.relationship || undefined}
         errors={errors.relationship}
         onChange={value => update({ relationship: value })}
@@ -188,7 +179,7 @@ const FamilyForm = ({ member, others, onSave }: FamilyFormProps) => {
       <Dropdown
         label="Género *"
         placeholder="Selecciona"
-        options={GENDERS}
+        options={genders}
         value={state.gender || undefined}
         errors={errors.gender}
         onChange={value => update({ gender: value })}

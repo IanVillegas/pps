@@ -11,7 +11,9 @@ Esta es una **copia local de trabajo** para desarrollar con asistencia de IA (ve
 - [AGENTS.md](AGENTS.md) — reglas de trabajo, alcance de este repositorio y criterio para usar/extender `sad-aml-shared`.
 - [tasks/plan.md](tasks/plan.md) — presupuesto de horas y cronograma.
 - [tasks/todo.md](tasks/todo.md) — tareas verificables, dependencias y registro de cierre de cada una.
-- [tasks/preparacion-tecnica-visual.md](tasks/preparacion-tecnica-visual.md) — inventario de Figma, brechas contra `sad-aml-shared` y decisiones pendientes (D-01 a D-15).
+- [tasks/DEC-019-integracion-y-recuperacion.md](tasks/DEC-019-integracion-y-recuperacion.md) — cliente HTTP, catálogos asíncronos, recuperación y lo que queda como deuda.
+- [tasks/DEC-020-visual-y-regresion.md](tasks/DEC-020-visual-y-regresion.md) — revisión responsive y regresión.
+- [tasks/preparacion-tecnica-visual.md](tasks/preparacion-tecnica-visual.md) — inventario de Figma, brechas contra `sad-aml-shared` y decisiones pendientes (D-01 a D-29).
 
 ## Requisitos
 
@@ -49,7 +51,7 @@ Copiar `.env.local.example` a `.env.local`. Solo dos variables son leídas por e
 | Variable                     | Uso                                                                                   |
 | ----------------------------- | --------------------------------------------------------------------------------------| 
 | `NEXT_PUBLIC_ENVIRONMENT`     | `next.config.js` la usa para decidir si se quitan los `console.log` en build.         |
-| `NEXT_PUBLIC_API_BASE_URL`    | Base URL del cliente Axios de `sad-aml-shared`. Sin uso activo: el alcance actual es frontend con datos simulados (ver `AGENTS.md`), no hay adaptador real conectado. |
+| `NEXT_PUBLIC_API_BASE_URL`    | Base URL de la API (la lee `src/services/api/apiClient.ts`). **Vacía = el sistema usa datos simulados**, que es el alcance actual (ver `AGENTS.md`). Al definirla solo se piden los catálogos al servidor (`GET /catalogs/{nombre}`); el resto de los servicios sigue simulado hasta que exista un contrato (ver `tasks/DEC-019-integracion-y-recuperacion.md`). |
 
 ## Estructura de carpetas
 

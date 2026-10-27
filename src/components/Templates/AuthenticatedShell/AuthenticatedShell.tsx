@@ -3,6 +3,8 @@
 import { useEffect, useSyncExternalStore, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import AppShell from '@/components/Templates/AppShell/AppShell';
+import { setUnauthorizedHandler } from '@/services/api/apiClient';
+import { loadCatalogs } from '@/services/CatalogService';
 import {
   getSession,
   getServerSession,
@@ -26,6 +28,17 @@ const AuthenticatedShell = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!user) router.replace('/');
   }, [user, router]);
+
+  // [INTEGRACION] Con sesion: se piden los catalogos (no hace nada en modo simulado) y una
+  // respuesta 401 de la API, que significa sesion vencida, cierra la sesion
+  // local; la guardia de arriba lleva entonces al acceso.
+  const hasSession = Boolean(user);
+  useEffect(() => {
+    if (!hasSession) return;
+    setUnauthorizedHandler(() => endSession());
+    void loadCatalogs();
+    return () => setUnauthorizedHandler(null);
+  }, [hasSession]);
 
   if (!user) return null;
 

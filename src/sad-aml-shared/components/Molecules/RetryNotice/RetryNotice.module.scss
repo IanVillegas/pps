@@ -1,0 +1,40 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Mismo aviso rojo suave que el resumen de errores del wizard
+// (`DeclarationWizard.module.scss`, `&__summary`), con la accion al lado.
+.retryNotice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgba(230, 44, 58, 0.08);
+  color: gm.$red-2026;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  &__retry {
+    padding: 4px 8px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: gm.$gray-500;
+    font-family: var(--font-worksans), sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: gm.$red-2026;
+    }
+
+    &:focus-visible {
+      outline: 2px solid gm.$gray-500;
+      outline-offset: 2px;
+    }
+  }
+}

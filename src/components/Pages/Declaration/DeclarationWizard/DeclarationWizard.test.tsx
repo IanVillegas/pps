@@ -7,11 +7,15 @@ import {
   acknowledgeIntro,
   clearDraft,
   getDraft,
+  requestPersonalData,
   saveStepValues,
 } from '@/services/DeclarationService';
 
 const push = jest.fn();
-jest.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
+const replace = jest.fn();
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push, replace }),
+}));
 
 // Paso de prueba con un campo obligatorio; el real llega con DEC-007.
 const NameStep = ({ values, errors, onChange }: StepProps) => (
@@ -33,11 +37,18 @@ const definitions: StepDefinitions = {
   },
 };
 
-const setup = (stepId: number) =>
-  render(<DeclarationWizard stepId={stepId} definitions={definitions} />);
+// Los pasos posteriores al 1 solo se ven con los datos personales completos;
+// por defecto la prueba los deja completos para ocuparse de lo suyo.
+const setup = (stepId: number, { personalDataDone = true } = {}) => {
+  if (stepId > 1 && personalDataDone) saveStepValues(1, { nombre: 'Ana' });
+  return render(
+    <DeclarationWizard stepId={stepId} definitions={definitions} />
+  );
+};
 
 beforeEach(() => {
   push.mockClear();
+  replace.mockClear();
   clearDraft();
   acknowledgeIntro();
 });
@@ -182,5 +193,75 @@ describe('DeclarationWizard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Entendido' }));
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
     expect(getDraft().introAcknowledged).toBe(true);
+  });
+
+  describe('salir con datos sin guardar', () => {
+    const fireBeforeUnload = () => {
+      const event = new Event('beforeunload', { cancelable: true });
+      window.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+
+    it('does not warn when nothing has been typed', () => {
+      setup(1);
+      expect(fireBeforeUnload()).toBe(false);
+    });
+
+    it('warns before leaving the page once there is data that is only kept in memory', () => {
+      saveStepValues(2, { hijos: 1 });
+      setup(2);
+      expect(fireBeforeUnload()).toBe(true);
+    });
+
+    it('stops warning once the wizard is closed', () => {
+      saveStepValues(2, { hijos: 1 });
+      const { unmount } = setup(2);
+      unmount();
+      expect(fireBeforeUnload()).toBe(false);
+    });
+  });
+
+  describe('bloqueo del paso 1 (datos personales)', () => {
+    it('does not let the stepper leave step 1 while it is incomplete and shows what is missing', async () => {
+      setup(1);
+      await userEvent.click(screen.getByRole('button', { name: 'Paso 5' }));
+      expect(push).not.toHaveBeenCalled();
+      expect(screen.getByRole('alert')).toHaveTextContent(/Revise los campos/);
+      expect(screen.getByText('El nombre es obligatorio')).toBeInTheDocument();
+      expect(screen.getByLabelText(/Nombre/)).toHaveFocus();
+    });
+
+    it('sends a direct visit to a later step back to step 1 with its errors shown', () => {
+      const { container } = setup(7, { personalDataDone: false });
+      expect(container).toBeEmptyDOMElement();
+      expect(replace).toHaveBeenCalledWith('/mi-declaracion/1');
+      expect(getDraft().personalDataRequests).toBe(1);
+    });
+
+    it('shows the errors on step 1 when it is reached after being sent back', () => {
+      saveStepValues(1, {});
+      // Una peticion previa de completar los datos (visita directa a otro paso).
+      requestPersonalData();
+      setup(1);
+      expect(screen.getByText('El nombre es obligatorio')).toBeInTheDocument();
+    });
+
+    it('lets the person move freely between the other steps once step 1 is complete', async () => {
+      setup(1);
+      await userEvent.type(screen.getByLabelText(/Nombre/), 'Ana');
+      await userEvent.click(screen.getByRole('button', { name: 'Paso 8' }));
+      expect(push).toHaveBeenLastCalledWith('/mi-declaracion/8');
+      expect(replace).not.toHaveBeenCalled();
+    });
+
+    it('does not redirect when step 1 has no validation rules', () => {
+      render(
+        <DeclarationWizard
+          stepId={4}
+          definitions={{ 1: { component: NameStep } }}
+        />
+      );
+      expect(replace).not.toHaveBeenCalled();
+    });
   });
 });

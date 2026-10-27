@@ -3,18 +3,14 @@
 import { useEffect, useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import CurrentAccountDialog from '@/components/Organisms/CurrentAccountDialog/CurrentAccountDialog';
 import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import {
-  ACCOUNT_RELATIONSHIP_OPTIONS,
-  CURRENCY_OPTIONS,
-  FINANCIAL_ENTITY_OPTIONS,
-  type CatalogOption,
-} from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
   CurrentAccountItem,
@@ -24,15 +20,16 @@ import type {
 } from '@/types/CurrentAccount.types';
 import { createId } from '@/utils/ids';
 import { useCurrentAccounts } from '@/utils/hooks/useCurrentAccounts';
-import { formatAmount, formatCurrency } from '@/utils/money';
+import {
+  formatAmount,
+  formatCurrency,
+} from '@/sad-aml-shared/utils/helpers/money';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 import styles from './CurrentAccounts.module.scss';
 
 // Referencia estable: un `[]` nuevo en cada render dispararia de nuevo el
 // pedido de saldos en useCurrentAccounts.
 const NO_ACCOUNTS: CurrentAccountItem[] = [];
-
-const labelOf = (options: CatalogOption[], value: string) =>
-  options.find(option => option.value === value)?.label ?? value;
 
 const GROUP_COLUMNS: RecordsTableColumn<GroupCurrentAccount>[] = [
   {
@@ -48,18 +45,18 @@ const GROUP_COLUMNS: RecordsTableColumn<GroupCurrentAccount>[] = [
   {
     key: 'relationship',
     header: 'Parentesco con dueño de la cuenta',
-    render: row => labelOf(ACCOUNT_RELATIONSHIP_OPTIONS, row.relationship),
+    render: row => catalogLabel('accountRelationships', row.relationship),
   },
   { key: 'balance', header: 'Monto', render: row => formatAmount(row.balance) },
   {
     key: 'currency',
     header: 'Moneda',
-    render: row => labelOf(CURRENCY_OPTIONS, row.currency),
+    render: row => catalogLabel('currencies', row.currency),
   },
   {
     key: 'entity',
     header: 'Entidad',
-    render: row => labelOf(FINANCIAL_ENTITY_OPTIONS, row.entity),
+    render: row => catalogLabel('financialEntities', row.entity),
   },
 ];
 
@@ -67,7 +64,7 @@ const ADDED_COLUMNS: RecordsTableColumn<CurrentAccountItem>[] = [
   {
     key: 'entity',
     header: 'Entidad financiera',
-    render: row => labelOf(FINANCIAL_ENTITY_OPTIONS, row.entity),
+    render: row => catalogLabel('financialEntities', row.entity),
   },
   {
     key: 'balance',
@@ -77,7 +74,7 @@ const ADDED_COLUMNS: RecordsTableColumn<CurrentAccountItem>[] = [
   {
     key: 'currency',
     header: 'Moneda',
-    render: row => labelOf(CURRENCY_OPTIONS, row.currency),
+    render: row => catalogLabel('currencies', row.currency),
   },
 ];
 
@@ -96,9 +93,11 @@ interface DialogState {
  * (D-10, ver CurrentAccountsService).
  */
 const CurrentAccounts = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const accounts = (values as CurrentAccountsValues).accounts ?? NO_ACCOUNTS;
-  const { groupAccounts, groupStatus, totals, totalsStatus } =
+  const { groupAccounts, groupStatus, totals, totalsStatus, retry } =
     useCurrentAccounts(accounts);
   const [dialog, setDialog] = useState<DialogState>({ open: false });
 
@@ -158,12 +157,18 @@ const CurrentAccounts = ({ values, onChange }: StepProps) => {
         columns={ADDED_COLUMNS}
         rows={accounts}
         getRowLabel={account =>
-          `cuenta ${labelOf(FINANCIAL_ENTITY_OPTIONS, account.entity)} ${labelOf(CURRENCY_OPTIONS, account.currency)}`
+          `cuenta ${catalogLabel('financialEntities', account.entity)} ${catalogLabel('currencies', account.currency)}`
         }
         onAdd={() => setDialog({ open: true })}
         onEdit={account => setDialog({ open: true, item: account })}
         onDelete={handleDelete}
       />
+      {hasError && (
+        <RetryNotice
+          message="No se pudieron cargar las cifras. Revise su conexión e inténtelo de nuevo."
+          onRetry={retry}
+        />
+      )}
       <section aria-labelledby="current-accounts-totals-heading">
         <h3
           id="current-accounts-totals-heading"

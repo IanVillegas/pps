@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DeclarationWizard from '@/components/Pages/Declaration/DeclarationWizard/DeclarationWizard';
 import {
@@ -6,7 +6,11 @@ import {
   TOAST_MESSAGES,
 } from '@/components/Organisms/Notification/NotificationProvider';
 import { clearConfidentialAnswers } from '@/services/ConfidentialReportService';
-import { acknowledgeIntro, clearDraft } from '@/services/DeclarationService';
+import {
+  acknowledgeIntro,
+  clearDraft,
+  saveStepValues,
+} from '@/services/DeclarationService';
 import {
   clearFinalization,
   getFinalizationStatus,
@@ -14,7 +18,9 @@ import {
 import { endSession, startMockSession } from '@/services/SessionService';
 
 const push = jest.fn();
-jest.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push, replace: jest.fn() }),
+}));
 
 // Paso 12 real, con las definiciones reales del wizard.
 const setup = () =>
@@ -22,6 +28,17 @@ const setup = () =>
     <NotificationProvider>
       <DeclarationWizard stepId={12} />
     </NotificationProvider>
+  );
+
+// «Guardar» del juramento abre el modal de confirmacion; el guardado empieza
+// solo con el «Guardar» del modal (nodo Figma 43310:470704).
+const clickSave = () =>
+  userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
+const confirmSave = () =>
+  userEvent.click(
+    within(screen.getByRole('alertdialog')).getByRole('button', {
+      name: 'Guardar',
+    })
   );
 
 const OATH_START =
@@ -32,6 +49,20 @@ beforeEach(() => {
   push.mockClear();
   clearDraft();
   acknowledgeIntro();
+  // El paso 12 solo se ve con los datos personales (paso 1) completos.
+  saveStepValues(1, {
+    fullName: 'Ana Mora',
+    idNumber: '1-1111-1111',
+    age: '30',
+    maritalStatus: 'soltero',
+    lastAcademicDegree: 'Licenciatura',
+    career: 'Administración',
+    homePhone: '22222222',
+    agency: 'agencia-1',
+    cellPhone: '88888888',
+    office: 'Oficina central',
+    address: 'San José',
+  });
   clearConfidentialAnswers();
   clearFinalization();
 });
@@ -69,7 +100,8 @@ describe('Completion (paso 12, cierre)', () => {
   it('blocks the button while saving and confirms only when the answer arrives', async () => {
     setup();
     await userEvent.click(screen.getByRole('button', { name: 'Terminar' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
+    await clickSave();
+    await confirmSave();
 
     // Guardando: ni exito todavia ni boton disponible.
     expect(getFinalizationStatus()).toBe('sending');
@@ -86,13 +118,45 @@ describe('Completion (paso 12, cierre)', () => {
     expect(screen.getByRole('button', { name: 'Guardado' })).toBeDisabled();
   });
 
+  it('asks for confirmation before saving and does not save until confirmed', async () => {
+    setup();
+    await userEvent.click(screen.getByRole('button', { name: 'Terminar' }));
+    await clickSave();
+
+    const dialog = screen.getByRole('alertdialog');
+    expect(within(dialog).getByText('Confirmación')).toBeInTheDocument();
+    expect(
+      within(dialog).getByText(/los datos no podran cambiarse/)
+    ).toBeInTheDocument();
+    expect(
+      within(dialog).getByText(
+        '¿Está seguro(a) de que desea guardar su declaración?'
+      )
+    ).toBeInTheDocument();
+    expect(getFinalizationStatus()).toBe('oath');
+  });
+
+  it('cancelling the confirmation saves nothing and keeps the oath', async () => {
+    setup();
+    await userEvent.click(screen.getByRole('button', { name: 'Terminar' }));
+    await clickSave();
+    await userEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+    expect(getFinalizationStatus()).toBe('oath');
+    expect(screen.getByText(OATH_START)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Guardar' })).toBeEnabled();
+  });
+
   it('saves only once when the button is clicked repeatedly', async () => {
     setup();
     await userEvent.click(screen.getByRole('button', { name: 'Terminar' }));
-    const save = screen.getByRole('button', { name: 'Guardar' });
-    await userEvent.click(save);
-    await userEvent.click(save);
-    await userEvent.click(save);
+    await clickSave();
+    await confirmSave();
+    // Ya guardando, el boton esta bloqueado: mas clics no hacen nada.
+    const busy = screen.getByRole('button', { busy: true });
+    await userEvent.click(busy);
+    await userEvent.click(busy);
 
     await screen.findByText(TOAST_MESSAGES.saved.message, undefined, SLOW);
     expect(screen.getAllByText(TOAST_MESSAGES.saved.message)).toHaveLength(1);
@@ -102,7 +166,8 @@ describe('Completion (paso 12, cierre)', () => {
     startMockSession('cierre.error');
     setup();
     await userEvent.click(screen.getByRole('button', { name: 'Terminar' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Guardar' }));
+    await clickSave();
+    await confirmSave();
 
     expect(
       await screen.findByText(

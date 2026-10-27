@@ -2,24 +2,13 @@
 
 import { InputText, Textarea } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
-import {
-  MARITAL_STATUS_OPTIONS,
-  AGENCY_OPTIONS,
-} from '@/services/CatalogService';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type { PersonalDataValues } from '@/types/PersonalData.types';
 import type { StepErrors, StepValues } from '@/types/Declaration.types';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
 import styles from './PersonalData.module.scss';
-
-const MARITAL_STATUS = MARITAL_STATUS_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
-const AGENCIES = AGENCY_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
 
 // Valida los once campos obligatorios del paso. D-09: sin formato/catalogo
 // confirmado por backend, asi que solo se exige presencia, no un patron
@@ -54,6 +43,8 @@ export const validatePersonalData = (stepValues: StepValues): StepErrors => {
  * PersonalData.types.ts, corrige lo que decia `todo.md`).
  */
 const PersonalData = ({ values, errors, onChange }: StepProps) => {
+  const maritalStatus = toDropdownOptions(useCatalog('maritalStatus'));
+  const agencies = toDropdownOptions(useCatalog('agencies'));
   const data = values as PersonalDataValues;
   const set = <K extends keyof PersonalDataValues>(
     field: K,
@@ -72,7 +63,7 @@ const PersonalData = ({ values, errors, onChange }: StepProps) => {
       <Dropdown
         label="Estado civil *"
         placeholder="Selecciona"
-        options={MARITAL_STATUS}
+        options={maritalStatus}
         value={data.maritalStatus}
         errors={errors.maritalStatus}
         onChange={value => set('maritalStatus', value)}
@@ -118,7 +109,7 @@ const PersonalData = ({ values, errors, onChange }: StepProps) => {
       <Dropdown
         label="Agencia *"
         placeholder="Selecciona"
-        options={AGENCIES}
+        options={agencies}
         value={data.agency}
         errors={errors.agency}
         onChange={value => set('agency', value)}

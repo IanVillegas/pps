@@ -1,6 +1,6 @@
 import { useId } from 'react';
-import CurrencyIcon from '@/components/Atoms/CurrencyIcon/CurrencyIcon';
-import { formatCurrency } from '@/utils/money';
+import CurrencyIcon from '@/sad-aml-shared/components/Atoms/CurrencyIcon/CurrencyIcon';
+import { formatCurrency } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './CurrencyTotals.module.scss';
 
 export interface CurrencyFigures {

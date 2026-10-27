@@ -62,128 +62,110 @@
     padding-right: 5px;
   }
 
+  // !Modificado para DecPat (2026-10-27): rediseno de la lista de opciones.
+  // Antes cada opcion llevaba borde solo a los lados y abajo (la lista quedaba
+  // sin borde superior), sin sombra, pegada al campo y con un `margin-top`
+  // negativo para tapar el hueco; no habia marca en la opcion elegida ni
+  // estado de foco por teclado. Ahora es un panel con el mismo borde y radio
+  // que el campo, la sombra Elevation-3 de las tarjetas, una separacion de
+  // 4px del campo, opciones de 40px con resaltado al pasar o navegar con el
+  // teclado, y una marca en la elegida.
   &__select {
-    // !Modificado para DecPat (2026-09-28): 2 quedaba por debajo del modal
-    // (z-index 3), asi que la lista de un Dropdown dentro de un modal se
-    // abria pero no se veia (DEC-008B, modal de familia). Radix copia este
-    // z-index al contenedor del popper, en un portal fuera del modal.
+    // 2 quedaba por debajo del modal (z-index 3), asi que la lista de un
+    // Dropdown dentro de un modal se abria pero no se veia (DEC-008B). Radix
+    // copia este z-index al contenedor del popper, en un portal fuera del modal.
     z-index: variables.$z-10;
-    background-color: variables.$white;
+    box-sizing: border-box;
     width: var(--radix-select-trigger-width);
-    max-height: var(--radix-select-content-available-height);
-    border-radius: 12px;
-    // !Modificado para DecPat (2026-09-28): sin esto, el `margin-top: -7px`
-    // de `&__scrollAreaRoot` (mas abajo) desplaza la primera opcion 7px por
-    // encima de este contenedor -- como este `div` no recortaba su
-    // contenido, esos 7px quedaban sueltos, sin las esquinas redondeadas,
-    // flotando sobre lo que hubiera detras (bug reportado por el usuario,
-    // confirmado antes pintando el fondo de otro color para verlo). Recortar
-    // aqui tambien redondea de forma automatica la esquina superior de la
-    // primera opcion, que antes quedaba cuadrada sin encajar con el radio
-    // de 12px de este contenedor.
+    // Nunca mas alto que el espacio disponible en pantalla ni que 280px; el
+    // scroll es interno (ver &__viewport).
+    max-height: min(var(--radix-select-content-available-height), 280px);
     overflow: hidden;
+    background-color: variables.$white;
+    border: 1px solid variables.$gray-200;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px variables.$shadow;
+
+    &--short {
+      max-height: min(var(--radix-select-content-available-height), 160px);
+    }
+  }
+
+  &__viewport {
+    box-sizing: border-box;
+    padding: 4px;
   }
 
   &__option {
-    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    box-sizing: border-box;
+    min-height: 40px;
     margin: 0;
-    padding: 12px 16px 8px 16px;
-
-    border-right: 1px solid variables.$gray-200;
-    border-bottom: 1px solid variables.$gray-200;
-    border-left: 1px solid variables.$gray-200;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
 
     @include mixin.config_text(
       variables.$font-family-poppins,
       normal,
       500,
       14px,
-      normal,
+      20px,
       variables.$gray-500
     );
-    cursor: pointer;
 
-    &:hover {
+    // `data-highlighted` lo pone Radix tanto al pasar el puntero como al
+    // navegar con las flechas del teclado.
+    &[data-highlighted] {
       background-color: variables.$gray-100;
-    }
-
-    &:focus {
       outline: none;
     }
 
-    // 16px en Figma (nodo 3980:1425, "Option 1"); antes 18px, una diferencia
-    // simbolica sin fuente que la explicara.
-    &:first-child {
-      padding-top: 16px;
+    &[data-state='checked'] {
+      font-weight: 600;
     }
 
-    &:last-child {
-      border-radius: 0px 0px 8px 8px;
+    &[data-disabled] {
+      color: variables.$gray-300;
+      cursor: not-allowed;
     }
+  }
+
+  &__check {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: variables.$green-2026-400;
+    font-size: 18px;
   }
 
   &__labelGroup {
-    padding: 15px 24px 0;
-    font-size: 13px;
-    color: variables.$gray-400;
-    font-family: variables.$font-family-poppins;
+    padding: 8px 12px 4px;
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      500,
+      12px,
+      16px,
+      variables.$gray-400
+    );
   }
 
-  // Antes `height: 30vh` fijo (y `min-height: 10vh` en ambas variantes):
-  // el listado quedaba con un bloque en blanco/gris enorme debajo de las
-  // opciones sin importar cuantas hubiera (reportado por el usuario,
-  // confirmado pintando el fondo). `max-height` deja que el listado se
-  // ajuste a su contenido real y solo haga scroll interno al superar el
-  // tope; `isShort` sigue existiendo para pedir un tope mas bajo.
-  &__heightScrollAreas {
-    max-height: 30vh;
-  }
-
-  &__heightScrollAreasShort {
-    max-height: 10vh;
-  }
-
-  // !Modificado para DecPat (2026-09-28): el `padding-bottom: 5px` (mas el
-  // `10px` que traia `&__heightScrollAreas`, de mas arriba) no cubre ninguna
-  // opcion, asi que dejaba un hueco vacio bajo la ultima opcion. Cuando las
-  // opciones no necesitan scroll interno (entran todas), ese hueco es lo
-  // unico que queda pegado al borde inferior redondeado de `&__select`, y
-  // como no tiene su propio radio, se ve como un borde recto asomando bajo
-  // la esquina redondeada (bug reportado por el usuario, confirmado pintando
-  // el fondo de `&__select` de otro color para verlo). Sin padding, la
-  // ultima opcion (que ya tiene su propio `border-radius` de 8px) llega
-  // hasta el borde real del contenedor.
-  &__scrollAreaRoot {
-    border-radius: 4px;
-    overflow: auto;
-    --scrollbar-size: 10px;
-    margin-top: -7px;
-  }
-
-  &__scrollAreaViewport {
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-  }
-
-  &__scrollAreaScrollbar {
-    display: flex;
-    user-select: none;
-    touch-action: none;
-    padding: 2px;
-    background: variables.$gray-100;
-    transition: background 160ms ease-out;
-  }
-
-  &__scrollAreaThumb {
-    flex: 1;
-    background: variables.$gray-400;
-    border-radius: 8px;
-    position: relative;
-  }
-
-  &__scrollAreaScrollbar[data-orientation='vertical'] {
-    width: var(--scrollbar-size);
+  &__empty {
+    padding: 14px 12px;
+    text-align: center;
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      600,
+      13px,
+      16px,
+      variables.$gray-400
+    );
   }
 
   &__errors {
@@ -197,24 +179,4 @@
       variables.$error
     );
   }
-}
-
-.emptyValue {
-  width: 100%;
-  height: 55px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 0px;
-
-  @include mixin.config_text(
-    variables.$font-family-work-sans,
-    normal,
-    600,
-    13px,
-    16px,
-    variables.$gray-500
-  );
 }

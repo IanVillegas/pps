@@ -17,14 +17,25 @@ interface CreditsTotalsState {
  * lenta no pise a una mas reciente. El arreglo debe ser estable entre renders
  * (viene del borrador): se compara por referencia.
  */
-export const useCreditsTotals = (credits: CreditItem[]): CreditsTotalsState => {
+export const useCreditsTotals = (
+  credits: CreditItem[]
+): CreditsTotalsState & { retry: () => void } => {
   const [state, setState] = useState<CreditsTotalsState>({
     totals: null,
     status: 'loading',
   });
 
+  // Cada reintento vuelve a pedir la cifra aunque los registros no cambien.
+  const [attempt, setAttempt] = useState(0);
+  const retry = () => setAttempt(count => count + 1);
+
   useEffect(() => {
     let current = true;
+    setState(previous =>
+      previous.status === 'error'
+        ? { ...previous, status: 'loading' }
+        : previous
+    );
     fetchCreditsTotals(credits)
       .then(totals => {
         if (current) setState({ totals, status: 'ready' });
@@ -35,7 +46,7 @@ export const useCreditsTotals = (credits: CreditItem[]): CreditsTotalsState => {
     return () => {
       current = false;
     };
-  }, [credits]);
+  }, [credits, attempt]);
 
-  return state;
+  return { ...state, retry };
 };

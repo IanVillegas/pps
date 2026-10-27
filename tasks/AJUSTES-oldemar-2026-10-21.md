@@ -1,4 +1,4 @@
-# Ajustes sugeridos por Oldemar (2026-10-21 y 2026-10-21)
+# Ajustes sugeridos por Oldemar (2026-10-21)
 
 Cinco cambios indicados por el usuario, todos con su registro de validación. Los tres primeros son visuales sobre pantallas ya hechas; el último es una respuesta a una duda.
 
@@ -19,7 +19,7 @@ Figma: nodo 43294:2166, «Modal confirmacion eliminacion» (640 px).
 Figma: nodo 43121:5334 (nueva versión).
 
 - **Nueva disposición**, de arriba hacia abajo: las tres cifras (saldo mensual disponible y las dos razones), «¿Cómo califica su situación financiera?» con sus opciones, la descripción detallada y, al final, «¿Existen cambios en el periodo actual en su situación patrimonial?» con «Si»/«No». Antes esa pregunta iba a la derecha de las cifras, en una letra más pequeña; ahora va debajo y con el tamaño normal de las demás (se eliminó la opción `compact` de `RadioGroup`, que ya no usa nadie).
-- **Campo nuevo**: un `Textarea` «Detalle los cambios en su situación patrimonial», opcional (sin asterisco). **Siempre visible**, pero solo se **habilita con la respuesta «Si»**: con «No» (o sin responder) queda deshabilitado y vacío (decisión del usuario, 2026-10-21, D-27). Al volver a «No» se **descarta del borrador** (no queda un texto que contradiga la respuesta). Se guarda bajo `patrimonialChangesDetail` y nunca bloquea el avance. La etiqueta sigue siendo provisional. El `Textarea` compartido gana el estilo `:disabled` (fondo gris, texto atenuado; marcado «Modificado para DecPat»).
+- **Campo nuevo**: un `Textarea` «Detalle los cambios en su situación patrimonial», opcional (sin asterisco). **Corregido el 2026-10-27 (D-27)**: el campo **solo aparece con la respuesta «Si»**; la respuesta parte en **«No»** (queda guardada en el borrador) y con «No» el campo no se muestra. Antes (2026-10-21) estaba siempre visible y deshabilitado, lo que no era lo que el usuario había definido. Al volver a «No» se **descarta del borrador** (no queda un texto que contradiga la respuesta). Se guarda bajo `patrimonialChangesDetail` y nunca bloquea el avance. La etiqueta sigue siendo provisional. El `Textarea` compartido conserva el estilo `:disabled` (fondo gris, texto atenuado; marcado «Modificado para DecPat»), que este campo ya no usa.
 
 ## 2.2 y 2.3 Formato de montos y orden moneda → monto (pasos 6 y 7, y luego todos los demás)
 

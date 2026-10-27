@@ -3,38 +3,33 @@
 import { useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,
-} from '@/components/Organisms/RecordsTable/RecordsTable';
+} from '@/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable';
 import MovableAssetDialog from '@/components/Organisms/MovableAssetDialog/MovableAssetDialog';
 import {
   TOAST_MESSAGES,
   useNotification,
 } from '@/components/Organisms/Notification/NotificationProvider';
-import {
-  MOVABLE_ASSET_BRAND_OPTIONS,
-  MOVABLE_ASSET_TYPE_OPTIONS,
-} from '@/services/CatalogService';
+import { catalogLabel } from '@/services/CatalogService';
 import type { StepProps } from '@/components/Pages/Declaration/DeclarationWizard/stepDefinitions';
 import type {
   MovableAssetItem,
   MovableAssetItemData,
   MovableAssetValues,
 } from '@/types/MovableAsset.types';
-import { formatAmount } from '@/utils/money';
+import { formatAmount } from '@/sad-aml-shared/utils/helpers/money';
 import { createId } from '@/utils/ids';
-
-const labelOf = (options: { value: string; label: string }[], value: string) =>
-  options.find(option => option.value === value)?.label ?? value;
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 
 const COLUMNS: RecordsTableColumn<MovableAssetItem>[] = [
   {
     key: 'type',
     header: 'Tipo',
-    render: row => labelOf(MOVABLE_ASSET_TYPE_OPTIONS, row.type),
+    render: row => catalogLabel('movableAssetTypes', row.type),
   },
   {
     key: 'brand',
     header: 'Marca',
-    render: row => labelOf(MOVABLE_ASSET_BRAND_OPTIONS, row.brand),
+    render: row => catalogLabel('movableAssetBrands', row.brand),
   },
   { key: 'plate', header: 'Placa', render: row => row.plate },
   { key: 'year', header: 'Año', render: row => row.year },
@@ -59,6 +54,8 @@ interface DialogState {
  * validacion. Cada cambio se guarda en el borrador al instante.
  */
 const MovableAssets = ({ values, onChange }: StepProps) => {
+  // Vuelve a dibujar la tabla cuando llegan los catalogos del servidor.
+  useCatalogs();
   const { notify } = useNotification();
   const items = (values as MovableAssetValues).items ?? [];
   const [dialog, setDialog] = useState<DialogState>({ open: false });

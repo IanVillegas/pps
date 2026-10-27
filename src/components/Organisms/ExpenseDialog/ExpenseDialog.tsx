@@ -3,21 +3,17 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
-import { EXPENSE_TYPE_OPTIONS } from '@/services/CatalogService';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
 import type {
   ExpenseItem,
   ExpenseItemData,
 } from '@/types/IncomeExpenses.types';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import styles from './ExpenseDialog.module.scss';
 
 const FORM_ID = 'expense-form';
-
-const TYPES = EXPENSE_TYPE_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
 
 type ExpenseErrors = Partial<Record<keyof ExpenseItemData, string>>;
 
@@ -46,6 +42,7 @@ interface ExpenseFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado se descarta y la fila
 // original no se altera.
 const ExpenseForm = ({ item, onSave }: ExpenseFormProps) => {
+  const types = toDropdownOptions(useCatalog('expenseTypes'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<ExpenseItemData>(
     item ? { type: item.type, amount: item.amount } : EMPTY
@@ -112,7 +109,7 @@ const ExpenseForm = ({ item, onSave }: ExpenseFormProps) => {
       <Dropdown
         label="Tipo de egreso *"
         placeholder="Selecciona"
-        options={TYPES}
+        options={types}
         value={state.type || undefined}
         errors={errors.type}
         onChange={value => update({ type: value })}

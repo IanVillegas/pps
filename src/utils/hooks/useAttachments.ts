@@ -7,7 +7,7 @@ import { createId } from '@/utils/ids';
 import type {
   AttachmentFile,
   AttachmentStatus,
-} from '@/types/Attachment.types';
+} from '@/sad-aml-shared/types/Attachment.types';
 
 interface UseAttachmentsOptions {
   /** Tipos MIME aceptados, separados por coma. Por defecto solo PDF (D-05). */

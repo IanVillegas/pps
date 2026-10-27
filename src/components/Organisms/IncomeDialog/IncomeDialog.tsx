@@ -3,21 +3,17 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, Textarea } from '@/components/Atoms';
 import { Dropdown, FileUpload, MoneyInput } from '@/components/Molecules';
-import AppDialog from '@/components/Organisms/AppDialog/AppDialog';
-import { INCOME_TYPE_OPTIONS } from '@/services/CatalogService';
-import type { AttachmentFile } from '@/types/Attachment.types';
+import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
+import { toDropdownOptions } from '@/services/CatalogService';
+import { useCatalog } from '@/utils/hooks/useCatalog';
+import type { AttachmentFile } from '@/sad-aml-shared/types/Attachment.types';
 import type { IncomeItem, IncomeItemData } from '@/types/IncomeExpenses.types';
 import { FIELD_MAX_LENGTH } from '@/utils/fieldLimits';
-import { amountToCents } from '@/utils/money';
+import { amountToCents } from '@/sad-aml-shared/utils/helpers/money';
 import { useAttachments } from '@/utils/hooks/useAttachments';
 import styles from './IncomeDialog.module.scss';
 
 const FORM_ID = 'income-form';
-
-const TYPES = INCOME_TYPE_OPTIONS.map(option => ({
-  value: option.value,
-  element: option.label,
-}));
 
 type IncomeFields = Omit<IncomeItemData, 'attachments'>;
 type IncomeErrors = Partial<Record<keyof IncomeFields, string>>;
@@ -64,6 +60,7 @@ interface IncomeFormProps {
 // abierto: al cerrar (Cancelar, X, Escape) el estado y los adjuntos se
 // descartan y la fila original no se altera.
 const IncomeForm = ({ item, onSave }: IncomeFormProps) => {
+  const types = toDropdownOptions(useCatalog('incomeTypes'));
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<IncomeFields>(
     item
@@ -132,7 +129,7 @@ const IncomeForm = ({ item, onSave }: IncomeFormProps) => {
       <Dropdown
         label="Tipo de ingreso *"
         placeholder="Selecciona"
-        options={TYPES}
+        options={types}
         value={state.type || undefined}
         errors={errors.type}
         onChange={value => update({ type: value })}

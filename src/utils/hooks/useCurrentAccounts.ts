@@ -20,6 +20,8 @@ interface CurrentAccountsState {
   /** Ultimos saldos recibidos; se conservan mientras llegan los siguientes o si falla. */
   totals: CurrentAccountTotals | null;
   totalsStatus: Status;
+  /** Vuelve a pedir lo que fallo. */
+  retry: () => void;
 }
 
 /**
@@ -40,6 +42,9 @@ export const useCurrentAccounts = (
     value: CurrentAccountTotals | null;
     status: Status;
   }>({ value: null, status: 'loading' });
+  // Cada reintento vuelve a pedir las cuentas y los saldos.
+  const [attempt, setAttempt] = useState(0);
+  const retry = () => setAttempt(count => count + 1);
 
   useEffect(() => {
     let current = true;
@@ -53,7 +58,7 @@ export const useCurrentAccounts = (
     return () => {
       current = false;
     };
-  }, []);
+  }, [attempt]);
 
   useEffect(() => {
     let current = true;
@@ -67,12 +72,13 @@ export const useCurrentAccounts = (
     return () => {
       current = false;
     };
-  }, [added]);
+  }, [added, attempt]);
 
   return {
     groupAccounts: group.accounts,
     groupStatus: group.status,
     totals: totals.value,
     totalsStatus: totals.status,
+    retry,
   };
 };

@@ -1,3 +1,4 @@
+// [SIMULADO] Totales de ahorro calculados en el navegador (provisional). Reemplazar por el adaptador real o borrar al conectar el backend: ver src/services/README.md.
 import type { SavingsAccountItem, SavingsTotals } from '@/types/Savings.types';
 
 // SIMULACION de la respuesta del backend para los saldos de ahorro (sin

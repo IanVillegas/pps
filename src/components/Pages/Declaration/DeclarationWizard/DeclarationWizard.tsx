@@ -4,8 +4,12 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, ButtonColor } from '@/components/Atoms';
 import DeclarationStepper from '@/components/Molecules/DeclarationStepper/DeclarationStepper';
+import RetryNotice from '@/sad-aml-shared/components/Molecules/RetryNotice/RetryNotice';
 import DeclarationIntroDialog from '@/components/Organisms/DeclarationIntroDialog/DeclarationIntroDialog';
+import { requestPersonalData } from '@/services/DeclarationService';
+import { useCatalogs } from '@/utils/hooks/useCatalog';
 import { useDeclaration } from '@/utils/hooks/useDeclaration';
+import { useFinalization } from '@/utils/hooks/useFinalization';
 import { DECLARATION_STEPS } from '@/utils/declarationSteps';
 import type { StepErrors, StepValues } from '@/types/Declaration.types';
 import { STEP_DEFINITIONS, type StepDefinitions } from './stepDefinitions';
@@ -37,6 +41,16 @@ const StepForm = ({ stepId, definitions }: StepFormProps) => {
   const values = draft.steps[stepId] ?? EMPTY_VALUES;
   const validate = (next: StepValues) => definition?.validate?.(next) ?? {};
   const hasErrors = Object.keys(errors).length > 0;
+
+  // Alguien intento salir del paso 1 sin completarlo (stepper o direccion
+  // escrita a mano): se muestran los campos que faltan.
+  const personalDataRequests = draft.personalDataRequests;
+  useEffect(() => {
+    if (stepId !== 1 || personalDataRequests === 0) return;
+    setErrors(definitions[1]?.validate?.(draft.steps[1] ?? EMPTY_VALUES) ?? {});
+    setFailedAttempts(count => count + 1);
+    // Solo reacciona a cada nueva peticion, no a cada tecla escrita.
+  }, [personalDataRequests]);
 
   // Tras un intento fallido, lleva el foco al primer campo invalido.
   useEffect(() => {
@@ -128,8 +142,10 @@ interface DeclarationWizardProps {
 
 /**
  * Wizard de la declaracion (DEC-006B): stepper, contenido del paso y
- * navegacion. Los pasos son no lineales: se puede saltar a cualquiera desde
- * el stepper sin validar; solo "Continuar" valida el paso actual. Los datos
+ * navegacion. Los pasos son no lineales: una vez completados los datos
+ * personales (paso 1, el unico que bloquea el avance) se puede saltar a
+ * cualquiera desde el stepper sin validar; solo "Continuar" valida el paso
+ * actual. Los datos
  * de cada paso viven en el borrador (DeclarationService) y por eso se
  * conservan al ir y volver.
  */
@@ -139,16 +155,68 @@ const DeclarationWizard = ({
 }: DeclarationWizardProps) => {
   const router = useRouter();
   const { draft, acknowledgeIntro } = useDeclaration();
+  const { status: catalogStatus, retry: retryCatalogs } = useCatalogs();
+  const { status: finalizationStatus } = useFinalization();
+
+  // La declaracion vive solo en memoria (D-08): recargar o cerrar la pestana
+  // la pierde. Si ya hay datos escritos y no se ha guardado, el navegador
+  // pregunta antes de salir.
+  const hasUnsavedData =
+    finalizationStatus !== 'done' &&
+    Object.values(draft.steps).some(step => Object.keys(step).length > 0);
+  useEffect(() => {
+    if (!hasUnsavedData) return;
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [hasUnsavedData]);
+
+  // El paso 1 (datos personales) es el unico que bloquea el avance: mientras
+  // le falte algun dato obligatorio no se puede ir a otro paso. Desde ahi el
+  // desplazamiento es libre.
+  const personalDataIncomplete =
+    Object.keys(
+      definitions[1]?.validate?.(draft.steps[1] ?? EMPTY_VALUES) ?? {}
+    ).length > 0;
+  const blocked =
+    stepId !== 1 &&
+    personalDataIncomplete &&
+    DECLARATION_STEPS.some(step => step.id === stepId);
+
+  useEffect(() => {
+    if (!blocked) return;
+    requestPersonalData();
+    router.replace(stepPath(1));
+    // `router` es estable; solo importa cuando cambia el bloqueo o el paso.
+  }, [blocked, stepId]);
 
   if (!DECLARATION_STEPS.some(step => step.id === stepId)) return null;
+  if (blocked) return null;
+
+  const handleStepSelect = (id: number) => {
+    if (id !== 1 && personalDataIncomplete) {
+      requestPersonalData();
+      return;
+    }
+    router.push(stepPath(id));
+  };
 
   return (
     <div className={styles.wizard}>
       <DeclarationStepper
         steps={DECLARATION_STEPS}
         currentStep={stepId}
-        onStepSelect={id => router.push(stepPath(id))}
+        onStepSelect={handleStepSelect}
       />
+      {catalogStatus === 'error' && (
+        <RetryNotice
+          message="No se pudieron cargar las listas de opciones. Revise su conexión e inténtelo de nuevo."
+          onRetry={retryCatalogs}
+        />
+      )}
       <StepForm key={stepId} stepId={stepId} definitions={definitions} />
       <DeclarationIntroDialog
         open={!draft.introAcknowledged}
