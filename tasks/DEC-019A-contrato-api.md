@@ -30,7 +30,7 @@ Este documento describe lo que el frontend necesita del backend, tomado del cód
   ```json
   { "code": "validation_error", "message": "Texto para mostrar", "errors": { "campo": "Mensaje" } }
   ```
-  `400`/`422` validación (el backend **debe validar** aunque el frontend ya lo haga), `401` sin sesión o sesión vencida, `403` sin permiso, `404` no existe, `409` conflicto de versión o declaración ya enviada, `5xx` falla del servicio. El frontend muestra «La solicitud no fue procesada. Inténtelo de nuevo» ante cualquier falla de red o `5xx`.
+  `400`/`422` validación (el backend **debe validar** aunque el frontend ya lo haga), `401` sin sesión o sesión vencida, `403` sin permiso, `404` no existe, `409` conflicto de versión o declaración ya enviada, `5xx` falla del servicio. El frontend muestra «La solicitud no fue procesada. Inténtelo de nuevo» ante cualquier falla de red o `5xx`. Un `401` se trata siempre como sesión vencida: el cliente (`src/services/api/apiClient.ts`) cierra la sesión local y lleva al acceso.
 
 ## 3. Acceso y sesión
 
@@ -50,7 +50,7 @@ Frontend actual: constantes de `CatalogService`. Se pedirán de forma asíncrona
 
 `GET /catalogs/{name}` → `[ { "value": "texto-estable", "label": "Texto a mostrar" } ]`, ordenado como debe verse.
 
-Catálogos usados: `marital-status`, `agencies`, `relationships` (parentesco familiar), `genders`, `real-estate-destinations`, `movable-asset-types`, `movable-asset-brands`, `income-types`, `expense-types`, `account-relationships`, `currencies` (`colones`, `dolares`), `financial-entities`. El valor `value` se guarda en los registros; si un valor deja de existir, el backend debe seguir devolviéndolo al leer registros antiguos **(por confirmar)**.
+Catálogos usados: `marital-status`, `agencies`, `relationships` (parentesco familiar), `genders`, `real-estate-destinations`, `movable-asset-types`, `movable-asset-brands`, `income-types`, `expense-types`, `account-relationships`, `currencies` (`colones`, `dolares`), `financial-entities`, `society-types` (tipo de sociedad, paso 10). El valor `value` se guarda en los registros; si un valor deja de existir, el backend debe seguir devolviéndolo al leer registros antiguos **(por confirmar)**.
 
 ## 5. Declaración: datos que el usuario captura
 
@@ -165,7 +165,7 @@ Valores **simbólicos** (D-17) de `src/utils/fieldLimits.ts`; el backend define 
 | --- | --- | --- |
 | `AuthService`, `SessionService`, `UserService` | Acceso, sesión en memoria y usuario de ejemplo. | Sección 3. |
 | `DeclarationService` | Borrador en memoria, sin persistencia. | Sección 5 (guardado por acción) y lectura al abrir cada paso. |
-| `CatalogService` | Constantes. | Sección 4, asíncronos. |
+| `CatalogService` | Listas simuladas y almacén con carga asíncrona ya implementada (`loadCatalogs`, 13 catálogos en paralelo, error y reintento); en modo simulado no llama a la API. | Sección 4: solo se confirman las rutas y el formato. |
 | `FinancialSummaryService`, `SavingsTotalsService`, `CurrentAccountsService`, `CreditsTotalsService`, `CreditCardsTotalsService` | Totales calculados en el navegador (provisional) y una cuenta de Grupo Mutual de ejemplo. | Sección 6; dejan de recibir los registros como parámetro y leen lo guardado. |
 | `AttachmentService` | Subida simulada con progreso y fallo si el nombre contiene «error». | Sección 7. |
 | `ConfidentialReportService` | Estado local y armado del payload. | Sección 8.1. |
