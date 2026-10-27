@@ -44,11 +44,11 @@ El selector tiene nombre accesible y relación con el error del conjunto; las ac
 
 | Archivo | Responsabilidad |
 | --- | --- |
-| `src/components/Molecules/FileUpload/FileUpload.tsx` | Selección, arrastre, tarjetas y acciones. |
+| `src/sad-aml-shared/components/Molecules/FileUpload/FileUpload.tsx` | Selección, arrastre, tarjetas y acciones. |
 | `src/utils/hooks/useAttachments.ts` | Límites, estados, archivos temporales y miniaturas. |
 | `src/services/AttachmentService.ts` | Progreso y resultados simulados. |
 | `src/utils/pdfThumbnail.ts` | Generación local de vista previa. |
-| `src/types/Attachment.types.ts` | Contrato de tarjetas y estados. |
+| `src/sad-aml-shared/types/Attachment.types.ts` | Contrato de tarjetas y estados. |
 | `src/components/Organisms/IncomeDialog/IncomeDialog.tsx` | Condiciones para guardar el ingreso. |
 
 Para integrar, acordar obligatoriedad, cantidad, tamaño, tipos y contrato de carga y descarga. Sustituir nombres por referencias recuperables de servidor y definir cancelación, eliminación y archivos cargados cuyo formulario se cancela. Las validaciones de contenido y autorización de acceso deben formar parte del servicio real. No hubo nueva comparación con Figma; consultar la [evidencia de pruebas](../06-validacion-y-calidad.md).

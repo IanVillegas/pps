@@ -1,6 +1,6 @@
 # Operaciones comunes de registros patrimoniales
 
-Revisión: 21 de octubre de 2026. Código: `343c313c503bd25c652236b319c6e3874efeb8d4` para los pasos 4 a 8 y `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2` para los pasos 9 y 10, el formato de montos y la confirmación al eliminar.
+Revisión: 27 de octubre de 2026. Código: `343c313c503bd25c652236b319c6e3874efeb8d4` para los pasos 4 a 8, `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2` para los pasos 9 y 10, el formato de montos y la confirmación al eliminar, y `c789b079859bd590e4180cb0ac3ae08fec58b781` para las sociedades y la variante compacta de la tabla.
 Alcance: pasos 4 a 10 implementados con borrador en memoria (el paso 10 solo con personerías jurídicas).
 
 Los pasos permiten continuar con sus tablas vacías; no registran una validación global en el contenedor. Sus diálogos sí validan cada registro al guardar. La navegación y duración del borrador se describen en [declaración y borrador](declaracion-y-borrador.md).
@@ -14,7 +14,7 @@ Los pasos permiten continuar con sus tablas vacías; no registran una validació
 
 Los formularios usan `AppDialog`, mantienen estado local hasta guardar y detienen la propagación del envío para no avanzar el formulario principal. Ante errores intentan enfocar el primer campo inválido; después del intento fallido vuelven a validar al corregir.
 
-Los diálogos reciben `open`, `item` opcional, `onSave` y `onClose`. `onSave` entrega datos sin el identificador, cuya gestión corresponde a la pantalla. Están en sus carpetas de `src/components/Organisms`. La presentación tabular utiliza `RecordsTable`, con acciones identificadas por registro y una región enfocable con desplazamiento horizontal.
+Los diálogos reciben `open`, `item` opcional, `onSave` y `onClose`. `onSave` entrega datos sin el identificador, cuya gestión corresponde a la pantalla. Están en sus carpetas de `src/components/Organisms`. La presentación tabular utiliza `RecordsTable` (`src/sad-aml-shared/components/Organisms/RecordsTable`), con acciones identificadas por registro y una región enfocable con desplazamiento horizontal. La tabla tiene un ancho mínimo de 480 px y una variante compacta (`dense`) para muchas columnas, que usa la de [sociedades](sociedades.md); cuando una pantalla tiene varias tablas, `addAriaLabel` distingue el nombre accesible de cada botón de agregar.
 
 Los catálogos de `CatalogService` son de demostración. La validación comprueba presencia de selecciones, no pertenencia al catálogo. Los montos se escriben con el formato estándar de [montos y moneda](montos-y-moneda.md): dígitos que entran como centavos, comas y dos decimales, hasta 15 dígitos con los centavos, guardados como texto decimal; se admite cero y no hay importes negativos. Estos límites no sustituyen la validación institucional.
 

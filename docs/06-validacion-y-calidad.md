@@ -1,8 +1,8 @@
 # Validación y calidad
 
-Estado: evidencia histórica identificada y ejecución actual sobre la rama documentacion. Revisión: 21 de octubre de 2026.
+Estado: evidencia histórica identificada y ejecución actual sobre la rama documentacion. Revisión: 27 de octubre de 2026.
 
-El proyecto dispone de pruebas de componentes, servicios y hooks. Las pruebas alojadas bajo `src/sad-aml-shared` están excluidas de Jest según el README; algunos componentes compartidos se prueban desde DecPat. No asumir cobertura completa de la biblioteca.
+El proyecto dispone de pruebas de componentes, servicios y hooks. Desde el 27 de octubre de 2026 Jest ya no excluye `src/sad-aml-shared`: los componentes genéricos agregados por DecPat se prueban junto a su código y corren con el resto. Los componentes heredados de la biblioteca no tienen, en general, pruebas propias; no asumir cobertura completa.
 
 | Evidencia | Origen y alcance |
 | --- | --- |
@@ -56,7 +56,7 @@ No se ejecutó build ni nueva revisión en navegador o Figma. Las pruebas selecc
 
 ## Ingresos, egresos y adjuntos — DOC-005
 
-Fecha: 14 de octubre de 2026. Código revisado: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`, rama `documentacion`. Cambios exclusivamente documentales.
+Fecha: 14 de octubre de 2026. Código revisado: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d`, rama `documentacion`. Cambios exclusivamente documentales. Es evidencia histórica: las rutas de prueba son las de esa fecha y varios componentes (por ejemplo `FileUpload` y `RecordsTable`) se movieron después a `src/sad-aml-shared`.
 
 ```text
 npm.cmd run test -- --runInBand --runTestsByPath src/components/Pages/Declaration/IncomeExpenses/IncomeExpenses.test.tsx src/components/Organisms/IncomeDialog/IncomeDialog.test.tsx src/components/Organisms/ExpenseDialog/ExpenseDialog.test.tsx src/components/Molecules/FileUpload/FileUpload.test.tsx src/utils/hooks/useAttachments.test.ts src/utils/hooks/useFinancialSummary.test.ts src/services/FinancialSummaryService.test.ts
@@ -121,3 +121,28 @@ Resultado actual: sin errores de tipos ni de lint; **59 suites y 409 pruebas sat
 Evidencia de revisión en navegador, registrada en los documentos de seguimiento al cerrar cada tarea (resultados históricos, no reejecutados): personerías (pantalla, modal, alta con envío por Enter); datos judiciales (comprobación por el DOM, estilos y bloqueo del avance); cuestionario confidencial y juramento (capturas del 21 de octubre en una ventana reducida); modal de eliminar y modal de ahorro con montos formateados (capturas). «Otros detalles» se comprobó por el DOM, sin captura.
 
 Limitaciones: no se ejecutó compilación de producción ni revisión en tablet; varias revisiones visuales se hicieron en una ventana reducida y no contra el diseño píxel a píxel; las pruebas muestran todavía el aviso del selector compartido (transición de no controlado a controlado). Los resultados no acreditan integración con servicios institucionales ni accesibilidad completa. No se modificó código de aplicación en esta tarea.
+
+## Sociedades, integración, recuperación, revisión visual y entrega — DOC-018 a DOC-021
+
+Fecha: 27 de octubre de 2026. Código revisado: `c789b079859bd590e4180cb0ac3ae08fec58b781` (rama `main`), incorporado a la rama `documentacion` mediante un merge. En esta rama solo cambia la documentación.
+
+Se ejecutó sobre la rama `documentacion`, con `main` incorporado:
+
+```text
+npx tsc --noEmit
+npx eslint src
+npx jest --runInBand
+```
+
+Resultado actual: sin errores de tipos ni de lint; **66 suites y 460 pruebas satisfactorias**. Respecto de la ejecución anterior (59 suites y 409 pruebas) se agregaron, entre otras: la validación del diálogo de sociedades y la pantalla del paso 10 con sus dos tablas; el modal de confirmación del guardado final; el cliente HTTP (éxito, errores con el cuerpo común, `401`, red caída); los catálogos simulados y reales (carga en paralelo, error conservando lo que llegó, reintento y descarte de respuestas viejas); el bloqueo del paso 1 (desde el indicador y por dirección), el aviso al salir con datos y el paso 3 con el detalle solo con «Sí»; el reintento de cifras en el hook y en la pantalla de ahorro; el aviso `RetryNotice`; la guardia de ruta con sesión vencida (`401`); y las migas de pan de `AppShell`. Además corren dentro de `sad-aml-shared` diez archivos de prueba: ocho de los componentes y utilidades movidos y dos heredados (`Spinner` y `LoadingSpinner`).
+
+Otras verificaciones del 27 de octubre de 2026:
+
+| Verificación | Procedimiento y resultado |
+| --- | --- |
+| Compilación de producción | `next build` sobre una copia del proyecto, para no alterar los servidores de desarrollo. Compiló las rutas `/`, `/inicio` y `/mi-declaracion/[paso]` sin errores; el único aviso proviene de Sass dentro de `sad-aml-shared` (división con `/`). |
+| Recorrido en navegador | Servidor de desarrollo y usuario de demostración: acceso; con el paso 1 vacío, «Paso 5» en el indicador no navega y muestra los 11 errores; con el paso 1 completo, «Continuar» llega al paso 2 y el indicador salta libremente hasta el 12; paso 3 con «No» por defecto y el detalle visible solo con «Sí»; en el paso 12, «Terminar», «Guardar», confirmación, indicador de carga, «Guardado satisfactoriamente» y botón «Guardado» deshabilitado, sin cambiar de ruta. |
+| Desbordes responsive | Medición con JavaScript, recorriendo los doce pasos con el indicador. A 1440 y 1366 px no hubo desborde de página ni de tablas. A 768 px no hubo desborde de página; después de reducir el ancho mínimo de las tablas a 480 px desplazan dentro de su región los pasos 5, 6, 8 y 9. El diálogo de sociedades mide 720 px a 768 px y no corta ningún campo. A 1024 px la tabla de sociedades cabe completa con la variante compacta, con el menú abierto o cerrado. |
+| Lista del `Dropdown` y migas de pan | Revisión visual en navegador a 1366 px: lista con panel, marca en la opción elegida y resaltado, también dentro de un diálogo (selector de moneda con íconos); migas «Regresar» e «Inicio / Mi declaración» en el encabezado de la declaración. |
+
+Limitaciones: no hubo comparación píxel a píxel con Figma; la lista abierta del `Dropdown` no existe en el diseño; no se auditó la accesibilidad con un lector de pantalla ni se midió el contraste; no se recorrió el sistema completo solo con teclado; no se probó en navegadores distintos del usado en la revisión; los teléfonos están fuera del alcance. Persiste el aviso de Radix «Select is changing from uncontrolled to controlled» en las pruebas con listas desplegables; no impide su éxito. Los resultados no acreditan integración con servicios institucionales: ninguno existe.

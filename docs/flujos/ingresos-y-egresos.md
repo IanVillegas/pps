@@ -1,7 +1,7 @@
 # Ingresos y egresos
 
 Estado: paso 3 implementado con planilla y resumen financiero simulados.
-Revisión: 21 de octubre de 2026 (estructura del 14 de octubre; «Otros detalles», formato de montos y eliminación, del 21). Código de referencia: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d` y `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`.
+Revisión: 27 de octubre de 2026 (estructura del 14 de octubre; formato de montos y eliminación, del 21; «Otros detalles», del 27). Código de referencia: `78b3e72e6274248af2648ace1e567a5ceb9b2b4d` y `c789b079859bd590e4180cb0ac3ae08fec58b781`.
 Seguimiento local: DEC-009A, DEC-009C y DEC-009D.
 
 ## Propósito y estructura
@@ -29,12 +29,12 @@ El diálogo de ingresos presenta instrucciones sobre informar a la jefatura y ac
 
 | Campo | Opciones y regla |
 | --- | --- |
-| Cambios en situación patrimonial | Sí o no; respuesta obligatoria. |
-| Calificación de situación financiera | Estable, difícil o grave; respuesta obligatoria. |
+| Cambios en situación patrimonial | Sí o no. La respuesta parte en «No» y se guarda en el borrador, así que siempre tiene valor. |
+| Calificación de situación financiera | Estable, difícil o grave; respuesta obligatoria: es lo único que «Continuar» exige en el paso. |
 | Descripción y aclaraciones | Opcional, hasta 1000 caracteres. No cambia su obligatoriedad según las respuestas. |
-| Detalle de los cambios patrimoniales | Opcional, hasta 1000 caracteres. El campo está siempre visible, pero **solo se habilita con la respuesta «Si»**; con «No» (o sin responder) queda deshabilitado y vacío. Su etiqueta es provisional. |
+| Detalle de los cambios patrimoniales | Opcional, hasta 1000 caracteres. El campo **solo aparece con la respuesta «Si»**; con «No» no se muestra y su contenido se descarta. Su etiqueta es provisional. |
 
-La sección se presenta en este orden: las tres cifras de resumen, la calificación de la situación financiera, la descripción y, al final, la pregunta sobre cambios patrimoniales con sus opciones «Si» y «No» debajo de la pregunta. Las respuestas y descripciones actualizan el borrador al cambiar. Al responder «No» se descarta el detalle de los cambios del borrador, para que no quede un texto que contradiga la respuesta. «Continuar» exige presencia de ambas respuestas, sin exigir filas ni descripciones. La función del paso no verifica pertenencia a las opciones ni bloquea por falta de resumen financiero. Las reglas institucionales definitivas permanecen pendientes.
+La sección se presenta en este orden: las tres cifras de resumen, la calificación de la situación financiera, la descripción y, al final, la pregunta sobre cambios patrimoniales con sus opciones «Si» y «No» debajo de la pregunta. Las respuestas y descripciones actualizan el borrador al cambiar. Al responder «No» se descarta el detalle de los cambios del borrador, para que no quede un texto que contradiga la respuesta. «Continuar» exige la calificación de la situación financiera, sin exigir filas ni descripciones; la pregunta de cambios patrimoniales siempre tiene respuesta. La función del paso no verifica pertenencia a las opciones ni bloquea por falta de resumen financiero. Las reglas institucionales definitivas permanecen pendientes.
 
 ## Resumen financiero
 
@@ -66,6 +66,6 @@ Las tablas usan formato con separadores de miles; el saldo utiliza símbolo de c
 | `src/services/FinancialSummaryService.ts` | Cifras sintéticas y fórmulas provisionales. |
 | `src/utils/hooks/useFinancialSummary.ts` | Solicitud y conservación del último resumen. |
 | `src/types/IncomeExpenses.types.ts` | Contratos de registros, respuestas y resumen. |
-| `src/services/CatalogService.ts`, `src/utils/money.ts` | Opciones y presentación de cifras. |
+| `src/services/CatalogService.ts`, `src/sad-aml-shared/utils/helpers/money.ts` | Opciones y presentación de cifras. |
 
 El historial registra una columna «Justificación» para egresos en Figma, sin campo equivalente en el modal; la implementación actual no la incluye. Confirmar esa diferencia, las dos preguntas obligatorias, reglas de montos y recuperación de errores de resumen. No hubo nueva revisión visual en esta tarea; la [evidencia](../06-validacion-y-calidad.md) corresponde a pruebas existentes y lectura de código.

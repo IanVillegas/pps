@@ -1,8 +1,8 @@
 # Navegación de la declaración y gestión del borrador
 
 Estado: estructura implementada con borrador en memoria; persistencia y envío institucional pendientes.
-Revisión: 14 de octubre de 2026. Código de referencia: `875867890e6e48ce97668b7a0019cc8255a8f3a6`.
-Seguimiento local: DEC-006A y DEC-006B.
+Revisión: 27 de octubre de 2026 (estructura del 14 de octubre; bloqueo del paso 1 y aviso al salir, del 27). Código de referencia: `875867890e6e48ce97668b7a0019cc8255a8f3a6` y `c789b079859bd590e4180cb0ac3ae08fec58b781`.
+Seguimiento local: DEC-006A, DEC-006B y DEC-019B.
 
 ## Propósito y entrada
 
@@ -20,9 +20,10 @@ La marca indica que el diálogo se cerró; no acredita lectura, aceptación lega
 
 | Acción | Comportamiento vigente |
 | --- | --- |
-| Seleccionar un número del indicador | Abre ese paso sin validar el actual. Todos los pasos configurados son alcanzables. |
+| Seleccionar un número del indicador | Con los datos personales (paso 1) completos, abre ese paso sin validar el actual: todos los pasos configurados son alcanzables. Con el paso 1 incompleto no sale del paso 1 y muestra sus errores. |
 | Seleccionar el número actual | No solicita una nueva navegación. |
 | Regresar | Abre el paso anterior sin validar. Está deshabilitado en el primero. |
+| Visitar por dirección un paso posterior al 1 con el paso 1 incompleto | Redirige al paso 1 y muestra los campos que faltan. |
 | Continuar | Valida el paso actual si tiene una función registrada; si no hay errores, abre el siguiente. En el último paso se rotula «Terminar» y ejecuta la acción `onFinish` del paso (en el paso 12 abre el [juramento](juramento-y-cierre.md)); si el paso no la define, permanece deshabilitado. |
 | Visitar un paso sin contenido | Muestra «El contenido de este paso aún no está disponible». Sin validación registrada, permite continuar, salvo en el último si no define `onFinish`. |
 
@@ -30,9 +31,15 @@ El indicador distingue únicamente el paso actual. No muestra pasos completados 
 
 Actualmente los pasos 1, 3 y 11 registran validación en el contenedor. Los demás pasos implementados con tablas pueden quedar sin filas; sus diálogos validan los registros al agregarlos o editarlos. Las reglas de cada sección se documentarán por separado.
 
+## Bloqueo del paso 1
+
+Solo el paso 1 (datos generales) bloquea el avance: es una pantalla de datos obligatorios sin diálogo. Mientras le falte algún dato obligatorio no se puede ir a otro paso, ni con el indicador ni escribiendo la dirección; el paso 1 muestra los errores, igual que «Continuar», y lleva el foco al primer campo inválido. Una vez completo, el desplazamiento entre los demás pasos es libre y no existe una validación global al terminar: los campos obligatorios de los demás pasos se exigen dentro de cada diálogo y, donde ya estaba definido, en «Continuar» (paso 3: la calificación de la situación financiera; paso 11: la pensión alimenticia).
+
+`DeclarationWizard` calcula si el paso 1 está completo con la función de validación registrada para ese paso (`definitions[1].validate`); sin esa función no se bloquea nada. El borrador cuenta las peticiones de completar el paso (`personalDataRequests`, `requestPersonalData` en `DeclarationService`) para que el paso 1 muestre sus errores al llegar.
+
 Cuando «Continuar» encuentra errores, permanece en el paso, muestra un aviso con `role="alert"` e intenta enfocar el primer campo marcado con `aria-invalid="true"`. Mientras haya errores activos, los cambios vuelven a evaluar la validación. Cambiar de paso reinicia el estado local de errores, pero conserva los valores; regresar no restaura los mensajes anteriores.
 
-El último paso abre el [juramento](juramento-y-cierre.md) con «Terminar» y lo guarda con un servicio simulado; guardar no constituye un envío institucional. La estructura actual tampoco realiza una validación conjunta de las doce secciones. Cada definición de paso admite también `ownActions` (el paso decide si muestra los botones del contenedor) y `onFinish` (acción del último paso).
+El último paso abre el [juramento](juramento-y-cierre.md) con «Terminar» y lo guarda con un servicio simulado; guardar no constituye un envío institucional. No se realiza una validación conjunta de las doce secciones: es una decisión del equipo (ver el bloqueo del paso 1). Cada definición de paso admite también `ownActions` (el paso decide si muestra los botones del contenedor) y `onFinish` (acción del último paso).
 
 ## Conservación de datos
 
@@ -44,7 +51,7 @@ Cada llamada a `onChange` del contenido guarda los valores del paso inmediatamen
 | --- | --- |
 | Ir a otro paso y volver mediante navegación interna | Se conservan los valores guardados. |
 | Volver a inicio y reabrir la declaración sin recargar | Se conserva el borrador; el enlace del menú abre el paso 1. |
-| Recargar la aplicación | Se pierde el borrador y la sesión de demostración. |
+| Recargar la aplicación | Se pierde el borrador y la sesión de demostración. Si hay datos escritos y la declaración no se guardó, el navegador pregunta antes de recargar o cerrar la pestaña (`beforeunload`); tras el guardado final deja de preguntar. |
 | Cerrar sesión | Se eliminan el borrador y la marca de introducción. |
 | Abrir otra pestaña | No hay sincronización de borradores ni sesiones entre pestañas. |
 
@@ -56,7 +63,7 @@ El indicador se presenta como navegación «Pasos de la declaración». Cada bot
 
 Las flechas izquierda y derecha mueven el foco entre botones sin cambiar de sección; Home y End lo llevan al primero y al último. El movimiento se detiene en los extremos. La activación del botón realiza la navegación. Los estilos definen foco visible y conectores flexibles para reducir el ancho del indicador en tablet.
 
-Estas características se verificaron mediante código y pruebas seleccionadas. La revisión visual a 768 y 1366/1440 px y una evaluación completa de accesibilidad quedan pendientes para la versión de entrega.
+Estas características se verificaron mediante código y pruebas. El 27 de octubre de 2026 se midieron desbordes a 768, 1366 y 1440 px (ver [validación](../06-validacion-y-calidad.md)); la evaluación completa de accesibilidad y el recorrido solo con teclado siguen pendientes.
 
 ## Incorporación de una sección
 
@@ -76,7 +83,7 @@ Una función `validate` devuelve errores por nombre de campo; un objeto vacío p
 | `src/utils/declarationSteps.ts` | Definir títulos, números e iconos. |
 | `src/components/Molecules/DeclarationStepper/DeclarationStepper.tsx` | Presentar navegación y manejo de teclado. |
 | `src/components/Organisms/DeclarationIntroDialog/DeclarationIntroDialog.tsx` | Presentar la introducción. |
-| `src/services/DeclarationService.ts` | Mantener, actualizar y limpiar el borrador local. |
+| `src/services/DeclarationService.ts` | Mantener, actualizar y limpiar el borrador local, y contar las peticiones de completar el paso 1. |
 | `src/utils/hooks/useDeclaration.ts` | Suscribir componentes al borrador. |
 | `src/types/Declaration.types.ts` | Definir contratos de valores, errores y borrador. |
 

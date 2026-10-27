@@ -1,11 +1,11 @@
 # Montos y moneda
 
-Estado: formato estándar de montos aplicado a todos los campos de monto. Revisión: 21 de octubre de 2026.
-Código: `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`. Seguimiento: ajustes sugeridos por Oldemar; documentación: DOC-016.
+Estado: formato estándar de montos aplicado a todos los campos de monto. Revisión: 27 de octubre de 2026.
+Código: `c789b079859bd590e4180cb0ac3ae08fec58b781`. Seguimiento: ajustes sugeridos por Oldemar; documentación: DOC-016.
 
 ## Formato
 
-Todo campo que pide un monto se formatea mientras se escribe, con el formato estándar de Grupo Mutual. Lo implementa `MoneyInput` (`src/components/Molecules/MoneyInput`).
+Todo campo que pide un monto se formatea mientras se escribe, con el formato estándar de Grupo Mutual. Lo implementa `MoneyInput` (`src/sad-aml-shared/components/Molecules/MoneyInput`), con sus utilidades en `src/sad-aml-shared/utils/helpers/money.ts`.
 
 - **Cada dígito entra por la derecha como centavos**: escribir 1 muestra 0.01, luego 12 muestra 0.12, 123 muestra 1.23, 12345 muestra 123.45 y 123456 muestra 1,234.56. Así siempre se controlan los decimales.
 - Se muestran comas de miles y siempre dos decimales. Solo cuentan los dígitos; las letras y símbolos se ignoran. Pegar un número lo toma como centavos.
@@ -17,7 +17,7 @@ Todo campo que pide un monto se formatea mientras se escribe, con el formato est
 ## Moneda
 
 - **El ícono de la moneda va al inicio del campo de monto**: el colón o el dólar de Figma (`CurrencyIcon`, 20 px, rojo). Mientras no se elige moneda, el espacio del ícono queda reservado para que el campo no cambie al elegirla.
-- **La moneda se elige antes que el monto** (`CurrencySelect`, `src/components/Molecules/CurrencySelect`): la selección decide el ícono. El selector muestra el ícono en cada opción y en la moneda elegida. En los diálogos con selector, Moneda aparece arriba del monto (o de los montos).
+- **La moneda se elige antes que el monto** (`CurrencySelect`, `src/sad-aml-shared/components/Molecules/CurrencySelect`, que recibe la lista de monedas por propiedad): la selección decide el ícono. El selector muestra el ícono en cada opción y en la moneda elegida. En los diálogos con selector, Moneda aparece arriba del monto (o de los montos).
 - Las columnas que ya tienen una moneda propia llevan siempre su ícono: «Saldo colones» y «Cuota colones» con ₡, «Saldo dólares» y «Cuota dólares» con $, en tarjetas.
 - Los montos que no tienen una moneda definida se formatean igual pero **sin ícono** (`currency={null}`), porque no se debe suponer una.
 
@@ -36,7 +36,7 @@ Todo campo que pide un monto se formatea mientras se escribe, con el formato est
 
 ## Componente compartido
 
-`InputText` de `sad-aml-shared` incorpora la propiedad opcional `startAdornment`, un ícono decorativo dentro del campo al inicio, marcada como modificación para DecPat. Ver la [guía de componentes](../03-guia-de-componentes.md).
+`InputText` de `sad-aml-shared` incorpora la propiedad opcional `startAdornment`, un ícono decorativo dentro del campo al inicio, marcada como modificación para DecPat. `sad-aml-shared` es propio de este sistema, por lo que no hay otro repositorio al que trasladar el cambio. Ver la [guía de componentes](../03-guia-de-componentes.md).
 
 ## Continuidad
 

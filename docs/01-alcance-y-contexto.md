@@ -1,10 +1,10 @@
 # Contexto y alcance
 
-Estado: documentación inicial en desarrollo. Revisión: 21 de octubre de 2026.
+Estado: documentación vigente de la versión revisada. Revisión: 27 de octubre de 2026.
 
 DecPat Cloud proporciona el frontend de declaración patrimonial. El trabajo revisado comprende acceso, inicio informativo, navegación interna y desarrollo progresivo de un formulario de doce pasos. El objetivo de la documentación es permitir que el equipo interno comprenda, integre y continúe las funcionalidades construidas.
 
-La implementación local contiene pantallas para los pasos 1 a 12; del paso 10 solo está implementada la parte de personerías jurídicas (la tabla de sociedades está pendiente). Las rutas de los doce pasos forman parte de la navegación, pero disponer de una ruta no significa que su contenido esté terminado. Los servicios actuales simulan autenticación, datos y operaciones; la integración institucional permanece pendiente.
+La implementación local contiene pantallas para los pasos 1 a 12, incluidas las personerías jurídicas y las sociedades del paso 10. Los servicios actuales simulan autenticación, datos y operaciones; la integración institucional permanece pendiente y está preparada, no realizada (ver [integración con el backend](09-integracion-con-el-backend.md)). El producto contiene además [código de demostración](10-codigo-de-demostracion.md) que debe retirarse antes de usarlo con información real. El alcance y lo que se verificó se resumen en la [entrega](11-entrega.md).
 
 Los dispositivos previstos son computadoras de escritorio, laptops y tablets. Las referencias de revisión son 1366/1440 px y 768 px. Los teléfonos no forman parte del alcance soportado.
 
@@ -25,8 +25,9 @@ El código debe acompañarse de un nombre funcional. Su presencia en documentaci
 | DEC-009 | Ingresos, egresos y adjuntos. |
 | DEC-010 / DEC-011 | Bienes inmuebles y muebles. |
 | DEC-012 / DEC-013 / DEC-014 / DEC-015 | Ahorro, cuentas corrientes, créditos y tarjetas de crédito. |
-| DEC-016 / DEC-017 | Personería jurídica (sociedades pendientes) y datos judiciales. |
+| DEC-016 / DEC-017 | Personería jurídica y sociedades, y datos judiciales. |
 | DEC-018 | Cuestionario confidencial y juramento. |
-| DEC-019 | Integración: contrato de API y preparación del frontend para un backend futuro. |
+| DEC-019 | Integración: contrato de API, cliente HTTP, catálogos asíncronos y recuperación ante fallos. |
+| DEC-020 | Revisión visual y responsive, regresión y entrega. |
 
 Fuente del registro: [seguimiento de tareas](../tasks/todo.md). La correspondencia con los archivos del proyecto institucional aún debe verificarse durante la transferencia.

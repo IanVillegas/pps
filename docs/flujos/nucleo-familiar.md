@@ -56,7 +56,7 @@ La tabla ofrece nombre accesible y acciones identificadas por el nombre del fami
 | `src/types/Family.types.ts` | Contratos de registro, formulario y valores del paso. |
 | `src/services/CatalogService.ts` | Parentesco y género. |
 | `src/utils/dates.ts` | Fecha local y presentación de fechas. |
-| `src/components/Organisms/RecordsTable/RecordsTable.tsx` | Presentación de tabla y acciones. |
+| `src/sad-aml-shared/components/Organisms/RecordsTable/RecordsTable.tsx` | Presentación de tabla y acciones. |
 
 Confirmar rango de edad, catálogos, criterio de duplicados y política de retiro de registros. La integración requerirá acordar identificadores de servidor y validaciones de datos recibidos. La tabla vacía y la ausencia de confirmación al eliminar son comportamientos vigentes, no conclusiones sobre las reglas finales.
 

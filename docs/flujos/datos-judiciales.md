@@ -25,10 +25,10 @@ Los tres campos de detalle no llevan etiqueta ni asterisco en el diseño: la pre
 
 ## Interruptor
 
-Las preguntas usan `Switch` (`src/components/Atoms/Switch`), un componente local provisional porque `sad-aml-shared` no tiene uno. Es un `<button role="switch">` con `aria-checked`: se activa con clic, Espacio y Enter, y su nombre accesible es la pregunta. Los textos «No» y «Sí» son visuales y no se anuncian. Si `sad-aml-shared` incorpora un interruptor, este se reemplaza sin cambiar la pantalla.
+Las preguntas usan `Switch` (`src/sad-aml-shared/components/Atoms/Switch`), un componente genérico agregado a `sad-aml-shared`. Es un `<button role="switch">` con `aria-checked`: se activa con clic, Espacio y Enter, y su nombre accesible es la pregunta. Los textos «No» y «Sí» son visuales y no se anuncian. Se reutiliza en el cuestionario confidencial.
 
 ## Continuidad
 
-Referencias: `src/components/Pages/Declaration/JudicialData/JudicialData.tsx`, `src/components/Atoms/Switch`, `src/types/JudicialData.types.ts` y `fieldLimits.ts`.
+Referencias: `src/components/Pages/Declaration/JudicialData/JudicialData.tsx`, `src/sad-aml-shared/components/Atoms/Switch`, `src/types/JudicialData.types.ts` y `fieldLimits.ts`.
 
 Pendiente de confirmar con el equipo interno (D-23): qué debe escribirse en el detalle de juicios y embargos, si es obligatorio y su longitud, y la moneda del monto de la pensión. Los límites de longitud son provisionales. Evidencia en [validación](../06-validacion-y-calidad.md).

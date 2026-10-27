@@ -1,7 +1,7 @@
 # Contrato de API
 
-Estado: **propuesta del frontend, sin backend que la implemente** (D-08). Revisión: 21 de octubre de 2026.
-Código: `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`. Seguimiento: DEC-019A; documentación: DOC-017.
+Estado: **propuesta del frontend, sin backend que la implemente** (D-08). Revisión: 27 de octubre de 2026.
+Código: `c789b079859bd590e4180cb0ac3ae08fec58b781`. Seguimiento: DEC-019A; documentación: DOC-017.
 
 Este documento describe lo que el frontend necesita del backend, tomado del código actual (`src/services`, `src/types`) y de las decisiones registradas en [preparación técnica](../tasks/preparacion-tecnica-visual.md). Su finalidad es que integrar una API real consista en implementar un adaptador en el frontend y no en modificar las pantallas. El contrato es una propuesta: quien implemente la API puede ajustarlo, y el cambio se refleja en un único punto del frontend. Lo que no está confirmado por el negocio se marca **(por confirmar)**. La lista de información faltante y su impacto está en [pendientes y continuidad](07-pendientes-y-continuidad.md), sección «Deuda técnica de integración».
 
@@ -31,7 +31,7 @@ Este documento describe lo que el frontend necesita del backend, tomado del cód
   ```json
   { "code": "validation_error", "message": "Texto para mostrar", "errors": { "campo": "Mensaje" } }
   ```
-  `400`/`422` validación (el backend **debe validar** aunque el frontend ya lo haga), `401` sin sesión o sesión vencida, `403` sin permiso, `404` no existe, `409` conflicto de versión o declaración ya enviada, `5xx` falla del servicio. El frontend muestra «La solicitud no fue procesada. Inténtelo de nuevo» ante cualquier falla de red o `5xx`.
+  `400`/`422` validación (el backend **debe validar** aunque el frontend ya lo haga), `401` sin sesión o sesión vencida, `403` sin permiso, `404` no existe, `409` conflicto de versión o declaración ya enviada, `5xx` falla del servicio. El frontend muestra «La solicitud no fue procesada. Inténtelo de nuevo» ante cualquier falla de red o `5xx`. Un `401` se trata siempre como sesión vencida: el cliente (`src/services/api/apiClient.ts`) cierra la sesión local y lleva al acceso.
 
 ## 3. Acceso y sesión
 
@@ -47,11 +47,11 @@ Por confirmar: conteo de intentos fallidos y bloqueo en servidor, vencimiento de
 
 ## 4. Catálogos
 
-Frontend actual: constantes de `CatalogService`. Se pedirán de forma asíncrona.
+Frontend actual: listas simuladas en `CatalogService` y su carga asíncrona ya implementada, que pide cada catálogo por su nombre.
 
 `GET /catalogs/{name}` → `[ { "value": "texto-estable", "label": "Texto a mostrar" } ]`, ordenado como debe verse.
 
-Catálogos usados: `marital-status`, `agencies`, `relationships` (parentesco familiar), `genders`, `real-estate-destinations`, `movable-asset-types`, `movable-asset-brands`, `income-types`, `expense-types`, `account-relationships`, `currencies` (`colones`, `dolares`), `financial-entities`. El valor `value` se guarda en los registros; si un valor deja de existir, el backend debe seguir devolviéndolo al leer registros antiguos **(por confirmar)**.
+Catálogos usados: `marital-status`, `agencies`, `relationships` (parentesco familiar), `genders`, `real-estate-destinations`, `movable-asset-types`, `movable-asset-brands`, `income-types`, `expense-types`, `account-relationships`, `currencies` (`colones`, `dolares`), `financial-entities`, `society-types` (tipo de sociedad, paso 10). El valor `value` se guarda en los registros; si un valor deja de existir, el backend debe seguir devolviéndolo al leer registros antiguos **(por confirmar)**.
 
 ## 5. Declaración: datos que el usuario captura
 
@@ -138,7 +138,7 @@ Frontend actual: `FinalizationService` con los estados `idle → oath → sendin
 - Respuesta `200`: `{ submittedAt, receiptId? }`. `409` si la declaración ya fue enviada. `422` con `errors` si falta algo que el backend exija.
 - Debe ser **idempotente**: repetir la llamada con la declaración ya enviada devuelve el mismo resultado, no una segunda declaración.
 
-Por confirmar: texto vigente y su versionado (hoy el de «Grupo Mutual»), evidencia de aceptación, secuencia (si se guarda como borrador antes de enviar), qué ocurre tras guardar (hay un modal posterior que aún no está diseñado) y si la declaración enviada queda en solo lectura.
+Por confirmar: texto vigente y su versionado (hoy el de «Grupo Mutual»), evidencia de aceptación, secuencia (si se guarda como borrador antes de enviar), qué ocurre tras guardar (el diseño solo dibuja una confirmación previa al guardado; no hay pantalla posterior) y si la declaración enviada queda en solo lectura.
 
 ## 9. Límites de campos del frontend
 
@@ -166,7 +166,7 @@ Valores **simbólicos** (D-17) de `src/utils/fieldLimits.ts`; el backend define 
 | --- | --- | --- |
 | `AuthService`, `SessionService`, `UserService` | Acceso, sesión en memoria y usuario de ejemplo. | Sección 3. |
 | `DeclarationService` | Borrador en memoria, sin persistencia. | Sección 5 (guardado por acción) y lectura al abrir cada paso. |
-| `CatalogService` | Constantes. | Sección 4, asíncronos. |
+| `CatalogService` | Listas simuladas y almacén con carga asíncrona ya implementada (13 catálogos en paralelo, con error y reintento); en modo simulado no llama a la API. | Sección 4: solo se confirman las rutas y el formato. |
 | `FinancialSummaryService`, `SavingsTotalsService`, `CurrentAccountsService`, `CreditsTotalsService`, `CreditCardsTotalsService` | Totales calculados en el navegador (provisional) y una cuenta de Grupo Mutual de ejemplo. | Sección 6; dejan de recibir los registros como parámetro y leen lo guardado. |
 | `AttachmentService` | Subida simulada con progreso y fallo si el nombre contiene «error». | Sección 7. |
 | `ConfidentialReportService` | Estado local y armado del payload. | Sección 8.1. |
@@ -183,7 +183,7 @@ Valores **simbólicos** (D-17) de `src/utils/fieldLimits.ts`; el backend define 
 7. Fórmulas, redondeo y manejo del denominador cero en los totales y las razones (D-10).
 8. Cuestionario confidencial: receptor, canal, permisos, momento y acuse (D-12).
 9. Juramento: texto, versión, evidencia de aceptación y secuencia de finalización (D-13).
-10. Tabla de sociedades del paso 10 (D-22).
+10. Catálogo real de tipos de sociedad, reglas por cargo y moneda de dieta y límite de suma del paso 10 (D-28).
 11. Qué sucede con la declaración tras el envío: solo lectura, nueva versión anual, recibo.
 
 Fuentes: `src/services`, `src/types`, `src/utils/fieldLimits.ts` y [preparación técnica](../tasks/preparacion-tecnica-visual.md).

@@ -1,27 +1,42 @@
 # Guía de componentes
 
-Estado: inventario inicial; las fichas detalladas se ampliarán con el desarrollo. Revisión: 21 de octubre de 2026.
+Estado: inventario vigente; las fichas detalladas se ampliarán con el desarrollo. Revisión: 27 de octubre de 2026. Código: `c789b079859bd590e4180cb0ac3ae08fec58b781`.
 
-Los componentes genéricos reutilizables se mantienen en `sad-aml-shared`. Las composiciones específicas del flujo patrimonial se mantienen en DecPat. Los índices de Atoms y Molecules permiten importar varios componentes compartidos desde una ubicación estable.
+Todo componente genérico, sin lógica de negocio de DecPat, vive en `sad-aml-shared`, carpeta propia de este sistema que se entrega con él: quien quiera reutilizar lo construido solo copia esa carpeta. Las composiciones específicas del flujo patrimonial se mantienen en `src/components`. Los índices `@/components/Atoms`, `Molecules` y `Organisms` reexportan los componentes compartidos para que las pantallas importen desde una ubicación estable. Las pruebas de cada componente compartido están junto a él (`*.test.tsx`) y Jest las ejecuta.
 
-| Componente | Ubicación actual | Uso |
+### Componentes genéricos (en `sad-aml-shared`)
+
+| Componente | Ubicación | Uso |
 | --- | --- | --- |
 | Button | `src/sad-aml-shared/components/Atoms/Button` | Acciones; contempla color, tamaño, estado deshabilitado y carga. |
-| InputText | `src/sad-aml-shared/components/Atoms/InputText` | Entrada de texto con etiqueta y estados de error. |
+| InputText | `src/sad-aml-shared/components/Atoms/InputText` | Entrada de texto con etiqueta, estados de error y, opcionalmente, un ícono al inicio (`startAdornment`). |
 | Checkbox, Tooltip, Textarea | `src/sad-aml-shared/components/Atoms` | Selección, ayuda contextual y texto de varias líneas. |
-| Switch | `src/components/Atoms/Switch` | Interruptor Sí/No (`role="switch"`); provisional porque shared no tiene uno. Se usa en datos judiciales y en el cuestionario confidencial. |
-| CurrencyIcon | `src/components/Atoms/CurrencyIcon` | Ícono del colón o del dólar de Figma; decorativo. |
-| Dropdown | `src/sad-aml-shared/components/Molecules/Dropdown` | Selección de opciones de catálogo. |
+| Switch | `src/sad-aml-shared/components/Atoms/Switch` | Interruptor Sí/No (`role="switch"`). Se usa en datos judiciales y en el cuestionario confidencial. |
+| CurrencyIcon | `src/sad-aml-shared/components/Atoms/CurrencyIcon` | Ícono del colón o del dólar de Figma; decorativo. |
+| Dropdown | `src/sad-aml-shared/components/Molecules/Dropdown` | Selección de una opción de una lista, con panel propio (ver más abajo). |
+| BreadCrumbs | `src/sad-aml-shared/components/Molecules/BreadCrumbs` | «Regresar» y migas de pan del encabezado. |
+| MoneyInput | `src/sad-aml-shared/components/Molecules/MoneyInput` | Campo de monto con formato estándar. Ver [montos y moneda](flujos/montos-y-moneda.md). |
+| CurrencySelect | `src/sad-aml-shared/components/Molecules/CurrencySelect` | Selector de moneda con íconos; recibe la lista de monedas por propiedad. |
+| RadioGroup | `src/sad-aml-shared/components/Molecules/RadioGroup` | Selección única. |
+| FileUpload | `src/sad-aml-shared/components/Molecules/FileUpload` | Selección y tarjetas de archivos adjuntos. |
+| RetryNotice | `src/sad-aml-shared/components/Molecules/RetryNotice` | Aviso de una carga fallida con «Reintentar». |
 | Modal | `src/sad-aml-shared/components/Organisms/Modal` | Base de los diálogos. |
-| AppDialog | `src/components/Organisms/AppDialog` | Composición estándar de diálogos de DecPat. |
-| RecordsTable | `src/components/Organisms/RecordsTable` | Presentación y acciones de registros. |
-| ConfirmDeleteDialog | `src/components/Organisms/ConfirmDeleteDialog` | Modal de confirmación para eliminar un registro; lo muestra `RecordsTable`. |
-| NotificationProvider | `src/components/Organisms/Notification` | Contexto de notificaciones y mensajes de resultado. |
-| DeclarationStepper | `src/components/Molecules/DeclarationStepper` | Navegación visual de la declaración. |
-| FileUpload, RadioGroup | `src/components/Molecules` | Adjuntos y selección única; revisar su posible reutilización al ampliar la biblioteca. |
-| MoneyInput, CurrencySelect, CurrencyTotals | `src/components/Molecules` | Campo de monto con formato estándar, selector de moneda con íconos y totales por moneda. Ver [montos y moneda](flujos/montos-y-moneda.md). |
+| AppDialog | `src/sad-aml-shared/components/Organisms/AppDialog` | Composición estándar de diálogos. |
+| ConfirmDeleteDialog | `src/sad-aml-shared/components/Organisms/ConfirmDeleteDialog` | Confirmación para eliminar un registro; lo muestra `RecordsTable`. |
+| RecordsTable | `src/sad-aml-shared/components/Organisms/RecordsTable` | Presentación y acciones de registros, con variante compacta. |
 
-Este inventario describe la ubicación existente. No afirma que todo componente local sea necesariamente específico del dominio: la clasificación de componentes genéricos existentes debe revisarse antes de ampliar sus funcionalidades.
+`MoneyInput` utiliza `src/sad-aml-shared/utils/helpers/money.ts` y `FileUpload` el tipo `src/sad-aml-shared/types/Attachment.types.ts`; ambos viajan con la carpeta.
+
+### Componentes específicos de DecPat (en `src/components`)
+
+| Componente | Ubicación | Uso |
+| --- | --- | --- |
+| NotificationProvider | `src/components/Organisms/Notification` | Contexto de notificaciones y mensajes de resultado. |
+| DeclarationStepper | `src/components/Molecules/DeclarationStepper` | Navegación visual de los doce pasos. |
+| CurrencyTotals | `src/components/Molecules/CurrencyTotals` | Totales por moneda de créditos y tarjetas. |
+| ConfirmSaveDialog | `src/components/Organisms/ConfirmSaveDialog` | Confirmación del guardado final de la declaración. |
+| Diálogos de cada paso | `src/components/Organisms/*Dialog` | Formularios de familiares, ingresos, egresos, bienes, cuentas, créditos, tarjetas, personerías y sociedades. |
+| AppShell, AuthenticatedShell | `src/components/Templates` | Estructura de navegación interna y guardia de sesión. |
 
 ## Botón
 
@@ -35,7 +50,7 @@ import { Button, ButtonColor } from '@/components/Atoms';
 
 ## Diálogo estándar
 
-`AppDialog` recibe `open`, `onClose`, `size` y `title`; su contenido llega mediante `children` y sus acciones mediante `footer`. La escala actual es `sm` (575 px), `md` (640 px), `lg` (805 px) y `xl` (891 px). Las descripciones accesibles se proporcionan mediante `description` o `srDescription`. El área de contenido y acciones tiene desplazamiento interno.
+`AppDialog` (en `sad-aml-shared`) recibe `open`, `onClose`, `size` y `title`; su contenido llega mediante `children` y sus acciones mediante `footer`. La escala actual es `sm` (575 px), `md` (640 px), `lg` (805 px) y `xl` (891 px). Las descripciones accesibles se proporcionan mediante `description` o `srDescription`. El área de contenido y acciones tiene desplazamiento interno.
 
 Los formularios específicos aportan campos y validación; el contenedor concentra presentación y cierre. Revisar título accesible, foco, teclado y desplazamiento cuando se modifique un diálogo.
 
@@ -105,14 +120,25 @@ Referencia revisada: `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`, 21 de octubre d
 
 - **`ConfirmDeleteDialog`** recibe `open`, `onConfirm` y `onClose`. Se compone con `AppDialog` (tamaño `md`): ícono de alerta, la pregunta de confirmación y «Cancelar» / «Sí, eliminar». `RecordsTable` lo monta cuando se le entrega `onDelete` y llama a ese callback solo al confirmar; el resto de las pantallas no necesita cambios.
 - **`MoneyInput`** recibe `label`, `value` (texto decimal con dos decimales o vacío), `onChange`, `errors`, `id` y `currency`. `currency` es `'colones'` o `'dolares'` para mostrar su ícono, `undefined` mientras se espera la selección (reserva el espacio) y `null` cuando el monto no tiene moneda (sin ícono ni espacio). Los detalles de entrada están en [montos y moneda](flujos/montos-y-moneda.md).
-- **`CurrencySelect`** recibe `label`, `value`, `onChange`, `errors` e `id`, y se coloca antes del campo de monto. Cada opción lleva su ícono, también la elegida; para ello inserta el texto dentro de `Select.ItemText`, porque `Dropdown` solo lo hace por sí mismo con opciones de texto plano.
+- **`CurrencySelect`** recibe `label`, `currencies` (la lista de monedas, cada una con `value` y `label`), `value`, `onChange`, `errors` e `id`, y se coloca antes del campo de monto. Quien lo usa obtiene `currencies` del catálogo `currencies` (`useCatalog`). Cada opción lleva su ícono, también la elegida; para ello inserta el texto dentro de `Select.ItemText`, porque `Dropdown` solo lo hace por sí mismo con opciones de texto plano.
 - **`Switch`** recibe `checked`, `onChange` y un nombre accesible (`aria-labelledby` o `aria-label`); los textos «No» y «Sí» son opcionales y visuales.
 - **`CurrencyTotals`** presenta los totales por moneda de créditos y tarjetas con el mismo `CurrencyIcon`.
-- **Cambios en `sad-aml-shared`** marcados como modificaciones para DecPat: `InputText` admite `startAdornment` (ícono decorativo dentro del campo, al inicio) y `Textarea` tiene estilo para `disabled`. Debe revisarse su traslado al repositorio compartido.
+- **Cambios en `sad-aml-shared`** marcados como modificaciones para DecPat: `InputText` admite `startAdornment` (ícono decorativo dentro del campo, al inicio) y `Textarea` tiene estilo para `disabled`. `sad-aml-shared` es propio de este sistema: no hay un repositorio al que trasladarlos.
 - `RadioGroup` ya no tiene la opción `compact`, que dejó de usarse con el nuevo orden de «Otros detalles».
+
+## Lista de opciones, breadcrumb y componentes agregados el 27 de octubre
+
+Referencia revisada: `c789b079859bd590e4180cb0ac3ae08fec58b781`, 27 de octubre de 2026.
+
+- **`Dropdown`: lista de opciones.** La lista abierta es un panel con el borde y el radio del campo, la sombra de las tarjetas, una separación de 4 px del campo y un ancho igual al del campo. Cada opción mide al menos 40 px, se resalta al pasar el puntero o al navegar con las flechas (`data-highlighted`), la elegida va en negrita con una marca verde y las deshabilitadas se atenúan. El alto máximo es 280 px o el espacio disponible en pantalla, con desplazamiento interno (`isShort` lo reduce a 160 px). Sin opciones muestra «Sin registros» (`labelNoRegister`). El diseño de Figma no dibuja la lista abierta; se definió con los tokens del sistema. Las opciones de texto plano (`string`) muestran su texto; una opción puede entregar un elemento propio (como en `CurrencySelect`, que incluye el ícono dentro de `Select.ItemText`).
+- **`BreadCrumbs`** recibe `items` (cada uno con `id`, `label`, `href` y `active`; `active` hace que la miga sea un enlace y la última, la pantalla actual, no lo es) y, opcionalmente, `goBackUrl`. «Regresar» lleva a la miga anterior. Se ajustó para el App Router: usaba `next/router`, propio del Pages Router. `AppShell` lo muestra en el encabezado, a la izquierda, solo dentro de la declaración («Inicio / Mi declaración», nodo de diseño 43121:6538).
+- **`RetryNotice`** recibe `message` y `onRetry`. Se anuncia con `role="alert"` y no desaparece solo. Lo usan los totales del backend y las listas de opciones.
+- **`RecordsTable`** admite además `dense` (variante compacta para tablas de muchas columnas), `addAriaLabel` (nombre accesible del botón de agregar cuando hay varias tablas en la pantalla) y un ancho mínimo de 480 px (antes 560 px), con el que dejaron de desplazar en tablet (768 px) las tablas de los pasos 2, 3, 4, 7 y 10; las de los pasos 5, 6, 8 y 9 siguen desplazando dentro de la propia tabla.
+- **`ConfirmSaveDialog`** recibe `open`, `onConfirm` y `onClose`; se compone con `AppDialog` de tamaño `md`. Ver [juramento y cierre](flujos/juramento-y-cierre.md).
+- **`SocietyDialog`** es el diálogo de sociedades; ver [sociedades](flujos/sociedades.md).
 
 ## Fichas restantes
 
 Para cada componente ampliado, documentar propósito, ruta, propiedades principales, ejemplo breve, estados, accesibilidad y límites. Evitar copiar interfaces completas que puedan quedar desactualizadas. Los ejemplos deben verificarse contra el contrato vigente.
 
-Fuentes: índices de `src/components/Atoms`, `Molecules` y `Organisms`; `Button.tsx` y `AppDialog.tsx`.
+Fuentes: índices de `src/components/Atoms`, `Molecules` y `Organisms`, y de `src/sad-aml-shared/components`; `Button.tsx`, `AppDialog.tsx`, `Dropdown.tsx` y `BreadCrumbs.tsx`.

@@ -1,16 +1,17 @@
 # Pendientes y continuidad
 
-Estado: recomendaciones iniciales para transferencia. Revisión: 21 de octubre de 2026.
+Estado: recomendaciones para la transferencia. Revisión: 27 de octubre de 2026.
 
 | Prioridad propuesta | Trabajo | Criterio de cierre |
 | --- | --- | --- |
-| Alta | Completar la tabla de sociedades del paso 10 y el modal posterior al guardado | Información de la tabla y diseño del modal disponibles, implementados y validados. |
-| Alta | Integrar autenticación, persistencia y servicios reales | Contratos confirmados y escenarios de éxito y error verificados. |
+| Alta | Retirar o reemplazar el [código de demostración](10-codigo-de-demostracion.md) | Ningún servicio `[SIMULADO]` ni usuario de prueba permanece en un entorno con datos reales. |
+| Alta | Cerrar los asuntos de negocio de sociedades, tarjetas, personerías y datos judiciales | Respuestas del negocio incorporadas (catálogo de tipos de sociedad, reglas por cargo, rango del año de la tarjeta, unidad del plazo, detalle judicial). |
+| Alta | Integrar autenticación, persistencia y servicios reales | Contratos confirmados y escenarios de éxito y error verificados; los servicios `[SIMULADO]` reemplazados (ver [integración](09-integracion-con-el-backend.md)). |
 | Alta | Confirmar catálogos, cálculos y reglas de negocio | Sustitución de datos sintéticos y supuestos aprobada por el equipo. |
 | Alta | Comparar copia local y proyecto institucional | Registro de archivos transferidos, diferencias y validaciones en destino. |
 | Media | Revisar comentarios existentes | Texto orientado a mantenimiento humano, conservando contratos y restricciones útiles. |
 | Media | Completar fichas de componentes | Propiedades, ejemplos, estados y límites verificados. |
-| Media | Consolidar revisión visual y de accesibilidad | Evidencia en escritorio y tablet, teclado, foco y errores. |
+| Media | Completar la auditoría de accesibilidad y la comparación con Figma | Lector de pantalla, contraste, recorrido solo con teclado y comparación pantalla por pantalla contra el diseño; probar además en otros navegadores. |
 | Media | Revisar avisos y diferencias conocidas | Resolución o aceptación explícita de cada asunto vigente. |
 
 Estas prioridades son una propuesta documental; los responsables y fechas deben acordarse con el equipo interno.
@@ -96,29 +97,28 @@ Detalle en [tarjetas de crédito](flujos/tarjetas-de-credito.md).
 
 ## Pendientes de los pasos 10 a 12
 
-Revisión: 21 de octubre de 2026, código `17a0ad9f2cdc42bc8c44265dbb4be85bbbc5ada2`.
+Revisión: 27 de octubre de 2026, código `c789b079859bd590e4180cb0ac3ae08fec58b781`.
 
 | Bloque | Confirmaciones necesarias |
 | --- | --- |
 | Personería jurídica | Formato de la cédula jurídica, unidad del plazo (hoy solo un número), criterio de duplicados. |
-| Sociedades (paso 10) | **No implementada**: qué datos maneja la tabla (cargo, tipo de sociedad, porcentaje, dietas, tipo de poder, límite de suma), catálogos y reglas por cargo; el modal de Figma mide 750 px. |
+| Sociedades (paso 10) | Implementada. Falta el catálogo real de tipos de sociedad (hoy provisional), si el cargo determina qué campos aplican (hoy los nueve son obligatorios), los catálogos de cargo y tipo de poder (hoy texto libre) y la moneda de la dieta y del límite de suma. |
 | Datos judiciales | Qué debe escribirse en el detalle de juicios y embargos, si es obligatorio y su longitud; moneda del monto de la pensión. |
 | Cuestionario confidencial | Receptor, canal, permisos, momento del envío y acuse (hoy no se envía nada). |
-| Juramento y cierre | Modal posterior al guardado (falta su diseño), evidencia de aceptación, versión del texto, secuencia de finalización y si la declaración queda en solo lectura. |
+| Juramento y cierre | Evidencia de aceptación, versión del texto, secuencia de finalización, si la declaración queda en solo lectura y la ortografía del texto de la confirmación. |
 
-Detalles en [personería jurídica](flujos/personeria-juridica.md), [datos judiciales](flujos/datos-judiciales.md), [cuestionario confidencial](flujos/cuestionario-confidencial.md) y [juramento y cierre](flujos/juramento-y-cierre.md).
+Detalles en [personería jurídica](flujos/personeria-juridica.md), [sociedades](flujos/sociedades.md), [datos judiciales](flujos/datos-judiciales.md), [cuestionario confidencial](flujos/cuestionario-confidencial.md) y [juramento y cierre](flujos/juramento-y-cierre.md).
 
 ## Pendientes de montos y moneda
 
 - Confirmar la moneda de los montos que no tienen selector: ingresos y egresos (hoy se muestran con el ícono del colón por los totales del paso), inmuebles, muebles y la pensión alimenticia (sin ícono). Si alguno necesita selector de moneda, es un cambio local a su diálogo.
 - Confirmar reglas de redondeo y precisión (D-10). El frontend guarda los montos como texto decimal con dos decimales.
-- Trasladar al repositorio compartido las dos modificaciones de `sad-aml-shared` (`startAdornment` en `InputText` y estilo `disabled` en `Textarea`).
 
 Detalles en [montos y moneda](flujos/montos-y-moneda.md).
 
 ## Deuda técnica de integración
 
-El sistema no se conecta a un backend en este alcance, pero debe quedar preparado: integrar una API debe significar implementar un adaptador, no modificar las pantallas. El [contrato de API](08-contrato-api.md) es la propuesta del frontend. **Criterio de cierre de la preparación:** existen, están probados y documentados el cliente único con interruptor entre datos simulados y reales, los catálogos pedidos de forma asíncrona, los servicios con las firmas del contrato y el guardado por acción dentro del adaptador. No depende de que exista un backend ni de resolver la lista siguiente, y no incluye soporte para casos que el contrato no fija (versionado, reintentos, formato de errores del servidor).
+El sistema no se conecta a un backend en este alcance, pero debe quedar preparado: integrar una API debe significar implementar un adaptador, no modificar las pantallas. El [contrato de API](08-contrato-api.md) es la propuesta del frontend. **Estado de la preparación (27 de octubre de 2026):** están implementados, probados y documentados el cliente único con interruptor entre datos simulados y reales, los catálogos pedidos de forma asíncrona, la recuperación ante fallos (reintento de cifras y catálogos, aviso al salir con datos, `401` como sesión vencida) y el mapa de lo simulado. **No** se hicieron, con su justificación en [integración con el backend](09-integracion-con-el-backend.md), las firmas definitivas de los servicios, el guardado por acción en el adaptador ni los adaptadores reales: dependen de contratos que no existen. No incluye soporte para casos que el contrato no fija (versionado, reintentos, formato de errores del servidor).
 
 La siguiente deuda permanece abierta por falta de información; cada punto se cierra cuando se tenga el dato.
 
@@ -133,19 +133,21 @@ La siguiente deuda permanece abierta por falta de información; cada punto se ci
 | Reglas de validación del servidor | Duplicados, rangos de fechas, formato de cédulas, unidad del plazo, límites reales de campos | Negocio y backend | `fieldLimits.ts`, validaciones de los diálogos | Contrato, sección 9 |
 | Cuestionario confidencial | Receptor, canal, permisos, momento del envío y acuse | Negocio y backend | `ConfidentialReportService` | Contrato, sección 8.1 |
 | Juramento y finalización | Texto y versión, evidencia de aceptación, secuencia, qué ocurre tras guardar | Negocio y backend | `FinalizationService`, `Completion` | Contrato, sección 8.2 |
-| Tabla de sociedades (paso 10) | Datos que maneja la tabla | Negocio | Tarea DEC-016B, sin implementar | [Personería jurídica](flujos/personeria-juridica.md) |
-| Modal posterior al guardado | Referencia visual en Figma | Diseño | `Completion`, estado `done` | [Juramento y cierre](flujos/juramento-y-cierre.md) |
+| Tabla de sociedades (paso 10) | Catálogo real de tipos de sociedad, reglas por cargo y moneda de dieta y límite de suma | Negocio | `CatalogService`, `validateSociety` | [Sociedades](flujos/sociedades.md) |
 | Adjuntos reales | Límite de cantidad por ingreso, limpieza de adjuntos huérfanos, acceso | Backend | `AttachmentService`, `useAttachments` | Contrato, sección 7 |
 | Contenido de los detalles judiciales | Qué se escribe en el detalle de juicios y embargos | Negocio | `JudicialData` | [Datos judiciales](flujos/datos-judiciales.md) |
 
 ## Transferencia recomendada
 
+`src/sad-aml-shared` es propio de este sistema y se entrega con él, así que la transferencia no exige trasladar cambios de componentes compartidos a otro repositorio. Un orden razonable:
+
 1. Comparar el estado actual del proyecto institucional con esta copia y seleccionar la unidad funcional que se transferirá.
-2. Transferir tokens y cambios de componentes compartidos a su ubicación correspondiente.
-3. Transferir tipos, utilidades, servicios y hooks requeridos.
+2. Transferir `src/sad-aml-shared` completa (tokens, componentes genéricos con sus pruebas, utilidades y tipos). Es la carpeta que se copia para reutilizar lo construido.
+3. Transferir tipos, utilidades, servicios y hooks requeridos, conservando las marcas `[SIMULADO]` e `[INTEGRACION]`.
 4. Transferir composiciones, pantallas, rutas y assets asociados.
-5. Transferir pruebas y configuración necesaria; ajustar imports y dependencias conforme al entorno receptor.
-6. Ejecutar validaciones en destino y actualizar esta documentación con el alcance realmente incorporado.
+5. Transferir pruebas y configuración necesaria (incluido `jest.config.ts`, que ya no excluye `sad-aml-shared`); ajustar imports y dependencias conforme al entorno receptor.
+6. Retirar el [código de demostración](10-codigo-de-demostracion.md) en los entornos con datos reales.
+7. Ejecutar validaciones en destino y actualizar esta documentación con el alcance realmente incorporado.
 
 El registro de equivalencias puede utilizar las columnas: referencia DEC, nombre funcional, archivos locales, archivos en destino, estado de transferencia, fecha y validación. La primera comparación está pendiente: estos documentos no confirman qué cambios ya están en la computadora de Grupo Mutual.
 

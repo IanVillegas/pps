@@ -1,8 +1,8 @@
 # Navegación interna e inicio
 
 Estado: estructura e inicio implementados con sesión de demostración.
-Revisión: 14 de octubre de 2026. Código de referencia: `9384bcd911d610c821da7c9c3c03e5a469984672`.
-Seguimiento local: DEC-005A, DEC-005B y DEC-005C.
+Revisión: 27 de octubre de 2026 (estructura del 14 de octubre; migas de pan, del 27). Código de referencia: `9384bcd911d610c821da7c9c3c03e5a469984672` y `c789b079859bd590e4180cb0ac3ae08fec58b781`.
+Seguimiento local: DEC-005A, DEC-005B, DEC-005C y DEC-020A.
 
 ## Acceso a las pantallas internas
 
@@ -25,6 +25,10 @@ El encabezado muestra el nombre de la sesión y permite cerrar sesión mediante 
 El menú identifica la sección activa. Los logotipos enlazan al inicio. En un paso reconocido de la declaración, el encabezado del contenido utiliza el título e icono registrados en `declarationSteps.ts`; en otras pantallas utiliza «Declaración Patrimonial».
 
 `AppShell` incorpora `NotificationProvider`, que permite a las pantallas internas comunicar resultados mediante notificaciones. La lógica específica del formulario por pasos se documentará en un bloque posterior.
+
+## Migas de pan
+
+Dentro de la declaración (`/mi-declaracion/…`) el encabezado muestra, a la izquierda, el botón «Regresar» y las migas «Inicio / Mi declaración», como en el diseño (nodo 43121:6538). «Regresar» y «Inicio» llevan a `/inicio`; «Mi declaración» es la pantalla actual y no es un enlace. En `/inicio` no se muestran, porque no hay una pantalla anterior. Las migas se definen en `AppShell` con el componente `BreadCrumbs` de `sad-aml-shared` (ver la [guía de componentes](../03-guia-de-componentes.md)), que se ajustó para el App Router.
 
 ## Menú expandido y compacto
 
