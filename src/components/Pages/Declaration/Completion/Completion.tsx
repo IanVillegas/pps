@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, ButtonColor } from '@/components/Atoms';
+import ConfirmSaveDialog from '@/components/Organisms/ConfirmSaveDialog/ConfirmSaveDialog';
 import {
   TOAST_MESSAGES,
   useNotification,
@@ -25,15 +26,17 @@ const OATH_PARAGRAPHS = [
  * Paso 12, Declaración patrimonial completa (DEC-018A y DEC-018B, nodos Figma
  * 43121:1459 y 43121:866). Tiene dos vistas dentro del mismo paso: el
  * cuestionario confidencial y, tras «Terminar», el texto de la declaración
- * bajo juramento con un unico boton «Guardar». El estado de cual vista se ve
- * y del guardado vive en FinalizationService (no en el borrador). El guardado
- * es simulado: el exito se muestra solo cuando termina la respuesta simulada,
- * el error permite reintentar y mientras guarda el boton queda bloqueado para
- * que un clic repetido no envie dos veces.
+ * bajo juramento con un unico boton «Guardar», que primero abre el modal de
+ * confirmacion (nodo 43310:470704) y solo guarda con el «Guardar» del modal.
+ * El estado de cual vista se ve y del guardado vive en FinalizationService (no
+ * en el borrador). El guardado es simulado: el exito se muestra solo cuando
+ * termina la respuesta simulada, el error permite reintentar y mientras guarda
+ * el boton queda bloqueado para que un clic repetido no envie dos veces.
  */
 const Completion = ({ actions }: StepProps) => {
   const { status, leaveOath, submitDeclaration } = useFinalization();
   const { notify } = useNotification();
+  const [confirming, setConfirming] = useState(false);
 
   // Si la persona se va a otro paso sin guardar, el juramento no queda
   // «abierto»: al volver ve de nuevo el cuestionario.
@@ -49,6 +52,7 @@ const Completion = ({ actions }: StepProps) => {
   }
 
   const handleSave = async () => {
+    setConfirming(false);
     const result = await submitDeclaration(getSession()?.username);
     if (result === 'done') notify(TOAST_MESSAGES.saved);
     if (result === 'error') notify(TOAST_MESSAGES.requestFailed);
@@ -72,9 +76,14 @@ const Completion = ({ actions }: StepProps) => {
           size="large"
           spinner={sending}
           disabled={sending || done}
-          onClick={handleSave}
+          onClick={() => setConfirming(true)}
         />
       </div>
+      <ConfirmSaveDialog
+        open={confirming}
+        onConfirm={handleSave}
+        onClose={() => setConfirming(false)}
+      />
     </div>
   );
 };

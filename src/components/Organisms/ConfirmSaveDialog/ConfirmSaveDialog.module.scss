@@ -1,0 +1,27 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Nodo Figma 43310:470704: texto en Poppins Regular 16px, justificado, gris-400
+// al 80 % de opacidad, de 495 px de ancho, con un párrafo en blanco entre la
+// advertencia y la pregunta. El CSS global fija Poppins en `p`; se declara aquí
+// igualmente para que no dependa de él.
+.confirmSave {
+  &__description {
+    max-width: 495px;
+    margin: 0 auto;
+    opacity: 0.8;
+
+    p {
+      margin: 0;
+      font-family: var(--font-poppins), sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: justify;
+      color: gm.$gray-400;
+    }
+
+    p + p {
+      margin-top: 24px;
+    }
+  }
+}
