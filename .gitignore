@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# videos generados con /brag (incluye las variantes con fecha)
+/brag-output*/

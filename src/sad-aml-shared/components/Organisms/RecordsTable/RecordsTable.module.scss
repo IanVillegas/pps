@@ -122,6 +122,13 @@ $line: rgba(31, 31, 31, 0.1);
     }
   }
 
+  // El mensaje de tabla vacia es el mismo en todas las tablas: la variante
+  // compacta solo reduce las filas con datos, no «No existen registros».
+  &__table--dense &__empty {
+    padding: 16px 12px 16px 0;
+    font-size: 14px;
+  }
+
   &__table--dense &__actions {
     button {
       padding: 2px;
