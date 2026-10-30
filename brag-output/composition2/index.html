@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>DecPat Cloud — recorrido animado</title>
+<style>
+  @font-face { font-family: Poppins; font-weight: 500; src: url('/src/sad-aml-shared/assets/fonts/Poppins/Poppins-Medium.ttf'); }
+  @font-face { font-family: Poppins; font-weight: 600; src: url('/src/sad-aml-shared/assets/fonts/Poppins/Poppins-SemiBold.ttf'); }
+  @font-face { font-family: Poppins; font-weight: 700; src: url('/src/sad-aml-shared/assets/fonts/Poppins/Poppins-Bold.ttf'); }
+  @font-face { font-family: 'Work Sans'; font-weight: 400; src: url('/src/sad-aml-shared/assets/fonts/WorkSans/WorkSans-Regular.ttf'); }
+  @font-face { font-family: 'Work Sans'; font-weight: 500; src: url('/src/sad-aml-shared/assets/fonts/WorkSans/WorkSans-Medium.ttf'); }
+
+  :root { --red: #e62c3a; --green: #00998a; --green-light: #45b9b2; --ink: #1f1f1f; --gray-100: #f3f5f6; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--gray-100); }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--gray-100); font-family: Poppins, sans-serif; }
+
+  .blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: .16; }
+  #blobR { width: 900px; height: 900px; background: var(--red); left: -250px; top: -300px; }
+  #blobG { width: 1000px; height: 1000px; background: var(--green); right: -300px; bottom: -420px; }
+
+  #card { position: absolute; left: 160px; top: 36px; width: 1600px; height: 900px; border-radius: 26px; overflow: hidden;
+    background: #fff; box-shadow: 0 40px 90px rgba(31,31,31,.18), 0 8px 24px rgba(31,31,31,.08); }
+  #layer { position: absolute; left: 0; top: 0; width: 1440px; height: 810px; transform-origin: 0 0; }
+  #layer iframe { position: absolute; left: 0; top: 0; width: 1440px; height: 810px; border: 0; background: #fff; }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+
+  #cursor { position: absolute; width: 34px; height: 34px; left: 0; top: 0; display: none; filter: drop-shadow(0 3px 5px rgba(0,0,0,.3)); }
+  #ripple { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; border: 5px solid var(--green); opacity: 0; }
+
+  #caption { position: absolute; left: 50%; top: 1003px; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 18px;
+    padding: 18px 40px 18px 30px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 600; font-size: 38px;
+    white-space: nowrap; opacity: 0; box-shadow: 0 16px 40px rgba(31,31,31,.25); }
+  #caption i { width: 16px; height: 16px; border-radius: 50%; background: var(--green-light); flex: none; }
+
+  .panel { position: absolute; inset: 0; background: var(--red); overflow: hidden; }
+  .panel .wave { position: absolute; }
+  .wave1 { left: -5.78%; top: 19.08%; width: 41.09%; height: 101.33%; }
+  .wave2 { left: 28.12%; top: -4.31%; width: 71.9%; height: 124.72%; }
+
+  #hook .headline { position: absolute; left: 0; right: 0; top: 190px; text-align: center; color: #fff; font-weight: 700;
+    font-size: 132px; line-height: 1.12; letter-spacing: -2px; white-space: nowrap; }
+  #hook .headline span { display: block; }
+  #hook .kicker { position: absolute; left: 0; right: 0; top: 610px; text-align: center; color: rgba(255,255,255,.92);
+    font-weight: 600; font-size: 40px; letter-spacing: 1px; }
+  #stepper { position: absolute; left: 330px; top: 690px; width: 1260px; height: 40px; }
+  #stepper .line { position: absolute; top: 18px; height: 4px; background: rgba(255,255,255,.35); border-radius: 2px; }
+  #stepper .line .fill { position: absolute; inset: 0; background: #fff; transform-origin: 0 50%; transform: scaleX(0); }
+  #stepper .dot { position: absolute; top: 0; width: 40px; height: 40px; margin-left: -20px; border-radius: 50%; border: 4px solid rgba(255,255,255,.55); }
+  #stepper .dot b { position: absolute; inset: 5px; border-radius: 50%; background: #fff; transform: scale(0); }
+  #stepper .num { position: absolute; top: 54px; width: 60px; margin-left: -30px; text-align: center; color: rgba(255,255,255,.75); font-size: 26px; font-weight: 500; }
+
+  #outro .logo { position: absolute; left: 50%; top: 150px; width: 480px; height: 125px; margin-left: -240px; }
+  #outro .title { position: absolute; left: 0; right: 0; top: 330px; text-align: center; color: #fff; font-weight: 700; font-size: 124px; letter-spacing: -2px; line-height: 1.1; }
+  #outro .sub { position: absolute; left: 0; right: 0; top: 500px; text-align: center; color: rgba(255,255,255,.92); font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 42px; }
+  #outro .rule { position: absolute; left: 50%; top: 610px; width: 760px; height: 2px; margin-left: -380px; background: rgba(255,255,255,.4); transform-origin: 50% 50%; }
+  #outro .credits { position: absolute; left: 0; right: 0; top: 650px; text-align: center; color: #fff; font-family: 'Work Sans', sans-serif; }
+  #outro .credits div { font-size: 36px; line-height: 1.6; }
+  #outro .credits .course { font-family: Poppins, sans-serif; font-weight: 600; font-size: 38px; }
+  #outro .credits .author { font-family: Poppins, sans-serif; font-weight: 600; font-size: 40px; margin-top: 18px; }
+
+  /* Formato vertical 1080x1440 (?format=portrait). La app se renderiza a 1040x1290 y se reacomoda con su propio responsive. */
+  html.portrait, html.portrait body, html.portrait #stage { width: 1080px; height: 1440px; }
+  html.portrait #card { left: 40px; top: 40px; width: 1000px; height: 1240px; border-radius: 24px; }
+  html.portrait #layer, html.portrait #layer iframe { width: 1040px; height: 1290px; }
+  html.portrait #caption { top: 1362px; font-size: 34px; padding: 16px 34px 16px 26px; }
+  html.portrait #blobR { left: -400px; top: -300px; }
+  html.portrait #blobG { right: -500px; bottom: -400px; }
+  html.portrait #hook .headline { top: 230px; left: 60px; right: 60px; font-size: 128px; line-height: 1.08; white-space: normal; }
+  html.portrait #hook .headline #h2 { margin-top: 36px; }
+  html.portrait #hook .kicker { top: 930px; }
+  html.portrait #stepper { left: 90px; top: 1010px; width: 900px; }
+  html.portrait #stepper .dot { width: 36px; height: 36px; margin-left: -18px; }
+  html.portrait #stepper .line { top: 16px; }
+  html.portrait #stepper .num { font-size: 24px; top: 50px; }
+  html.portrait #outro .logo { top: 230px; width: 440px; height: 115px; margin-left: -220px; }
+  html.portrait #outro .title { top: 410px; font-size: 112px; }
+  html.portrait #outro .sub { top: 575px; font-size: 40px; }
+  html.portrait #outro .rule { top: 690px; width: 700px; margin-left: -350px; }
+  html.portrait #outro .credits { top: 735px; left: 80px; right: 80px; }
+  html.portrait #outro .credits .course { font-size: 38px; line-height: 1.35; margin-bottom: 14px; }
+  html.portrait #outro .credits div { font-size: 34px; }
+  html.portrait #outro .credits .author { font-size: 40px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob" id="blobR"></div>
+  <div class="blob" id="blobG"></div>
+
+  <div id="card">
+    <div id="layer">
+      <iframe id="slotA"></iframe>
+      <iframe id="slotB"></iframe>
+      <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2.5 L4 19.5 L8.6 15.4 L11.6 21.6 L14.6 20.2 L11.7 14.2 L18 14.2 Z" fill="#fff" stroke="#1f1f1f" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div id="ripple"></div>
+    </div>
+    <div id="flash"></div>
+  </div>
+  <div id="caption"><i></i><span></span></div>
+
+  <div class="panel" id="hook">
+    <img class="wave wave1" src="/brag-output/work/LoginWave1.svg" />
+    <img class="wave wave2" src="/brag-output/work/LoginWave2.svg" />
+    <div class="headline"><span id="h1">Declaración Patrimonial</span><span id="h2">Grupo Mutual</span></div>
+    <div class="kicker">12 pasos</div>
+    <div id="stepper"></div>
+  </div>
+
+  <div class="panel" id="outro">
+    <img class="wave wave1" src="/brag-output/work/LoginWave1.svg" />
+    <img class="wave wave2" src="/brag-output/work/LoginWave2.svg" />
+    <img class="logo" src="/brag-output/work/LogoGrupoMutual.svg" />
+    <div class="title">DecPat Cloud</div>
+    <div class="sub">Declaración Patrimonial</div>
+    <div class="rule"></div>
+    <div class="credits">
+      <div class="course">EIF408 · Proyectos y su Aplicación en la Organización</div>
+      <div>Universidad Nacional de Costa Rica · 2026</div>
+      <div class="author">Ian Villegas Jiménez</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------- tiempo
+const B = 60 / 110, BAR = 4 * B, BARS = 27, DURATION = BARS * BAR;
+const bar = n => n * BAR;
+const PORTRAIT = new URLSearchParams(location.search).get('format') === 'portrait';
+if (PORTRAIT) document.documentElement.classList.add('portrait');
+// Tarjeta (px del video) y viewport de la app dentro de ella.
+const CW = PORTRAIT ? 1000 : 1600, CH = PORTRAIT ? 1240 : 900;
+const VW = PORTRAIT ? 1040 : 1440, VH = PORTRAIT ? 1290 : 810;
+const S0 = CW / VW;
+// Las camaras y puntos de partida del cursor estan escritos para 1440x810; se escalan al viewport.
+const mapX = x => (x * VW) / 1440, mapY = y => (y * VH) / 810;
+const STEP_W = PORTRAIT ? 900 : 1260;
+
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const prog = (t, t0, t1) => clamp((t - t0) / (t1 - t0));
+const easeOut = k => 1 - Math.pow(1 - k, 3);
+const easeInOut = k => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const easeBack = k => { const c = 1.5; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
+const sine = k => -(Math.cos(Math.PI * k) - 1) / 2;
+const snapHalf = x => Math.ceil(x / (B / 2) - 1e-6) * (B / 2);
+
+// Eventos de audio que la banda sonora lee de timing.json.
+const EV = { ticks: [], whoosh: [], clicks: [], pops: [], keys: [], blips: [], ding: null };
+
+// ---------------------------------------------------------------- snapshots en iframes
+const slots = { A: document.getElementById('slotA'), B: document.getElementById('slotB') };
+const docs = {};
+const NO_MOTION = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}';
+
+function load(slot, name) {
+  const el = slots[slot];
+  if (el.dataset.name === name) return Promise.resolve(el.contentDocument);
+  return new Promise(resolve => {
+    el.onload = async () => {
+      const doc = el.contentDocument;
+      const st = doc.createElement('style');
+      st.textContent = NO_MOTION;
+      doc.head.appendChild(st);
+      await doc.fonts.ready;
+      await Promise.all([...doc.images].map(i => i.decode().catch(() => {})));
+      prepare(doc);
+      el.dataset.name = name;
+      resolve(doc);
+    };
+    el.src = `/brag-output/work/snap/${name}.html`;
+  });
+}
+
+const $1 = (doc, s) => doc.querySelector(s);
+const $$ = (doc, s) => [...doc.querySelectorAll(s)];
+const byText = (doc, sel, text, i = 0) => $$(doc, sel).filter(e => e.textContent.trim() === text)[i];
+const rect = el => el.getBoundingClientRect();
+const center = el => { const r = rect(el); return [r.left + r.width / 2, r.top + r.height / 2]; };
+const dialogOf = doc => $1(doc, '[role="alertdialog"]');
+
+function prepare(doc) {
+  $$(doc, 'input, textarea').forEach(el => { el.dataset.full = el.tagName === 'TEXTAREA' ? el.textContent : el.getAttribute('value') ?? ''; });
+  const dlg = dialogOf(doc);
+  if (dlg) dlg.dataset.base = getComputedStyle(dlg).transform === 'none' ? '' : getComputedStyle(dlg).transform;
+  $$(doc, 'span, p, div, td').forEach(el => {
+    if (el.children.length === 0 && /^[₡$]\s?[\d,]+\.\d\d$/.test(el.textContent.trim())) el.dataset.count = el.textContent.trim();
+  });
+}
+
+function fieldOf(doc, labelStart) {
+  const root = dialogOf(doc) ?? doc;
+  const label = $$(root, 'label').find(l => l.textContent.trim().startsWith(labelStart));
+  if (!label) return null;
+  return (label.htmlFor && doc.getElementById(label.htmlFor)) || label.parentElement.querySelector('input, textarea, button');
+}
+
+// ---------------------------------------------------------------- primitivas de animacion
+function rise(el, p, dy = 26, dx = 0) {
+  if (!el) return;
+  el.style.opacity = p;
+  el.style.transform = p >= 1 ? '' : `translate(${(1 - p) * dx}px, ${(1 - p) * dy}px)`;
+}
+function stagger(els, t, t0, gap = 0.06, dur = 0.45, dy = 26, dx = 0) {
+  els.forEach((el, i) => rise(el, easeOut(prog(t, t0 + i * gap, t0 + i * gap + dur)), dy, dx));
+}
+function ring(el, on) {
+  if (!el) return;
+  el.style.boxShadow = on ? '0 0 0 3px rgba(0,153,138,.30)' : '';
+  el.style.borderColor = on ? '#00998a' : '';
+}
+function typeInto(el, t, t0, dur) {
+  if (!el) return;
+  if (el.tagName === 'BUTTON') {
+    const v = el.querySelector('span');
+    if (v) v.style.opacity = easeOut(prog(t, t0, t0 + 0.25));
+    ring(el, t >= t0 - 0.05 && t < t0 + dur + 0.1);
+    return;
+  }
+  const full = el.dataset.full ?? '';
+  const n = Math.round(prog(t, t0, t0 + dur) * full.length);
+  el.value = full.slice(0, n);
+  ring(el, t >= t0 - 0.05 && t < t0 + dur + 0.12);
+}
+function typeLiteral(el, text, t, t0, dur) {
+  if (!el) return;
+  el.value = text.slice(0, Math.round(prog(t, t0, t0 + dur) * text.length));
+  ring(el, t >= t0 - 0.05 && t < t0 + dur + 0.12);
+}
+function modal(doc, t, tOpen, tClose) {
+  const ov = $1(doc, '[class*="alertDialogOverlay"]');
+  const dlg = dialogOf(doc);
+  const pin = easeOut(prog(t, tOpen, tOpen + 0.28));
+  const pout = tClose ? easeInOut(prog(t, tClose, tClose + 0.25)) : 0;
+  if (ov) ov.style.opacity = pin * (1 - pout);
+  if (dlg) {
+    const s = lerp(0.9, 1, easeBack(prog(t, tOpen + 0.04, tOpen + 0.5))) * (1 - 0.06 * pout);
+    dlg.style.opacity = easeOut(prog(t, tOpen + 0.04, tOpen + 0.25)) * (1 - pout);
+    dlg.style.transform = `${dlg.dataset.base} scale(${s})`;
+  }
+}
+function markerSlide(doc, t, t0, fromStep) {
+  const markers = $$(doc, '[class*="stepper__marker"]');
+  const cur = $1(doc, '[class*="stepper__marker--current"]');
+  if (!cur || !markers[fromStep - 1]) return;
+  // Medir sin el desplazamiento del frame anterior; si no, dx se realimenta y el punto rebota.
+  cur.style.transform = '';
+  const dx = rect(markers[fromStep - 1]).left - rect(cur).left;
+  const k = easeInOut(prog(t, t0, t0 + 0.55));
+  cur.style.transform = `translateX(${dx * (1 - k)}px)`;
+}
+function pageEntry(doc, t, t0) {
+  const title = $1(doc, '[class*="compactTitle"]');
+  rise(title, easeOut(prog(t, t0 + 0.05, t0 + 0.45)), 0, -30);
+  stagger($$(doc, '[class*="wizard__card"], [class*="incomeExpenses__card"]'), t, t0 + 0.12, 0.1, 0.5, 40);
+}
+function newRow(doc, t, t0) {
+  const rows = $$(doc, 'tbody tr').filter(r => !r.querySelector('[class*="records__empty"]'));
+  const row = rows[rows.length - 1];
+  if (!row) return;
+  const p = easeOut(prog(t, t0, t0 + 0.45));
+  rise(row, p, 18);
+  const flash = 1 - prog(t, t0 + 0.2, t0 + 1.4);
+  row.style.background = flash > 0 ? `rgba(0,153,138,${0.14 * flash})` : '';
+}
+function toast(doc, t, t0) {
+  const el = $1(doc, '[class*="NotificationProvider_toast__"]');
+  if (!el) return;
+  const p = easeOut(prog(t, t0, t0 + 0.45));
+  el.style.opacity = p;
+  el.style.transform = `translateX(${(1 - p) * 120}%)`;
+}
+// Un aviso de un guardado anterior puede haber quedado en la captura; se oculta.
+function hideToast(doc) {
+  const el = doc && $1(doc, '[class*="NotificationProvider_toast__"]');
+  if (el) el.style.opacity = 0;
+}
+function countUp(doc, t, t0) {
+  $$(doc, '[data-count]').forEach(el => {
+    const full = el.dataset.count;
+    const target = Number(full.replace(/[^\d.]/g, ''));
+    const v = target * easeOut(prog(t, t0, t0 + 0.8));
+    const prefix = full.match(/^[₡$]\s?/)[0];
+    el.textContent = prefix + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  });
+}
+function press(el, t, tc) {
+  if (!el) return;
+  el.style.transform = t >= tc && t < tc + 0.14 ? 'scale(0.96)' : '';
+}
+
+// ---------------------------------------------------------------- cursor y camara
+const CURSOR = [];   // { t0, t1, from, to(doc)->[x,y], click, hide }
+function cursorAt(t, doc) {
+  const cursor = document.getElementById('cursor'), ripple = document.getElementById('ripple');
+  cursor.style.display = 'none';
+  ripple.style.opacity = 0;
+  for (const c of CURSOR) {
+    if (t < c.t0 - 0.15 || t >= c.hide) continue;
+    const to = c.target(doc);
+    if (!to) continue;
+    const m = easeInOut(prog(t, c.t0, c.t1));
+    const x = lerp(mapX(c.from[0]), to[0], m), y = lerp(mapY(c.from[1]), to[1], m);
+    const pr = t >= c.click && t < c.click + 0.12 ? 0.85 : 1;
+    cursor.style.display = 'block';
+    cursor.style.opacity = prog(t, c.t0 - 0.15, c.t0);
+    cursor.style.transform = `translate(${x - 6}px, ${y - 3}px) scale(${pr})`;
+    if (t >= c.click) {
+      const r = prog(t, c.click, c.click + 0.45);
+      ripple.style.left = to[0] + 'px';
+      ripple.style.top = to[1] + 'px';
+      ripple.style.opacity = (1 - r) * 0.9;
+      ripple.style.transform = `scale(${0.3 + easeOut(r) * 0.9})`;
+    }
+  }
+}
+function addCursor(t0, t1, click, hide, from, target) {
+  CURSOR.push({ t0, t1, click, hide, from, target });
+  EV.clicks.push(click);
+}
+const targetText = (sel, text, i = 0) => doc => { const el = byText(doc, sel, text, i); return el ? center(el) : null; };
+
+function camera(keys, t) {
+  // keys: [[t, z, fx, fy], ...] interpoladas con sine
+  let k0 = keys[0], k1 = keys[keys.length - 1];
+  for (let i = 0; i < keys.length - 1; i++) if (t >= keys[i][0] && t <= keys[i + 1][0]) { k0 = keys[i]; k1 = keys[i + 1]; break; }
+  if (t < keys[0][0]) k1 = k0;
+  const k = k1[0] > k0[0] ? sine(prog(t, k0[0], k1[0])) : 0;
+  const z = lerp(k0[1], k1[1], k), fx = lerp(mapX(k0[2]), mapX(k1[2]), k), fy = lerp(mapY(k0[3]), mapY(k1[3]), k);
+  const S = S0 * z;
+  const tx = clamp(fx * S0 - fx * S, CW - VW * S, 0);
+  const ty = clamp(fy * S0 - fy * S, CH - VH * S, 0);
+  document.getElementById('layer').style.transform = `translate(${tx}px, ${ty}px) scale(${S})`;
+}
+
+// ---------------------------------------------------------------- escenas
+const SCENES = [];
+const CAPTIONS = [];
+const scene = (t0, t1, def) => SCENES.push({ t0, t1, ...def });
+
+// Login
+{
+  const t0 = bar(2), t1 = bar(4);
+  const tUser = t0 + 0.9, tPass = t0 + 1.85, tClick = t0 + 5.5 * B;
+  for (let i = 0; i < 12; i += 2) EV.keys.push(tUser + (i / 12) * 0.8);
+  for (let i = 0; i < 7; i += 2) EV.keys.push(tPass + (i / 7) * 0.5);
+  addCursor(t0 + 2.35, t0 + 2.9, tClick, t1, [1250, 760], targetText('button', 'Ingresar'));
+  scene(t0, t1, {
+    A: () => 'login',
+    cam: [[t0, 1.0, 1100, 405], [t1, 1.05, 1100, 405]],
+    draw(t, a) {
+      stagger([...$$(a, '[class*="login__brand"] > *')], t, t0 + 0.1, 0.12, 0.6, 30);
+      rise($1(a, '[class*="login__panel"]'), easeOut(prog(t, t0 + 0.2, t0 + 0.8)), 0, 60);
+      $$(a, '[class*="login__wave"]').forEach((w, i) => { w.style.transform = `translate(${Math.sin(t * 0.7 + i) * 10}px, ${Math.cos(t * 0.5 + i) * 8}px)`; });
+      typeLiteral(fieldOf(a, 'Usuario'), 'ian.villegas', t, tUser, 0.8);
+      typeLiteral($1(a, 'input[type="password"]'), 'xxxxxxx', t, tPass, 0.5);
+      const btn = byText(a, 'button', 'Ingresar');
+      if (btn) btn.disabled = t < tPass + 0.5;
+      press(btn, t, tClick);
+    },
+  });
+}
+// Inicio
+{
+  const t0 = bar(4), t1 = bar(5), tClick = t0 + 2.75 * B;
+  addCursor(t0 + 0.75, t0 + 1.35, tClick, t1, [900, 600], targetText('[class*="sideBar__label"]', 'Mi declaración'));
+  scene(t0, t1, {
+    A: () => 'home',
+    cam: [[t0, 1.0, 720, 405], [t1, 1.03, 720, 405]],
+    draw(t, a) {
+      stagger($$(a, '[class*="sideBar__navigation"] li'), t, t0 + 0.05, 0.06, 0.4, 0, -24);
+      const home = $1(a, '[class*="Home_home__"]');
+      if (home) stagger([...home.children], t, t0 + 0.12, 0.1, 0.5, 30);
+    },
+  });
+}
+// Modal de bienvenida
+{
+  const t0 = bar(5), t1 = bar(6), tClick = t0 + 3 * B, tClose = t0 + 3.25 * B;
+  EV.pops.push(t0);
+  addCursor(t0 + 0.95, t0 + 1.5, tClick, tClose + 0.2, [1100, 700], targetText('button', 'Entendido'));
+  scene(t0, t1, {
+    A: () => 'intro',
+    cam: [[t0, 1.0, 720, 405], [tClose, 1.06, 720, 420], [t1, 1.0, 720, 405]],
+    draw(t, a) {
+      modal(a, t, t0, tClose);
+      const d = dialogOf(a);
+      if (d) stagger([...d.querySelectorAll(':scope > *, :scope > div > *')].slice(0, 6), t, t0 + 0.15, 0.07, 0.4, 16);
+      press(byText(a, 'button', 'Entendido'), t, tClick);
+    },
+  });
+}
+// Paso 1
+const STEP1 = [
+  'Nombre y apellidos', 'Estado civil', 'Cédula', 'Último grado', 'Edad en años', 'Carrera',
+  'Teléfono habitación', 'Agencia', 'Teléfono celular', 'Oficina para', 'Dirección actual',
+];
+{
+  const t0 = bar(6), t1 = bar(9), slot = 0.48;
+  STEP1.forEach((_, i) => { const s = t0 + 0.3 + i * slot; for (let k = 0; k < 4; k++) EV.keys.push(s + k * 0.09); });
+  CAPTIONS.push({ t0: t0 + 0.3, t1: t1 - 0.15, text: 'Datos generales, completos antes de avanzar' });
+  scene(t0, t1, {
+    A: () => 'step1',
+    cam: [[t0, 1.0, 860, 420], [t1, 1.04, 860, 470]],
+    draw(t, a) {
+      STEP1.forEach((label, i) => typeInto(fieldOf(a, label), t, t0 + 0.3 + i * slot, 0.36));
+    },
+  });
+}
+// Escenas de registro (pasos 3, 4, 5 y 8)
+function recordScene({ startBar, step, from, fields, caption, addIndex = 0, count = false, zoom: zoomBase = 1.08 }) {
+  const zoom = zoomBase * (PORTRAIT ? 1.06 : 1);
+  const t0 = bar(startBar), t1 = bar(startBar + 3);
+  const tAddClick = t0 + 2.25 * B, tOpen = t0 + 2.5 * B;
+  const slot = Math.min(0.42, 3.0 / fields.length);
+  const tFields = tOpen + 0.45;
+  const tSave = snapHalf(tFields + fields.length * slot + 0.4);
+  const tClose = tSave + B / 4, tAfter = tSave + B / 2;
+  EV.whoosh.push(t0);
+  EV.pops.push(tOpen);
+  EV.blips.push(tAfter + 0.1);
+  fields.forEach((_, i) => { const s = tFields + i * slot; for (let k = 0; k < 3; k++) EV.keys.push(s + k * 0.09); });
+  CAPTIONS.push({ t0: t0 + 0.3, t1: t1 - 0.15, text: caption });
+  addCursor(t0 + 0.55, t0 + 1.1, tAddClick, tOpen + 0.3, [1000, 600], targetText('button', 'Agregar nuevo', addIndex));
+  addCursor(tSave - 0.55, tSave - 0.1, tSave, tAfter, [1100, 520], targetText('[role="alertdialog"] button', 'Agregar'));
+  const dlgCenter = { x: 720, y: 405 };
+  scene(t0, t1, {
+    A: t => (t < tAfter ? `step${step}-before` : `step${step}-after`),
+    B: t => (t >= tOpen && t < tAfter ? `step${step}-modal` : null),
+    cam: [[t0, 1.0, 860, 380], [tOpen, 1.0, 860, 380], [tOpen + 0.5, zoom, dlgCenter.x, dlgCenter.y], [tSave, zoom + 0.02, dlgCenter.x, dlgCenter.y],
+      [tAfter + 0.3, 1.0, 860, 380], [t1, 1.03, 860, 380]],
+    draw(t, a, b) {
+      if (t < tAfter) {
+        markerSlide(a, t, t0, from);
+        pageEntry(a, t, t0);
+        press(byText(a, 'button', 'Agregar nuevo', addIndex), t, tAddClick);
+      } else {
+        newRow(a, t, tAfter);
+        toast(a, t, tAfter + 0.1);
+        if (count) countUp(a, t, tAfter + 0.15);
+      }
+      if (b) {
+        modal(b, t, tOpen, tClose);
+        fields.forEach((label, i) => typeInto(fieldOf(b, label), t, tFields + i * slot, slot * 0.78));
+        press(byText(b, '[role="alertdialog"] button', 'Agregar'), t, tSave);
+      }
+    },
+  });
+}
+recordScene({ startBar: 9, step: 3, from: 1, caption: 'Ingresos adicionales, con su justificación', zoom: 0.98,
+  fields: ['Tipo de ingreso', 'Monto', 'Justificación'] });
+recordScene({ startBar: 12, step: 4, from: 3, caption: 'Bienes inmuebles con su valor de mercado',
+  fields: ['Número de finca', 'Ubicación', 'Valor de mercado', 'Destino', 'Forma de adquisición'] });
+recordScene({ startBar: 15, step: 5, from: 4, caption: 'Vehículos con placa, año y valor',
+  fields: ['Tipo de bien mueble', 'Marca del bien mueble', 'Descripción', 'Número de placa', 'Año', 'Valor de mercado', 'Observación'] });
+recordScene({ startBar: 18, step: 8, from: 5, caption: 'Créditos y cuotas, totalizados al instante', count: true,
+  fields: ['Entidad financiera', 'Tipo de préstamo', 'Moneda', 'Número de préstamo', 'Monto inicial', 'Saldo actual', 'Monto cuota', 'Fecha de conclusión'] });
+// Cierre: juramento, confirmacion y guardado
+{
+  const t0 = bar(21), t1 = bar(24);
+  const tClick1 = t0 + 2.75 * B, tOpen = t0 + 3 * B, tClick2 = t0 + 4.75 * B, tClose = t0 + 5 * B;
+  const tSending = t0 + 5.5 * B, tSaved = t0 + 6.5 * B;
+  EV.whoosh.push(t0);
+  EV.pops.push(tOpen);
+  EV.ding = tSaved;
+  CAPTIONS.push({ t0: t0 + 0.3, t1: t1 - 0.15, text: 'Se firma bajo juramento' });
+  addCursor(t0 + 0.9, t0 + 1.4, tClick1, tOpen + 0.2, [1150, 700], targetText('button', 'Guardar'));
+  addCursor(tOpen + 0.35, tClick2 - 0.1, tClick2, tSending, [1000, 560], targetText('[role="alertdialog"] button', 'Guardar'));
+  scene(t0, t1, {
+    A: t => (t < tSaved ? 'oath' : 'saved'),
+    B: t => (t >= tOpen && t < tSending ? 'confirm' : null),
+    cam: [[t0, 1.0, 860, 380], [tOpen, 1.0, 860, 380], [tOpen + 0.5, 1.08, 720, 405], [tClose, 1.08, 720, 405], [tSending, 1.0, 860, 380],
+      [tSaved, 1.0, 900, 200], [t1, 1.03, 900, 200]],
+    draw(t, a, b) {
+      if (t < tSaved) {
+        markerSlide(a, t, t0, 8);
+        rise($1(a, '[class*="compactTitle"]'), easeOut(prog(t, t0 + 0.05, t0 + 0.45)), 0, -30);
+        stagger($$(a, '[class*="completion__oath"] p'), t, t0 + 0.15, 0.18, 0.55, 24);
+        rise($1(a, '[class*="completion__actions"]'), easeOut(prog(t, t0 + 0.7, t0 + 1.1)), 20);
+        const btn = $1(a, '[class*="completion__actions"] button');
+        press(btn, t, tClick1);
+        // Mientras guarda, el boton muestra el spinner (como Button con spinner en la app).
+        if (btn) {
+          let spin = btn.querySelector('.brag-spin');
+          if (!spin) {
+            spin = a.createElement('span');
+            spin.className = 'brag-spin';
+            spin.style.cssText = 'position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:3px solid rgba(31,31,31,.25);border-top-color:#1f1f1f;';
+            btn.style.position = 'relative';
+            btn.appendChild(spin);
+          }
+          const sending = t >= tSending;
+          spin.style.display = sending ? 'block' : 'none';
+          spin.style.transform = `rotate(${(t - tSending) * 720}deg)`;
+          [...btn.childNodes].forEach(n => { if (n !== spin && n.style) n.style.opacity = sending ? 0 : 1; });
+          btn.style.color = sending ? 'transparent' : '';
+        }
+      } else {
+        toast(a, t, tSaved);
+        const btn = $1(a, '[class*="completion__actions"] button');
+        if (btn) btn.style.transform = `scale(${1 + 0.04 * Math.sin(Math.PI * prog(t, tSaved, tSaved + 0.3))})`;
+      }
+      if (b) {
+        modal(b, t, tOpen, tClose);
+        press(byText(b, '[role="alertdialog"] button', 'Guardar'), t, tClick2);
+      }
+    },
+  });
+}
+EV.whoosh.push(bar(2), bar(4), bar(5), bar(6), bar(24));
+
+// ---------------------------------------------------------------- hook / outro / fondo
+const stepper = document.getElementById('stepper');
+const DOT_X = i => (i * STEP_W) / 11;
+for (let i = 0; i < 11; i++) {
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.style.left = DOT_X(i) + 24 + 'px';
+  line.style.width = STEP_W / 11 - 48 + 'px';
+  line.innerHTML = '<div class="fill"></div>';
+  stepper.appendChild(line);
+}
+for (let i = 0; i < 12; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.style.left = DOT_X(i) + 'px';
+  dot.innerHTML = '<b></b>';
+  stepper.appendChild(dot);
+  const num = document.createElement('div');
+  num.className = 'num';
+  num.style.left = DOT_X(i) + 'px';
+  num.textContent = i + 1;
+  stepper.appendChild(num);
+}
+const DOT_T = i => 0.27 + i * (B / 2);
+for (let i = 0; i < 12; i++) EV.ticks.push(DOT_T(i));
+
+const $ = id => document.getElementById(id);
+function drawPanels(t) {
+  $('blobR').style.transform = `translate(${Math.sin(t * 0.35) * 60}px, ${Math.cos(t * 0.3) * 40}px)`;
+  $('blobG').style.transform = `translate(${Math.cos(t * 0.3) * 60}px, ${Math.sin(t * 0.25) * 50}px)`;
+
+  const hook = $('hook');
+  const out = easeInOut(prog(t, bar(2) - 0.16, bar(2) + 0.3));
+  hook.style.transform = `translateY(${-out * 100}%)`;
+  hook.style.display = out >= 1 ? 'none' : 'block';
+  hook.querySelector('.wave1').style.transform = `translateY(${Math.sin(t * 0.8) * 14}px)`;
+  hook.querySelector('.wave2').style.transform = `translateX(${-t * 10}px)`;
+  const k = easeOut(prog(t, 0.2, 0.55));
+  hook.querySelector('.kicker').style.opacity = k;
+  hook.querySelector('.kicker').style.transform = `translateY(${(1 - k) * 20}px)`;
+  const h1 = easeOut(prog(t, 0.05, 0.45)), h2 = easeOut(prog(t, 2 * B, 2 * B + 0.4));
+  $('h1').style.opacity = h1; $('h1').style.transform = `translateY(${(1 - h1) * 50}px)`;
+  $('h2').style.opacity = h2; $('h2').style.transform = `translateY(${(1 - h2) * 50}px)`;
+  [...stepper.querySelectorAll('.dot')].forEach((d, i) => {
+    const p = easeOut(prog(t, DOT_T(i), DOT_T(i) + 0.18));
+    d.querySelector('b').style.transform = `scale(${p})`;
+    d.style.borderColor = `rgba(255,255,255,${0.55 + 0.45 * p})`;
+    d.style.boxShadow = p > 0 ? `0 0 ${30 * p}px rgba(255,255,255,${0.5 * p})` : 'none';
+  });
+  [...stepper.querySelectorAll('.line .fill')].forEach((f, i) => { f.style.transform = `scaleX(${prog(t, DOT_T(i), DOT_T(i + 1))})`; });
+
+  const card = $('card');
+  const cardIn = easeOut(prog(t, bar(2) - 0.1, bar(2) + 0.45));
+  const cardOut = easeInOut(prog(t, bar(24) - 0.2, bar(24) + 0.2));
+  card.style.opacity = t < bar(2) - 0.16 ? 0 : 1 - cardOut;
+  card.style.transform = `translateY(${(1 - cardIn) * 140}px) scale(${1 - cardOut * 0.06})`;
+
+  const outro = $('outro'), T = bar(24);
+  const oin = easeInOut(prog(t, T - 0.25, T + 0.2));
+  outro.style.display = oin <= 0 ? 'none' : 'block';
+  outro.style.transform = `translateY(${(1 - oin) * 100}%)`;
+  outro.querySelector('.wave1').style.transform = `translateY(${Math.sin(t * 0.8) * 14}px)`;
+  outro.querySelector('.wave2').style.transform = `translateX(${-(t - T) * 10}px)`;
+  const stag = (el, d) => { const p = easeOut(prog(t, T + d, T + d + 0.5)); el.style.opacity = p; el.style.transform = `translateY(${(1 - p) * 40}px)`; };
+  stag(outro.querySelector('.logo'), 0.15);
+  stag(outro.querySelector('.title'), 0.35);
+  stag(outro.querySelector('.sub'), 0.6);
+  const r = easeInOut(prog(t, T + 2 * B, T + 2 * B + 0.5));
+  outro.querySelector('.rule').style.transform = `scaleX(${r})`;
+  [...outro.querySelectorAll('.credits div')].forEach((el, i) => stag(el, 2 * B + 0.15 + i * 0.25));
+
+  const caption = $('caption');
+  caption.style.opacity = 0;
+  for (const c of CAPTIONS) {
+    if (t < c.t0 || t > c.t1) continue;
+    const a = easeOut(prog(t, c.t0, c.t0 + 0.3)), d = 1 - prog(t, c.t1 - 0.18, c.t1);
+    caption.querySelector('span').textContent = c.text;
+    caption.style.opacity = a * d;
+    caption.style.transform = `translate(-50%, ${-50 + (1 - a) * 40}%)`;
+  }
+}
+
+// ---------------------------------------------------------------- render
+async function renderAt(t) {
+  drawPanels(t);
+  const sc = SCENES.find(s => t >= s.t0 && t < s.t1) ?? (t >= bar(24) ? SCENES[SCENES.length - 1] : SCENES[0]);
+  const nameA = sc.A(t), nameB = sc.B ? sc.B(t) : null;
+  const a = await load('A', nameA);
+  const b = nameB ? await load('B', nameB) : null;
+  slots.B.style.visibility = b ? 'visible' : 'hidden';
+  if (!/after|saved/.test(nameA)) hideToast(a);
+  hideToast(b);
+  sc.draw(t, a, b);
+  camera(sc.cam, t);
+  // Corte de pagina: leve destello al entrar a cada escena con tarjeta.
+  const since = t - sc.t0;
+  $('flash').style.opacity = since < 0.18 && sc.t0 > bar(2) ? 0.3 * (1 - easeOut(since / 0.18)) : 0;
+  cursorAt(t, b ?? a);
+}
+
+window.renderAt = renderAt;
+window.DURATION = DURATION;
+window.TIMING = { B, BAR, BARS, EV };
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))])
+  .then(() => document.fonts.load('700 100px Poppins'))
+  .then(() => renderAt(0))
+  .then(() => true);
+</script>
+</body>
+</html>

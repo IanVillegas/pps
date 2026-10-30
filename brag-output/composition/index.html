@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>DecPat Cloud — brag</title>
+<style>
+  @font-face { font-family: Poppins; font-weight: 400; src: url('/src/sad-aml-shared/assets/fonts/Poppins/Poppins-Regular.ttf'); }
+  @font-face { font-family: Poppins; font-weight: 500; src: url('/src/sad-aml-shared/assets/fonts/Poppins/Poppins-Medium.ttf'); }
+  @font-face { font-family: Poppins; font-weight: 600; src: url('/src/sad-aml-shared/assets/fonts/Poppins/Poppins-SemiBold.ttf'); }
+  @font-face { font-family: Poppins; font-weight: 700; src: url('/src/sad-aml-shared/assets/fonts/Poppins/Poppins-Bold.ttf'); }
+  @font-face { font-family: 'Work Sans'; font-weight: 400; src: url('/src/sad-aml-shared/assets/fonts/WorkSans/WorkSans-Regular.ttf'); }
+  @font-face { font-family: 'Work Sans'; font-weight: 500; src: url('/src/sad-aml-shared/assets/fonts/WorkSans/WorkSans-Medium.ttf'); }
+
+  :root {
+    --red: #e62c3a;
+    --red-dark: #b22c25;
+    --green: #00998a;
+    --green-light: #45b9b2;
+    --yellow: #fdd058;
+    --ink: #1f1f1f;
+    --gray-100: #f3f5f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--gray-100); }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--gray-100); font-family: Poppins, sans-serif; }
+
+  .blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: .16; }
+  #blobR { width: 900px; height: 900px; background: var(--red); left: -250px; top: -300px; }
+  #blobG { width: 1000px; height: 1000px; background: var(--green); right: -300px; bottom: -420px; }
+
+  #card { position: absolute; left: 160px; top: 36px; width: 1600px; height: 900px; border-radius: 26px;
+    overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(31,31,31,.18), 0 8px 24px rgba(31,31,31,.08); }
+  #layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  #layer img.shot { position: absolute; inset: 0; width: 1920px; height: 1080px; display: none; }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+
+  #cursor { position: absolute; width: 46px; height: 46px; left: 0; top: 0; display: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,.3)); }
+  #ripple { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+    border: 6px solid var(--green); opacity: 0; }
+
+  #caption { position: absolute; left: 50%; top: 1003px; transform: translate(-50%, -50%);
+    display: flex; align-items: center; gap: 18px; padding: 18px 40px 18px 30px; border-radius: 999px;
+    background: var(--ink); color: #fff; font-weight: 600; font-size: 38px; letter-spacing: .2px;
+    white-space: nowrap; opacity: 0; box-shadow: 0 16px 40px rgba(31,31,31,.25); }
+  #caption i { width: 16px; height: 16px; border-radius: 50%; background: var(--green-light); flex: none; }
+
+  .panel { position: absolute; inset: 0; background: var(--red); overflow: hidden; }
+  .panel .wave { position: absolute; }
+  .wave1 { left: -5.78%; top: 19.08%; width: 41.09%; height: 101.33%; }
+  .wave2 { left: 28.12%; top: -4.31%; width: 71.9%; height: 124.72%; }
+
+  #hook .kicker { position: absolute; left: 0; right: 0; top: 300px; text-align: center; color: rgba(255,255,255,.9);
+    font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 40px; letter-spacing: 1px; }
+  #hook .headline { position: absolute; left: 0; right: 0; top: 368px; text-align: center; color: #fff;
+    font-weight: 700; font-size: 150px; line-height: 1.1; letter-spacing: -2px; white-space: nowrap; }
+  #hook .headline span { display: inline-block; }
+  #stepper { position: absolute; left: 330px; top: 690px; width: 1260px; height: 40px; }
+  #stepper .line { position: absolute; top: 18px; height: 4px; background: rgba(255,255,255,.35); border-radius: 2px; }
+  #stepper .line .fill { position: absolute; inset: 0; background: #fff; transform-origin: 0 50%; transform: scaleX(0); }
+  #stepper .dot { position: absolute; top: 0; width: 40px; height: 40px; margin-left: -20px; border-radius: 50%;
+    border: 4px solid rgba(255,255,255,.55); background: transparent; }
+  #stepper .dot b { position: absolute; inset: 5px; border-radius: 50%; background: #fff; transform: scale(0); }
+  #stepper .num { position: absolute; top: 54px; width: 60px; margin-left: -30px; text-align: center; color: rgba(255,255,255,.75);
+    font-size: 26px; font-weight: 500; }
+
+  #outro .logo { position: absolute; left: 50%; top: 270px; width: 600px; height: 156px; margin-left: -300px; }
+  #outro .title { position: absolute; left: 0; right: 0; top: 520px; text-align: center; color: #fff; font-weight: 700;
+    font-size: 132px; letter-spacing: -2px; line-height: 1.1; }
+  #outro .sub { position: absolute; left: 0; right: 0; top: 700px; text-align: center; color: rgba(255,255,255,.9);
+    font-family: 'Work Sans', sans-serif; font-weight: 500; font-size: 44px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob" id="blobR"></div>
+  <div class="blob" id="blobG"></div>
+
+  <div id="card">
+    <div id="layer">
+      <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2.5 L4 19.5 L8.6 15.4 L11.6 21.6 L14.6 20.2 L11.7 14.2 L18 14.2 Z" fill="#fff" stroke="#1f1f1f" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div id="ripple"></div>
+    </div>
+    <div id="flash"></div>
+  </div>
+  <div id="caption"><i></i><span></span></div>
+
+  <div class="panel" id="hook">
+    <img class="wave wave1" src="/brag-output/work/LoginWave1.svg" />
+    <img class="wave wave2" src="/brag-output/work/LoginWave2.svg" />
+    <div class="kicker">Declaración Patrimonial · Grupo Mutual</div>
+    <div class="headline"><span id="h1">12 pasos.</span> <span id="h2">Una firma.</span></div>
+    <div id="stepper"></div>
+  </div>
+
+  <div class="panel" id="outro">
+    <img class="wave wave1" src="/brag-output/work/LoginWave1.svg" />
+    <img class="wave wave2" src="/brag-output/work/LoginWave2.svg" />
+    <img class="logo" src="/brag-output/work/LogoGrupoMutual.svg" />
+    <div class="title">DecPat Cloud</div>
+    <div class="sub">Declaración Patrimonial, de principio a firma.</div>
+  </div>
+</div>
+
+<script>
+const B = 60 / 110;            // un beat a 110 BPM
+const BAR = 4 * B;
+const DURATION = 10 * BAR;     // 21.818 s
+const S0 = 1600 / 1920;        // escala de la captura dentro de la tarjeta
+
+const T = { login: BAR, home: 2 * BAR, step1: 3 * BAR, steps: 4.5 * BAR, oath: 6.5 * BAR, outro: 8.5 * BAR };
+
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const prog = (t, t0, t1) => clamp((t - t0) / (t1 - t0));
+const easeOut = k => 1 - Math.pow(1 - k, 3);
+const easeInOut = k => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const sine = k => -(Math.cos(Math.PI * k) - 1) / 2;
+
+// Secuencia de capturas: momento de entrada, archivo, camara (zoom y foco en px de la captura).
+// bump: corte "de navegacion" con un leve asentamiento; sin bump = mismo plano (tecleo).
+const SHOTS = [
+  { t: T.login,              src: '01-login',          z: [1.04, 1.12], f: [[1060, 540], [1150, 540]], bump: false },
+  { t: T.login + 0.41,       src: '02-login-user-3',   cont: true },
+  { t: T.login + 0.55,       src: '02-login-user-6',   cont: true },
+  { t: T.login + 0.68,       src: '02-login-user-9',   cont: true },
+  { t: T.login + 0.82,       src: '02-login-user-11',  cont: true },
+  { t: T.login + 1.09,       src: '03-login-filled',   cont: true },
+  { t: T.home,               src: '04-home',           z: [1.0, 1.08], f: [[1100, 420], [1100, 380]], bump: true },
+  { t: T.home + 2 * B,       src: '05-intro',          z: [1.22, 1.28], f: [[960, 520], [960, 520]], bump: true },
+  { t: T.step1,              src: '07-step1-errors',   z: [1.28, 1.32], f: [[1800, 175], [1800, 175]], bump: true },
+  { t: T.step1 + 1.5 * B,    src: '08a-step1-name',    cont: true },
+  { t: T.step1 + 2.5 * B,    src: '08b-step1-dropdown', cont: true },
+  { t: T.step1 + 3.5 * B,    src: '08d-step1-filled',  z: [1.0, 1.05], f: [[1100, 560], [1100, 560]], bump: true },
+  { t: T.steps,              src: '10-step3',          z: [1.0, 1.04], f: [[1000, 420], [1000, 420]], bump: true },
+  { t: T.steps + 2 * B,      src: '10-step4',          z: [1.0, 1.04], f: [[1000, 420], [1000, 420]], bump: true },
+  { t: T.steps + 4 * B,      src: '10-step9',          z: [1.0, 1.04], f: [[1000, 420], [1000, 420]], bump: true },
+  { t: T.steps + 6 * B,      src: '10-step10',         z: [1.0, 1.04], f: [[1000, 420], [1000, 420]], bump: true },
+  { t: T.oath,               src: '11-oath',           z: [1.0, 1.1], f: [[1100, 560], [1137, 700]], bump: true },
+  { t: T.oath + 2 * B,       src: '12-confirm',        z: [1.18, 1.2], f: [[960, 560], [1000, 600]], bump: true },
+  { t: T.oath + 4 * B,       src: '13-sending',        z: [1.1, 1.1], f: [[1137, 700], [1137, 700]], bump: false },
+  { t: T.oath + 5 * B,       src: '14-saved',          z: [1.0, 1.05], f: [[1920, 0], [1920, 0]], bump: true },
+];
+// Los "cont" heredan la camara del plano anterior y continuan su recorrido.
+SHOTS.forEach((s, i) => {
+  if (s.cont) {
+    const p = SHOTS.slice(0, i).reverse().find(x => !x.cont);
+    Object.assign(s, { z: p.z, f: p.f, bump: false, anchor: p });
+  }
+});
+const nextPlanStart = i => {
+  for (let j = i + 1; j < SHOTS.length; j++) if (!SHOTS[j].cont) return SHOTS[j].t;
+  return T.outro;
+};
+SHOTS.forEach((s, i) => { s.end = nextPlanStart(SHOTS.indexOf(s.anchor ?? s)); });
+
+const CAPTIONS = [
+  { t0: T.step1 + 0.15, t1: T.steps - 0.12, text: 'Valida lo obligatorio antes de avanzar' },
+  { t0: T.steps + 0.15, t1: T.oath - 0.12, text: '12 pasos, en el orden que prefiera' },
+  { t0: T.oath + 0.15, t1: T.outro - 0.15, text: 'Se firma bajo juramento' },
+];
+
+// Cursor: puntos en px de la captura. click = momento del clic.
+const CURSOR = [
+  { t0: T.login + 1.2, t1: T.login + 1.75, from: [1660, 930], to: [1452, 716], click: T.login + 1.82, hide: T.home },
+  { t0: T.step1 + 1.6 * B, t1: T.step1 + 2.3 * B, from: [1450, 520], to: [1560, 238], click: T.step1 + 2.4 * B, hide: T.step1 + 3.5 * B },
+  { t0: T.oath + 0.35, t1: T.oath + 0.85, from: [1500, 950], to: [1150, 812], click: T.oath + 0.95, hide: T.oath + 2 * B },
+  { t0: T.oath + 2 * B + 0.15, t1: T.oath + 2 * B + 0.7, from: [1250, 860], to: [1136, 722], click: T.oath + 2 * B + 0.85, hide: T.oath + 4 * B },
+];
+
+const layer = document.getElementById('layer');
+const imgs = {};
+for (const s of SHOTS) {
+  if (imgs[s.src]) continue;
+  const img = document.createElement('img');
+  img.className = 'shot';
+  img.src = `/brag-output/work/shots/${s.src}.png`;
+  layer.insertBefore(img, layer.firstChild);
+  imgs[s.src] = img;
+}
+
+// Stepper del hook: 12 puntos y conectores.
+const stepper = document.getElementById('stepper');
+const DOT_X = i => (i * 1260) / 11;
+for (let i = 0; i < 11; i++) {
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.style.left = DOT_X(i) + 24 + 'px';
+  line.style.width = 1260 / 11 - 48 + 'px';
+  line.innerHTML = '<div class="fill"></div>';
+  stepper.appendChild(line);
+}
+for (let i = 0; i < 12; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.style.left = DOT_X(i) + 'px';
+  dot.innerHTML = '<b></b>';
+  stepper.appendChild(dot);
+  const num = document.createElement('div');
+  num.className = 'num';
+  num.style.left = DOT_X(i) + 'px';
+  num.textContent = i + 1;
+  stepper.appendChild(num);
+}
+const SIXTEENTH = B / 4;
+const DOT_T = i => 0.27 + i * SIXTEENTH;   // los ticks de audio usan los mismos tiempos
+
+const $ = id => document.getElementById(id);
+const hook = $('hook'), outro = $('outro'), card = $('card'), caption = $('caption');
+
+function renderAt(t) {
+  // Fondo
+  $('blobR').style.transform = `translate(${Math.sin(t * 0.35) * 60}px, ${Math.cos(t * 0.3) * 40}px)`;
+  $('blobG').style.transform = `translate(${Math.cos(t * 0.3) * 60}px, ${Math.sin(t * 0.25) * 50}px)`;
+
+  // Hook
+  const hookOut = easeInOut(prog(t, T.login - 0.16, T.login + 0.3));
+  hook.style.transform = `translateY(${-hookOut * 100}%)`;
+  hook.style.display = hookOut >= 1 ? 'none' : 'block';
+  hook.querySelector('.wave1').style.transform = `translateY(${Math.sin(t * 0.8) * 14}px)`;
+  hook.querySelector('.wave2').style.transform = `translateX(${-t * 10}px)`;
+  const k = easeOut(prog(t, 0.0, 0.35));
+  hook.querySelector('.kicker').style.opacity = k;
+  hook.querySelector('.kicker').style.transform = `translateY(${(1 - k) * 20}px)`;
+  const h1 = easeOut(prog(t, 0.05, 0.4));
+  $('h1').style.opacity = h1;
+  $('h1').style.transform = `translateY(${(1 - h1) * 50}px)`;
+  const h2 = easeOut(prog(t, 2 * B, 2 * B + 0.35));
+  $('h2').style.opacity = h2;
+  $('h2').style.transform = `translateY(${(1 - h2) * 50}px)`;
+  $('h2').style.color = h2 > 0 ? '#fff' : 'transparent';
+  [...stepper.querySelectorAll('.dot')].forEach((d, i) => {
+    const p = easeOut(prog(t, DOT_T(i), DOT_T(i) + 0.18));
+    d.querySelector('b').style.transform = `scale(${p})`;
+    d.style.borderColor = p > 0 ? `rgba(255,255,255,${0.55 + 0.45 * p})` : 'rgba(255,255,255,.55)';
+    d.style.boxShadow = p > 0 ? `0 0 ${30 * p}px rgba(255,255,255,${0.5 * p})` : 'none';
+  });
+  [...stepper.querySelectorAll('.line .fill')].forEach((f, i) => {
+    f.style.transform = `scaleX(${prog(t, DOT_T(i), DOT_T(i + 1))})`;
+  });
+
+  // Tarjeta
+  const cardIn = easeOut(prog(t, T.login - 0.1, T.login + 0.45));
+  const cardOut = easeInOut(prog(t, T.outro - 0.2, T.outro + 0.2));
+  card.style.opacity = t < T.login - 0.16 ? 0 : 1 - cardOut;
+  card.style.transform = `translateY(${(1 - cardIn) * 140}px) scale(${1 - cardOut * 0.06})`;
+
+  let cur = null;
+  for (const s of SHOTS) if (t >= s.t) cur = s;
+  for (const key in imgs) imgs[key].style.display = 'none';
+  let flash = 0;
+  if (cur) {
+    imgs[cur.src].style.display = 'block';
+    const plan = cur.anchor ?? cur;
+    const k2 = sine(prog(t, plan.t, plan.end));
+    let z = lerp(plan.z[0], plan.z[1], k2);
+    const fx = lerp(plan.f[0][0], plan.f[1][0], k2);
+    const fy = lerp(plan.f[0][1], plan.f[1][1], k2);
+    if (plan.bump) {
+      const b = prog(t, plan.t, plan.t + 0.5);
+      z *= 1 + 0.035 * (1 - easeOut(b));
+      flash = 0.35 * (1 - easeOut(prog(t, plan.t, plan.t + 0.18)));
+    }
+    const S = S0 * z;
+    let tx = fx * S0 - fx * S;
+    let ty = fy * S0 - fy * S;
+    tx = clamp(tx, 1600 - 1920 * S, 0);
+    ty = clamp(ty, 900 - 1080 * S, 0);
+    layer.style.transform = `translate(${tx}px, ${ty}px) scale(${S})`;
+  }
+  $('flash').style.opacity = flash;
+
+  // Cursor y clic
+  const cursor = $('cursor'), ripple = $('ripple');
+  cursor.style.display = 'none';
+  ripple.style.opacity = 0;
+  for (const c of CURSOR) {
+    if (t < c.t0 - 0.15 || t >= c.hide) continue;
+    const m = easeInOut(prog(t, c.t0, c.t1));
+    const x = lerp(c.from[0], c.to[0], m), y = lerp(c.from[1], c.to[1], m);
+    const press = t >= c.click && t < c.click + 0.12 ? 0.85 : 1;
+    cursor.style.display = 'block';
+    cursor.style.opacity = prog(t, c.t0 - 0.15, c.t0);
+    cursor.style.transform = `translate(${x - 8}px, ${y - 4}px) scale(${press})`;
+    const r = prog(t, c.click, c.click + 0.45);
+    if (t >= c.click) {
+      ripple.style.left = c.to[0] + 'px';
+      ripple.style.top = c.to[1] + 'px';
+      ripple.style.opacity = (1 - r) * 0.9;
+      ripple.style.transform = `scale(${0.3 + easeOut(r) * 0.9})`;
+    }
+  }
+
+  // Subtitulos
+  caption.style.opacity = 0;
+  for (const c of CAPTIONS) {
+    if (t < c.t0 || t > c.t1) continue;
+    const a = easeOut(prog(t, c.t0, c.t0 + 0.3));
+    const d = 1 - prog(t, c.t1 - 0.18, c.t1);
+    caption.querySelector('span').textContent = c.text;
+    caption.style.opacity = a * d;
+    caption.style.transform = `translate(-50%, ${-50 + (1 - a) * 40}%)`;
+  }
+
+  // Outro
+  const outIn = easeInOut(prog(t, T.outro - 0.25, T.outro + 0.2));
+  outro.style.display = outIn <= 0 ? 'none' : 'block';
+  outro.style.transform = `translateY(${(1 - outIn) * 100}%)`;
+  outro.querySelector('.wave1').style.transform = `translateY(${Math.sin(t * 0.8) * 14}px)`;
+  outro.querySelector('.wave2').style.transform = `translateX(${-(t - T.outro) * 10}px)`;
+  const stag = (el, d) => {
+    const p = easeOut(prog(t, T.outro + d, T.outro + d + 0.45));
+    el.style.opacity = p;
+    el.style.transform = `translateY(${(1 - p) * 40}px)`;
+  };
+  stag(outro.querySelector('.logo'), 0.15);
+  stag(outro.querySelector('.title'), 0.35);
+  stag(outro.querySelector('.sub'), 0.6);
+}
+
+window.renderAt = renderAt;
+window.DURATION = DURATION;
+window.TIMING = { B, BAR, T, DOT_T: [...Array(12)].map((_, i) => DOT_T(i)), SHOTS: SHOTS.map(s => ({ t: s.t, bump: s.bump, src: s.src })), CURSOR };
+window.ready = Promise.all([
+  document.fonts.ready,
+  ...[...document.images].map(i => i.decode().catch(() => {})),
+]).then(() => document.fonts.load('700 100px Poppins')).then(() => true);
+renderAt(0);
+</script>
+</body>
+</html>
