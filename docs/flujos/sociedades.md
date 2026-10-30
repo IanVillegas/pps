@@ -1,7 +1,7 @@
 # Sociedades
 
-Estado: segundo bloque del paso 10 implementado con servicios simulados; el catálogo de tipos de sociedad es provisional. Revisión: 27 de octubre de 2026.
-Código: `c789b079859bd590e4180cb0ac3ae08fec58b781`. Seguimiento: DEC-016B; documentación: DOC-018.
+Estado: segundo bloque del paso 10 implementado con servicios simulados; el catálogo de tipos de sociedad es provisional. Revisión: 30 de octubre de 2026.
+Código: `b4e1cdf61fc6209baf9cffb0e28829c44ec2d8b6`. Seguimiento: DEC-016B; documentación: DOC-018.
 
 ## Propósito y alcance
 
@@ -13,7 +13,7 @@ Cada alta, edición o retiro se guarda en el borrador al instante, bajo la clave
 
 Las columnas siguen el orden definido por el diseño: Nombre, Tipo de sociedad, Cargo, Plazo, Porcentaje de acciones, Monto de dieta, Tipo de poder, Límite suma y las acciones de editar y eliminar. Los montos se presentan con dos decimales. «Tipo de sociedad» muestra el texto del catálogo, no su valor interno.
 
-Con nueve columnas la tabla no cabe en pantallas de portátil con la presentación estándar de `RecordsTable`. La tabla de sociedades utiliza su variante compacta (`dense`: letra de 12 px, menor espacio entre columnas y texto que puede partirse en varias líneas), con la que las nueve columnas caben completas, sin desplazamiento horizontal, a 1024 px con el menú lateral abierto o cerrado. Con una ventana más angosta o con montos muy grandes vuelve a aparecer el desplazamiento dentro de la propia tabla.
+Con nueve columnas la tabla no cabe en pantallas de portátil con la presentación estándar de `RecordsTable`. La tabla de sociedades utiliza su variante compacta (`dense`: letra de 12 px, menor espacio entre columnas y texto que puede partirse en varias líneas), con la que las nueve columnas caben completas, sin desplazamiento horizontal, a 1024 px con el menú lateral abierto o cerrado. Con una ventana más angosta o con montos muy grandes vuelve a aparecer el desplazamiento dentro de la propia tabla. El mensaje «No existen registros» conserva el tamaño y el espaciado de las demás tablas.
 
 Como la pantalla tiene dos botones «Agregar nuevo», sus nombres accesibles se distinguen con `addAriaLabel` («Agregar nueva personería jurídica» y «Agregar nueva sociedad»); el texto visible no cambia.
 

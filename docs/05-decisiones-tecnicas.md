@@ -23,6 +23,7 @@ Estado: decisiones vigentes y asuntos por confirmar. Revisión: 27 de octubre de
 | No persistir el borrador en el navegador | Evita que otra persona del mismo equipo consulte información patrimonial; a cambio, recargar pierde los datos y el navegador advierte antes de salir. |
 | Mostrar la lista de opciones del `Dropdown` como un panel propio | El diseño no dibuja la lista abierta; se definió con los tokens del sistema (borde y radio del campo, sombra de las tarjetas, opciones de 40 px, marca en la elegida y resaltado por teclado). |
 | Presentar sociedades con una tabla compacta | Nueve columnas no caben con la presentación estándar en pantallas de portátil; `RecordsTable` ofrece una variante `dense` que las muestra completas a 1024 px. |
+| Distinguir el botón «Agregar nuevo» del contenido | Se adoptó el botón secundario con contorno amarillo del diseño (nodo 43320:2169) para todas las tablas, de modo que la acción principal de cada tabla se reconozca de inmediato. |
 | Priorizar escritorio y tablet | Responde al alcance de dispositivos acordado. |
 | Mantener trazabilidad DEC en documentación | Permite relacionar trabajo y evidencia sin exigir referencias en el código fuente. |
 

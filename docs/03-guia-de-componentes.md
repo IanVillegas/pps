@@ -1,6 +1,6 @@
 # Guía de componentes
 
-Estado: inventario vigente; las fichas detalladas se ampliarán con el desarrollo. Revisión: 27 de octubre de 2026. Código: `c789b079859bd590e4180cb0ac3ae08fec58b781`.
+Estado: inventario vigente; las fichas detalladas se ampliarán con el desarrollo. Revisión: 30 de octubre de 2026. Código: `b4e1cdf61fc6209baf9cffb0e28829c44ec2d8b6`.
 
 Todo componente genérico, sin lógica de negocio de DecPat, vive en `sad-aml-shared`, carpeta propia de este sistema que se entrega con él: quien quiera reutilizar lo construido solo copia esa carpeta. Las composiciones específicas del flujo patrimonial se mantienen en `src/components`. Los índices `@/components/Atoms`, `Molecules` y `Organisms` reexportan los componentes compartidos para que las pantallas importen desde una ubicación estable. Las pruebas de cada componente compartido están junto a él (`*.test.tsx`) y Jest las ejecuta.
 
@@ -136,6 +136,12 @@ Referencia revisada: `c789b079859bd590e4180cb0ac3ae08fec58b781`, 27 de octubre d
 - **`RecordsTable`** admite además `dense` (variante compacta para tablas de muchas columnas), `addAriaLabel` (nombre accesible del botón de agregar cuando hay varias tablas en la pantalla) y un ancho mínimo de 480 px (antes 560 px), con el que dejaron de desplazar en tablet (768 px) las tablas de los pasos 2, 3, 4, 7 y 10; las de los pasos 5, 6, 8 y 9 siguen desplazando dentro de la propia tabla.
 - **`ConfirmSaveDialog`** recibe `open`, `onConfirm` y `onClose`; se compone con `AppDialog` de tamaño `md`. Ver [juramento y cierre](flujos/juramento-y-cierre.md).
 - **`SocietyDialog`** es el diálogo de sociedades; ver [sociedades](flujos/sociedades.md).
+
+## Botón «Agregar nuevo» y tabla vacía
+
+El botón «Agregar nuevo» tiene un diseño distintivo para separarse del contenido de la pantalla (nodo de diseño 43320:2169, «Button secundario activo»): contorno amarillo de 1 px, radio de 10 px, fondo blanco, ícono «+» de 20 px separado 6 px del texto y texto en Work Sans SemiBold de 18 px, gris. Mide alrededor de 189×42 px frente a 191×41 px del diseño. El diseño no dibuja el estado de hover; se resolvió con un tinte suave del mismo amarillo. Lo dibuja `RecordsTable` y aplica a todas las tablas que permiten agregar.
+
+El mensaje «No existen registros» de una tabla vacía tiene el mismo tamaño y espaciado en todas las tablas, también en la variante compacta (`dense`), que solo reduce las filas con datos y los encabezados.
 
 ## Fichas restantes
 

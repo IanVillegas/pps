@@ -7,7 +7,7 @@ Los pasos permiten continuar con sus tablas vacías; no registran una validació
 
 | Acción | Comportamiento |
 | --- | --- |
-| Agregar nuevo | Abre el formulario vacío. Guardar datos válidos genera un identificador local, agrega la fila, notifica y cierra el diálogo. |
+| Agregar nuevo | Botón con contorno amarillo (ver la [guía de componentes](../03-guia-de-componentes.md)). Abre el formulario vacío. Guardar datos válidos genera un identificador local, agrega la fila, notifica y cierra el diálogo. |
 | Editar | Precarga datos y cambia la acción a «Guardar». Conserva el identificador de la fila. |
 | Cancelar, cerrar o Escape | Descarta cambios del diálogo sin modificar el registro anterior. |
 | Eliminar | El ícono abre un modal de confirmación («¿Está seguro(a) que desea eliminar este registro del sistema?»). Solo «Sí, eliminar» retira la fila por identificador y notifica; «Cancelar», la X y Escape no eliminan nada, y se vuelve a preguntar por cada registro. No hay deshacer. |
