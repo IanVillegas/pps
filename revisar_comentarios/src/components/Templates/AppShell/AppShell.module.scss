@@ -1,0 +1,13 @@
+// El logo es un <div> con el SVG incrustado al 100% adentro
+.logo {
+  display: block;
+  width: 159px;
+  aspect-ratio: 159 / 41;
+}
+
+// Logo "M" del sidebar colapsado
+.logoSymbol {
+  display: block;
+  width: 32px;
+  height: auto;
+}

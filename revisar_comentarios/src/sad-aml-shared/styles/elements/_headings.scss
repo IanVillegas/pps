@@ -1,0 +1,40 @@
+@use '../settings' as variables;
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: variables.$font-family-work-sans;
+  margin: 0;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: variables.$fs-h1;
+  line-height: 56px;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: variables.$fs-h2;
+  line-height: 42px;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: variables.$fs-h3;
+  line-height: 38px;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: variables.$fs-h4;
+  line-height: 33px;
+}
+
+h5 {
+  font-weight: 600;
+  font-size: variables.$fs-h5;
+  line-height: 28px;
+}

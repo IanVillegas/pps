@@ -1,0 +1,12 @@
+@use 'sass:map';
+@use '../settings' as variables;
+
+$light-colors: (
+  1: 0px 16px 24px varibles.$shadow-1,
+  2: 0px 16px 24px varibles.$shadow-2,
+  3: 0px 16px 24px varibles.$shadow-3,
+);
+
+@mixin light($color: 1) {
+  box-shadow: map.get($light-colors, $color);
+}

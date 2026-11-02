@@ -1,0 +1,92 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.currencyInfo {
+  display: flex;
+  gap: 9px;
+
+  @include mixin.config_text(
+    variables.$font-family-poppins,
+    normal,
+    300,
+    13px,
+    20px,
+    variables.$gray-400
+  );
+
+  &__logo {
+    margin-right: 16.8px;
+
+    @include mixin.from(laptop) {
+      display: none;
+    }
+  }
+
+  &__iconTable {
+    font-size: 20px;
+    color: variables.$primary-400;
+    display: flex;
+    align-items: center;
+
+    @include mixin.from(laptop) {
+      display: none;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @include mixin.from(laptop) {
+      flex-direction: row;
+      gap: 11px;
+    }
+  }
+
+  &__currency {
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      700,
+      13px,
+      20px,
+      variables.$gray-500
+    );
+  }
+
+  &__icon {
+    font-size: 20px;
+    color: variables.$primary-400;
+    display: none;
+
+    @include mixin.from(laptop) {
+      display: block;
+    }
+  }
+
+  &__arrow {
+    display: flex;
+    align-items: center;
+
+    i::before {
+      color: variables.$text_black;
+    }
+
+    @include mixin.from(laptop) {
+      display: none;
+    }
+  }
+
+  &__title {
+    margin: 0px -10px;
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      700,
+      36px,
+      normal,
+      variables.$gray-500
+    );
+  }
+}

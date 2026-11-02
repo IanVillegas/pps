@@ -1,0 +1,65 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+.wrapperTrigger {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: gm.$gray-500;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 4px;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: gm.$red-2026;
+    color: gm.$white;
+    font-size: 20px;
+    box-shadow: 0 8px 16px rgba(122, 97, 31, 0.16);
+  }
+}
+
+.wrapperContent {
+  box-sizing: border-box;
+  width: 262px;
+  max-width: calc(100vw - 32px);
+  background: gm.$white;
+  border: 1px solid gm.$gray-100;
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+  z-index: gm.$z-3;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    min-height: 28px;
+    padding: 4px;
+    font:
+      400 11px/18px var(--font-poppins),
+      sans-serif;
+    color: gm.$gray-500;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: none;
+
+    i {
+      font-size: 16px;
+    }
+    &[data-highlighted] {
+      background: gm.$gray-100;
+      outline: 2px solid gm.$gray-400;
+    }
+  }
+}

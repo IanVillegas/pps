@@ -1,0 +1,7 @@
+// Paso 8: tabla de créditos y, debajo, los totales
+// por moneda (Molecules/CurrencyTotals)
+.credits {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}

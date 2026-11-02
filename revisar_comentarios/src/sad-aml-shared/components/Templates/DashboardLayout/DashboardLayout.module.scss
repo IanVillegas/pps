@@ -1,0 +1,62 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: gm.$gray-100;
+  color: gm.$gray-500;
+}
+.sideContent {
+  flex: 1;
+  min-width: 0;
+  padding: 34px 42px 48px;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  h1 {
+    font:
+      600 24px/1.3 var(--font-worksans),
+      sans-serif;
+    margin: 0 0 48px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h1.compactTitle {
+    margin-top: 18px;
+    margin-bottom: 22px;
+  }
+}
+.titleIcon {
+  display: inline-flex;
+  color: gm.$red-2026;
+  font-size: 23px;
+  line-height: 1;
+}
+.skipLink {
+  position: fixed;
+  left: 16px;
+  top: -100px;
+  z-index: gm.$z-3;
+  background: gm.$white;
+  color: gm.$gray-500;
+  padding: 12px;
+  &:focus {
+    top: 12px;
+  }
+}
+@media (max-width: 1100px) {
+  .sideContent {
+    padding: 24px 24px 40px;
+  }
+  .content h1 {
+    margin-top: 16px;
+  }
+}

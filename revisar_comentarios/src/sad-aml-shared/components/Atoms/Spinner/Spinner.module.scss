@@ -1,0 +1,112 @@
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+@use '@/sad-aml-shared/styles/settings/' as variables;
+
+$circle-count: 12;
+$dot-size: 15%;
+$animation-name: circleFadeDelay;
+$animation-duration: 1.2s;
+$animation-ease: ease-in-out;
+$animation-infinite: infinite;
+
+.text {
+  font-family: variables.$font-family-poppins;
+  letter-spacing: 0.02em;
+  color: #222;
+  font-size: 2.1em;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.x-small {
+  width: 2rem;
+  height: 2rem;
+}
+
+.small {
+  width: 3rem;
+  height: 3rem;
+}
+
+.medium {
+  width: 4rem;
+  height: 4rem;
+}
+
+.large {
+  width: 5rem;
+  height: 5rem;
+}
+
+.spinner {
+  margin: 50px auto;
+  position: relative;
+
+  &__circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    &:before {
+      content: '';
+      display: block;
+      margin: 0 auto;
+      width: $dot-size;
+      height: $dot-size;
+      border-radius: 100%;
+      animation: $animation-name $animation-duration linear $animation-infinite
+        both;
+      background-color: variables.$gray-500;
+      opacity: 0.15;
+    }
+
+    &__dark {
+      &:before {
+        background-color: variables.$gray-500;
+      }
+    }
+
+    &__green {
+      &:before {
+        background-color: variables.$primary-400;
+      }
+    }
+
+    @for $j from 1 through $circle-count {
+      &.fadingCircle__circle#{$j}:before {
+        opacity: #{0.15 + (0.85 * ($j - 1) / ($circle-count - 1))};
+      }
+    }
+  }
+
+  @for $i from 1 through $circle-count {
+    &__circle#{$i} {
+      transform: rotate(#{360deg / $circle-count * ($i - 1)});
+
+      &:before {
+        animation-delay: ($animation-duration / $circle-count) * ($i - 1);
+      }
+    }
+  }
+}
+
+@keyframes circleFadeDelay {
+  0%,
+  39%,
+  100% {
+    opacity: 0;
+    width: 10%;
+    height: 10%;
+  }
+
+  40% {
+    opacity: 1;
+    width: 16%;
+    height: 16%;
+  }
+}

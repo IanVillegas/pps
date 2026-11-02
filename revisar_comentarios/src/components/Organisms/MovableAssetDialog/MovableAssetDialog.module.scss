@@ -1,0 +1,46 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+.movableAsset__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 90px;
+  row-gap: 20px;
+  font-size: 14px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}
+
+.movableAsset__full {
+  grid-column: 1 / -1;
+}
+
+// "?" junto al campo Descripcion. InputText solo
+// deja poner el tooltip despues del campo
+.movableAsset__help {
+  // `align-self`: InputText envuelve el campo en un flex column
+  // (width: 100%); sin esto este boton se estiraba a todo el ancho del
+  // campo (un anillo de foco ovalado enorme en vez de un circulo chico
+  // junto al icono, visible al enfocarlo con teclado)
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: gm.$gray-300;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    color: gm.$gray-400;
+  }
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 50%;
+  }
+}

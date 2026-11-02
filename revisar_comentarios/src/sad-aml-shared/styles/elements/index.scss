@@ -1,0 +1,14 @@
+@forward './headings';
+@use '@/sad-aml-shared/styles/settings/' as variables;
+
+.MuiAutocomplete-popper {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  background-color: none;
+}
+
+.MuiPickersDay-root.Mui-selected {
+  background-color: variables.$primary-400 !important;
+  color: #fff !important;
+}

@@ -1,0 +1,41 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+
+.backButton {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: variables.$gray-400;
+  cursor: pointer;
+
+  &:hover > &__icon {
+    color: variables.$primary-400;
+
+    background: #ffffff;
+    box-shadow: 0px 8px 16px rgba(108, 117, 125, 0.09);
+    border-radius: 8px;
+  }
+
+  // &:active > &__icon {
+  //     color: #ffffff;
+
+  //     background: variables.$primary-400;
+  //     box-shadow: 0px 16px 24px rgba(55, 199, 187, 0.3);
+  //     border-radius: 8px;
+  // }
+
+  &__icon {
+    font-size: 24px;
+  }
+
+  &__label {
+    all: unset;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+
+    color: #ffffff;
+  }
+}

@@ -1,0 +1,78 @@
+@use '../../../../styles/settings/' as variables;
+@use '../../../../styles/tools/mixin' as mixin;
+
+.profileInfo {
+  display: flex;
+  gap: 18.75px;
+
+  &__userName {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  &__greet {
+    @include mixin.config_text(
+      variables.$font-family-work-sans,
+      normal,
+      600,
+      18px,
+      21px,
+      variables.$gray-500
+    );
+  }
+
+  &__name {
+    @include mixin.config_text(
+      variables.$font-family-poppins,
+      normal,
+      400,
+      14px,
+      21px,
+      variables.$gray-400
+    );
+  }
+
+  &__userIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__default {
+      display: none;
+      @include mixin.from(laptop) {
+        display: inherit;
+      }
+    }
+
+    &__tablet {
+      @include mixin.from(laptop) {
+        display: none;
+      }
+    }
+  }
+}
+
+.profileNavigationTablet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+
+  &__icon {
+    padding: 13px;
+    background-color: variables.$primary-400;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    color: variables.$text-white;
+  }
+
+  &__button {
+    all: unset;
+  }
+}

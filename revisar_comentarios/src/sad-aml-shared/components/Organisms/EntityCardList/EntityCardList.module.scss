@@ -1,0 +1,12 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.listItems {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+
+  @include mixin.upTo('tablet') {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

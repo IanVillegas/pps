@@ -1,0 +1,305 @@
+@use '@/sad-aml-shared/styles/settings' as gm;
+
+// Caja punteada 8px de radio, borde gris-200, icono grande
+// centrado y texto Poppins 13px. Las tarjetas de archivo son 146x118, radio 12, sombra Elevation-3
+$overlay: rgba(31, 31, 31, 0.3);
+
+.fileUpload {
+  width: 100%;
+}
+
+.fileUpload__dropzone {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 24px;
+  background: gm.$white;
+  border: 1px dashed gm.$gray-200;
+  border-radius: 8px;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:has(.fileUpload__list) {
+    padding: 8px 14px 22px;
+  }
+
+  &--dragging {
+    border-color: gm.$green-2026-400;
+    background: gm.$green-100;
+  }
+
+  &--disabled {
+    background: gm.$gray-100;
+    cursor: not-allowed;
+  }
+}
+
+.fileUpload__trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  cursor: pointer;
+
+  i {
+    font-size: 48px;
+    color: gm.$gray-300;
+  }
+
+  &:has(.fileUpload__input:focus-visible) {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  &--compact {
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+
+    i {
+      font-size: 34px;
+    }
+  }
+}
+
+// Oculto solo visualmente (sigue en el DOM y enfocable con teclado)
+.fileUpload__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fileUpload__hint {
+  margin: 0;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.4;
+  color: gm.$gray-400;
+}
+
+.fileUpload__link {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.fileUpload__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  width: 100%;
+  margin: 11px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fileUpload__card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 146px;
+  height: 118px;
+  overflow: hidden;
+  background: gm.$white;
+  border: 1px solid gm.$gray-100;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.09);
+}
+
+.fileUpload__preview {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: 69px;
+  margin: 3px 4px 0;
+  border-radius: 12px 12px 0 0;
+
+  &--filled {
+    background: $overlay;
+  }
+
+  i {
+    font-size: 20px;
+  }
+
+  // Con miniatura del PDF: la imagen llena la zona y el icono de estado (si
+  // sigue visible, mientras sube) va encima, oscurecida la miniatura
+  &--thumbnail {
+    overflow: hidden;
+    background: gm.$white;
+
+    i {
+      position: relative;
+      z-index: 2;
+      color: gm.$white;
+    }
+  }
+  &--dimmed::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: $overlay;
+  }
+}
+
+.fileUpload__thumbnail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.fileUpload__retry {
+  display: flex;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.fileUpload__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 3;
+  display: flex;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  color: gm.$gray-400;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+
+  i {
+    font-size: 16px;
+  }
+
+  &--onFill {
+    color: gm.$white;
+  }
+
+  // Sobre una miniatura (puede ser blanca) la papelera lleva un fondo oscuro
+  // para no perderse
+  &--onThumbnail {
+    background: rgba(31, 31, 31, 0.55);
+    border-radius: 50%;
+  }
+  &:hover {
+    color: gm.$red-2026;
+  }
+
+  &:focus-visible {
+    outline: 2px solid gm.$gray-500;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.fileUpload__status {
+  &--selected,
+  &--uploading,
+  &--uploaded {
+    color: gm.$green-2026-400;
+  }
+
+  &--error,
+  &--invalid {
+    color: gm.$error;
+  }
+}
+
+.fileUpload__spin {
+  animation: fileUploadSpin 1000ms linear infinite;
+}
+
+@keyframes fileUploadSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fileUpload__track {
+  flex: none;
+  height: 5px;
+  margin: 8px 14px 0;
+  overflow: hidden;
+  border-radius: 50px;
+
+  &--visible {
+    background: gm.$gray-100;
+  }
+}
+
+.fileUpload__progressFill {
+  height: 100%;
+  background: gm.$green-2026-300;
+  border-radius: inherit;
+  transition: width 0.2s ease;
+}
+
+.fileUpload__failedFill {
+  width: 100%;
+  height: 100%;
+  background: gm.$error;
+  border-radius: inherit;
+}
+
+.fileUpload__name {
+  margin: 1px 13px 0;
+  overflow: hidden;
+  font-family: var(--font-worksans), sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 13px;
+  color: gm.$gray-400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileUpload__error {
+  margin: 0;
+  margin: 1px 13px 0;
+  overflow: hidden;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 11px;
+  line-height: 1.3;
+  font-size: 9px;
+  line-height: 11px;
+  color: gm.$error;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileUpload__formError {
+  margin: 4px 0 0;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 11px;
+  line-height: 18px;
+  color: gm.$error;
+}

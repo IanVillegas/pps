@@ -1,0 +1,283 @@
+/* Primary colors */
+/* Secondary colors */
+/* Accent colors */
+/* Grayscale */
+/* Alert colors */
+/* Text color */
+/* Greenscale */
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-BlackItalic.ttf')
+    format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-BoldItalic.ttf')
+    format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-ExtraBold.ttf')
+    format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-ExtraBoldItalic.ttf')
+    format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-ExtraLight.ttf')
+    format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-ExtraLight.ttf')
+    format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-LightItalic.ttf')
+    format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-MediumItalic.ttf')
+    format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-SemiBoldItalic.ttf')
+    format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../../assets/fonts/Poppins/Poppins-ThinItalic.ttf')
+    format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-BlackItalic.ttf')
+    format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-BoldItalic.ttf')
+    format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-ExtraBold.ttf')
+    format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-ExtraBoldItalic.ttf')
+    format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-ExtraLight.ttf')
+    format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-ExtraLight.ttf')
+    format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-LightItalic.ttf')
+    format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-MediumItalic.ttf')
+    format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-Regular.ttf')
+    format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-SemiBold.ttf')
+    format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-SemiBoldItalic.ttf')
+    format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'WorkSans';
+  src: url('../../assets/fonts/WorkSans/WorkSans-ThinItalic.ttf')
+    format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'WorkSans', sans-serif;
+  margin: 0;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 3rem;
+  line-height: 56px;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 42px;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 38px;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: 1.75rem;
+  line-height: 33px;
+}
+
+h5 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 28px;
+} /*# sourceMappingURL=index.css.map */

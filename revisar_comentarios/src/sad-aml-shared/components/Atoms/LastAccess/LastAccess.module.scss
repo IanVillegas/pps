@@ -1,0 +1,64 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.lastAccess {
+  background-color: variables.$gray-100;
+  height: 7%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  /*&__icon {
+        font-size: 16.57px;
+        color: variables.$gray-400;
+        display: flex;
+        align-items: center;
+        text-align: center;
+    }*/
+
+  &__information {
+    margin-left: 24.66px;
+    color: variables.$gray-300;
+
+    /*&__title {
+            padding: 0;
+            margin: 0;
+            @include mixin.config_text(
+                variables.$font-family-work-sans,
+                normal,
+                600,
+                14px,
+                16px,
+                variables.$gray-300
+            );
+        }*/
+
+    &__subtitle {
+      padding: 0;
+      margin: 0;
+      @include mixin.config_text(
+        variables.$font-family-poppins,
+        normal,
+        700,
+        14px,
+        normal,
+        variables.$gray-500
+      );
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -7.07px;
+    left: 50%;
+    width: 14px;
+    height: 7.07px;
+
+    border-style: solid;
+    border-width: 0px 7px 7.07px 7px;
+    border-color: transparent transparent variables.$gray-100 transparent;
+  }
+}

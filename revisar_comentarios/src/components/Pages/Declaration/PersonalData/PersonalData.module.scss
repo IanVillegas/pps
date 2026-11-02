@@ -1,0 +1,14 @@
+.personalData {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 90px;
+  row-gap: 20px; // 32
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.personalData__full {
+  grid-column: 1 / -1;
+}

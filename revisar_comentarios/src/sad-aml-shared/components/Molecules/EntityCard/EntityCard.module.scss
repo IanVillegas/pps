@@ -1,0 +1,20 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.title {
+  @include mixin.config_text(
+    variables.$font-family-work-sans,
+    normal,
+    600,
+    20px,
+    normal,
+    variables.$gray-500
+  );
+}
+
+.mediaContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+}

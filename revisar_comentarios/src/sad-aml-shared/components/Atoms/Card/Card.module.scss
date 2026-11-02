@@ -1,0 +1,21 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.card {
+  background: #ffffff;
+  box-shadow: 0px 16px 24px 0px variables.$shadow;
+  border-radius: 12px;
+}
+
+.borderColor {
+  border-left: 8px solid var(--border-color, transparent);
+  border-radius: 8px;
+  transition:
+    border-left-width 0.3s,
+    border-radius 0.3s;
+
+  &:hover {
+    border-left: 16px solid var(--border-color, transparent);
+    border-radius: 8px 0px 0px 8px;
+  }
+}

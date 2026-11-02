@@ -1,0 +1,46 @@
+@use '@/sad-aml-shared/styles/settings/' as variables;
+@use '@/sad-aml-shared/styles/tools/mixin' as mixin;
+
+.text {
+  color: variables.$gray-400;
+  font-family: variables.$font-family-poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  margin: 0;
+}
+
+.amount {
+  @include mixin.config_text(
+    variables.$font-family-work-sans,
+    normal,
+    600,
+    24px,
+    normal,
+    variables.$gray-400
+  );
+}
+
+.money {
+  @include mixin.config_text(
+    variables.$font-family-work-sans,
+    normal,
+    600,
+    20px,
+    normal,
+    variables.$gray-500
+  );
+}
+
+.textNormal {
+  @include mixin.config_text(
+    variables.$font-family-poppins,
+    normal,
+    600,
+    14px,
+    normal,
+    variables.$gray-400
+  );
+}
