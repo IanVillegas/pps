@@ -1,3 +1,4 @@
+// DEC-018A Respuestas del cuestionario confidencial.
 import { useSyncExternalStore } from 'react';
 import {
   getConfidentialAnswers,

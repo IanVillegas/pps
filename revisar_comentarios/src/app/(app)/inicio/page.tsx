@@ -1,3 +1,4 @@
+// DEC-005B Inicio.
 import { Suspense } from 'react';
 import Home from '@/components/Pages/Home/Home';
 

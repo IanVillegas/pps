@@ -1,3 +1,4 @@
+// DEC-002C2 Select: lista de opciones (Dropdown).
 import { forwardRef, useId, useState, type ReactNode } from 'react';
 import 'remixicon/fonts/remixicon.css';
 
@@ -27,6 +28,7 @@ interface CustomDropdownProps {
   errors?: string;
 }
 
+// !Modificado para DecPat: opción con marca en la elegida (lista rediseñada).
 const renderOption = (element: DropdownOption) => (
   <Select.Item
     className={styles.customDropdown__option}

@@ -1,3 +1,4 @@
+// DEC-002B Campo de texto: etiqueta, ayuda, errores e ícono inicial opcional.
 import { type InputHTMLAttributes, type JSX, forwardRef, useId } from 'react';
 import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import styles from './InputText.module.scss';
@@ -8,6 +9,7 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   caption?: string;
   pattern?: string;
   tooltip?: JSX.Element;
+  // !Modificado para DecPat: ícono decorativo dentro del campo (moneda de los montos).
   startAdornment?: JSX.Element;
 }
 
@@ -26,6 +28,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
     return (
       <div className={styles.inputText}>
         {tooltip ? (
+          // !Modificado para DecPat: el ícono de ayuda va junto a la etiqueta, como en el diseño.
           <div className={styles.inputText__labelRow}>
             <label
               htmlFor={inputId}

@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-004 Estados de acceso: credenciales incorrectas, bloqueo y servicio no disponible.
+
 import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { Button, ButtonColor } from '@/components/Atoms';
 import styles from './LoginFeedback.module.scss';

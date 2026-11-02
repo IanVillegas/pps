@@ -1,3 +1,4 @@
+// DEC-018B Estado del guardado final.
 import { useSyncExternalStore } from 'react';
 import {
   getFinalizationStatus,

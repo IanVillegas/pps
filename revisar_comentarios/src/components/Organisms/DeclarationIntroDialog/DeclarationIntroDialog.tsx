@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-006B Diálogo informativo inicial de la declaración.
+
 import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { Button, ButtonColor } from '@/components/Atoms';
 import LogoHeader from '@/assets/images/LogoHeader';

@@ -1,3 +1,4 @@
+// DEC-012 Paso 6, Cuentas de ahorro.
 // Paso 6, Datos económicos / cuentas de ahorro
 export interface SavingsAccountItem {
   /** Identificador estable de la fila (no depende de su posicion) */

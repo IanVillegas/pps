@@ -1,3 +1,4 @@
+// DEC-006B Acceso al borrador de la declaración.
 import { useSyncExternalStore } from 'react';
 import {
   acknowledgeIntro,

@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-005A Control de sesión de las pantallas internas.
+
 import { useEffect, useSyncExternalStore, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import AppShell from '@/components/Templates/AppShell/AppShell';
@@ -29,6 +31,7 @@ const AuthenticatedShell = ({ children }: { children: ReactNode }) => {
     if (!user) router.replace('/');
   }, [user, router]);
 
+  // ! [INTEGRACION] Con sesión se piden los catálogos (no hace nada en modo simulado) y un 401 del servidor cierra la sesión local.
   const hasSession = Boolean(user);
   useEffect(() => {
     if (!hasSession) return;

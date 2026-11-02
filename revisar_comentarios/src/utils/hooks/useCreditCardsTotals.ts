@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-015 Totales del paso 9.
+
 import { useEffect, useState } from 'react';
 import { fetchCreditCardsTotals } from '@/services/CreditCardsTotalsService';
 import type {

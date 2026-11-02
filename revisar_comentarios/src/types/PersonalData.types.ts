@@ -1,3 +1,4 @@
+// DEC-007 Paso 1, Datos generales.
 export interface PersonalDataValues {
   fullName?: string;
   idNumber?: string;

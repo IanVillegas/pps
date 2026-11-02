@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-012 Totales del paso 6.
+
 import { useEffect, useState } from 'react';
 import { fetchSavingsTotals } from '@/services/SavingsTotalsService';
 import type { SavingsAccountItem, SavingsTotals } from '@/types/Savings.types';

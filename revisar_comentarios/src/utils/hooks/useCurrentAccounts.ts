@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-013 Cuentas y saldos del paso 7.
+
 import { useEffect, useState } from 'react';
 import {
   fetchCurrentAccountTotals,

@@ -1,3 +1,4 @@
+// DEC-008B Paso 2, Núcleo familiar.
 // Paso 2 de la declaracion, Conformacion del nucleo familiar
 export interface FamilyMember {
   /** Identificador estable de la fila */

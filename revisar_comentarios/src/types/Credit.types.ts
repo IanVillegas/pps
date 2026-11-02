@@ -1,3 +1,4 @@
+// DEC-014 Paso 8, Créditos.
 // Paso 8, Créditos que posee
 export interface CreditItem {
   /** Identificador estable de la fila (no depende de su posicion) */

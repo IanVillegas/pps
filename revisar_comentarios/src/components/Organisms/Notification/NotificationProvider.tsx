@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-002E Notificaciones: avisos del resultado de una acción.
+
 // sad-aml-shared ya trae un ¨Notification¨, pero no es el mismo diseño de
 // DecPat que se propuso , así que este proveedor usa Radix Toast directamente
 

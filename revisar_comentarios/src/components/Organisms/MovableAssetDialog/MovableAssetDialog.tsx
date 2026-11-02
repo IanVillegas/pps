@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-011 Diálogo de un bien mueble.
+
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText, Textarea } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';

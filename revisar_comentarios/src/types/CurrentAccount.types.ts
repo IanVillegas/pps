@@ -1,3 +1,4 @@
+// DEC-013 Paso 7, Cuentas corrientes.
 // Paso 7, Cuentas corrientes
 
 /** Cuenta corriente que la persona agrega (modal "Datos económicos") */

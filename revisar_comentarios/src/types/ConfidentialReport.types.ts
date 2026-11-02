@@ -1,3 +1,4 @@
+// DEC-018A Cuestionario confidencial.
 // Paso 12, cuestionario confidencial
 
 export const CONFIDENTIAL_QUESTION_IDS = [

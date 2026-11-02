@@ -1,3 +1,4 @@
+// DEC-017 Paso 11, Datos judiciales.
 // Paso 11, Datos judiciales
 export interface JudicialValues {
   /** ¿Ha estado implicado en juicios por la via penal? */

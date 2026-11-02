@@ -1,3 +1,4 @@
+// DEC-009B Adjuntos de un ingreso.
 // ! [SIMULADO] Subida de adjuntos simulada. Reemplazar por el adaptador real o borrar al conectar el backend
 
 // La subida en si no existe: se resuelve con temporizadores, igual que

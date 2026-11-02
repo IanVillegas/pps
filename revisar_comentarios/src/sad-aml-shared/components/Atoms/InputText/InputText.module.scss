@@ -15,6 +15,7 @@
     display: flex;
     align-items: center;
     color: #343a40;
+    // !Modificado para DecPat: 10 px entre la etiqueta y el campo, igual que el Dropdown (antes 14 px).
     margin-bottom: 10px;
   }
 
@@ -66,6 +67,7 @@
     }
   }
 
+  // !Modificado para DecPat: ícono opcional al inicio del campo.
   &__field {
     position: relative;
     display: flex;

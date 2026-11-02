@@ -1,3 +1,4 @@
+// DEC-019A Lectura de catálogos.
 // [INTEGRACION] Lectura de catalogos: no cambia al conectar el backend
 import { useSyncExternalStore } from 'react';
 import {

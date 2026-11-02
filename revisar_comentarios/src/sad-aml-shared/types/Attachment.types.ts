@@ -1,3 +1,4 @@
+// DEC-009B y DEC-009C Adjuntos de un ingreso: archivos y sus estados.
 export type AttachmentStatus =
   | 'selected'
   | 'uploading'

@@ -1,3 +1,4 @@
+// DEC-001B Base de la aplicación: metadatos y estructura raíz.
 // app/layout.tsx
 import { poppins, worksans } from '@/sad-aml-shared/assets/fonts/fonts';
 import '@/styles/globals.scss';

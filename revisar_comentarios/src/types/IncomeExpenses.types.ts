@@ -1,3 +1,4 @@
+// DEC-009 Paso 3, Ingresos y egresos.
 // Paso 3, Ingresos y egresos
 
 /** Ingreso adicional al salario (modal "Ingresos adicionales") */

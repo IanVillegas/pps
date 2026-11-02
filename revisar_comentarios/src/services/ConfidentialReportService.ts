@@ -1,3 +1,4 @@
+// DEC-018A Cuestionario confidencial, separado del borrador patrimonial.
 // ! [SIMULADO] Cuestionario confidencial en memoria. Reemplazar por el adaptador real o borrar al conectar el backend
 
 import {

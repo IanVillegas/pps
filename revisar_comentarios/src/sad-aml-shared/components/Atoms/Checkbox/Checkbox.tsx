@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-002C Checkbox.
+
 import { forwardRef, useId, type InputHTMLAttributes } from 'react';
 import styles from './Checkbox.module.scss';
 

@@ -21,6 +21,7 @@
   margin-bottom: 10px;
 }
 
+// !Modificado para DecPat: replica el campo de texto del diseño (48 px, borde de 1 px, radio de 8 px).
 .datePicker.datePicker {
   :global(.MuiOutlinedInput-root) {
     height: 48px;

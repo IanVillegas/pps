@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-008B Diálogo de un familiar.
+
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';

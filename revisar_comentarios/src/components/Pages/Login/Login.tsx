@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-003 Login. Los estados de error y bloqueo son DEC-004.
+
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { startMockSession } from '@/services/SessionService';

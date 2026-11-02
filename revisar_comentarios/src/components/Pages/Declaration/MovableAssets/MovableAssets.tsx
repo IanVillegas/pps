@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-011 Paso 5, Bienes muebles.
+
 import { useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,

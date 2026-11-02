@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-006B Formulario por pasos: indicador, borrador y navegación.
+
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, ButtonColor } from '@/components/Atoms';

@@ -1,3 +1,4 @@
+// DEC-014 y DEC-015 Totales por moneda de créditos y tarjetas.
 import { useId } from 'react';
 import CurrencyIcon from '@/sad-aml-shared/components/Atoms/CurrencyIcon/CurrencyIcon';
 import { formatCurrency } from '@/sad-aml-shared/utils/helpers/money';

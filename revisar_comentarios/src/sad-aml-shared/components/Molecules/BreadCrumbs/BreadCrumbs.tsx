@@ -40,6 +40,7 @@ const BreadCrumbs = ({ items, goBackUrl }: BreadcrumbsProps) => {
       );
     }
     if (items.length === 1) {
+      // !Modificado para DecPat: sin next/router (no existe en el App Router); con una sola miga se vuelve a la raíz.
       return (
         <a href="/" className={styles.backLink}>
           <span className={styles.backLink__icons}>

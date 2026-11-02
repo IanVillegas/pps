@@ -1,3 +1,4 @@
+// DEC-006B Tipos de valores, errores y borrador.
 /** Valores capturados en un paso. Cada paso define sus propios campos. */
 export type StepValues = Record<string, unknown>;
 

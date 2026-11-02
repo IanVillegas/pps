@@ -1,3 +1,4 @@
+// DEC-006B Registro del contenido y las validaciones de cada paso.
 import type { ComponentType, ReactNode } from 'react';
 import type { StepErrors, StepValues } from '@/types/Declaration.types';
 import PersonalData, {

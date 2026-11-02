@@ -1,3 +1,4 @@
+// DEC-010 Paso 4, Bienes inmuebles.
 // Paso 4, Bienes inmuebles
 export interface RealEstateItem {
   id: string;

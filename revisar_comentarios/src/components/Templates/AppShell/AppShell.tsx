@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-005A Navegación interna: menú, encabezado y migas de pan.
+
 import { useEffect, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

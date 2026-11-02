@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-007 Paso 1, Datos generales.
+
 import { InputText, Textarea } from '@/components/Atoms';
 import { Dropdown } from '@/components/Molecules';
 import { toDropdownOptions } from '@/services/CatalogService';

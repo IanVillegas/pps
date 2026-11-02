@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-006A Indicador de los pasos de la declaración.
+
 import { Fragment, useRef, type KeyboardEvent } from 'react';
 import { Tooltip } from '@/components/Atoms';
 import type { DeclarationStep } from '@/types/DeclarationStep.types';

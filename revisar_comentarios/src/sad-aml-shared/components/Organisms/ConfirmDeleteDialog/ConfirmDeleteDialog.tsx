@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-002F Tabla editable: confirmación al eliminar un registro.
+
 import Button from '@/sad-aml-shared/components/Atoms/Button/Button';
 import { ColorEnum as ButtonColor } from '@/sad-aml-shared/types/enum/Color.enum';
 import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';

@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-018B Confirmación del guardado final.
+
 import { Button, ButtonColor } from '@/components/Atoms';
 import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import styles from './ConfirmSaveDialog.module.scss';

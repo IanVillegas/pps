@@ -1,4 +1,6 @@
+// DEC-008A Fecha: selector con formato DD/MM/AAAA.
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+// !Modificado para DecPat: se fuerza la versión de escritorio; la móvil anida un diálogo que compite por el foco con el modal.
 import { DesktopDatePicker as DatePickerMUI } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { esES } from '@mui/x-date-pickers/locales';

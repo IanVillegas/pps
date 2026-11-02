@@ -1,3 +1,4 @@
+// DEC-016A Personerías jurídicas y DEC-016B sociedades del paso 10.
 // Paso 10, Personería jurídica
 export interface LegalEntityItem {
   /** Identificador estable de la fila (no depende de su posicion) */

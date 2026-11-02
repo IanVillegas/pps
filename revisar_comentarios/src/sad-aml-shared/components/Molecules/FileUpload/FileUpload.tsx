@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-009B Adjuntos: selector de archivos con arrastrar y soltar.
+
 import { useId, useState, type ChangeEvent, type DragEvent } from 'react';
 import type { AttachmentFile } from '@/sad-aml-shared/types/Attachment.types';
 import styles from './FileUpload.module.scss';

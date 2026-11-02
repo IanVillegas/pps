@@ -1,3 +1,4 @@
+// DEC-004 Acceso (login).
 // ! [SIMULADO] Acceso (login) simulado. Reemplazar por el adaptador real o borrar al conectar el backend
 
 export interface LoginCredentials {

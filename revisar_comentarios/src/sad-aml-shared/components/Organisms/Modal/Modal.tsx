@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-002D Diálogo: base de todos los modales.
+
 import {
   useEffect,
   useRef,

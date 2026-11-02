@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-010 Diálogo de un bien inmueble.
+
 import { useRef, useState, type FormEvent } from 'react';
 import { Button, ButtonColor, InputText } from '@/components/Atoms';
 import { Dropdown, MoneyInput } from '@/components/Molecules';

@@ -1,3 +1,4 @@
+// DEC-002C2 Select: lista de opciones (Dropdown).
 @use '@/sad-aml-shared/styles/settings/' as variables;
 @use '@/sad-aml-shared/styles/tools/mixin' as mixin;
 
@@ -29,6 +30,7 @@
   font-family: variables.$font-family-poppins;
   font-weight: 500;
   font-size: 14px;
+  // !Modificado para DecPat: el valor elegido se ve más oscuro que el texto de ejemplo.
   color: variables.$gray-500;
 
   &[data-placeholder] {
@@ -51,6 +53,7 @@
     padding-right: 5px;
   }
 
+  // !Modificado para DecPat: lista de opciones rediseñada (panel con borde y sombra, marca en la opción elegida).
   &__select {
     z-index: variables.$z-10;
     box-sizing: border-box;

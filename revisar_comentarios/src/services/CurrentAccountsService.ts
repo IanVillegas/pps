@@ -1,3 +1,4 @@
+// DEC-013 Cuentas de Grupo Mutual y saldos del paso 7.
 // ! [SIMULADO] Cuentas de Grupo Mutual y saldos de ejemplo (provisional). Reemplazar por el adaptador real o borrar al conectar el backend
 
 import type {

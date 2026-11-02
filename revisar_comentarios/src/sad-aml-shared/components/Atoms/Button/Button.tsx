@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-002A Botón: color, tamaño, estado deshabilitado y carga.
+
 import type { ButtonHTMLAttributes, JSX } from 'react';
 import styles from './Button.module.scss';
 import { ColorEnum } from '@/sad-aml-shared/types/enum/Color.enum';

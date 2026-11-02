@@ -1,3 +1,4 @@
+// DEC-018B Guardado final de la declaración.
 // ! [SIMULADO] Guardado final (juramento) simulado con espera de 800 ms. Reemplazar por el adaptador real o borrar al conectar el backend
 
 // Estado de la finalizacion de la declaracion (paso 12, juramento), en

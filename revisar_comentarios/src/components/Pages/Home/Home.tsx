@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-005B Inicio: bienvenida y ayuda.
+
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button, ButtonColor } from '@/components/Atoms';

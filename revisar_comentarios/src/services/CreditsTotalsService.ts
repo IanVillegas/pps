@@ -1,3 +1,4 @@
+// DEC-014 Totales de créditos por moneda.
 // ! [SIMULADO] Totales de creditos calculados en el navegador (provisional). Reemplazar por el adaptador real o borrar al conectar el backend
 
 import type {

@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-002F Tabla editable: agregar, editar y eliminar registros.
+
 import { useState, type ReactNode } from 'react';
 import ConfirmDeleteDialog from '@/sad-aml-shared/components/Organisms/ConfirmDeleteDialog/ConfirmDeleteDialog';
 import styles from './RecordsTable.module.scss';

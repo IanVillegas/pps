@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-009A Resumen financiero del paso 3.
+
 import { useEffect, useState } from 'react';
 import { fetchFinancialSummary } from '@/services/FinancialSummaryService';
 import type {

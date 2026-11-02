@@ -51,6 +51,7 @@
     &::placeholder {
       color: variables.$gray-300;
     }
+    // !Modificado para DecPat: estilo del campo deshabilitado.
     &:disabled {
       background: variables.$gray-100;
       color: variables.$gray-300;

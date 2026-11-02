@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-008B Paso 2, Núcleo familiar.
+
 import { useState } from 'react';
 import RecordsTable, {
   type RecordsTableColumn,

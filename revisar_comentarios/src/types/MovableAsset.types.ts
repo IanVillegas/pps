@@ -1,3 +1,4 @@
+// DEC-011 Paso 5, Bienes muebles.
 // Paso 5, Bienes muebles
 export interface MovableAssetItem {
   /** Identificador estable de la fila */

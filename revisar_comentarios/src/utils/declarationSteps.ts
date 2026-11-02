@@ -1,3 +1,4 @@
+// DEC-006A Títulos e íconos de los doce pasos. El título del paso 12 se conserva del diseño (DEC-018A).
 import type { DeclarationStep } from '@/types/DeclarationStep.types';
 
 export const DECLARATION_STEPS: readonly DeclarationStep[] = [

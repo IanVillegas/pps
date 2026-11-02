@@ -1,3 +1,4 @@
+// DEC-015 Totales de tarjetas por moneda.
 // ! [SIMULADO] Totales de tarjetas calculados en el navegador (provisional). Reemplazar por el adaptador real o borrar al conectar el backend
 
 import type {

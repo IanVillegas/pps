@@ -1,3 +1,4 @@
+// DEC-012 Totales de ahorro por moneda.
 // ! [SIMULADO] Totales de ahorro calculados en el navegador (provisional). Reemplazar por el adaptador real o borrar al conectar el backend
 
 import type { SavingsAccountItem, SavingsTotals } from '@/types/Savings.types';

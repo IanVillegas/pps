@@ -1,3 +1,4 @@
+// DEC-019A Cliente de comunicación con la API.
 // ! [INTEGRACION] Cliente HTTP unico: es el unico lugar que habla con la API real
 
 /** Error de una llamada a la API, con el cuerpo comun del contrato */

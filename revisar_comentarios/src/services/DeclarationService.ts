@@ -1,3 +1,4 @@
+// DEC-006B Borrador de la declaración.
 // ! [SIMULADO] Borrador de la declaracion en memoria, sin persistencia. Reemplazar por el adaptador real o borrar al conectar el backend
 
 import type { DeclarationDraft, StepValues } from '@/types/Declaration.types';

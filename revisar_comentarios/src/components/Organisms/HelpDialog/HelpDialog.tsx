@@ -1,5 +1,7 @@
 'use client';
 
+// DEC-005B Ayuda: contactos.
+
 import AppDialog from '@/sad-aml-shared/components/Organisms/AppDialog/AppDialog';
 import { Button, ButtonColor } from '@/components/Atoms';
 import styles from './HelpDialog.module.scss';
