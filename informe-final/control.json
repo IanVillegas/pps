@@ -1,0 +1,1598 @@
+[
+ {
+  "nombre": "Avance Intermedio",
+  "filas": [
+   {
+    "A": "Avance intermedio"
+   },
+   {
+    "A": "Reconstrucción y Modernización Tecnológica del Frontend del Sistema de Declaración Patrimonial"
+   },
+   {
+    "A": "Indicador",
+    "B": "Valor",
+    "D": "Lectura",
+    "E": "Horas",
+    "F": "Porcentaje"
+   },
+   {
+    "A": "Horas planificadas",
+    "B": "300",
+    "D": "Reales registradas",
+    "E": "300",
+    "F": "1"
+   },
+   {
+    "A": "Horas reales en control",
+    "B": "300",
+    "D": "Pendientes según horas reales",
+    "E": "0",
+    "F": "0"
+   },
+   {
+    "A": "Avance por horas reales",
+    "B": "1",
+    "D": "Avance funcional",
+    "E": "300",
+    "F": "1"
+   },
+   {
+    "A": "Horas equivalentes funcionales",
+    "B": "300",
+    "D": "Pendiente funcional",
+    "E": "0",
+    "F": "0"
+   },
+   {
+    "A": "Avance funcional ponderado",
+    "B": "1"
+   },
+   {
+    "A": "Periodos terminados",
+    "B": "8"
+   },
+   {
+    "A": "Código",
+    "B": "Periodo",
+    "C": "Horas planificadas",
+    "E": "Estado general",
+    "F": "Avance funcional",
+    "G": "Horas equiv.",
+    "H": "Pendientes",
+    "J": "Estado",
+    "K": "Horas",
+    "L": "Porcentaje"
+   },
+   {
+    "A": "AN",
+    "B": "3 al 14 de agosto",
+    "C": "40",
+    "E": "Terminado",
+    "F": "1",
+    "G": "40",
+    "H": "0",
+    "J": "Terminado",
+    "K": "300",
+    "L": "1"
+   },
+   {
+    "A": "FG",
+    "B": "17 al 28 de agosto",
+    "C": "40",
+    "E": "Terminado",
+    "F": "1",
+    "G": "40",
+    "H": "0",
+    "J": "En Proceso",
+    "K": "0",
+    "L": "0"
+   },
+   {
+    "A": "ARQ - LG - PS - MD",
+    "B": "31 de agosto al 11 de septiembre",
+    "C": "40",
+    "E": "Terminado",
+    "F": "1",
+    "G": "40",
+    "H": "0",
+    "J": "Pendiente",
+    "K": "0",
+    "L": "0"
+   },
+   {
+    "A": "FL - DG - NF - IE",
+    "B": "14 al 25 de septiembre",
+    "C": "40",
+    "E": "Terminado",
+    "F": "1",
+    "G": "40",
+    "H": "0"
+   },
+   {
+    "A": "BI - BM - DE",
+    "B": "28 de septiembre al 9 de octubre",
+    "C": "40",
+    "E": "Terminado",
+    "F": "1",
+    "G": "40",
+    "H": "0"
+   },
+   {
+    "A": "CC - CR - TC",
+    "B": "12 al 23 de octubre",
+    "C": "40",
+    "E": "Terminado",
+    "F": "1",
+    "G": "40",
+    "H": "0",
+    "J": "Categoría",
+    "K": "Horas"
+   },
+   {
+    "A": "PJ - DJ - DP - DJU - INT",
+    "B": "26 de octubre al 6 de noviembre",
+    "C": "40",
+    "E": "Terminado",
+    "F": "1",
+    "G": "40",
+    "H": "0",
+    "J": "Registradas",
+    "K": "300"
+   },
+   {
+    "A": "CI",
+    "B": "9 al 13 de noviembre",
+    "C": "20",
+    "E": "Terminado",
+    "F": "1",
+    "G": "20",
+    "H": "0",
+    "J": "Pendientes",
+    "K": "0"
+   },
+   {
+    "A": "Semana",
+    "B": "Horas realizadas",
+    "C": "Periodo",
+    "D": "Acumulado",
+    "E": "Documento",
+    "J": "Fuente",
+    "K": "Uso en el panel",
+    "L": "Dato aplicado"
+   },
+   {
+    "A": "Bitácora 01 / Semana 03",
+    "B": "24",
+    "C": "2026-08-04 al 2026-08-07",
+    "D": "24",
+    "E": "EIF408-07 Bitacora 01.pdf",
+    "J": "Guía Avance Intermedio",
+    "K": "Pide gráfico de avance y cronograma actualizado",
+    "L": "EIF408-04"
+   },
+   {
+    "A": "Bitácora 02 / Semana 04",
+    "B": "25",
+    "C": "2026-08-10 al 2026-08-14",
+    "D": "49",
+    "E": "EIF408-07 Bitacora 02.pdf",
+    "J": "Bitácora semana 03",
+    "K": "Horas reales registradas",
+    "L": "24"
+   },
+   {
+    "A": "Bitácora 03 / Semana 05",
+    "B": "25",
+    "C": "2026-08-17 al 2026-08-21",
+    "D": "74",
+    "E": "EIF408-07 Bitacora 03.pdf",
+    "J": "Bitácora semana 04",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 04 / Semana 06",
+    "B": "25",
+    "C": "2026-08-24 al 2026-08-28",
+    "D": "99",
+    "E": "EIF408-07 Bitacora 04.pdf",
+    "J": "Bitácora semana 05",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 05 / Semana 07",
+    "B": "25",
+    "C": "2026-09-01 al 2026-09-04",
+    "D": "124",
+    "E": "EIF408-07 Bitacora 05.pdf",
+    "J": "Bitácora semana 06",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 06 / Semana 08",
+    "B": "19",
+    "C": "2026-09-07 al 2026-09-11",
+    "D": "143",
+    "E": "EIF408-07 Bitacora 06.pdf",
+    "J": "Bitácora semana 07",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 07 / Semana 09",
+    "B": "25",
+    "C": "2026-09-14 al 2026-09-18",
+    "D": "168",
+    "E": "EIF408-07 Bitacora 07.pdf",
+    "J": "Bitácora semana 08",
+    "K": "Horas reales registradas",
+    "L": "19"
+   },
+   {
+    "A": "Bitácora 08 / Semana 10",
+    "B": "25",
+    "C": "2026-09-21 al 2026-09-25",
+    "D": "193",
+    "E": "EIF408-07 Bitacora 08.pdf",
+    "J": "Bitácora semana 09",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 09 / Semana 11",
+    "B": "25",
+    "C": "2026-09-28 al 2026-10-02",
+    "D": "218",
+    "E": "EIF408-07 Bitacora 09.pdf",
+    "J": "Bitácora semana 10",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 10 / Semana 12",
+    "B": "16",
+    "C": "2026-10-05 al 2026-10-09",
+    "D": "234",
+    "E": "EIF408-07 Bitacora 10.pdf",
+    "J": "Bitácora semana 11",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 11 / Semana 13",
+    "B": "25",
+    "C": "2026-10-19 al 2026-10-23",
+    "D": "259",
+    "E": "EIF408-07 Bitacora 11.pdf",
+    "J": "Bitácora semana 12",
+    "K": "Horas reales registradas",
+    "L": "16"
+   },
+   {
+    "A": "Bitácora 12 / Semana 14",
+    "B": "25",
+    "C": "2026-10-26 al 2026-10-30",
+    "D": "284",
+    "E": "EIF408-07 Bitacora 12.pdf",
+    "J": "Bitácora semana 13",
+    "K": "Horas reales registradas",
+    "L": "25"
+   },
+   {
+    "A": "Bitácora 13 / Semana 15",
+    "B": "16",
+    "C": "2026-11-02 al 2026-11-06",
+    "D": "300",
+    "E": "EIF408-07 Bitacora 13.pdf",
+    "J": "Bitácora semana 14",
+    "K": "Horas reales registradas"
+   },
+   {
+    "A": "Total",
+    "B": "300",
+    "D": "143"
+   },
+   {
+    "A": "Notas para el informe"
+   },
+   {
+    "A": "Actualice la tabla central: Horas reales, Estado general y Avance funcional por periodo."
+   },
+   {
+    "A": "El avance por horas usa la suma de Horas reales del control central."
+   },
+   {
+    "A": "El avance funcional ponderado usa el porcentaje funcional de cada periodo multiplicado por sus horas planificadas."
+   },
+   {
+    "A": "La tabla de bitácoras queda como respaldo y control; la diferencia contra el control aparece en B11."
+   }
+  ]
+ },
+ {
+  "nombre": "General",
+  "filas": [
+   {
+    "A": "Código",
+    "B": "Periodo",
+    "C": "Horas",
+    "D": "Actividades principales",
+    "E": "Resultado esperado",
+    "F": "Estado",
+    "G": "Avance calculado"
+   },
+   {
+    "A": "AN",
+    "B": "3 al 14 de agosto",
+    "C": "40",
+    "D": "Inducción, accesos, análisis del sistema actual, inventario de pantallas, selección y justificación del módulo, definición del alcance y elaboración del cronograma.",
+    "E": "Inventario completo, alcance preliminar y planificación presentados para revisión.",
+    "F": "Terminado",
+    "G": "1"
+   },
+   {
+    "A": "FG",
+    "B": "17 al 28 de agosto",
+    "C": "40",
+    "D": "Diseño exclusivo en Figma del login, pantalla principal del sistema, pantalla principal de “Mi declaración”, doce secciones, declaración jurada, modales y estados visuales.",
+    "E": "Propuesta visual completa preparada para aprobación.",
+    "F": "Terminado",
+    "G": "1"
+   },
+   {
+    "A": "ARQ - LG - PS - MD",
+    "B": "31 de agosto al 11 de septiembre",
+    "C": "40",
+    "D": "Configuración del proyecto React y TypeScript y del repositorio GitLab. Desarrollo de componentes reutilizables, login, pantalla principal del sistema, navegación hacia “Mi declaración” y pantalla principal del módulo.",
+    "E": "Flujo funcional desde el login hasta la entrada de “Mi declaración”.",
+    "F": "Terminado",
+    "G": "1"
+   },
+   {
+    "A": "FL - DG - NF - IE",
+    "B": "14 al 25 de septiembre",
+    "C": "40",
+    "D": "Desarrollo de la navegación del formulario, indicador de progreso, almacenamiento temporal simulado y secciones 1. Datos generales, 2. Núcleo familiar y 3. Ingresos y egresos.",
+    "E": "Estructura del flujo y primeros tres pasos funcionales.",
+    "F": "Terminado",
+    "G": "1"
+   },
+   {
+    "A": "BI - BM - DE",
+    "B": "28 de septiembre al 9 de octubre",
+    "C": "40",
+    "D": "Desarrollo de las secciones 4. Bienes inmuebles, 5. Bienes muebles y 6. Datos económicos, incluyendo formularios, tablas, modales, validaciones y mocks correspondientes.",
+    "E": "Pasos 4, 5 y 6 integrados al flujo.",
+    "F": "Terminado",
+    "G": "1"
+   },
+   {
+    "A": "CC - CR - TC",
+    "B": "12 al 23 de octubre",
+    "C": "40",
+    "D": "Desarrollo de las secciones 7. Cuentas corrientes, 8. Créditos que posee y 9. Tarjetas de crédito.",
+    "E": "Pasos 7, 8 y 9 funcionales e integrados.",
+    "F": "Terminado",
+    "G": "1"
+   },
+   {
+    "A": "PJ - DJ - DP - DJU - INT",
+    "B": "26 de octubre al 6 de noviembre",
+    "C": "40",
+    "D": "Desarrollo de las secciones 10. Personería jurídica, 11. Datos judiciales, 12. Declaración patrimonial completa y pantalla final de declaración jurada. Integración general del flujo.",
+    "E": "Flujo completo de “Mi declaración” disponible para validación.",
+    "F": "Terminado",
+    "G": "1"
+   },
+   {
+    "A": "CI",
+    "B": "9 al 13 de noviembre",
+    "C": "20",
+    "D": "Pruebas regresivas en Edge, Chrome y Firefox, corrección de defectos, documentación técnica, evidencias, demostración y entrega final.",
+    "E": "Alcance acordado completado y documentado.",
+    "F": "Pendiente",
+    "G": "1"
+   },
+   {
+    "B": "Total",
+    "C": "300",
+    "G": "1"
+   },
+   {
+    "A": "Abreviatura",
+    "B": "Significado",
+    "D": "Horas en total según detalle de cronograma:",
+    "E": "300"
+   },
+   {
+    "A": "AN",
+    "B": "Análisis",
+    "D": "Corrección de defectos y mejoras",
+    "E": "20"
+   },
+   {
+    "A": "FG",
+    "B": "Figma",
+    "D": "Seguimiento quincenal",
+    "E": "7"
+   },
+   {
+    "A": "ARQ",
+    "B": "Arquitectura frontend"
+   },
+   {
+    "A": "LG",
+    "B": "Login"
+   },
+   {
+    "A": "PS",
+    "B": "Pantalla principal del sistema"
+   },
+   {
+    "A": "MD",
+    "B": "Pantalla principal de “Mi declaración”"
+   },
+   {
+    "A": "FL",
+    "B": "Flujo general del formulario"
+   },
+   {
+    "A": "DG",
+    "B": "Datos generales"
+   },
+   {
+    "A": "NF",
+    "B": "Núcleo familiar"
+   },
+   {
+    "A": "IE",
+    "B": "Ingresos y egresos"
+   },
+   {
+    "A": "BI",
+    "B": "Bienes inmuebles"
+   },
+   {
+    "A": "BM",
+    "B": "Bienes muebles"
+   },
+   {
+    "A": "DE",
+    "B": "Datos económicos"
+   },
+   {
+    "A": "CC",
+    "B": "Cuentas corrientes"
+   },
+   {
+    "A": "CR",
+    "B": "Créditos"
+   },
+   {
+    "A": "TC",
+    "B": "Tarjetas de crédito"
+   },
+   {
+    "A": "PJ",
+    "B": "Personería jurídica"
+   },
+   {
+    "A": "DJ",
+    "B": "Datos judiciales"
+   },
+   {
+    "A": "DP",
+    "B": "Declaración patrimonial completa"
+   },
+   {
+    "A": "DJU",
+    "B": "Declaración jurada"
+   },
+   {
+    "A": "INT",
+    "B": "Integración"
+   },
+   {
+    "A": "CI",
+    "B": "Cierre"
+   },
+   {
+    "A": "CDM",
+    "B": "Corrección de defectos y mejoras"
+   },
+   {
+    "A": "SEG",
+    "B": "Seguimiento quincenal"
+   }
+  ]
+ },
+ {
+  "nombre": "03 al 14 AN",
+  "filas": [
+   {
+    "A": "Análisis"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado",
+    "F": "Avance"
+   },
+   {
+    "A": "AN-01",
+    "B": "Realizar inducción y verificar accesos al ambiente de trabajo",
+    "C": "5",
+    "D": "Equipo, VPN, ambiente no productivo y recursos iniciales disponibles",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-02",
+    "B": "Analizar el login, la pantalla principal del sistema y la pantalla principal de “Mi declaración”",
+    "C": "4",
+    "D": "Flujo de entrada al módulo documentado",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-03",
+    "B": "Analizar Datos generales, Núcleo familiar e Ingresos y egresos",
+    "C": "5",
+    "D": "Campos, reglas, tablas, modales y comportamientos identificados",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-04",
+    "B": "Analizar Bienes inmuebles, Bienes muebles y Datos económicos",
+    "C": "5",
+    "D": "Estructura funcional de los pasos 4, 5 y 6 documentada",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-05",
+    "B": "Analizar Cuentas corrientes, Créditos y Tarjetas de crédito",
+    "C": "5",
+    "D": "Estructura funcional de los pasos 7, 8 y 9 documentada",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-06",
+    "B": "Analizar Personería jurídica, Datos judiciales, Declaración patrimonial completa y declaración jurada",
+    "C": "5",
+    "D": "Estructura funcional del cierre del flujo documentada",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-07",
+    "B": "Elaborar el inventario de componentes, validaciones, tablas, modales y servicios simulados",
+    "C": "3",
+    "D": "Catálogo inicial de elementos requeridos",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-08",
+    "B": "Definir el alcance funcional, técnico, exclusiones y criterios de aceptación",
+    "C": "3",
+    "D": "Documento preliminar de alcance",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "AN-09",
+    "B": "Elaborar la estimación y el cronograma detallado",
+    "C": "4",
+    "D": "Plan de trabajo preparado para revisión con Alexander",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "SEG-01",
+    "B": "Realizar seguimiento quincenal del avance del proyecto",
+    "C": "1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "40",
+    "F": "1"
+   }
+  ]
+ },
+ {
+  "nombre": "17 al 28 FG",
+  "filas": [
+   {
+    "A": "Diseño completo en Figma"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado",
+    "F": "Avance"
+   },
+   {
+    "A": "FG-01",
+    "B": "Definir lineamientos generales de composición, navegación y prototipo del flujo",
+    "C": "3",
+    "D": "Estructura visual y navegación general definidas",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-02",
+    "B": "Diseñar la pantalla de inicio de sesión",
+    "C": "2",
+    "D": "Maqueta del login",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-03",
+    "B": "Diseñar la pantalla principal del sistema",
+    "C": "2",
+    "D": "Maqueta con representación de los módulos",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-04",
+    "B": "Diseñar la pantalla principal de “Mi declaración”",
+    "C": "2",
+    "D": "Punto de entrada visual al módulo",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-05",
+    "B": "Diseñar Datos generales",
+    "C": "2",
+    "D": "Maqueta del paso 1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-06",
+    "B": "Diseñar Conformación del núcleo familiar",
+    "C": "2",
+    "D": "Maqueta del paso 2 y sus elementos auxiliares",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-07",
+    "B": "Diseñar Ingresos y egresos",
+    "C": "3",
+    "D": "Maquetas del paso 3",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-08",
+    "B": "Diseñar Bienes inmuebles",
+    "C": "3",
+    "D": "Maquetas del paso 4",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-09",
+    "B": "Diseñar Bienes muebles",
+    "C": "3",
+    "D": "Maquetas del paso 5",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-10",
+    "B": "Diseñar Datos económicos",
+    "C": "2",
+    "D": "Maqueta del paso 6",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-11",
+    "B": "Diseñar Cuentas corrientes",
+    "C": "2",
+    "D": "Maqueta del paso 7",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-12",
+    "B": "Diseñar Créditos que posee",
+    "C": "3",
+    "D": "Maquetas del paso 8",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-13",
+    "B": "Diseñar Tarjetas de crédito",
+    "C": "2",
+    "D": "Maquetas del paso 9",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-14",
+    "B": "Diseñar Personería jurídica",
+    "C": "3",
+    "D": "Maquetas del paso 10",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-15",
+    "B": "Diseñar Datos judiciales",
+    "C": "2",
+    "D": "Maqueta del paso 11",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-16",
+    "B": "Diseñar Declaración patrimonial completa",
+    "C": "2",
+    "D": "Maqueta de resumen correspondiente al paso 12",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FG-17",
+    "B": "Diseñar la pantalla final de declaración jurada",
+    "C": "1",
+    "D": "Maqueta de la pantalla de cierre",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "SEG-02",
+    "B": "Realizar seguimiento quincenal del avance del proyecto",
+    "C": "1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "40",
+    "F": "1"
+   }
+  ]
+ },
+ {
+  "nombre": "31 al 11 ARQ - LG - PS - MD",
+  "filas": [
+   {
+    "A": "Preparación técnica, login y pantallas principales"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado",
+    "F": "Avance"
+   },
+   {
+    "A": "ARQ-01",
+    "B": "Crear y configurar el proyecto React con TypeScript en GitLab",
+    "C": "3",
+    "D": "Repositorio y proyecto ejecutable",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "ARQ-02",
+    "B": "Configurar rutas, estructura de carpetas y contenedor general de la aplicación",
+    "C": "5",
+    "D": "Base técnica organizada para las pantallas",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "ARQ-04",
+    "B": "Definir contratos y estructura inicial de servicios simulados",
+    "C": "5",
+    "D": "Capa base de mocks separada de las pantallas",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "LG-01",
+    "B": "Desarrollar la pantalla de inicio de sesión",
+    "C": "6",
+    "D": "Login implementado según la maqueta",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "LG-02",
+    "B": "Implementar validaciones, estados y autenticación simulada",
+    "C": "3",
+    "D": "Acceso exitoso y fallido representados",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "PS-01",
+    "B": "Desarrollar la pantalla principal del sistema",
+    "C": "6",
+    "D": "Pantalla con módulos y navegación funcional a “Mi declaración”",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "MD-01",
+    "B": "Desarrollar la pantalla principal de “Mi declaración”",
+    "C": "6",
+    "D": "Pantalla de entrada al proceso patrimonial",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "ARQ-05",
+    "B": "Probar el flujo inicial en Chrome",
+    "C": "2",
+    "D": "Evidencia básica de compatibilidad",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "ARQ-06",
+    "B": "Documentar y demostrar el flujo inicial",
+    "C": "3",
+    "D": "Login y pantallas principales revisados por Alexander",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "SEG-03",
+    "B": "Realizar seguimiento quincenal del avance del proyecto",
+    "C": "1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "40",
+    "F": "1"
+   }
+  ]
+ },
+ {
+  "nombre": "14 al 25 FL - DG - NF - IE",
+  "filas": [
+   {
+    "A": "Navegación general y pasos 1, 2 y 3"
+   },
+   {
+    "A": "Navegación general",
+    "F": "Avance"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado"
+   },
+   {
+    "A": "FL-01",
+    "B": "Implementar navegación entre pasos e indicador de progreso",
+    "C": "4",
+    "D": "Flujo secuencial de doce pasos disponible",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "FL-02",
+    "B": "Implementar guardado temporal, retroceso y recuperación simulada",
+    "C": "4",
+    "D": "Datos conservados durante la navegación",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "Datos generales"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "DG-01",
+    "B": "Desarrollar formulario y componentes de Datos generales",
+    "C": "4",
+    "D": "Formulario del paso 1 funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "DG-02",
+    "B": "Implementar validaciones y datos simulados",
+    "C": "2",
+    "D": "Comportamiento del paso representado",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "DG-03",
+    "B": "Probar, corregir y preparar para demostración",
+    "C": "1",
+    "D": "Paso 1 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "Conformación del núcleo familiar"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "NF-01",
+    "B": "Desarrollar formulario, tabla y modales del núcleo familiar",
+    "C": "5",
+    "D": "Registro de integrantes funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "NF-02",
+    "B": "Implementar acciones simuladas y validaciones",
+    "C": "3",
+    "D": "Registros agregables, modificables y eliminables",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "NF-03",
+    "B": "Probar, corregir y demostrar",
+    "C": "1",
+    "D": "Paso 2 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "Ingresos y egresos"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "IE-01",
+    "B": "Desarrollar formularios y tablas de ingresos y egresos",
+    "C": "5",
+    "D": "Registro de información económica funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "IE-02",
+    "B": "Implementar cálculos, condiciones, validaciones y mocks",
+    "C": "4",
+    "D": "Comportamiento frontend representado",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "IE-03",
+    "B": "Probar, corregir y demostrar",
+    "C": "1",
+    "D": "Paso 3 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "INT-01",
+    "B": "Integrar y documentar los pasos 1, 2 y 3",
+    "C": "3",
+    "D": "Primer bloque integrado al flujo general",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CDM-01",
+    "B": "Corregir defectos y aplicar mejoras derivadas de la validación de los pasos 1, 2 y 3",
+    "C": "2",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "SEG-04",
+    "B": "Realizar seguimiento quincenal del avance del proyecto",
+    "C": "1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "40",
+    "F": "1"
+   }
+  ]
+ },
+ {
+  "nombre": "28 al 09 BI - BM - DE",
+  "filas": [
+   {
+    "A": "Pasos 4, 5 y 6"
+   },
+   {
+    "A": "Bienes inmuebles",
+    "F": "Avance"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado"
+   },
+   {
+    "A": "BI-01",
+    "B": "Desarrollar formulario principal de Bienes inmuebles",
+    "C": "5",
+    "D": "Formulario funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "BI-02",
+    "B": "Implementar tabla, modales y acciones sobre registros",
+    "C": "4",
+    "D": "Registros agregables, editables y eliminables",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "BI-03",
+    "B": "Implementar validaciones, condiciones y servicios simulados",
+    "C": "3",
+    "D": "Comportamiento frontend simulado",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "BI-04",
+    "B": "Probar en los tres navegadores y corregir defectos",
+    "C": "1",
+    "D": "Paso 4 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "Bienes muebles"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "BM-01",
+    "B": "Desarrollar formulario principal de Bienes muebles",
+    "C": "5",
+    "D": "Formulario funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "BM-02",
+    "B": "Implementar tablas, modales y acciones",
+    "C": "4",
+    "D": "Registros administrables",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "BM-03",
+    "B": "Implementar validaciones y servicios simulados",
+    "C": "3",
+    "D": "Comportamiento frontend simulado",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "BM-04",
+    "B": "Probar y corregir defectos",
+    "C": "1",
+    "D": "Paso 5 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "Datos económicos"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "DE-01",
+    "B": "Desarrollar formularios y componentes de Datos económicos",
+    "C": "5",
+    "D": "Paso 6 funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "DE-02",
+    "B": "Implementar validaciones, cálculos y datos simulados",
+    "C": "2",
+    "D": "Reglas principales representadas",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "DE-03",
+    "B": "Probar y corregir defectos",
+    "C": "1",
+    "D": "Paso 6 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "INT-02",
+    "B": "Integrar, documentar y demostrar los pasos 4, 5 y 6",
+    "C": "3",
+    "D": "Segundo bloque integrado al flujo",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CDM-02",
+    "B": "Corregir defectos y aplicar mejoras derivadas de la validación de los pasos 4, 5 y 6",
+    "C": "2",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "SEG-05",
+    "B": "Realizar seguimiento quincenal del avance del proyecto",
+    "C": "1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "40",
+    "F": "1"
+   }
+  ]
+ },
+ {
+  "nombre": "12 al 23 CC - CR - TC",
+  "filas": [
+   {
+    "A": "Pasos 7, 8 y 9"
+   },
+   {
+    "A": "Cuentas corrientes",
+    "F": "Avance"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado"
+   },
+   {
+    "A": "CC-01",
+    "B": "Desarrollar formulario y tabla de cuentas corrientes",
+    "C": "4",
+    "D": "Registro de cuentas funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CC-02",
+    "B": "Implementar acciones y servicios simulados",
+    "C": "3",
+    "D": "Administración simulada de registros",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CC-03",
+    "B": "Implementar validaciones y campos condicionales",
+    "C": "2",
+    "D": "Reglas del paso aplicadas",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CC-04",
+    "B": "Probar y corregir defectos",
+    "C": "1",
+    "D": "Paso 7 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "Créditos que posee"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "CR-01",
+    "B": "Desarrollar formulario, tablas y componentes de créditos",
+    "C": "5",
+    "D": "Registro de créditos funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CR-02",
+    "B": "Implementar cálculos, condiciones y servicios simulados",
+    "C": "4",
+    "D": "Comportamiento crediticio representado",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CR-03",
+    "B": "Implementar validaciones y ejecutar pruebas",
+    "C": "3",
+    "D": "Reglas y pruebas completadas",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CR-04",
+    "B": "Corregir, documentar y demostrar",
+    "C": "1",
+    "D": "Paso 8 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "Tarjetas de crédito"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "TC-01",
+    "B": "Desarrollar formulario y tabla de tarjetas",
+    "C": "4",
+    "D": "Registro de tarjetas funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "TC-02",
+    "B": "Implementar acciones y servicios simulados",
+    "C": "3",
+    "D": "Registros administrables",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "TC-03",
+    "B": "Implementar validaciones y ejecutar pruebas",
+    "C": "2",
+    "D": "Reglas verificadas",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "TC-04",
+    "B": "Corregir, documentar y demostrar",
+    "C": "1",
+    "D": "Paso 9 listo para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "INT-03",
+    "B": "Integrar los pasos 7, 8 y 9 al flujo general",
+    "C": "3",
+    "D": "Tercer bloque funcional integrado",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CDM-03",
+    "B": "Corregir defectos y aplicar mejoras derivadas de la validación de los pasos 7, 8 y 9",
+    "C": "3",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "SEG-06",
+    "B": "Realizar seguimiento quincenal del avance del proyecto",
+    "C": "1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "40",
+    "F": "1"
+   }
+  ]
+ },
+ {
+  "nombre": "26 al 06 PJ - DJ - DP - DJU - I",
+  "filas": [
+   {
+    "A": "Pasos 10, 11, 12 y declaración jurada"
+   },
+   {
+    "A": "Personería jurídica",
+    "F": "Avance"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado"
+   },
+   {
+    "A": "PJ-01",
+    "B": "Desarrollar formularios, tablas y componentes de Personería jurídica",
+    "C": "5",
+    "D": "Registro societario funcional",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "PJ-02",
+    "B": "Implementar acciones y servicios simulados",
+    "C": "3",
+    "D": "Registros administrables",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "PJ-03",
+    "B": "Implementar validaciones y ejecutar pruebas",
+    "C": "2",
+    "D": "Reglas verificadas",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "PJ-04",
+    "B": "Corregir, documentar y demostrar",
+    "C": "1",
+    "D": "Paso 10 listo para revisión",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "Datos judiciales",
+    "F": "0"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "F": "0"
+   },
+   {
+    "A": "DJ-01",
+    "B": "Desarrollar formulario y componentes de Datos judiciales",
+    "C": "4",
+    "D": "Paso 11 funcional",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "DJ-02",
+    "B": "Implementar condiciones, validaciones y mocks",
+    "C": "2",
+    "D": "Comportamiento simulado",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "DJ-03",
+    "B": "Probar y corregir defectos",
+    "C": "1",
+    "D": "Paso 11 listo para revisión",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "Declaración patrimonial completa",
+    "F": "0"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "F": "0"
+   },
+   {
+    "A": "DP-01",
+    "B": "Desarrollar la pantalla consolidada de la declaración",
+    "C": "5",
+    "D": "Resumen de información registrada",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "DP-02",
+    "B": "Implementar navegación desde el resumen hacia pasos anteriores",
+    "C": "2",
+    "D": "Posibilidad de revisar y modificar información",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "DP-03",
+    "B": "Probar y corregir la pantalla consolidada",
+    "C": "1",
+    "D": "Paso 12 listo para revisión",
+    "E": "Pendiente",
+    "F": "0"
+   },
+   {
+    "A": "Pantalla final de declaración jurada"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado"
+   },
+   {
+    "A": "DJU-01",
+    "B": "Desarrollar la pantalla completa con el texto de declaración jurada",
+    "C": "2",
+    "D": "Texto presentado en una pantalla independiente",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "DJU-02",
+    "B": "Implementar aceptación y finalización simulada",
+    "C": "3",
+    "D": "Flujo de cierre funcional",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "DJU-03",
+    "B": "Probar, validar y corregir el cierre",
+    "C": "1",
+    "D": "Pantalla final lista para revisión",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "INT-04",
+    "B": "Integrar el flujo completo",
+    "C": "3",
+    "D": "Flujo desde el login hasta la declaración jurada",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CDM-04",
+    "B": "Corregir defectos y aplicar mejoras derivadas de la validación de los pasos 10, 11 y 12",
+    "C": "4",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "SEG-07",
+    "B": "Realizar seguimiento quincenal del avance del proyecto",
+    "C": "1",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "40",
+    "F": "1"
+   }
+  ]
+ },
+ {
+  "nombre": "09 al 13 CI",
+  "filas": [
+   {
+    "A": "Pruebas finales, documentación y entrega"
+   },
+   {
+    "A": "ID",
+    "B": "Tarea",
+    "C": "Horas estimadas",
+    "D": "Resultado",
+    "E": "Estado",
+    "F": "Avance"
+   },
+   {
+    "A": "CI-01",
+    "B": "Ejecutar pruebas regresivas completas en Chrome",
+    "C": "3",
+    "D": "Evidencia de funcionamiento del flujo completo",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CDM-05",
+    "B": "Corregir diferencias de comportamiento entre navegadores",
+    "C": "4",
+    "D": "Compatibilidad ajustada",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CDM-06",
+    "B": "Corregir defectos funcionales pendientes",
+    "C": "5",
+    "D": "Versión final estable dentro del alcance",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CI-04",
+    "B": "Elaborar documentación técnica del proyecto",
+    "C": "4",
+    "D": "Guía de estructura, ejecución, componentes y mocks",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CI-05",
+    "B": "Consolidar evidencias de pruebas y recomendaciones de continuidad",
+    "C": "2",
+    "D": "Documento de pruebas y pendientes de integración",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "A": "CI-06",
+    "B": "Preparar y realizar la demostración y transferencia final",
+    "C": "2",
+    "D": "Entrega revisada por Alexander",
+    "E": "Terminado",
+    "F": "1"
+   },
+   {
+    "B": "Total del periodo",
+    "C": "20",
+    "F": "1"
+   }
+  ]
+ }
+]
