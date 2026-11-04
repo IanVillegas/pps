@@ -12,9 +12,15 @@ describe('validateExpenseItem', () => {
     );
   });
 
-  it('rejects an amount that is not only digits', () => {
+  it('requires the amount, but accepts zero and a whole amount from older data', () => {
+    expect(validateExpenseItem({ type: 'vivienda', amount: '' }).amount).toBe(
+      'El monto es requerido'
+    );
     expect(
-      validateExpenseItem({ type: 'vivienda', amount: '2,000' }).amount
-    ).toBe('Escriba solo números');
+      validateExpenseItem({ type: 'vivienda', amount: '0.00' }).amount
+    ).toBeUndefined();
+    expect(
+      validateExpenseItem({ type: 'vivienda', amount: '90000' }).amount
+    ).toBeUndefined();
   });
 });

@@ -47,7 +47,14 @@ export const useAttachments = (
   const maxSizeBytes = options.maxSizeBytes ?? DEFAULT_MAX_SIZE_BYTES;
   const maxFiles = options.maxFiles ?? DEFAULT_MAX_FILES;
 
-  const [files, setFiles] = useState<AttachmentFile[]>([]);
+  const [files, setFiles] = useState<AttachmentFile[]>(() =>
+    (options.initialFileNames ?? []).map(name => ({
+      id: createId(),
+      name,
+      status: 'uploaded' as AttachmentStatus,
+      progress: 100,
+    }))
+  );
   // Los File reales no son serializados (no van en el borrador)
   // se guardan aparte, indexados por id, solo mientras dura la sesion.
   const rawFiles = useRef(new Map<string, File>());

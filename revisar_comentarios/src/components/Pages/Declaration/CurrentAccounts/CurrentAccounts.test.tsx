@@ -204,7 +204,7 @@ describe('CurrentAccounts (paso 7)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: 'Agregar nuevo' })
       );
-      await pick('Entidad financiera *', 'Banco 1 (mock)');
+      await pick('Entidad financiera *', 'Banco 1');
       await pick('Moneda *', 'Colones');
       await userEvent.type(screen.getByLabelText('Saldo actual *'), '30000000');
       await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));

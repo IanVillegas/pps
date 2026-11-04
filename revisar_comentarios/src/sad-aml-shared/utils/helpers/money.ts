@@ -38,8 +38,8 @@ export const formatCents = (cents: number): string =>
   `${Math.floor(cents / 100).toLocaleString('en-US')}.${String(cents % 100).padStart(2, '0')}`;
 
 // Saldo mensual y razones del paso 3
-export const formatCurrency = (value: number): string =>
-  `₡ ${value.toLocaleString('en-US', {
+export const formatCurrency = (value: number, symbol = '₡'): string =>
+  `${symbol} ${value.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;

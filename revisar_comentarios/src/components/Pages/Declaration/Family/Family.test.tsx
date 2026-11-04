@@ -129,7 +129,7 @@ describe('Family (paso 2)', () => {
     );
     expect(screen.getByLabelText('Edad en años cumplidos *')).toHaveValue('28');
     expect(screen.getByLabelText('Fecha de nacimiento *')).toHaveValue(
-      '15/12/1998'
+      '20/05/1998'
     );
 
     const name = screen.getByLabelText('Nombre y apellidos *');
@@ -145,7 +145,7 @@ describe('Family (paso 2)', () => {
   it('rejects editing a member into a duplicate of another', async () => {
     renderFamily([
       IAN,
-      { ...EMMANUEL, fullName: 'Ian Villegas', birthDate: '1998-12-15' },
+      { ...EMMANUEL, fullName: 'Ian Villegas', birthDate: '1998-05-20' },
     ]);
     await userEvent.click(
       screen.getAllByRole('button', { name: 'Editar Ian Villegas' })[1]
@@ -159,10 +159,10 @@ describe('Family (paso 2)', () => {
   it('removes a member and confirms with a notification', async () => {
     renderFamily([IAN, EMMANUEL]);
     await userEvent.click(
-      screen.getByRole('button', { name: 'Eliminar EMMANUEL' })
+      screen.getByRole('button', { name: 'Eliminar Emmanuel Jimenez' })
     );
     await userEvent.click(screen.getByRole('button', { name: 'Sí, eliminar' }));
-    expect(screen.queryByText('EMMANUEL')).not.toBeInTheDocument();
+    expect(screen.queryByText('Emmanuel Jimenez')).not.toBeInTheDocument();
     expect(screen.getByText('Ian Villegas')).toBeInTheDocument();
     expect(screen.getByTestId('count')).toHaveTextContent('1');
     expect(

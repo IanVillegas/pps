@@ -134,7 +134,7 @@ const LegalEntities = ({ values, onChange }: StepProps) => {
     <div className={styles.legalEntities}>
       <RecordsTable
         caption="Personerías jurídicas"
-        title="Si posee usted alguna personería jurídica, por favor especifique"
+        title="Si posee usted alguna personería jurídica, por favor especifique."
         columns={COLUMNS}
         rows={entities}
         getRowLabel={entity => `personería ${entity.name}`}
@@ -145,7 +145,7 @@ const LegalEntities = ({ values, onChange }: StepProps) => {
       />
       <RecordsTable
         caption="Sociedades"
-        title="Si usted forma parte en alguna sociedad, por favor especifique"
+        title="Si usted forma parte en alguna sociedad, por favor especifique."
         columns={SOCIETY_COLUMNS}
         rows={societies}
         getRowLabel={society => `sociedad ${society.name}`}

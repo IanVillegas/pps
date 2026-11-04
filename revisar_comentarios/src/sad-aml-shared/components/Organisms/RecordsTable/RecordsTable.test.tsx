@@ -109,7 +109,7 @@ describe('RecordsTable', () => {
       expect(screen.queryByText(QUESTION)).not.toBeInTheDocument();
 
       await userEvent.click(
-        screen.getByRole('button', { name: 'Eliminar Luis Mora' })
+        screen.getByRole('button', { name: 'Eliminar Emmanuel Villegas' })
       );
       expect(screen.getByText(QUESTION)).toBeInTheDocument();
       expect(
@@ -130,7 +130,7 @@ describe('RecordsTable', () => {
       setup({ onDelete });
       const open = () =>
         userEvent.click(
-          screen.getByRole('button', { name: 'Eliminar Ana Mora' })
+          screen.getByRole('button', { name: 'Eliminar Ian Villegas' })
         );
 
       await open();
@@ -152,13 +152,13 @@ describe('RecordsTable', () => {
       const onDelete = jest.fn();
       setup({ onDelete });
       await userEvent.click(
-        screen.getByRole('button', { name: 'Eliminar Ana Mora' })
+        screen.getByRole('button', { name: 'Eliminar Ian Villegas' })
       );
       await userEvent.click(
         screen.getByRole('button', { name: 'Sí, eliminar' })
       );
       await userEvent.click(
-        screen.getByRole('button', { name: 'Eliminar Luis Mora' })
+        screen.getByRole('button', { name: 'Eliminar Emmanuel Villegas' })
       );
       expect(screen.getByText(QUESTION)).toBeInTheDocument();
       expect(onDelete).toHaveBeenCalledTimes(1);
